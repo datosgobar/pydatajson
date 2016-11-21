@@ -26,7 +26,14 @@ class DataJsonTestCase(unittest.TestCase):
 
     def test_is_valid_structure_required_fields(self):
         """Testea estructura de data.json (sólo campos obligatorios)."""
-        pass
+
+        dj = pydatajson.DataJson("samples/minimum_data.json")
+        res = dj.is_valid_structure()
+        self.assertTrue(res)
+
+        dj = pydatajson.DataJson("samples/empty_minimum_data.json")
+        res = dj.is_valid_structure()
+        self.assertTrue(res)
 
 
 if __name__ == '__main__':
