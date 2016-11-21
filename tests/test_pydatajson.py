@@ -20,13 +20,12 @@ class DataJsonTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_is_valid_structure(self):
-        """Testea el método is_valid_structure() del DataJson."""
-        dj_valid = pydatajson.DataJson("samples/valid_data.json")
+    def test_is_valid_structure_full(self):
+        """Testea estructura de data.json completo bien formado."""
+        pass
 
-
-        dj_not_valid = pydatajson.DataJson(
-            "samples/not_valid_data.json")
+    def test_is_valid_structure_required_fields(self):
+        """Testea estructura de data.json (sólo campos obligatorios)."""
         pass
 
 
