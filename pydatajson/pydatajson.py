@@ -23,6 +23,7 @@ class DataJson(object):
             datajson_file (str): Path a un data.json.
         """
         self.datajson = json.loads(datajson_file)
+        self.datajson_schema = json.loads("datajson_schema.json")
 
     def is_valid_structure(self, datajson_schema=None):
         """Valida que el data.json cumple el datajson_schema.

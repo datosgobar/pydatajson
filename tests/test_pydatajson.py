@@ -21,7 +21,10 @@ class DataJsonTestCase(unittest.TestCase):
         pass
 
     def test_is_valid_structure(self):
+        """Testea el método is_valid_structure() del DataJson."""
         dj_valid = pydatajson.DataJson("samples/valid_data.json")
+
+
         dj_not_valid = pydatajson.DataJson(
             "samples/not_valid_data.json")
         pass
