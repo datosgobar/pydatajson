@@ -1,0 +1,27 @@
+{
+  "title": "",
+  "description": "",
+  "publisher": {
+    "name": ""
+  },
+  "themeTaxonomy": [],
+  "dataset": [
+    {
+      "title": "",
+      "description": "",
+      "publisher": {
+        "name": ""
+      },
+      "superTheme": [],
+      "accrualPeriodicity": "",
+      "issued": "",
+      "distribution": [
+        {
+          "accessURL": "",
+          "downloadURL": "",
+          "issued": ""
+	}
+      ]
+    }
+  ]
+}
