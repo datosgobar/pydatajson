@@ -1,0 +1,19 @@
+{
+	"type": "object",
+	"properties": {
+		"title": { "type": "string" },
+		"description": { "type": "string" },
+		"superThemeTaxonomy": { "type": "string" },
+		"publisher": {
+			"type": "object",
+			"properties": {
+				"name": "string",
+				"mbox": "string"
+			}
+		},
+		"dataset": {
+			"type":
+
+
+
+}
