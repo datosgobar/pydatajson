@@ -8,7 +8,6 @@ from __future__ import print_function
 from __future__ import with_statement
 import unittest
 import nose
-
 import pydatajson
 
 
@@ -27,11 +26,11 @@ class DataJsonTestCase(unittest.TestCase):
     def test_is_valid_structure_required_fields(self):
         """Testea estructura de data.json (sólo campos obligatorios)."""
 
-        dj = pydatajson.DataJson("samples/minimum_data.json")
+        dj = pydatajson.DataJson("tests/samples/minimum_data.json")
         res = dj.is_valid_structure()
         self.assertTrue(res)
 
-        dj = pydatajson.DataJson("samples/empty_minimum_data.json")
+        dj = pydatajson.DataJson("tests/samples/empty_minimum_data.json")
         res = dj.is_valid_structure()
         self.assertTrue(res)
 
