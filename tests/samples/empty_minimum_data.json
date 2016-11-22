@@ -2,9 +2,10 @@
   "title": "",
   "description": "",
   "publisher": {
-    "name": ""
+    "name": "",
+    "mbox": ""
   },
-  "themeTaxonomy": [],
+  "superThemeTaxonomy": "",
   "dataset": [
     {
       "title": "",
@@ -20,7 +21,7 @@
           "accessURL": "",
           "downloadURL": "",
           "title": "",
-          "issued": ""
+	  "issued": ""
 	}
       ]
     }
