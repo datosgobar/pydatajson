@@ -26,11 +26,24 @@ Paquete en python con herramientas para generar y validar metadatos de catálogo
 ```python
 from pydatajson import DataJson
 
-dj = DataJson("path/to/data.json")
-validation_result = dj.is_valid_structure()
+dj = DataJson()
+validation_result = dj.is_valid_catalog("path/to/data.json")
 
 print validation_result
 True
+```
+
+Con ejemplos del repositorio
+
+```python
+validation_result = dj.is_valid_catalog("tests/samples/full_data.json")
+print validation_result
+True
+
+validation_result = dj.is_valid_catalog(
+    "tests/samples/missing_catalog_title_data.json")
+print validation_result
+False
 ```
 
 ## Tests
