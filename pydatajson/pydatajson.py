@@ -14,45 +14,39 @@ import os
 import json
 import jsonschema
 
-DEFAULT_DATAJSON_SCHEMA = "schemas/empty_schema.json"
-
-class DataJsonValidator(jsonschema.Draft4Validator):
-    """Validador de archivos data.json"""
-
-    def __init__(self, schema_definition_file=DEFAULT_DATAJSON_SCHEMA):
-        """
-        Args:
-            schema_definition_file (str): Path al esquema contra el que se
-            desea validar.
-        """
-        with open(schema_definition_file) as schema_file_buffer:
-            deserialized_schema = json.load(schema_file_buffer,
-                                            encoding="utf8")
-            jsonschema.Draft4Validator.__init__(self, schema=deserialized_schema)
-
 
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
-    def __init__(self, datajson_file, datajson_validator=None):
+    """Variables por default"""
+    DEFAULT_DATAJSON_SCHEMA_FILE = "pydatajson/schemas/requerido.json"
+
+    def create_validator(schema_file):
+        with open(schema_file) as schema_file_buffer:
+            deserialized_schema = json.load(schema_file_buffer,
+                                                encoding="utf8")
+            validator = jsonschema.Draft4Validator(desearialized_schema)
+
+        return validator
+
+
+    def __init__(self, validator=None):
         """
         Args:
-            datajson_file (str): Path a un data.json.
-            datajson_validator: Nombre de un objeto DataJsonValidator. Si no se
-                                       provee se creará uno.
-            datajson_schema_file (str): Path a un JSON Schema.
+            validator (object): Si se desea sobreescribir el validador por
+            default, se puede pasar uno a través de este parámetro.
         """
+        self.validator = validator or
+        create_validator(DEFAULT_DATAJSON_SCHEMA_FILE)
 
+    def deserialize_datajson(datajson_file):
         with open(datajson_file) as datajson_file_buffer:
-            self.datajson = json.load(datajson_file_buffer)
+            datajson = json.load(datajson_file_buffer, encoding="utf8")
 
-        if isinstance(datajson_validator, DataJsonValidator):
-            self.validator = datajson_validator
-        else:
-            self.validator = DataJsonValidator()
+        return datajson
 
 
-    def is_valid_structure(self):
+    def is_valid_catalog(self, datajson_file):
         """Valida que el data.json cumple el datajson_schema.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -66,14 +60,15 @@ class DataJson(object):
             bool: True si el data.json sigue el schema, sino False.
         """
         try:
-            self.validate_structure()
-            return True
-        except jsonschema.ValidationError:
+            self.validate_catalog(datajson_file)
+        except jsonschema.ValidationError as e:
+            print(e)
             return False
+        else:
+            return True
 
-        pass
 
-    def validate_structure(self):
+    def validate_catalog(self, datajson_file):
         """Analiza el data.json registrando los errores que encuentra.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -89,8 +84,8 @@ class DataJson(object):
         Returns:
             TODO: A definir.
         """
-        self.validator.validate(self.datajson)
-        pass
+        datajson = deserialize_datajson(datajson_file)
+        self.validator.validate(datajson)
 
 
 def main():
