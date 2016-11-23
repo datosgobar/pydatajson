@@ -73,8 +73,7 @@ class DataJson(object):
         """
         try:
             self.validate_catalog(datajson_path)
-        except jsonschema.ValidationError as error:
-            print(error)
+        except jsonschema.ValidationError:
             return False
         else:
             return True
