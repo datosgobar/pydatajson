@@ -18,7 +18,7 @@ class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     """Variables por default"""
-    DEFAULT_DATAJSON_SCHEMA_FILE = "pydatajson/schemas/requerido.json"
+    DEFAULT_DATAJSON_SCHEMA_FILE = "pydatajson/schemas/required_fields_schema.json"
 
     def __init__(self, validator=None):
         """

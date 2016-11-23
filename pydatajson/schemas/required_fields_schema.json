@@ -1,19 +1,43 @@
 {
 	"type": "object",
+	"required": [
+		"dataset",
+		"title",
+		"description",
+		"publisher",
+		"superThemeTaxonomy"
+	],
 	"properties": {
-		"title": { "type": "string" },
-		"description": { "type": "string" },
-		"superThemeTaxonomy": { "type": "string" },
 		"publisher": {
 			"type": "object",
-			"properties": {
-				"name": "string",
-				"mbox": "string"
-			}
+			"required": ["name", "mbox"]
 		},
 		"dataset": {
-			"type":
-
-
-
+			"type": "object",
+			"required": [
+				"title",
+				"description",
+				"publisher",
+				"superTheme",
+				"distribution",
+				"accrualPeriodicity",
+				"issued"
+			],
+			"properties": {
+				"publisher": {
+					"type": "object",
+					"required": ["name"]
+				},
+				"distribution": {
+					"type": "object",
+					"required": [
+						"accessURL",
+						"downloadURL",
+						"title",
+						"issued"
+					]
+				}
+			}
+		}
+	}
 }
