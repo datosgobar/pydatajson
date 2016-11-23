@@ -18,7 +18,7 @@ import jsonschema
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
-    """Variables por default"""
+    # Variables por default
     ABSOLUTE_PATH_TO_BASE_SCHEMA_DIR = os.path.join(os.getcwd(),
                                                     "pydatajson/schemas")
     DEFAULT_DATAJSON_SCHEMA_FILENAME = "required_fields_schema.json"
