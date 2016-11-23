@@ -94,5 +94,5 @@ register: ## register the package to PyPi
 	python setup.py register
 
 pypi: ## register the package to PyPi get travis ready to deploy to pip
-	# python setup.py register
+	twine upload dist/*
 	python travis_pypi_setup.py
