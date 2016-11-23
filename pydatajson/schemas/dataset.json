@@ -1,0 +1,22 @@
+{
+	"type": "object",
+	"required": [
+		"title",
+		"description",
+		"publisher",
+		"superTheme",
+		"distribution",
+		"accrualPeriodicity",
+		"issued"
+	],
+	"properties": {
+		"publisher": {
+			"type": "object",
+			"required": ["name"]
+		},
+		"distribution": {
+		       "type": "array",
+		       "items": { "$ref": "distribution.json" }
+		}
+	}
+}

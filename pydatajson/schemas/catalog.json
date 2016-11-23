@@ -1,0 +1,20 @@
+{
+	"type": "object",
+	"required": [
+		"dataset",
+		"title",
+		"description",
+		"publisher",
+		"superThemeTaxonomy"
+	],
+	"properties": {
+		"publisher": {
+			"type": "object",
+			"required": ["name", "mbox"]
+		},
+		"dataset": {
+			"type": "array",
+			"items": { "$ref": "dataset.json" }
+		}
+	}
+}

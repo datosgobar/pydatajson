@@ -1,0 +1,9 @@
+{
+	"type": "object",
+	"required": [
+		"accessURL",
+		"downloadURL",
+		"title",
+		"issued"
+	]
+}
