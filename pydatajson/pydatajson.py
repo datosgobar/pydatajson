@@ -10,7 +10,6 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
-import os
 import json
 import jsonschema
 
@@ -21,25 +20,26 @@ class DataJson(object):
     """Variables por default"""
     DEFAULT_DATAJSON_SCHEMA_FILE = "pydatajson/schemas/requerido.json"
 
-    def create_validator(schema_file):
-        with open(schema_file) as schema_file_buffer:
-            deserialized_schema = json.load(schema_file_buffer,
-                                                encoding="utf8")
-            validator = jsonschema.Draft4Validator(desearialized_schema)
-
-        return validator
-
-
     def __init__(self, validator=None):
         """
         Args:
             validator (object): Si se desea sobreescribir el validador por
             default, se puede pasar uno a través de este parámetro.
         """
-        self.validator = validator or
-        create_validator(DEFAULT_DATAJSON_SCHEMA_FILE)
+        self.validator = (validator or
+        self._create_validator(self.DEFAULT_DATAJSON_SCHEMA_FILE))
 
-    def deserialize_datajson(datajson_file):
+
+    def _create_validator(self, schema_file):
+        with open(schema_file) as schema_file_buffer:
+            deserialized_schema = json.load(schema_file_buffer,
+                                            encoding="utf8")
+            validator = jsonschema.Draft4Validator(deserialized_schema)
+
+        return validator
+
+
+    def _deserialize_datajson(self, datajson_file):
         with open(datajson_file) as datajson_file_buffer:
             datajson = json.load(datajson_file_buffer, encoding="utf8")
 
@@ -62,7 +62,7 @@ class DataJson(object):
         try:
             self.validate_catalog(datajson_file)
         except jsonschema.ValidationError as e:
-            print(e)
+            # print(e)
             return False
         else:
             return True
@@ -84,7 +84,7 @@ class DataJson(object):
         Returns:
             TODO: A definir.
         """
-        datajson = deserialize_datajson(datajson_file)
+        datajson = self._deserialize_datajson(datajson_file)
         self.validator.validate(datajson)
 
 
