@@ -13,31 +13,38 @@
 			"required": ["name", "mbox"]
 		},
 		"dataset": {
-			"type": "object",
-			"required": [
-				"title",
-				"description",
-				"publisher",
-				"superTheme",
-				"distribution",
-				"accrualPeriodicity",
-				"issued"
-			],
-			"properties": {
-				"publisher": {
-					"type": "object",
-					"required": ["name"]
-				},
-				"distribution": {
-					"type": "object",
-					"required": [
-						"accessURL",
-						"downloadURL",
-						"title",
-						"issued"
-					]
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"title",
+					"description",
+					"publisher",
+					"superTheme",
+					"distribution",
+					"accrualPeriodicity",
+					"issued"
+				],
+				"properties": {
+					"publisher": {
+						"type": "object",
+						"required": ["name"]
+					},
+					"distribution": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"required": [
+								"accessURL",
+								"downloadURL",
+								"title",
+								"issued"
+							]
+						}
+					}
 				}
 			}
 		}
 	}
 }
+
