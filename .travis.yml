@@ -25,7 +25,7 @@ language: python
 python:
 - '2.7'
 script:
-- nosetests --with-coverage
+- nosetests --with-coverage --cover-package=pydatajson
 # - travis-sphinx --source=docs -n build
 sudo: false
 
