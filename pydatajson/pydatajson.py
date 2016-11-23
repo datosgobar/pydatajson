@@ -10,6 +10,7 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
+import os
 import json
 import jsonschema
 
@@ -18,7 +19,13 @@ class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     """Variables por default"""
-    DEFAULT_DATAJSON_SCHEMA_FILE = "pydatajson/schemas/required_fields_schema.json"
+    ABSOLUTE_PATH_TO_BASE_SCHEMA_DIR = os.path.join(os.getcwd(),
+                                                    "pydatajson/schemas")
+    DEFAULT_DATAJSON_SCHEMA_FILENAME = "required_fields_schema.json"
+    ABSOLUTE_PATH_TO_DEFAULT_SCHEMA_FILE = \
+            os.path.join(ABSOLUTE_PATH_TO_BASE_SCHEMA_DIR,
+                         DEFAULT_DATAJSON_SCHEMA_FILENAME)
+
 
     def __init__(self, validator=None):
         """
@@ -27,14 +34,23 @@ class DataJson(object):
             default, se puede pasar uno a través de este parámetro.
         """
         self.validator = (validator or
-        self._create_validator(self.DEFAULT_DATAJSON_SCHEMA_FILE))
+                          self._create_validator(
+                              self.ABSOLUTE_PATH_TO_DEFAULT_SCHEMA_FILE))
 
 
     def _create_validator(self, schema_file):
         with open(schema_file) as schema_file_buffer:
             deserialized_schema = json.load(schema_file_buffer,
                                             encoding="utf8")
-            validator = jsonschema.Draft4Validator(deserialized_schema)
+        # Según https://github.com/Julian/jsonschema/issues/98
+        # Permite resolver referencias locales a otros esquemas.
+        resolver = jsonschema.RefResolver(
+            base_uri=("file://" + self.ABSOLUTE_PATH_TO_DEFAULT_SCHEMA_FILE),
+            referrer=deserialized_schema)
+
+        validator = jsonschema.Draft4Validator(
+            schema=deserialized_schema,
+            resolver=resolver)
 
         return validator
 
@@ -62,7 +78,7 @@ class DataJson(object):
         try:
             self.validate_catalog(datajson_file)
         except jsonschema.ValidationError as e:
-            # print(e)
+            print(e)
             return False
         else:
             return True
