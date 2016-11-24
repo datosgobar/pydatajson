@@ -131,7 +131,23 @@ class DataJsonTestCase(unittest.TestCase):
         res = self.dj.validate_catalog(datajson)
         self.assertEqual(exp, res)
 
+    def test_validate_catalog_remote_datajson(self):
+        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
+        catálogo Y dataset."""
+
+        exp = {
+            "status": "ERROR",
+            "error": {
+                "catalog": ["Título del portal"],
+                "dataset": ["Dataset ejemplo 04", "Dataset ejemplo 03",
+                            "Dataset ejemplo 02", "Dataset ejemplo 01"]
+            }
+        }
+
+        datajson = "http://104.131.35.253/data.json"
+        res = self.dj.validate_catalog(datajson)
+        self.assertEqual(exp, res)
+
 
 if __name__ == '__main__':
-    nose.r
-    un(defaultTest=__name__)
+    nose.run(defaultTest=__name__)
