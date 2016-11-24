@@ -47,12 +47,11 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 
-lint: ## check style with flake8
-	flake8 pydatajson tests
+lint: ## check style with pylint
+	pylint pydatajson
 
-test: ## run tests quickly with the default Python
-
-		python setup.py test
+test: ## run tests quickly with nose
+	nosetests
 
 test-all: ## run tests on every Python version with tox
 	tox
