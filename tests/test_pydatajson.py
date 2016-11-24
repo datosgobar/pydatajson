@@ -46,10 +46,10 @@ class DataJsonTestCase(unittest.TestCase):
         res = self.dj.is_valid_catalog("tests/samples/missing_dataset_title_data.json")
         self.assertFalse(res)
 
-    def test_is_valid_catalog_missing_resource_tile(self):
+    def test_is_valid_catalog_missing_distribution_title(self):
         """Testea estructura de data.json en el que un recurso no tiene título."""
 
-        res = self.dj.is_valid_catalog("tests/samples/missing_resource_title_data.json")
+        res = self.dj.is_valid_catalog("tests/samples/missing_distribution_title_data.json")
         self.assertFalse(res)
 
     def test_validate_catalog_full_data(self):
@@ -104,14 +104,30 @@ class DataJsonTestCase(unittest.TestCase):
         catálogo Y dataset."""
 
         exp = {
-            "status": "OK",
+            "status": "ERROR",
             "error": {
                 "catalog": ["Título del Catálogo 1"],
                 "dataset": ["Título del Dataset 1", "Título del Dataset 2"]
             }
         }
 
-        datajson = "tests/samples/missing_multiple_descriptions_data.json"
+        datajson = "tests/samples/multiple_missing_descriptions_data.json"
+        res = self.dj.validate_catalog(datajson)
+        self.assertEqual(exp, res)
+
+    def test_validate_catalog_missing_distribution_title(self):
+        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
+        catálogo Y dataset."""
+
+        exp = {
+            "status": "ERROR",
+            "error": {
+                "catalog": [],
+                "dataset": [""]
+            }
+        }
+
+        datajson = "tests/samples/missing_distribution_title_data.json"
         res = self.dj.validate_catalog(datajson)
         self.assertEqual(exp, res)
 
