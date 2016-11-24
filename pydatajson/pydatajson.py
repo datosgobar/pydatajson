@@ -94,12 +94,9 @@ class DataJson(object):
         Returns:
             bool: True si el data.json sigue el schema, sino False.
         """
-        try:
-            self.validate_catalog(datajson_path)
-        except jsonschema.ValidationError:
-            return False
-        else:
-            return True
+        datajson = self._deserialize_json(datajson_path)
+        res = self.validator.is_valid(datajson)
+        return res
 
 
     def validate_catalog(self, datajson_path):
@@ -120,7 +117,35 @@ class DataJson(object):
 
         """
         datajson = self._deserialize_json(datajson_path)
-        self.validator.validate(datajson)
+
+        # Respuesta por default si no hay errores
+        res = {
+            "status": "OK",
+            "error": {
+                "catalog": [],
+                "dataset": []
+            }
+        }
+
+        # Genero árbol de errores para explorarlo
+        error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
+
+        # Extraigo títulos del catálogo y los datasets para reportar errores:
+        catalog_title = datajson["title"]
+        dataset_titles = [dataset["title"] for dataset in datajson["dataset"]]
+
+        # Si hay algún error propio del catálogo, lo reporto como erróneo
+        if error_tree.errors != {}:
+            res["status"] = "ERROR"
+            res["error"]["catalog"].append(catalog_title)
+
+        # Si total_errors a nivel de un cierto dataset es !=0, lo reporto
+        for idx, title in enumerate(dataset_titles):
+            if error_tree["dataset"][idx].total_errors != 0:
+                res["status"] = "ERROR"
+                res["error"]["dataset"].append(title)
+
+        return res
 
 
 def main():
