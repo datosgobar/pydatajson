@@ -13,7 +13,7 @@ from __future__ import with_statement
 import os
 import json
 import jsonschema
-
+import requests
 
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
@@ -77,10 +77,20 @@ class DataJson(object):
 
 
     @staticmethod
-    def _deserialize_json(json_path):
+    def _deserialize_json(json_path_or_url):
         """ Toma el path a un JSON y devuelve el diccionario que representa."""
-        with open(json_path) as json_file:
-            return json.load(json_file, encoding="utf8")
+        # Se entiende que es una URL aquello que empieza con "http"
+        if json_path_or_url.startswith("http"):
+            req = requests.get(json_path_or_url)
+            json_string = req.content
+        # Todo lo demás se resulve localmente
+        else:
+            with open(json_path_or_url) as json_file:
+                json_string = json_file.read()
+
+        json_dict = json.loads(json_string, encoding="utf8")
+
+        return json_dict
 
     def is_valid_catalog(self, datajson_path):
         """Valida que un archivo `data.json` cumpla con el schema definido.
