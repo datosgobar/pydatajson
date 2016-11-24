@@ -7,7 +7,7 @@ pydatajson
 [![Stories in Ready](https://badge.waffle.io/datosgobar/pydatajson.png?label=ready&title=Ready)](https://waffle.io/datosgobar/pydatajson)
 [![Documentation Status](http://readthedocs.org/projects/pydatajson/badge/?version=latest)](http://data-cleaner.readthedocs.org/en/latest/?badge=latest)
 
-Paquete en python con herramientas para generar y validar metadatos de catálogos de datos en formato data.json.
+Paquete en python con herramientas para manipular y validar metadatos de catálogos de datos en formato data.json.
 
 
 * Licencia: MIT license
@@ -16,12 +16,22 @@ Paquete en python con herramientas para generar y validar metadatos de catálogo
 
 ## Instalación
 
-*AYUDA: ¿Qué dependencias del sistema son necesarias? ¿Tests/pruebas post instalación? Usar screenshots/gifs (si cabe).*
+Instalar la librería debería ser tan sencillo como un `pip install`:
+
+* **Producción:** Desde cualquier parte
+
+```
+pip install pydatajson
+```
+
+* **Desarrollo:** Clonar este repositorio, y desde su raíz, ejecutar:
+```
+pip install -e .
+```
 
 ## Uso
-*AYUDA: Ejemplo rápido. Usar screenshots/gifs (si cabe).*
 
-### Para validar la estructura de un data.json
+### Validar la estructura de un data.json contra el esquema por default que incluye la librería
 
 ```python
 from pydatajson import DataJson
@@ -33,7 +43,7 @@ print validation_result
 True
 ```
 
-Con ejemplos del repositorio
+### Con ejemplos del repositorio
 
 ```python
 validation_result = dj.is_valid_catalog("tests/samples/full_data.json")
@@ -48,8 +58,13 @@ False
 
 ## Tests
 
-*AYUDA: ¿Cómo correr los tests? ¿Cómo me instalo dependencias para los tests?*
+Los tests de la librería se desarrollaron con `nose`. Para correrlos, desde la raíz del repositorio:
+```
+pip install nose # Sólo la primera vez
+nosetests
+```
 
 ## Créditos
 
+El validador de archivos `data.json` desarrollado no es más que un conveniente envoltorio alrededor de la librería `jsonschema`, que implementa el estándar definido por [JSONSchema.org](http://json-schema.org/).
 *AYUDA: ¿Usás código de otra persona/organización? ¿Alguien o algo fue una fuente de inspiración/asesoramiento/ayuda para este repositorio? ¿Es esto un fork?*
