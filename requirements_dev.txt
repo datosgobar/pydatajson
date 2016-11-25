@@ -12,3 +12,4 @@ nose
 recommonmark
 twine
 sphinx_rtd_theme
+sphinx
