@@ -20,51 +20,75 @@ Instalar la librería debería ser tan sencillo como un `pip install`:
 
 * **Producción:** Desde cualquier parte
 
-```
-pip install pydatajson
+```bash
+$ pip install pydatajson
 ```
 
 * **Desarrollo:** Clonar este repositorio, y desde su raíz, ejecutar:
-```
-pip install -e .
+```bash
+$ pip install -e .
 ```
 
 ## Uso
 
+La librería implementa un objeto, `DataJson`, con varios métodos para verificar la integridad de los archivos `data.json` y manipular su contenido. De particular interés son `is_valid_catalog` y `validate_catalog`.
+
 ### Validar la estructura de un data.json contra el esquema por default que incluye la librería
+
+#### Archivo data.json local
 
 ```python
 from pydatajson import DataJson
 
 dj = DataJson()
-validation_result = dj.is_valid_catalog("path/to/data.json")
+datajson_path = "path/to/data.json"
+validation_result = dj.is_valid_catalog(datajson_path)
+validation_report = dj.validate_catalog(datajson_path)
 
 print validation_result
 True
+
+print validation_report
+{ 
+    "status": "OK", 
+    "error": { 
+        "catalog": [], 
+        "dataset": [] 
+    }   
+}   
 ```
 
-### Con ejemplos del repositorio
+#### Archivo data.json remoto
+
+También es posible proveer una URL remota al archivo `data.json` de un portal productivo:
 
 ```python
-validation_result = dj.is_valid_catalog("tests/samples/full_data.json")
-print validation_result
-True
+datajson_url = "http://104.131.35.253/data.json"
+validation_result = dj.is_valid_catalog(datajson_url)
+validation_report = dj.validate_catalog(datajson_url)
 
-validation_result = dj.is_valid_catalog(
-    "tests/samples/missing_catalog_title_data.json")
 print validation_result
 False
+
+print validation_report
+{
+    "status": "ERROR",
+    "error": {
+        "catalog": ["Título del portal"],
+        "dataset": ["Dataset ejemplo 04", "Dataset ejemplo 03",
+                    "Dataset ejemplo 02", "Dataset ejemplo 01"]
+    }   
+}   
 ```
 
 ## Tests
 
 Los tests de la librería se desarrollaron con `nose`. Para correrlos, desde la raíz del repositorio:
 ```
-pip install nose # Sólo la primera vez
-nosetests
+$ pip install nose # Sólo la primera vez
+$ nosetests
 ```
 
 ## Créditos
 
 El validador de archivos `data.json` desarrollado no es más que un conveniente envoltorio alrededor de la librería `jsonschema`, que implementa el estándar definido por [JSONSchema.org](http://json-schema.org/).
-*AYUDA: ¿Usás código de otra persona/organización? ¿Alguien o algo fue una fuente de inspiración/asesoramiento/ayuda para este repositorio? ¿Es esto un fork?*
