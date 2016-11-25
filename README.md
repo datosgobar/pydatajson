@@ -37,11 +37,14 @@ La librería implementa un objeto, `DataJson`, con varios métodos para verifica
 
 #### Archivo data.json local
 
+DataJson es capaz de validar archivos locales en cualquier directorio (accesible) siempre y cuando se provea el path absoluto a él.
+Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
+
 ```python
 from pydatajson import DataJson
 
 dj = DataJson()
-datajson_path = "path/to/data.json"
+datajson_path = "tests/samples/full_data.json"
 validation_result = dj.is_valid_catalog(datajson_path)
 validation_report = dj.validate_catalog(datajson_path)
 
