@@ -63,7 +63,7 @@ print validation_report
 
 #### Archivo data.json remoto
 
-También es posible proveer una URL remota al archivo `data.json` de un portal productivo:
+También es posible proveer una URL remota al archivo `data.json` de un portal productivo. Internamente, DataJson entiende que si el path del archivo a validar comienza con "http", se trata de una URL remota.
 
 ```python
 datajson_url = "http://104.131.35.253/data.json"
