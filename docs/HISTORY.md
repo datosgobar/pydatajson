@@ -1,7 +1,7 @@
 History
 ===
 
-0.1.0 (2016-11-21)
+0.0.12 (2016-11-25)
 ------------------
 
-* First release on PyPI.
+* Primera versión propuesta para v0.1.0
