@@ -68,7 +68,7 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(exp, res)
 
     def test_validate_catalog_missing_catalog_description(self):
-        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
+        """ Testea `validate_catalog` contra un data.json sin descripción de
         catálogo."""
 
         exp = {
@@ -84,7 +84,7 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(exp, res)
 
     def test_validate_catalog_missing_dataset_description(self):
-        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
+        """ Testea `validate_catalog` contra un data.json sin descripción de
         dataset."""
 
         exp = {
@@ -100,8 +100,8 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(exp, res)
 
     def test_validate_catalog_multiple_missing_descriptions(self):
-        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
-        catálogo Y dataset."""
+        """ Testea `validate_catalog` contra un data.json sin descripción de
+        catálogo ni datasets (2)."""
 
         exp = {
             "status": "ERROR",
@@ -116,8 +116,8 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(exp, res)
 
     def test_validate_catalog_missing_distribution_title(self):
-        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
-        catálogo Y dataset."""
+        """ Testea `validate_catalog` contra un data.json sin título en una
+        distribución."""
 
         exp = {
             "status": "ERROR",
@@ -132,8 +132,8 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(exp, res)
 
     def test_validate_catalog_missing_dataset_title(self):
-        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
-        catálogo Y dataset."""
+        """ Testea `validate_catalog` contra un data.json sin título en un
+        dataset."""
 
         exp = {
             "status": "ERROR",
@@ -148,8 +148,8 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(exp, res)
 
     def test_validate_catalog_missing_catalog_title(self):
-        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
-        catálogo Y dataset."""
+        """ Testea `validate_catalog` contra un data.json sin título de
+        catálogo."""
 
         exp = {
             "status": "ERROR",
@@ -164,8 +164,7 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(exp, res)
 
     def test_validate_catalog_remote_datajson(self):
-        """ Testea `validate_catalog` contra un data.json incorrecto a nivel
-        catálogo Y dataset."""
+        """ Testea `validate_catalog` contra un data.json remoto."""
 
         exp = {
             "status": "ERROR",
