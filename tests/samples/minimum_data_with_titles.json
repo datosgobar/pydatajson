@@ -1,0 +1,47 @@
+{
+  "title": "Título del Catálogo 1",
+  "description": "",
+  "publisher": {
+    "name": "",
+    "mbox": ""
+  },
+  "superThemeTaxonomy": "",
+  "dataset": [
+    {
+      "title": "Título del Dataset 1",
+      "description": "",
+      "publisher": {
+        "name": ""
+      },
+      "superTheme": [],
+      "accrualPeriodicity": "",
+      "issued": "",
+      "distribution": [
+        {
+          "accessURL": "",
+          "downloadURL": "",
+          "title": "",
+	  "issued": ""
+        }
+      ]
+    },
+    {
+      "title": "Título del Dataset 2",
+      "description": "",
+      "publisher": {
+        "name": ""
+      },
+      "superTheme": [],
+      "accrualPeriodicity": "",
+      "issued": "",
+      "distribution": [
+        {
+          "accessURL": "",
+          "downloadURL": "",
+          "title": "",
+	  "issued": ""
+        }
+      ]
+    }
+  ]
+}
