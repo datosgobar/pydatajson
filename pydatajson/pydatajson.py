@@ -10,6 +10,7 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
+from distutils.sysconfig import get_python_lib
 import os
 import json
 import jsonschema
@@ -19,7 +20,7 @@ class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     # Variables por default
-    ABSOLUTE_SCHEMA_DIR = os.path.join(os.getcwd(), "pydatajson/schemas")
+    ABSOLUTE_SCHEMA_DIR = os.path.join(get_python_lib(), "pydatajson/schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
 
