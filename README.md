@@ -9,10 +9,8 @@ pydatajson
 
 Paquete en python con herramientas para manipular y validar metadatos de catálogos de datos en formato data.json.
 
-
 * Licencia: MIT license
 * Documentación: https://pydatajson.readthedocs.io.
-
 
 ## Instalación
 
