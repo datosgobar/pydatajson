@@ -78,12 +78,23 @@ class DataJson(object):
 
     @staticmethod
     def _deserialize_json(json_path_or_url):
-        """ Toma el path a un JSON y devuelve el diccionario que representa."""
-        # Se entiende que es una URL aquello que empieza con "http"
+        """ Toma el path a un JSON y devuelve el diccionario que representa.
+
+        Asume que el parámetro es una URL si comienza con 'http', o un path
+        local de lo contrario.
+
+        Args:
+            json_path_or_url (str): Path local o URL remota a un archivo de
+            texto plano en formato JSON.
+
+        Returns:
+            json_dict (dict): El diccionario que resulta de deserializar
+            json_path_or_url.
+
+        """
         if json_path_or_url.startswith("http"):
             req = requests.get(json_path_or_url)
             json_string = req.content
-        # Todo lo demás se resulve localmente
         else:
             with open(json_path_or_url) as json_file:
                 json_string = json_file.read()
@@ -141,8 +152,10 @@ class DataJson(object):
         error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
 
         # Extraigo títulos del catálogo y los datasets para reportar errores:
-        catalog_title = datajson["title"]
-        dataset_titles = [dataset["title"] for dataset in datajson["dataset"]]
+        # Uso D.get(k) en lugar de D[k] p/ evitar errores de KeyError.
+        #  D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+        catalog_title = datajson.get("title")
+        dataset_titles = [dataset.get("title") for dataset in datajson["dataset"]]
 
         # Si hay algún error propio del catálogo, lo reporto como erróneo
         if error_tree.errors != {}:
