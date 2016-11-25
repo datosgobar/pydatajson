@@ -11,3 +11,4 @@ PyYAML==3.11
 nose
 recommonmark
 twine
+sphinx_rtd_theme
