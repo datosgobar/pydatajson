@@ -151,22 +151,17 @@ class DataJson(object):
         # Genero árbol de errores para explorarlo
         error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
 
-        # Extraigo títulos del catálogo y los datasets para reportar errores:
-        # Uso D.get(k) en lugar de D[k] p/ evitar errores de KeyError.
-        #  D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
-        catalog_title = datajson.get("title")
-        dataset_titles = [dataset.get("title") for dataset in datajson["dataset"]]
-
         # Si hay algún error propio del catálogo, lo reporto como erróneo
         if error_tree.errors != {}:
             res["status"] = "ERROR"
-            res["error"]["catalog"].append(catalog_title)
+            #  D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+            res["error"]["catalog"].append(datajson.get("title"))
 
         # Si total_errors a nivel de un cierto dataset es !=0, lo reporto
-        for idx, title in enumerate(dataset_titles):
+        for idx, dataset in enumerate(datajson["dataset"]):
             if error_tree["dataset"][idx].total_errors != 0:
                 res["status"] = "ERROR"
-                res["error"]["dataset"].append(title)
+                res["error"]["dataset"].append(dataset.get("title"))
 
         return res
 
