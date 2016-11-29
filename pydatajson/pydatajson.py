@@ -154,29 +154,33 @@ quiso decir 'http://{}'?
         """
         datajson = self._deserialize_json(datajson_path)
 
-        # Respuesta por default si no hay errores
-        res = {
-            "status": "OK",
-            "error": {
-                "catalog": [],
-                "dataset": []
-            }
-        }
-
         # Genero árbol de errores para explorarlo
         error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
 
-        # Si hay algún error propio del catálogo, lo reporto como erróneo
-        if error_tree.errors != {}:
-            res["status"] = "ERROR"
-            #  D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
-            res["error"]["catalog"].append(datajson.get("title"))
+        def dataset_result(index, dataset):
+            dataset_total_errors = error_tree["dataset"][index].total_errors
 
-        # Si total_errors a nivel de un cierto dataset es !=0, lo reporto
-        for idx, dataset in enumerate(datajson["dataset"]):
-            if error_tree["dataset"][idx].total_errors != 0:
-                res["status"] = "ERROR"
-                res["error"]["dataset"].append(dataset.get("title"))
+            result = {
+                "status": "OK" if dataset_total_errors == 0 else "ERROR",
+                "title": dataset.get("title")
+                }
+
+            return result
+
+        datasets_results = [
+            dataset_result(i, ds) for i, ds in enumerate(datajson["dataset"])
+        ]
+
+        res = {
+            "status": "OK" if error_tree.total_errors == 0 else "ERROR",
+            "error": {
+                "catalog": {
+                    "status": "OK" if error_tree.errors != {} else "ERROR",
+                    "title": datajson.get("title")
+                },
+                "dataset": datasets_results
+            }
+        }
 
         return res
 
