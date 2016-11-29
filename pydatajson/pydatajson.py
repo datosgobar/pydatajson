@@ -10,18 +10,19 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
-from distutils.sysconfig import get_python_lib
-import os
+from os import path
 import json
 import jsonschema
 import requests
+
+ABSOLUTE_LIBRARY_PATH = path.dirname(path.abspath(__file__))
 
 
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     # Variables por default
-    ABSOLUTE_SCHEMA_DIR = os.path.join(get_python_lib(), "pydatajson/schemas")
+    ABSOLUTE_SCHEMA_DIR = path.join(ABSOLUTE_LIBRARY_PATH, "schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
     def __init__(self,
@@ -63,13 +64,13 @@ class DataJson(object):
             El validador especifica se crea con un RefResolver que resuelve
             referencias de `schema_filename` dentro de `schema_dir`.
         """
-        schema_path = os.path.join(schema_dir, schema_filename)
+        schema_path = path.join(schema_dir, schema_filename)
         schema = cls._deserialize_json(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
         resolver = jsonschema.RefResolver(
-            base_uri=("file://" + schema_dir + '/'), referrer=schema)
+            base_uri=("file://" + schema_dir + "/"), referrer=schema)
 
         validator = jsonschema.Draft4Validator(
             schema=schema, resolver=resolver)
