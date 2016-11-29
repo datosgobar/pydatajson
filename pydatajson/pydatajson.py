@@ -10,10 +10,9 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
-from os import path
+import os.path
 from urlparse import urljoin, urlparse
 import warnings
-from urlparse import urljoin
 import json
 import jsonschema
 import requests
