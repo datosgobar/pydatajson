@@ -11,11 +11,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 from os import path
-try:
-    from urlparse import urljoin, urlparse
-except:
-    from urllib.parse import urljoin, urlparse
-
+from urlparse import urljoin, urlparse
 import warnings
 import json
 import jsonschema
