@@ -11,7 +11,12 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 from os import path
-from urlparse import urljoin
+try:
+    from urlparse import urljoin, urlparse
+except:
+    from urllib.parse import urljoin, urlparse
+
+import warnings
 import json
 import jsonschema
 import requests
@@ -94,10 +99,23 @@ class DataJson(object):
             json_path_or_url.
 
         """
-        if json_path_or_url.startswith("http"):
+        parsed_url = urlparse(json_path_or_url)
+
+        if parsed_url.scheme in ["http", "https"]:
             req = requests.get(json_path_or_url)
             json_string = req.content
+
         else:
+            # En caso de que json_path_or_url parezca ser una URL remota,
+            # advertirlo
+            path_start = parsed_url.path.split(".")[0]
+            if path_start == "www" or path_start.isdigit():
+                warnings.warn("""
+La dirección del archivo JSON ingresada parece una URL, pero no comienza
+con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
+quiso decir 'http://{}'?
+                """.format(json_path_or_url).encode("utf8"))
+
             with open(json_path_or_url) as json_file:
                 json_string = json_file.read()
 
