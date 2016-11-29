@@ -16,13 +16,13 @@ import json
 import jsonschema
 import requests
 
+
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     # Variables por default
     ABSOLUTE_SCHEMA_DIR = os.path.join(get_python_lib(), "pydatajson/schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
-
 
     def __init__(self,
                  schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
@@ -76,7 +76,6 @@ class DataJson(object):
 
         return validator
 
-
     @staticmethod
     def _deserialize_json(json_path_or_url):
         """ Toma el path a un JSON y devuelve el diccionario que representa.
@@ -119,7 +118,6 @@ class DataJson(object):
         datajson = self._deserialize_json(datajson_path)
         res = self.validator.is_valid(datajson)
         return res
-
 
     def validate_catalog(self, datajson_path):
         """Analiza un data.json registrando los errores que encuentra.
