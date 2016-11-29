@@ -11,6 +11,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 from os import path
+from urlparse import urljoin
 import json
 import jsonschema
 import requests
@@ -70,7 +71,7 @@ class DataJson(object):
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
         resolver = jsonschema.RefResolver(
-            base_uri=("file://" + schema_dir + "/"), referrer=schema)
+            base_uri=urljoin('file:', schema_path), referrer=schema)
 
         validator = jsonschema.Draft4Validator(
             schema=schema, resolver=resolver)
