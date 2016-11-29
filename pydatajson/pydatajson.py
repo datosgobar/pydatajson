@@ -13,6 +13,7 @@ from __future__ import with_statement
 from os import path
 from urlparse import urljoin, urlparse
 import warnings
+from urlparse import urljoin
 import json
 import jsonschema
 import requests
