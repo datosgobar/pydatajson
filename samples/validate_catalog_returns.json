@@ -1,0 +1,65 @@
+// ejemplos de lo que devuelve DataJson().validate_catalog()
+
+// toda la estructura del data.json está OK
+{
+	"status": "OK",
+	"error": {
+		"catalog": {
+            "status": "OK",
+            "title": "Título del Catálogo"
+        },
+		"dataset": [
+			{
+                "status": "OK",
+                "title": "Título Dataset 1"
+            },
+            {
+	            "status": "OK",
+	            "title": "Título Dataset 2"
+            }
+		]
+	}
+}
+
+// la estructura a nivel de catálogo está OK / algunos datasets tienen ERROR
+{
+    "status": "ERROR",
+	"catalog": {
+        "status": "OK",
+        "title": "Título del Catálogo"
+    },
+    "dataset": [
+        {
+            "status": "OK",
+            "title": "Título Dataset 1"
+        },
+        {
+            "status": "ERROR",
+            "title": null
+        }
+    ]
+}
+
+// la estructura a nivel de catálogo tiene ERROR
+{
+	"status": "OK",
+	"error": {
+		"catalog": {
+            "status": "ERROR",
+            "title": "Título del Catálogo"
+        },
+		"dataset": [
+			{
+                "status": "OK",
+                "title": "Título Dataset 1"
+            },
+            {
+                "status": "OK",
+                "title": "Título Dataset 2"
+            }
+		]
+	}
+}
+
+
+
