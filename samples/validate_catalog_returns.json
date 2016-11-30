@@ -2,29 +2,29 @@
 
 // toda la estructura del data.json está OK
 {
-	"status": "OK",
-	"error": {
-		"catalog": {
+    "status": "OK",
+    "error": {
+        "catalog": {
             "status": "OK",
             "title": "Título del Catálogo"
         },
-		"dataset": [
-			{
+        "dataset": [
+            {
                 "status": "OK",
                 "title": "Título Dataset 1"
             },
             {
-	            "status": "OK",
-	            "title": "Título Dataset 2"
+                "status": "OK",
+                "title": "Título Dataset 2"
             }
-		]
-	}
+        ]
+    }
 }
 
 // la estructura a nivel de catálogo está OK / algunos datasets tienen ERROR
 {
     "status": "ERROR",
-	"catalog": {
+    "catalog": {
         "status": "OK",
         "title": "Título del Catálogo"
     },
@@ -42,14 +42,14 @@
 
 // la estructura a nivel de catálogo tiene ERROR
 {
-	"status": "OK",
-	"error": {
-		"catalog": {
+    "status": "OK",
+    "error": {
+        "catalog": {
             "status": "ERROR",
             "title": "Título del Catálogo"
         },
-		"dataset": [
-			{
+        "dataset": [
+            {
                 "status": "OK",
                 "title": "Título Dataset 1"
             },
@@ -57,8 +57,8 @@
                 "status": "OK",
                 "title": "Título Dataset 2"
             }
-		]
-	}
+        ]
+    }
 }
 
 
