@@ -240,28 +240,16 @@ class DataJsonTestCase(unittest.TestCase):
         """ Testea `validate_catalog` contra un data.json remoto."""
 
         exp = {
-            "status": "ERROR",
+            "status": "OK",
             "error": {
                 "catalog": {
-                    "status": "ERROR",
-                    "title": "Título del portal"
+                    "status": "OK",
+                    "title": "Andino Demo"
                 },
                 "dataset": [
                     {
-                        "status": "ERROR",
-                        "title": "Dataset ejemplo 04"
-                    },
-                    {
-                        "status": "ERROR",
-                        "title": "Dataset ejemplo 03"
-                    },
-                    {
-                        "status": "ERROR",
-                        "title": "Dataset ejemplo 02"
-                    },
-                    {
-                        "status": "ERROR",
-                        "title": "Dataset ejemplo 01"
+                        "status": "OK",
+                        "title": "Dataset Demo"
                     }
                 ]
             }
