@@ -157,7 +157,9 @@ quiso decir 'http://{}'?
         # Genero árbol de errores para explorarlo
         error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
 
-        def dataset_result(index, dataset):
+        def _dataset_result(index, dataset):
+            """ Dado un dataset y su índice en el data.json, devuelve una
+            diccionario con el resultado de su validación. """
             dataset_total_errors = error_tree["dataset"][index].total_errors
 
             result = {
@@ -168,7 +170,7 @@ quiso decir 'http://{}'?
             return result
 
         datasets_results = [
-            dataset_result(i, ds) for i, ds in enumerate(datajson["dataset"])
+            _dataset_result(i, ds) for i, ds in enumerate(datajson["dataset"])
         ]
 
         res = {
