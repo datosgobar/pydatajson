@@ -17,14 +17,14 @@ import json
 import jsonschema
 import requests
 
-ABSOLUTE_LIBRARY_PATH = path.dirname(path.abspath(__file__))
+ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     # Variables por default
-    ABSOLUTE_SCHEMA_DIR = path.join(ABSOLUTE_LIBRARY_PATH, "schemas")
+    ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
     def __init__(self,
