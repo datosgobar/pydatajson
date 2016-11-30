@@ -66,7 +66,7 @@ class DataJson(object):
             El validador especifica se crea con un RefResolver que resuelve
             referencias de `schema_filename` dentro de `schema_dir`.
         """
-        schema_path = path.join(schema_dir, schema_filename)
+        schema_path = os.path.join(schema_dir, schema_filename)
         schema = cls._deserialize_json(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
