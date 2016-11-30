@@ -10,20 +10,20 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
-from os import path
+import os.path
 from urlparse import urljoin
 import json
 import jsonschema
 import requests
 
-ABSOLUTE_LIBRARY_PATH = path.dirname(path.abspath(__file__))
+ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     # Variables por default
-    ABSOLUTE_SCHEMA_DIR = path.join(ABSOLUTE_LIBRARY_PATH, "schemas")
+    ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
     def __init__(self,
@@ -65,7 +65,7 @@ class DataJson(object):
             El validador especifica se crea con un RefResolver que resuelve
             referencias de `schema_filename` dentro de `schema_dir`.
         """
-        schema_path = path.join(schema_dir, schema_filename)
+        schema_path = os.path.join(schema_dir, schema_filename)
         schema = cls._deserialize_json(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
