@@ -15,6 +15,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     def setUp(self):
         self.dj = pydatajson.DataJson()
+        self.maxDiff = None
 
     def tearDown(self):
         del(self.dj)
@@ -26,7 +27,7 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertTrue(res)
 
     def test_is_valid_catalog_required_fields(self):
-        """Testea estructura de data.json que sólo contiene campos obligatorios)."""
+        """ Estructura de data.json que sólo contiene campos obligatorios)."""
 
         res = self.dj.is_valid_catalog("tests/samples/minimum_data.json")
         self.assertTrue(res)
@@ -35,21 +36,24 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertTrue(res)
 
     def test_is_valid_catalog_missing_catalog_title(self):
-        """Testea estructura de data.json en el que un catálogo no tiene título."""
+        """Estructura de data.json en el que un catálogo no tiene título."""
 
-        res = self.dj.is_valid_catalog("tests/samples/missing_catalog_title_data.json")
+        res = self.dj.is_valid_catalog(
+            "tests/samples/missing_catalog_title_data.json")
         self.assertFalse(res)
 
     def test_is_valid_catalog_missing_dataset_title(self):
-        """Testea estructura de data.json en el que un dataset no tiene título."""
+        """Estructura de data.json en el que un dataset no tiene título."""
 
-        res = self.dj.is_valid_catalog("tests/samples/missing_dataset_title_data.json")
+        res = self.dj.is_valid_catalog(
+            "tests/samples/missing_dataset_title_data.json")
         self.assertFalse(res)
 
     def test_is_valid_catalog_missing_distribution_title(self):
-        """Testea estructura de data.json en el que un recurso no tiene título."""
+        """Estructura de data.json en el que un recurso no tiene título."""
 
-        res = self.dj.is_valid_catalog("tests/samples/missing_distribution_title_data.json")
+        res = self.dj.is_valid_catalog(
+            "tests/samples/missing_distribution_title_data.json")
         self.assertFalse(res)
 
     def test_validate_catalog_full_data(self):
@@ -58,8 +62,17 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "OK",
             "error": {
-                "catalog": [],
-                "dataset": []
+                "catalog": {
+                    "status": "OK",
+                    "title": "Datos Argentina"
+                },
+                "dataset": [
+                    {
+                        "status": "OK",
+                        "title": "Sistema de contrataciones electrónicas"
+                    }
+
+                ]
             }
         }
 
@@ -74,8 +87,20 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "ERROR",
             "error": {
-                "catalog": ["Título del Catálogo 1"],
-                "dataset": []
+                "catalog": {
+                    "status": "ERROR",
+                    "title": "Título del Catálogo 1"
+                },
+                "dataset": [
+                    {
+                        "status": "OK",
+                        "title": "Título del Dataset 1"
+                    },
+                    {
+                        "status": "OK",
+                        "title": "Título del Dataset 2"
+                    }
+                ]
             }
         }
 
@@ -90,8 +115,20 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "ERROR",
             "error": {
-                "catalog": [],
-                "dataset": ["Título del Dataset 1"]
+                "catalog": {
+                    "status": "OK",
+                    "title": "Título del Catálogo 1"
+                },
+                "dataset": [
+                    {
+                        "status": "ERROR",
+                        "title": "Título del Dataset 1"
+                    },
+                    {
+                        "status": "OK",
+                        "title": "Título del Dataset 2"
+                    }
+                ]
             }
         }
 
@@ -106,8 +143,20 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "ERROR",
             "error": {
-                "catalog": ["Título del Catálogo 1"],
-                "dataset": ["Título del Dataset 1", "Título del Dataset 2"]
+                "catalog": {
+                    "status": "ERROR",
+                    "title": "Título del Catálogo 1"
+                },
+                "dataset": [
+                    {
+                        "status": "ERROR",
+                        "title": "Título del Dataset 1"
+                    },
+                    {
+                        "status": "ERROR",
+                        "title": "Título del Dataset 2"
+                    }
+                ]
             }
         }
 
@@ -122,8 +171,16 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "ERROR",
             "error": {
-                "catalog": [],
-                "dataset": [""]
+                "catalog": {
+                    "status": "OK",
+                    "title": ""
+                },
+                "dataset": [
+                    {
+                        "status": "ERROR",
+                        "title": ""
+                    }
+                ]
             }
         }
 
@@ -138,8 +195,16 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "ERROR",
             "error": {
-                "catalog": [],
-                "dataset": [None]
+                "catalog": {
+                    "status": "OK",
+                    "title": ""
+                },
+                "dataset": [
+                    {
+                        "status": "ERROR",
+                        "title": None
+                    }
+                ]
             }
         }
 
@@ -154,8 +219,16 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "ERROR",
             "error": {
-                "catalog": [None],
-                "dataset": []
+                "catalog": {
+                    "status": "ERROR",
+                    "title": None
+                },
+                "dataset": [
+                    {
+                        "status": "OK",
+                        "title": ""
+                    }
+                ]
             }
         }
 
@@ -169,9 +242,28 @@ class DataJsonTestCase(unittest.TestCase):
         exp = {
             "status": "ERROR",
             "error": {
-                "catalog": ["Título del portal"],
-                "dataset": ["Dataset ejemplo 04", "Dataset ejemplo 03",
-                            "Dataset ejemplo 02", "Dataset ejemplo 01"]
+                "catalog": {
+                    "status": "ERROR",
+                    "title": "Título del portal"
+                },
+                "dataset": [
+                    {
+                        "status": "ERROR",
+                        "title": "Dataset ejemplo 04"
+                    },
+                    {
+                        "status": "ERROR",
+                        "title": "Dataset ejemplo 03"
+                    },
+                    {
+                        "status": "ERROR",
+                        "title": "Dataset ejemplo 02"
+                    },
+                    {
+                        "status": "ERROR",
+                        "title": "Dataset ejemplo 01"
+                    }
+                ]
             }
         }
 
