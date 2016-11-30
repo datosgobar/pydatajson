@@ -175,7 +175,7 @@ quiso decir 'http://{}'?
             "status": "OK" if error_tree.total_errors == 0 else "ERROR",
             "error": {
                 "catalog": {
-                    "status": "OK" if error_tree.errors != {} else "ERROR",
+                    "status": "OK" if error_tree.errors == {} else "ERROR",
                     "title": datajson.get("title")
                 },
                 "dataset": datasets_results
