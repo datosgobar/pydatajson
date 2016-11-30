@@ -11,11 +11,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 from os import path
-try:
-    from urlparse import urljoin, urlparse
-except:
-    from urllib.parse import urljoin, urlparse
-
+from urlparse import urljoin, urlparse
 import warnings
 import json
 import jsonschema
@@ -161,7 +157,9 @@ quiso decir 'http://{}'?
         # Genero árbol de errores para explorarlo
         error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
 
-        def dataset_result(index, dataset):
+        def _dataset_result(index, dataset):
+            """ Dado un dataset y su índice en el data.json, devuelve una
+            diccionario con el resultado de su validación. """
             dataset_total_errors = error_tree["dataset"][index].total_errors
 
             result = {
@@ -172,7 +170,7 @@ quiso decir 'http://{}'?
             return result
 
         datasets_results = [
-            dataset_result(i, ds) for i, ds in enumerate(datajson["dataset"])
+            _dataset_result(i, ds) for i, ds in enumerate(datajson["dataset"])
         ]
 
         res = {
