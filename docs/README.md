@@ -135,4 +135,4 @@ $ nosetests
 
 ## Créditos
 
-El validador de archivos `data.json` desarrollado no es más que un conveniente envoltorio alrededor de la librería [`jsonschema`](https://github.com/Julian/jsonschema), que implementa el estándar definido por [JSONSchema.org](http://json-schema.org/).
+El validador de archivos `data.json` desarrollado es mayormente un envoltorio (*wrapper*) alrededor de la librería [`jsonschema`](https://github.com/Julian/jsonschema), que implementa el vocabulario definido por [JSONSchema.org](http://json-schema.org/) para anotar y validar archivos JSON.
