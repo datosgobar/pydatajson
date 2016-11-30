@@ -14,8 +14,6 @@ Paquete en python con herramientas para manipular y validar metadatos de catálo
 
 ## Instalación
 
-Instalar la librería debería ser tan sencillo como un `pip install`:
-
 * **Producción:** Desde cualquier parte
 
 ```bash
@@ -29,12 +27,25 @@ $ pip install -e .
 
 ## Uso
 
+La librería implementa el objeto `DataJson` con varios métodos para verificar la integridad de archivos de metadatos `data.json` (locales o remotos) y manipular su contenido.
+
 ### Setup
-La librería implementa un objeto, `DataJson`, con varios métodos para verificar la integridad de archivos `data.json` (locales o remotos) y manipular su contenido. Si se desea, se puede especificar un directorio absoluto (`schema_dir`) y un nombre de esquema de validacion (`schema_filename`) particular, pero *casi siempre*, sus valores por default serán adecuados, así que para empezar a trabajar, alcanza con:
+
+`DataJson` utiliza un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos (v0.1)](https://github.com/datosgobar/paquete-apertura-datos/raw/master/docs/Gu%C3%ADa%20para%20el%20uso%20y%20la%20publicaci%C3%B3n%20de%20metadatos%20(v0.1).pdf) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos).
+
 ```python
 from pydatajson import DataJson
 
 dj = DataJson()
+```
+
+Si se desea utilizar un esquema alternativo, se debe especificar un directorio donde se almacenan los esquemas (`schema_dir`) y un nombre de esquema de validación (`schema_filename`).
+
+```python
+from pydatajson import DataJson
+
+dj = DataJson(schema_filename="path/to/validation_schema.json",
+              schema_dir="path/to/schemas/directory/")
 ```
 
 ### Posibles validaciones de catálogos
@@ -45,11 +56,11 @@ dj = DataJson()
 ### Ubicación del catálogo a validar
 
 Ambos métodos mencionados de `DataJson()` son capaces de validar archivos `data.json` locales o remotos:
-- para validar un **archivo local**, `datajson_path_or_url` deberá ser el **path absoluto** a él.
-- para validar un archivo remoto, `datajson_path_or_url` deberá ser una **URL que comience con 'http' o 'https'**.
+
+- Para validar un **archivo local**, `datajson_path_or_url` deberá ser el **path absoluto** a él.
+- Para validar un archivo remoto, `datajson_path_or_url` deberá ser una **URL que comience con 'http' o 'https'**.
 
 Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
-
 
 ### Ejemplos
 
@@ -127,9 +138,9 @@ print validation_report
 
 ## Tests
 
-Los tests de la librería se desarrollaron con `nose`. Para correrlos, desde la raíz del repositorio:
+Los tests se corren con `nose`. Desde la raíz del repositorio:
 ```
-$ pip install nose # Sólo la primera vez
+$ pip install nose  # Sólo la primera vez
 $ nosetests
 ```
 
