@@ -147,9 +147,11 @@ quiso decir 'http://{}'?
         Returns:
             validation_result (dict): Diccionario resumen de los errores
             encontrados. Las claves principales son:
-                "status": ("OK"|"ERROR")
-                "error"["catalog"]: El título del catálogo con errores.
-                "error"["dataset"]: Los títulos de los dataset con errores.
+                "status": ("OK"|"ERROR"), Resultado de la validación global.
+                "error"["catalog"]: Dict con el resultado de la validación a
+                nivel catálogo únicamente.
+                "error"["dataset"]: Lista con los resultados de las
+                validaciones a nivel datasets individuales.
 
         """
         datajson = self._deserialize_json(datajson_path)
