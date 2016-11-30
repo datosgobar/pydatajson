@@ -10,18 +10,20 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
-from distutils.sysconfig import get_python_lib
-import os
+import os.path
+from urlparse import urljoin
 import json
 import jsonschema
 import requests
+
+ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class DataJson(object):
     """Métodos para trabajar con archivos data.json."""
 
     # Variables por default
-    ABSOLUTE_SCHEMA_DIR = os.path.join(get_python_lib(), "pydatajson/schemas")
+    ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
     def __init__(self,
@@ -69,7 +71,7 @@ class DataJson(object):
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
         resolver = jsonschema.RefResolver(
-            base_uri=("file://" + schema_dir + '/'), referrer=schema)
+            base_uri=urljoin('file:', schema_path), referrer=schema)
 
         validator = jsonschema.Draft4Validator(
             schema=schema, resolver=resolver)
