@@ -10,6 +10,7 @@ archivos data.json.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
+
 import os.path
 from urlparse import urljoin, urlparse
 import warnings
@@ -33,16 +34,13 @@ class DataJson(object):
         """Crea un manipulador de `data.json`s.
 
         Salvo que se indique lo contrario, el validador de esquemas asociado
-        es el definido por default con las constantes de clase.
+        es el definido por default en las constantes de clase.
 
         Args:
             schema_filename (str): Nombre del archivo que contiene el esquema
-            validador
+                validador.
             schema_dir (str): Directorio (absoluto) donde se encuentra el
-            esquema validador (y sus referencias, de tenerlas).
-
-        Returns:
-            DataJson: Objeto para manipular archivos data.json.
+                esquema validador (y sus referencias, de tenerlas).
         """
         self.validator = self._create_validator(schema_filename, schema_dir)
 
@@ -57,14 +55,14 @@ class DataJson(object):
 
         Args:
             schema_filename (str): Nombre del archivo que contiene el esquema
-            validador "maestro".
+                validador "maestro".
             schema_dir (str): Directorio (absoluto) donde se encuentra el
-            esquema validador maestro y sus referencias, de tenerlas.
+                esquema validador maestro y sus referencias, de tenerlas.
 
         Returns:
-            validator (Draft4Validator): Un validador de JSONSchema Draft #4.
-            El validador especifica se crea con un RefResolver que resuelve
-            referencias de `schema_filename` dentro de `schema_dir`.
+            Draft4Validator: Un validador de JSONSchema Draft #4. El validador
+                se crea con un RefResolver que resuelve referencias de
+                `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
         schema = cls._deserialize_json(schema_path)
@@ -81,18 +79,18 @@ class DataJson(object):
 
     @staticmethod
     def _deserialize_json(json_path_or_url):
-        """ Toma el path a un JSON y devuelve el diccionario que representa.
+        """Toma el path a un JSON y devuelve el diccionario que representa.
 
-        Asume que el parámetro es una URL si comienza con 'http', o un path
-        local de lo contrario.
+        Asume que el parámetro es una URL si comienza con 'http' o 'https', o
+        un path local de lo contrario.
 
         Args:
             json_path_or_url (str): Path local o URL remota a un archivo de
-            texto plano en formato JSON.
+                texto plano en formato JSON.
 
         Returns:
-            json_dict (dict): El diccionario que resulta de deserializar
-            json_path_or_url.
+            dict: El diccionario que resulta de deserializar
+                json_path_or_url.
 
         """
         parsed_url = urlparse(json_path_or_url)
@@ -129,7 +127,7 @@ quiso decir 'http://{}'?
             datajson_path (str): Path al archivo data.json a ser validado.
 
         Returns:
-            bool: True si el data.json sigue el schema, sino False.
+            bool: True si el data.json cumple con el schema, sino False.
         """
         datajson = self._deserialize_json(datajson_path)
         res = self.validator.is_valid(datajson)
@@ -145,14 +143,18 @@ quiso decir 'http://{}'?
             datajson_path (str): Path al archivo data.json a ser validado.
 
         Returns:
-            validation_result (dict): Diccionario resumen de los errores
-            encontrados. Las claves principales son:
-                "status": ("OK"|"ERROR"), Resultado de la validación global.
-                "error"["catalog"]: Dict con el resultado de la validación a
-                nivel catálogo únicamente.
-                "error"["dataset"]: Lista con los resultados de las
-                validaciones a nivel datasets individuales.
+            dict: Diccionario resumen de los errores encontrados::
 
+                {
+                    "status": "OK",  # resultado de la validación global
+                    "error": {
+                        "catalog": {"status": "OK", "title": "Título Catalog"},
+                        "dataset": [
+                            {"status": "OK", "title": "Titulo Dataset 1"},
+                            {"status": "ERROR", "title": "Titulo Dataset 2"}
+                        ]
+                    }
+                }
         """
         datajson = self._deserialize_json(datajson_path)
 
@@ -160,14 +162,14 @@ quiso decir 'http://{}'?
         error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
 
         def _dataset_result(index, dataset):
-            """ Dado un dataset y su índice en el data.json, devuelve una
+            """Dado un dataset y su índice en el data.json, devuelve una
             diccionario con el resultado de su validación. """
             dataset_total_errors = error_tree["dataset"][index].total_errors
 
             result = {
                 "status": "OK" if dataset_total_errors == 0 else "ERROR",
                 "title": dataset.get("title")
-                }
+            }
 
             return result
 
@@ -190,8 +192,9 @@ quiso decir 'http://{}'?
 
 
 def main():
-    """ En caso de ejecutar el módulo como script, se corre esta función"""
+    """En caso de ejecutar el módulo como script, se corre esta función."""
     pass
+
 
 if __name__ == '__main__':
     main()
