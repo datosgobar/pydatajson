@@ -39,13 +39,13 @@ from pydatajson import DataJson
 dj = DataJson()
 ```
 
-Si se desea utilizar un esquema alternativo, se debe especificar un directorio donde se almacenan los esquemas (`schema_dir`) y un nombre de esquema de validación (`schema_filename`).
+Si se desea utilizar un esquema alternativo, se debe especificar un **directorio absoluto** donde se almacenan los esquemas (`schema_dir`) y un nombre de esquema de validación (`schema_filename`), relativo al directorio  de los esquemas. Por ejemplo, si nuestro esquema alternativo se encuentra en `/home/datosgobar/metadatos-portal/esquema_de_validacion.json`, especificaremos:
 
 ```python
 from pydatajson import DataJson
 
-dj = DataJson(schema_filename="path/to/validation_schema.json",
-              schema_dir="path/to/schemas/directory/")
+dj = DataJson(schema_filename="esquema_de_validacion.json",
+              schema_dir="/home/datosgobar/metadatos-portal")
 ```
 
 ### Posibles validaciones de catálogos
@@ -58,7 +58,7 @@ dj = DataJson(schema_filename="path/to/validation_schema.json",
 Ambos métodos mencionados de `DataJson()` son capaces de validar archivos `data.json` locales o remotos:
 
 - Para validar un **archivo local**, `datajson_path_or_url` deberá ser el **path absoluto** a él.
-- Para validar un archivo remoto, `datajson_path_or_url` deberá ser una **URL que comience con 'http' o 'https'**.
+- Para validar un **archivo remoto**, `datajson_path_or_url` deberá ser una **URL que comience con 'http' o 'https'**.
 
 Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
 
