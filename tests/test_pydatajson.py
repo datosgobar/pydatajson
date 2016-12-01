@@ -10,8 +10,13 @@ from __future__ import with_statement
 import os.path
 import unittest
 import nose
+import vcr
 
 import pydatajson
+
+my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+                 cassette_library_dir="tests/cassetes",
+                 record_mode='new_episodes')
 
 
 class DataJsonTestCase(unittest.TestCase):
@@ -246,8 +251,9 @@ class DataJsonTestCase(unittest.TestCase):
         res = self.dj.validate_catalog(datajson)
         self.assertEqual(exp, res)
 
+    @my_vcr.use_cassette()
     def test_validate_catalog_remote_datajson(self):
-        """ Testea `validate_catalog` contra un data.json remoto."""
+        """ Testea `validate_catalog` contra dos data.json remotos."""
 
         exp = {
             "status": "OK",
@@ -266,6 +272,26 @@ class DataJsonTestCase(unittest.TestCase):
         }
 
         datajson = "http://104.131.35.253/data.json"
+        res = self.dj.validate_catalog(datajson)
+        self.assertEqual(exp, res)
+
+        exp = {
+            "status": "OK",
+            "error": {
+                "catalog": {
+                    "status": "OK",
+                    "title": "Andino"
+                },
+                "dataset": [
+                    {
+                        "status": "OK",
+                        "title": "Dataset Demo"
+                    }
+                ]
+            }
+        }
+
+        datajson = "http://181.209.63.71/data.json"
         res = self.dj.validate_catalog(datajson)
         self.assertEqual(exp, res)
 
