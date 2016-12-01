@@ -1,7 +1,7 @@
 History
 ===
 
-0.1.0 (2016-11-30)
+0.1.0 (2016-12-01)
 ------------------
 
 Primera versión para uso productivo del paquete.

@@ -1,10 +1,11 @@
 History
 ===
 
-0.1.0 (2016-11-30)
+0.1.0 (2016-12-01)
 ------------------
 
 Primera versión para uso productivo del paquete.
+
 * La instalación via `pip install` debería reconocer correctamente la ubicación de los validadores por default.
 * El manejo de data.json's ubicados remotamente se hace en función del resultado de `urlparse.urlparse`
 * El formato de respuesta de `validate_catalog` se adecúa a la última especificación (ver [`samples/validate_catalog_returns.json`](samples/validate_catalog_returns.json).
