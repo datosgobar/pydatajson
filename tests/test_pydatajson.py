@@ -15,7 +15,7 @@ import vcr
 import pydatajson
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                 cassette_library_dir="tests/cassetes",
+                 cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='new_episodes')
 
 
