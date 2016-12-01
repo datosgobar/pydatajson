@@ -13,11 +13,41 @@
 	"properties": {
 		"publisher": {
 			"type": "object",
-			"required": ["name"]
+			"required": ["name"],
+			"properties": {
+				"name": { "type": "string" },
+				"mbox": { "type": "string" }
+			}
 		},
 		"distribution": {
 		       "type": "array",
 		       "items": { "$ref": "distribution.json" }
-		}
+		},
+		"title": { "type": "string" },
+		"description": { "type": "string" },
+		"contactPoint": {
+			"type": "object",
+			"properties": {
+				"fn": { "type": "string" },
+				"hasEmail": { "type": "string" }
+			}
+		},
+		"superTheme": { "type": "array" },
+		"theme": { "type": "array" },
+		"keyword": { "type": "array" },
+		"accrualPeriodicity": { "type": "string" },
+		"issued": { "type": "string" },
+		"modified": { "type": "string" },
+		"identifier": { "type": "string" },
+		"language": { "type": "array" },
+		"spatial": { 
+			"anyOf": [
+				{ "type": "string" },
+				{ "type": "array" }
+			]
+		},
+		"temporal": { "type": "string" },
+		"landingPage": { "type": "string" },
+		"license": { "type": "string" }
 	}
 }

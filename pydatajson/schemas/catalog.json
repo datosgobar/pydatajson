@@ -11,11 +11,26 @@
 	"properties": {
 		"publisher": {
 			"type": "object",
-			"required": ["name", "mbox"]
+			"required": ["name", "mbox"],
+			"properties": {
+				"name": { "type": "string" },
+				"mbox": { "type": "string" }
+			}
 		},
 		"dataset": {
 			"type": "array",
 			"items": { "$ref": "dataset.json" }
-		}
+		},
+		"title": { "type": "string" },
+		"description": { "type": "string" },
+		"issued": { "type": "string" },
+		"modified": { "type": "string" },
+		"language": { "type": "array" },
+		"superThemeTaxonomy": { "type": "string" },
+		"themeTaxonomy": { "type": "array" },
+		"license": { "type": "string" },
+		"homepage": { "type": "string" },
+		"rights": { "type": "string" },
+		"spatial": { "type": "string" }
 	}
 }

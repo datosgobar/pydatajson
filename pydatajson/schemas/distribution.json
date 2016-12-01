@@ -6,5 +6,19 @@
 		"downloadURL",
 		"title",
 		"issued"
-	]
+	],
+	"properties": {
+		"accessURL": { "type": "string" },
+		"description": { "type": "string" },
+		"format": { "type": "string" },
+		"mediaType": { "type": "string" },
+		"downloadURL": { "type": "string" },
+		"title": { "type": "string" },
+		"license": { "type": "string" },
+		"byteSize": { "type": "string" },
+		"issued": { "type": "string" },
+		"modified": { "type": "string" },
+		"rights": { "type": "string" },
+		"fields": { "type": "array" }
+	}
 }
