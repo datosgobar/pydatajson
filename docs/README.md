@@ -29,14 +29,31 @@ $ pip install -e .
 
 ## Uso
 
-La librería implementa un objeto, `DataJson`, con varios métodos para verificar la integridad de los archivos `data.json` y manipular su contenido. De particular interés son `is_valid_catalog` y `validate_catalog`.
+### Setup
+La librería implementa un objeto, `DataJson`, con varios métodos para verificar la integridad de archivos `data.json` (locales o remotos) y manipular su contenido. Si se desea, se puede especificar un directorio absoluto (`schema_dir`) y un nombre de esquema de validacion (`schema_filename`) particular, pero *casi siempre*, sus valores por default serán adecuados, así que para empezar a trabajar, alcanza con:
+```python
+from pydatajson import DataJson
 
-### Validar la estructura de un data.json contra el esquema por default que incluye la librería
+dj = DataJson()
+```
+
+### Posibles validaciones de catálogos
+
+- Si se desea un **resultado sencillo (V o F)** sobre la validez de la estructura del catálogo, se utilizará **`is_valid_catalog(datajson_path_or_url)`**.
+- Si se desea un **mensaje de error detallado**, se utilizará **`validate_catalog(datajson_path_or_url)`**.
+
+### Ubicación del catálogo a validar
+
+Ambos métodos mencionados de `DataJson()` son capaces de validar archivos `data.json` locales o remotos:
+- para validar un **archivo local**, `datajson_path_or_url` deberá ser el **path absoluto** a él.
+- para validar un archivo remoto, `datajson_path_or_url` deberá ser una **URL que comience con 'http' o 'https'**.
+
+Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
+
+
+### Ejemplos
 
 #### Archivo data.json local
-
-DataJson es capaz de validar archivos locales en cualquier directorio (accesible) siempre y cuando se provea el path absoluto a él.
-Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
 
 ```python
 from pydatajson import DataJson
@@ -50,18 +67,25 @@ print validation_result
 True
 
 print validation_report
-{ 
-    "status": "OK", 
-    "error": { 
-        "catalog": [], 
-        "dataset": [] 
-    }   
-}   
+{
+    "status": "OK",
+    "error": {
+        "catalog": {
+            "status": "OK",
+            "title": "Datos Argentina"
+        },
+        "dataset": [
+            {
+                "status": "OK",
+                "title": "Sistema de contrataciones electrónicas"
+            }
+
+        ]
+    }
+}
 ```
 
 #### Archivo data.json remoto
-
-También es posible proveer una URL remota al archivo `data.json` de un portal productivo. Internamente, DataJson entiende que si el path del archivo a validar comienza con "http", se trata de una URL remota.
 
 ```python
 datajson_url = "http://104.131.35.253/data.json"
@@ -75,11 +99,30 @@ print validation_report
 {
     "status": "ERROR",
     "error": {
-        "catalog": ["Título del portal"],
-        "dataset": ["Dataset ejemplo 04", "Dataset ejemplo 03",
-                    "Dataset ejemplo 02", "Dataset ejemplo 01"]
-    }   
-}   
+        "catalog": {
+            "status": "ERROR",
+            "title": "Título del portal"
+        },
+        "dataset": [
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 04"
+            },
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 03"
+            },
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 02"
+            },
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 01"
+            }
+        ]
+    }
+}
 ```
 
 ## Tests
@@ -92,4 +135,4 @@ $ nosetests
 
 ## Créditos
 
-El validador de archivos `data.json` desarrollado no es más que un conveniente envoltorio alrededor de la librería [`jsonschema`](https://github.com/Julian/jsonschema), que implementa el estándar definido por [JSONSchema.org](http://json-schema.org/).
+El validador de archivos `data.json` desarrollado es mayormente un envoltorio (*wrapper*) alrededor de la librería [`jsonschema`](https://github.com/Julian/jsonschema), que implementa el vocabulario definido por [JSONSchema.org](http://json-schema.org/) para anotar y validar archivos JSON.

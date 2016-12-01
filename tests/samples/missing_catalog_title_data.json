@@ -1,28 +1,28 @@
 {
-  "description": "",
-  "publisher": {
-    "name": "",
-    "mbox": ""
-  },
-  "superThemeTaxonomy": "",
-  "dataset": [
-    {
-      "title": "",
-      "description": "",
-      "publisher": {
-        "name": ""
-      },
-      "superTheme": [],
-      "accrualPeriodicity": "",
-      "issued": "",
-      "distribution": [
+    "description": "",
+    "publisher": {
+        "name": "",
+        "mbox": ""
+    },
+    "superThemeTaxonomy": "",
+    "dataset": [
         {
-          "accessURL": "",
-          "downloadURL": "",
-          "title": "",
-	  "issued": ""
+            "title": "",
+            "description": "",
+            "publisher": {
+                "name": ""
+            },
+            "superTheme": [],
+            "accrualPeriodicity": "",
+            "issued": "",
+            "distribution": [
+                {
+                    "accessURL": "",
+                    "downloadURL": "",
+                    "title": "",
+	    "issued": ""
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

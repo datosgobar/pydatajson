@@ -14,8 +14,6 @@ Paquete en python con herramientas para manipular y validar metadatos de catálo
 
 ## Instalación
 
-Instalar la librería debería ser tan sencillo como un `pip install`:
-
 * **Producción:** Desde cualquier parte
 
 ```bash
@@ -29,14 +27,44 @@ $ pip install -e .
 
 ## Uso
 
-La librería implementa un objeto, `DataJson`, con varios métodos para verificar la integridad de los archivos `data.json` y manipular su contenido. De particular interés son `is_valid_catalog` y `validate_catalog`.
+La librería implementa el objeto `DataJson` con varios métodos para verificar la integridad de archivos de metadatos `data.json` (locales o remotos) y manipular su contenido.
 
-### Validar la estructura de un data.json contra el esquema por default que incluye la librería
+### Setup
+
+`DataJson` utiliza un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos (v0.1)](https://github.com/datosgobar/paquete-apertura-datos/raw/master/docs/Gu%C3%ADa%20para%20el%20uso%20y%20la%20publicaci%C3%B3n%20de%20metadatos%20(v0.1).pdf) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos).
+
+```python
+from pydatajson import DataJson
+
+dj = DataJson()
+```
+
+Si se desea utilizar un esquema alternativo, se debe especificar un **directorio absoluto** donde se almacenan los esquemas (`schema_dir`) y un nombre de esquema de validación (`schema_filename`), relativo al directorio  de los esquemas. Por ejemplo, si nuestro esquema alternativo se encuentra en `/home/datosgobar/metadatos-portal/esquema_de_validacion.json`, especificaremos:
+
+```python
+from pydatajson import DataJson
+
+dj = DataJson(schema_filename="esquema_de_validacion.json",
+              schema_dir="/home/datosgobar/metadatos-portal")
+```
+
+### Posibles validaciones de catálogos
+
+- Si se desea un **resultado sencillo (V o F)** sobre la validez de la estructura del catálogo, se utilizará **`is_valid_catalog(datajson_path_or_url)`**.
+- Si se desea un **mensaje de error detallado**, se utilizará **`validate_catalog(datajson_path_or_url)`**.
+
+### Ubicación del catálogo a validar
+
+Ambos métodos mencionados de `DataJson()` son capaces de validar archivos `data.json` locales o remotos:
+
+- Para validar un **archivo local**, `datajson_path_or_url` deberá ser el **path absoluto** a él.
+- Para validar un **archivo remoto**, `datajson_path_or_url` deberá ser una **URL que comience con 'http' o 'https'**.
+
+Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
+
+### Ejemplos
 
 #### Archivo data.json local
-
-DataJson es capaz de validar archivos locales en cualquier directorio (accesible) siempre y cuando se provea el path absoluto a él.
-Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
 
 ```python
 from pydatajson import DataJson
@@ -50,18 +78,25 @@ print validation_result
 True
 
 print validation_report
-{ 
-    "status": "OK", 
-    "error": { 
-        "catalog": [], 
-        "dataset": [] 
-    }   
-}   
+{
+    "status": "OK",
+    "error": {
+        "catalog": {
+            "status": "OK",
+            "title": "Datos Argentina"
+        },
+        "dataset": [
+            {
+                "status": "OK",
+                "title": "Sistema de contrataciones electrónicas"
+            }
+
+        ]
+    }
+}
 ```
 
 #### Archivo data.json remoto
-
-También es posible proveer una URL remota al archivo `data.json` de un portal productivo. Internamente, DataJson entiende que si el path del archivo a validar comienza con "http", se trata de una URL remota.
 
 ```python
 datajson_url = "http://104.131.35.253/data.json"
@@ -75,21 +110,40 @@ print validation_report
 {
     "status": "ERROR",
     "error": {
-        "catalog": ["Título del portal"],
-        "dataset": ["Dataset ejemplo 04", "Dataset ejemplo 03",
-                    "Dataset ejemplo 02", "Dataset ejemplo 01"]
-    }   
-}   
+        "catalog": {
+            "status": "ERROR",
+            "title": "Título del portal"
+        },
+        "dataset": [
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 04"
+            },
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 03"
+            },
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 02"
+            },
+            {
+                "status": "ERROR",
+                "title": "Dataset ejemplo 01"
+            }
+        ]
+    }
+}
 ```
 
 ## Tests
 
-Los tests de la librería se desarrollaron con `nose`. Para correrlos, desde la raíz del repositorio:
+Los tests se corren con `nose`. Desde la raíz del repositorio:
 ```
-$ pip install nose # Sólo la primera vez
+$ pip install nose  # Sólo la primera vez
 $ nosetests
 ```
 
 ## Créditos
 
-El validador de archivos `data.json` desarrollado no es más que un conveniente envoltorio alrededor de la librería [`jsonschema`](https://github.com/Julian/jsonschema), que implementa el estándar definido por [JSONSchema.org](http://json-schema.org/).
+El validador de archivos `data.json` desarrollado es mayormente un envoltorio (*wrapper*) alrededor de la librería [`jsonschema`](https://github.com/Julian/jsonschema), que implementa el vocabulario definido por [JSONSchema.org](http://json-schema.org/) para anotar y validar archivos JSON.
