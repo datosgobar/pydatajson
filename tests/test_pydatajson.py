@@ -27,12 +27,14 @@ class DataJsonTestCase(unittest.TestCase):
     def get_sample(cls, sample_filename):
         return os.path.join(cls.SAMPLES_DIR, sample_filename)
 
-    def setUp(self):
-        self.dj = pydatajson.DataJson()
-        self.maxDiff = None
+    @classmethod
+    def setUpClass(cls):
+        cls.dj = pydatajson.DataJson()
+        cls.maxDiff = None
 
-    def tearDown(self):
-        del(self.dj)
+    @classmethod
+    def tearDownClass(cls):
+        del(cls.dj)
 
     def test_is_valid_catalog_full(self):
         """Testea estructura de data.json completo bien formado."""
