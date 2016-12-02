@@ -31,6 +31,12 @@
 		"license": { "$ref": "mixed-types.json#stringOrNull" },
 		"homepage": { "$ref": "mixed-types.json#stringOrNull" },
 		"rights": { "$ref": "mixed-types.json#stringOrNull" },
-		"spatial": { "$ref": "mixed-types.json#stringOrNull" }
+		"spatial": {
+			"anyOf": [
+				{ "type": "string" },
+				{ "type": "array" },
+				{ "type": "null" }
+			]
+		}
 	}
 }
