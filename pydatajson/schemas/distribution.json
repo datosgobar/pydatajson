@@ -19,6 +19,14 @@
 		"byteSize": { "$ref": "mixed-types.json#stringOrNull" },
 		"modified": { "$ref": "mixed-types.json#stringOrNull" },
 		"rights": { "$ref": "mixed-types.json#stringOrNull" },
-		"fields": { "$ref": "mixed-types.json#arrayOrNull" }
+		"field": {
+			"anyOf": [
+				{ 
+					"type": "array",
+					"items": { "$ref": "field.json" }
+				},
+				{ "type": "null" }
+			]
+		}
 	}
 }

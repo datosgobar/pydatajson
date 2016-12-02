@@ -27,7 +27,15 @@
 		"issued": { "$ref": "mixed-types.json#stringOrNull" },
 		"modified": { "$ref": "mixed-types.json#stringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
-		"themeTaxonomy": { "$ref": "mixed-types.json#arrayOrNull" },
+		"themeTaxonomy": {
+			"anyOf": [
+				{ 
+					"type": "array",
+					"items": { "$ref": "theme.json" }
+				},
+				{ "type": "null" }
+			]
+	       	},
 		"license": { "$ref": "mixed-types.json#stringOrNull" },
 		"homepage": { "$ref": "mixed-types.json#stringOrNull" },
 		"rights": { "$ref": "mixed-types.json#stringOrNull" },
