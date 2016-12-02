@@ -1,0 +1,14 @@
+{
+	"stringOrNull": { 
+		"anyOf": [
+			{ "type": "string" },
+			{ "type": "null" }
+		]
+	},
+	"arrayOrNull": {
+		"anyOf": [
+			{ "type": "array" },
+			{ "type": "null" }
+		]
+	}
+}
