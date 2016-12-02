@@ -16,7 +16,7 @@
 			"required": ["name"],
 			"properties": {
 				"name": { "type": "string" },
-				"mbox": { "type": "string" }
+				"mbox": { "$ref": "mixed-types.json#stringOrNull" }
 			}
 		},
 		"distribution": {
@@ -25,29 +25,30 @@
 		},
 		"title": { "type": "string" },
 		"description": { "type": "string" },
+		"issued": { "type": "string" },
+		"superTheme": { "type": "array" },
 		"contactPoint": {
 			"type": "object",
 			"properties": {
-				"fn": { "type": "string" },
-				"hasEmail": { "type": "string" }
+				"fn": { "$ref": "mixed-types.json#stringOrNull" },
+				"hasEmail": { "$ref": "mixed-types.json#stringOrNull" }
 			}
 		},
-		"superTheme": { "type": "array" },
-		"theme": { "type": "array" },
-		"keyword": { "type": "array" },
-		"accrualPeriodicity": { "type": "string" },
-		"issued": { "type": "string" },
-		"modified": { "type": "string" },
+		"theme": { "$ref": "mixed-types.json#arrayOrNull" },
+		"keyword": { "$ref": "mixed-types.json#arrayOrNull" },
+		"accrualPeriodicity": { "$ref": "mixed-types.json#stringOrNull" },
+		"modified": { "$ref": "mixed-types.json#stringOrNull" },
 		"identifier": { "type": "string" },
-		"language": { "type": "array" },
+		"language": { "$ref": "mixed-types.json#arrayOrNull" },
 		"spatial": { 
 			"anyOf": [
 				{ "type": "string" },
-				{ "type": "array" }
+				{ "type": "array" },
+				{ "type": "null" }
 			]
 		},
-		"temporal": { "type": "string" },
-		"landingPage": { "type": "string" },
-		"license": { "type": "string" }
+		"temporal": { "$ref": "mixed-types.json#stringOrNull" },
+		"landingPage": { "$ref": "mixed-types.json#stringOrNull" },
+		"license": { "$ref": "mixed-types.json#stringOrNull" }
 	}
 }

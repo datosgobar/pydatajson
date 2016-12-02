@@ -23,14 +23,14 @@
 		},
 		"title": { "type": "string" },
 		"description": { "type": "string" },
-		"issued": { "type": "string" },
-		"modified": { "type": "string" },
-		"language": { "type": "array" },
 		"superThemeTaxonomy": { "type": "string" },
-		"themeTaxonomy": { "type": "array" },
-		"license": { "type": "string" },
-		"homepage": { "type": "string" },
-		"rights": { "type": "string" },
-		"spatial": { "type": "string" }
+		"issued": { "$ref": "mixed-types.json#stringOrNull" },
+		"modified": { "$ref": "mixed-types.json#stringOrNull" },
+		"language": { "$ref": "mixed-types.json#arrayOrNull" },
+		"themeTaxonomy": { "$ref": "mixed-types.json#arrayOrNull" },
+		"license": { "$ref": "mixed-types.json#stringOrNull" },
+		"homepage": { "$ref": "mixed-types.json#stringOrNull" },
+		"rights": { "$ref": "mixed-types.json#stringOrNull" },
+		"spatial": { "$ref": "mixed-types.json#stringOrNull" }
 	}
 }

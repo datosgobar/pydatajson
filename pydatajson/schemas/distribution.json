@@ -9,16 +9,16 @@
 	],
 	"properties": {
 		"accessURL": { "type": "string" },
-		"description": { "type": "string" },
-		"format": { "type": "string" },
-		"mediaType": { "type": "string" },
 		"downloadURL": { "type": "string" },
 		"title": { "type": "string" },
-		"license": { "type": "string" },
-		"byteSize": { "type": "string" },
 		"issued": { "type": "string" },
-		"modified": { "type": "string" },
-		"rights": { "type": "string" },
-		"fields": { "type": "array" }
+		"description": { "$ref": "mixed-types.json#stringOrNull" },
+		"format": { "$ref": "mixed-types.json#stringOrNull" },
+		"mediaType": { "$ref": "mixed-types.json#stringOrNull" },
+		"license": { "$ref": "mixed-types.json#stringOrNull" },
+		"byteSize": { "$ref": "mixed-types.json#stringOrNull" },
+		"modified": { "$ref": "mixed-types.json#stringOrNull" },
+		"rights": { "$ref": "mixed-types.json#stringOrNull" },
+		"fields": { "$ref": "mixed-types.json#arrayOrNull" }
 	}
 }
