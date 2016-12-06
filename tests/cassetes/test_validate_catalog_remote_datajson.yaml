@@ -9,37 +9,35 @@ interactions:
     method: GET
     uri: http://104.131.35.253/data.json
   response:
-    body: {string: !!python/unicode "{\n  \"title\": \"Andino Demo\", \n  \"description\"\
-        : \"Instancia del portal andino demo!\", \n  \"superThemeTaxonomy\": \"http://datos.gob.ar/superThemeTaxonomy.json\"\
-        , \n  \"publisher\": {\n    \"mbox\": \"\", \n    \"name\": \"\"\n  }, \n\
-        \  \"themeTaxonomy\": [\n    {\n      \"label\": \"demo theme\", \n      \"\
-        id\": \"demo-theme\", \n      \"description\": \"Theme Demo\"\n    }\n  ],\
-        \ \n  \"dataset\": [\n    {\n      \"@type\": \"dcat:Dataset\", \n      \"\
-        title\": \"Dataset Demo\", \n      \"description\": \"Un dataset demo\", \n\
-        \      \"modified\": \"2016-11-30T17:46:15.578975\", \n      \"accessLevel\"\
-        : \"public\", \n      \"identifier\": \"289b6835-c5fb-4e8a-9013-1d4705c31840\"\
-        , \n      \"issued\": \"2016-11-30T17:44:57.787899\", \n      \"landingPage\"\
-        : \"http://fuente.demo.com.ar\", \n      \"license\": \"Creative Commons Attribution\"\
-        , \n      \"publisher\": {\n        \"mbox\": \"responsable.demo@mail.com\"\
-        , \n        \"name\": \"Un Responsable Demo\"\n      }, \n      \"contactPoint\"\
-        : {\n        \"@type\": \"vcard:Contact\", \n        \"fn\": \"Un Mantenedor\
-        \ Demo\", \n        \"hasEmail\": \"mailto:mantenedor.demo@mail.com\"\n  \
-        \    }, \n      \"distribution\": [\n        {\n          \"@type\": \"dcat:Distribution\"\
-        , \n          \"format\": \"CSV\", \n          \"title\": \"Un recurso DEMO\"\
-        , \n          \"description\": \"Recurso demo\", \n          \"issued\": \"\
-        2016-11-30T17:46:09.073167\", \n          \"modified\": \"2016-11-30T17:46:09.034144\"\
-        , \n          \"license\": \"cc-by-sa\", \n          \"accessURL\": \"http://104.131.35.253/dataset/289b6835-c5fb-4e8a-9013-1d4705c31840/archivo/62085b54-f228-455e-b964-57ed40a83c72\"\
-        , \n          \"field\": [\n            {\n              \"type\": \"string\"\
-        , \n              \"description\": \"campo 1 demo\", \n              \"title\"\
-        : \"campo1\"\n            }, \n            {\n              \"type\": \"string\"\
-        , \n              \"description\": \"Campo 2 Demo\", \n              \"title\"\
-        : \"campo 2 \"\n            }\n          ], \n          \"downloadURL\": \"\
-        http://104.131.35.253/dataset/289b6835-c5fb-4e8a-9013-1d4705c31840/resource/62085b54-f228-455e-b964-57ed40a83c72/download/contratos-alquiler-estado-nacional-locador-1.csv\"\
-        \n        }\n      ], \n      \"keyword\": [\n        \"Andino\", \n     \
-        \   \"demo\", \n        \"portal-andino\"\n      ], \n      \"superTheme\"\
-        : [\n        \"AGRI\", \n        \"EDUC\"\n      ], \n      \"accrualPeriodicity\"\
-        : \"R/P0.5M\", \n      \"language\": [\n        \"spa\"\n      ], \n     \
-        \ \"theme\": [\n        \"demo theme\"\n      ]\n    }\n  ]\n}"}
+    body: {string: !!python/unicode "{\n  \"title\": \"Andino Demo\", \n  \"description\":
+        \"Instancia del portal andino demo!\", \n  \"superThemeTaxonomy\": \"http://datos.gob.ar/superThemeTaxonomy.json\",
+        \n  \"publisher\": {\n    \"mbox\": \"\", \n    \"name\": \"\"\n  }, \n  \"themeTaxonomy\":
+        [\n    {\n      \"label\": \"demo theme\", \n      \"id\": \"demo-theme\",
+        \n      \"description\": \"Theme Demo\"\n    }\n  ], \n  \"dataset\": [\n
+        \   {\n      \"@type\": \"dcat:Dataset\", \n      \"title\": \"Dataset Demo\",
+        \n      \"description\": \"Un dataset demo\", \n      \"modified\": \"2016-11-30T17:46:15.578975\",
+        \n      \"accessLevel\": \"public\", \n      \"identifier\": \"289b6835-c5fb-4e8a-9013-1d4705c31840\",
+        \n      \"issued\": \"2016-11-30T17:44:57.787899\", \n      \"landingPage\":
+        \"http://fuente.demo.com.ar\", \n      \"license\": \"Creative Commons Attribution\",
+        \n      \"publisher\": {\n        \"mbox\": \"responsable.demo@mail.com\",
+        \n        \"name\": \"Un Responsable Demo\"\n      }, \n      \"contactPoint\":
+        {\n        \"@type\": \"vcard:Contact\", \n        \"fn\": \"Un Mantenedor
+        Demo\", \n        \"hasEmail\": \"mailto:mantenedor.demo@mail.com\"\n      },
+        \n      \"distribution\": [\n        {\n          \"@type\": \"dcat:Distribution\",
+        \n          \"format\": \"CSV\", \n          \"title\": \"Un recurso DEMO\",
+        \n          \"description\": \"Recurso demo\", \n          \"issued\": \"2016-11-30T17:46:09.073167\",
+        \n          \"modified\": \"2016-11-30T17:46:09.034144\", \n          \"license\":
+        \"cc-by-sa\", \n          \"accessURL\": \"http://104.131.35.253/dataset/289b6835-c5fb-4e8a-9013-1d4705c31840/archivo/62085b54-f228-455e-b964-57ed40a83c72\",
+        \n          \"field\": [\n            {\n              \"type\": \"string\",
+        \n              \"description\": \"campo 1 demo\", \n              \"title\":
+        \"campo1\"\n            }, \n            {\n              \"type\": \"string\",
+        \n              \"description\": \"Campo 2 Demo\", \n              \"title\":
+        \"campo 2 \"\n            }\n          ], \n          \"downloadURL\": \"http://104.131.35.253/dataset/289b6835-c5fb-4e8a-9013-1d4705c31840/resource/62085b54-f228-455e-b964-57ed40a83c72/download/contratos-alquiler-estado-nacional-locador-1.csv\"\n
+        \       }\n      ], \n      \"keyword\": [\n        \"Andino\", \n        \"demo\",
+        \n        \"portal-andino\"\n      ], \n      \"superTheme\": [\n        \"AGRI\",
+        \n        \"EDUC\"\n      ], \n      \"accrualPeriodicity\": \"R/P0.5M\",
+        \n      \"language\": [\n        \"spa\"\n      ], \n      \"theme\": [\n
+        \       \"demo theme\"\n      ]\n    }\n  ]\n}"}
     headers:
       connection: [keep-alive]
       content-length: ['2322']
@@ -57,40 +55,128 @@ interactions:
     method: GET
     uri: http://181.209.63.71/data.json
   response:
-    body: {string: !!python/unicode "{\n  \"title\": \"Andino\", \n  \"description\"\
-        : \"Portal Andino Demo\", \n  \"superThemeTaxonomy\": \"http://datos.gob.ar/superThemeTaxonomy.json\"\
-        , \n  \"publisher\": {\n    \"mbox\": \"\", \n    \"name\": \"\"\n  }, \n\
-        \  \"themeTaxonomy\": [\n    {\n      \"label\": \"Tema.demo\", \n      \"\
-        id\": \"tema-demo\", \n      \"description\": \"Ejemplo de un tema\"\n   \
-        \ }\n  ], \n  \"dataset\": [\n    {\n      \"@type\": \"dcat:Dataset\", \n\
-        \      \"title\": \"Dataset Demo\", \n      \"description\": \"Este es un\
-        \ dataset de ejemplo, se incluye como material DEMO y no contiene ningun valor\
-        \ estadistico.\", \n      \"modified\": \"2016-11-30T22:25:33.503104\", \n\
-        \      \"accessLevel\": \"public\", \n      \"identifier\": \"6897d435-8084-4685-b8ce-304b190755e4\"\
-        , \n      \"issued\": \"2016-11-30T22:22:48.635757\", \n      \"landingPage\"\
-        : \"https://github.com/datosgobar/portal-andino\", \n      \"license\": \"\
-        Creative Commons Attribution\", \n      \"publisher\": {\n        \"mbox\"\
-        : \"datos@modernizacion.gob.ar\", \n        \"name\": \"Andino\"\n      },\
-        \ \n      \"contactPoint\": {\n        \"@type\": \"vcard:Contact\", \n  \
-        \      \"fn\": \"Andino\", \n        \"hasEmail\": \"mailto:datos@modernizacion.gob.ar\"\
-        \n      }, \n      \"distribution\": [\n        {\n          \"@type\": \"\
-        dcat:Distribution\", \n          \"format\": \"CSV\", \n          \"title\"\
-        : \"Recurso de Ejemplo\", \n          \"description\": \"Este es un recurso\
-        \ DEMO, se incluye como material de demostracion y no posee ningun valor estadistico.\"\
-        , \n          \"issued\": \"2016-11-30T22:24:01.259909\", \n          \"modified\"\
-        : \"2016-11-30T22:24:01.225394\", \n          \"license\": \"cc-by\", \n \
-        \         \"accessURL\": \"http://181.209.63.71/dataset/6897d435-8084-4685-b8ce-304b190755e4/archivo/6145bf1c-a2fb-4bb5-b090-bb25f8419198\"\
-        , \n          \"downloadURL\": \"http://181.209.63.71/dataset/6897d435-8084-4685-b8ce-304b190755e4/resource/6145bf1c-a2fb-4bb5-b090-bb25f8419198/download/estructura-organica-3.csv\"\
-        \n        }\n      ], \n      \"keyword\": [\n        \"andino\", \n     \
-        \   \"demo\", \n        \"plan de datos\"\n      ], \n      \"superTheme\"\
-        : [\n        \"TECH\"\n      ], \n      \"accrualPeriodicity\": \"eventual\"\
-        , \n      \"language\": [\n        \"spa\"\n      ], \n      \"theme\": [\n\
-        \        \"Tema.demo\"\n      ]\n    }\n  ]\n}"}
+    body: {string: !!python/unicode "{\n  \"title\": \"Andino\", \n  \"description\":
+        \"Portal Andino Demo\", \n  \"superThemeTaxonomy\": \"http://datos.gob.ar/superThemeTaxonomy.json\",
+        \n  \"publisher\": {\n    \"mbox\": \"\", \n    \"name\": \"\"\n  }, \n  \"themeTaxonomy\":
+        [\n    {\n      \"label\": \"Tema.demo\", \n      \"id\": \"tema-demo\", \n
+        \     \"description\": \"Ejemplo de un tema\"\n    }\n  ], \n  \"dataset\":
+        [\n    {\n      \"@type\": \"dcat:Dataset\", \n      \"title\": \"Dataset
+        Demo\", \n      \"description\": \"Este es un dataset de ejemplo, se incluye
+        como material DEMO y no contiene ningun valor estadistico.\", \n      \"modified\":
+        \"2016-11-30T22:25:33.503104\", \n      \"accessLevel\": \"public\", \n      \"identifier\":
+        \"6897d435-8084-4685-b8ce-304b190755e4\", \n      \"issued\": \"2016-11-30T22:22:48.635757\",
+        \n      \"landingPage\": \"https://github.com/datosgobar/portal-andino\",
+        \n      \"license\": \"Creative Commons Attribution\", \n      \"publisher\":
+        {\n        \"mbox\": \"datos@modernizacion.gob.ar\", \n        \"name\": \"Andino\"\n
+        \     }, \n      \"contactPoint\": {\n        \"@type\": \"vcard:Contact\",
+        \n        \"fn\": \"Andino\", \n        \"hasEmail\": \"mailto:datos@modernizacion.gob.ar\"\n
+        \     }, \n      \"distribution\": [\n        {\n          \"@type\": \"dcat:Distribution\",
+        \n          \"format\": \"CSV\", \n          \"title\": \"Recurso de Ejemplo\",
+        \n          \"description\": \"Este es un recurso DEMO, se incluye como material
+        de demostracion y no posee ningun valor estadistico.\", \n          \"issued\":
+        \"2016-11-30T22:24:01.259909\", \n          \"modified\": \"2016-11-30T22:24:01.225394\",
+        \n          \"license\": \"cc-by\", \n          \"accessURL\": \"http://181.209.63.71/dataset/6897d435-8084-4685-b8ce-304b190755e4/archivo/6145bf1c-a2fb-4bb5-b090-bb25f8419198\",
+        \n          \"downloadURL\": \"http://181.209.63.71/dataset/6897d435-8084-4685-b8ce-304b190755e4/resource/6145bf1c-a2fb-4bb5-b090-bb25f8419198/download/estructura-organica-3.csv\"\n
+        \       }\n      ], \n      \"keyword\": [\n        \"andino\", \n        \"demo\",
+        \n        \"plan de datos\"\n      ], \n      \"superTheme\": [\n        \"TECH\"\n
+        \     ], \n      \"accrualPeriodicity\": \"eventual\", \n      \"language\":
+        [\n        \"spa\"\n      ], \n      \"theme\": [\n        \"Tema.demo\"\n
+        \     ]\n    }\n  ]\n}"}
     headers:
       connection: [keep-alive]
       content-length: ['2120']
       content-type: [application/json; charset=UTF-8]
       date: ['Thu, 01 Dec 2016 18:05:27 GMT']
+      server: [nginx/1.4.6 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.11.1]
+    method: GET
+    uri: http://104.131.35.253/data.json
+  response:
+    body: {string: !!python/unicode "{\n  \"title\": \"Andino Demo\", \n  \"description\":
+        \"Instancia del portal andino demo!\", \n  \"superThemeTaxonomy\": \"http://datos.gob.ar/superThemeTaxonomy.json\",
+        \n  \"publisher\": {\n    \"mbox\": \"\", \n    \"name\": \"\"\n  }, \n  \"themeTaxonomy\":
+        [\n    {\n      \"label\": \"demo theme\", \n      \"id\": \"demo-theme\",
+        \n      \"description\": \"Theme Demo\"\n    }\n  ], \n  \"dataset\": [\n
+        \   {\n      \"@type\": \"dcat:Dataset\", \n      \"title\": \"Dataset Demo\",
+        \n      \"description\": \"Un dataset demo\", \n      \"modified\": \"2016-11-30T17:46:15.578975\",
+        \n      \"accessLevel\": \"public\", \n      \"identifier\": \"289b6835-c5fb-4e8a-9013-1d4705c31840\",
+        \n      \"issued\": \"2016-11-30T17:44:57.787899\", \n      \"landingPage\":
+        \"http://fuente.demo.com.ar\", \n      \"license\": \"Creative Commons Attribution\",
+        \n      \"publisher\": {\n        \"mbox\": \"responsable.demo@mail.com\",
+        \n        \"name\": \"Un Responsable Demo\"\n      }, \n      \"contactPoint\":
+        {\n        \"@type\": \"vcard:Contact\", \n        \"fn\": \"Un Mantenedor
+        Demo\", \n        \"hasEmail\": \"mailto:mantenedor.demo@mail.com\"\n      },
+        \n      \"distribution\": [\n        {\n          \"@type\": \"dcat:Distribution\",
+        \n          \"format\": \"CSV\", \n          \"title\": \"Un recurso DEMO\",
+        \n          \"description\": \"Recurso demo\", \n          \"issued\": \"2016-11-30T17:46:09.073167\",
+        \n          \"modified\": \"2016-11-30T17:46:09.034144\", \n          \"license\":
+        \"cc-by-sa\", \n          \"accessURL\": \"http://104.131.35.253/dataset/289b6835-c5fb-4e8a-9013-1d4705c31840/archivo/62085b54-f228-455e-b964-57ed40a83c72\",
+        \n          \"field\": [\n            {\n              \"type\": \"string\",
+        \n              \"description\": \"campo 1 demo\", \n              \"title\":
+        \"campo1\"\n            }, \n            {\n              \"type\": \"string\",
+        \n              \"description\": \"Campo 2 Demo\", \n              \"title\":
+        \"campo 2 \"\n            }\n          ], \n          \"downloadURL\": \"http://104.131.35.253/dataset/289b6835-c5fb-4e8a-9013-1d4705c31840/resource/62085b54-f228-455e-b964-57ed40a83c72/download/contratos-alquiler-estado-nacional-locador-1.csv\"\n
+        \       }\n      ], \n      \"keyword\": [\n        \"Andino\", \n        \"demo\",
+        \n        \"portal-andino\"\n      ], \n      \"superTheme\": [\n        \"AGRI\",
+        \n        \"EDUC\"\n      ], \n      \"accrualPeriodicity\": \"R/P0.5M\",
+        \n      \"language\": [\n        \"spa\"\n      ], \n      \"theme\": [\n
+        \       \"demo theme\"\n      ]\n    }\n  ]\n}"}
+    headers:
+      connection: [keep-alive]
+      content-length: ['2322']
+      content-type: [application/json; charset=UTF-8]
+      date: ['Tue, 06 Dec 2016 20:39:32 GMT']
+      server: [nginx/1.4.6 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.11.1]
+    method: GET
+    uri: http://181.209.63.71/data.json
+  response:
+    body: {string: !!python/unicode "{\n  \"title\": \"Andino\", \n  \"description\":
+        \"Portal Andino Demo\", \n  \"superThemeTaxonomy\": \"http://datos.gob.ar/superThemeTaxonomy.json\",
+        \n  \"publisher\": {\n    \"mbox\": \"\", \n    \"name\": \"\"\n  }, \n  \"themeTaxonomy\":
+        [\n    {\n      \"label\": \"Tema.demo\", \n      \"id\": \"tema-demo\", \n
+        \     \"description\": \"Ejemplo de un tema\"\n    }\n  ], \n  \"dataset\":
+        [\n    {\n      \"@type\": \"dcat:Dataset\", \n      \"title\": \"Dataset
+        Demo\", \n      \"description\": \"Este es un dataset de ejemplo, se incluye
+        como material DEMO y no contiene ningun valor estadistico.\", \n      \"modified\":
+        \"2016-11-30T22:25:33.503104\", \n      \"accessLevel\": \"public\", \n      \"identifier\":
+        \"6897d435-8084-4685-b8ce-304b190755e4\", \n      \"issued\": \"2016-11-30T22:22:48.635757\",
+        \n      \"landingPage\": \"https://github.com/datosgobar/portal-andino\",
+        \n      \"license\": \"Creative Commons Attribution\", \n      \"publisher\":
+        {\n        \"mbox\": \"datos@modernizacion.gob.ar\", \n        \"name\": \"Andino\"\n
+        \     }, \n      \"contactPoint\": {\n        \"@type\": \"vcard:Contact\",
+        \n        \"fn\": \"Andino\", \n        \"hasEmail\": \"mailto:datos@modernizacion.gob.ar\"\n
+        \     }, \n      \"distribution\": [\n        {\n          \"@type\": \"dcat:Distribution\",
+        \n          \"format\": \"CSV\", \n          \"title\": \"Recurso de Ejemplo\",
+        \n          \"description\": \"Este es un recurso DEMO, se incluye como material
+        de demostracion y no posee ningun valor estadistico.\", \n          \"issued\":
+        \"2016-11-30T22:24:01.259909\", \n          \"modified\": \"2016-11-30T22:24:01.225394\",
+        \n          \"license\": \"cc-by\", \n          \"accessURL\": \"http://181.209.63.71/dataset/6897d435-8084-4685-b8ce-304b190755e4/archivo/6145bf1c-a2fb-4bb5-b090-bb25f8419198\",
+        \n          \"downloadURL\": \"http://181.209.63.71/dataset/6897d435-8084-4685-b8ce-304b190755e4/resource/6145bf1c-a2fb-4bb5-b090-bb25f8419198/download/estructura-organica-3.csv\"\n
+        \       }\n      ], \n      \"keyword\": [\n        \"andino\", \n        \"demo\",
+        \n        \"plan de datos\"\n      ], \n      \"superTheme\": [\n        \"TECH\"\n
+        \     ], \n      \"accrualPeriodicity\": \"eventual\", \n      \"language\":
+        [\n        \"spa\"\n      ], \n      \"theme\": [\n        \"Tema.demo\"\n
+        \     ]\n    }\n  ]\n}"}
+    headers:
+      connection: [keep-alive]
+      content-length: ['2120']
+      content-type: [application/json; charset=UTF-8]
+      date: ['Tue, 06 Dec 2016 20:39:32 GMT']
       server: [nginx/1.4.6 (Ubuntu)]
     status: {code: 200, message: OK}
 version: 1
