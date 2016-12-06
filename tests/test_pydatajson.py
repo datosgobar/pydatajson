@@ -73,6 +73,8 @@ class DataJsonTestCase(unittest.TestCase):
 
         return case_decorator
 
+    # Tests de campos requeridos
+
     @load_case_filename()
     def test_validity_of_full_data(self, case_filename):
         self.run_case(case_filename)
@@ -107,6 +109,32 @@ class DataJsonTestCase(unittest.TestCase):
 
     @load_case_filename()
     def test_validity_of_multiple_missing_descriptions(self, case_filename):
+        self.run_case(case_filename)
+
+    # Tests de tipos de campos
+
+    @load_case_filename()
+    def test_validity_of_invalid_catalog_publisher_type(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_invalid_dataset_theme_type(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_invalid_field_description_type(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_null_catalog_publisher(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_null_dataset_theme(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_null_field_description(self, case_filename):
         self.run_case(case_filename)
 
     def test_is_valid_catalog_full(self):
