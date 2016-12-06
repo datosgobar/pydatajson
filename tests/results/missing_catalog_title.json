@@ -1,9 +1,9 @@
 {
-    "status": "OK",
+    "status": "ERROR",
     "error": {
         "catalog": {
-            "status": "OK",
-            "title": ""
+            "status": "ERROR",
+            "title": null
         },
         "dataset": [
             {
