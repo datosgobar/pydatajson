@@ -1,0 +1,20 @@
+{
+    "status": "ERROR",
+    "error": {
+        "catalog": {
+            "status": "ERROR",
+            "title": "Título del Catálogo 1"
+        },
+        "dataset": [
+            {
+                "status": "ERROR",
+                "title": "Título del Dataset 1"
+            },
+            {
+                "status": "ERROR",
+                "title": "Título del Dataset 2"
+            }
+        ]
+    }
+}
+

@@ -1,0 +1,15 @@
+{
+    "status": "ERROR",
+    "error": {
+        "catalog": {
+            "status": "OK",
+            "title": ""
+        },
+        "dataset": [
+            {
+                "status": "ERROR",
+                "title": null
+            }
+        ]
+    }
+}
