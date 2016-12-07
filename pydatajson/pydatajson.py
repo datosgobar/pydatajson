@@ -190,9 +190,13 @@ quiso decir 'http://{}'?
 
             return result
 
-        datasets_results = [
-            _dataset_result(i, ds) for i, ds in enumerate(datajson["dataset"])
-        ]
+        if "dataset" in datajson:
+            datasets_results = [
+                _dataset_result(i, ds) for i, ds in
+                enumerate(datajson["dataset"])
+            ]
+        else:
+            datasets_results = None
 
         res = {
             "status": global_status,

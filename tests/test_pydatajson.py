@@ -110,19 +110,23 @@ class DataJsonTestCase(unittest.TestCase):
         self.run_case(case_filename)
 
     @load_case_filename()
-    def test_validity_of_missing_dataset_title(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_distribution_title(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
     def test_validity_of_missing_catalog_description(self, case_filename):
         self.run_case(case_filename)
 
     @load_case_filename()
+    def test_validity_of_missing_catalog_dataset(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_missing_dataset_title(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
     def test_validity_of_missing_dataset_description(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_missing_distribution_title(self, case_filename):
         self.run_case(case_filename)
 
     @load_case_filename()
