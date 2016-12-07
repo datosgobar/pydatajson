@@ -79,7 +79,7 @@ class DataJson(object):
 
     @staticmethod
     def _to_dict(dict_or_json):
-        assert isinstance(dict_or_json, (dict, str))
+        assert isinstance(dict_or_json, (dict, str, unicode))
 
         if isinstance(dict_or_json, dict):
             return dict_or_json
