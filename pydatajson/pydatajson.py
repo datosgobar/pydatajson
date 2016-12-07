@@ -65,7 +65,7 @@ class DataJson(object):
                 `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
-        schema = cls._deserialize_json(schema_path)
+        schema = cls._to_dict(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
@@ -76,6 +76,15 @@ class DataJson(object):
             schema=schema, resolver=resolver)
 
         return validator
+
+    @staticmethod
+    def _to_dict(dict_or_json):
+        assert isinstance(dict_or_json, (dict, str))
+
+        if isinstance(dict_or_json, dict):
+            return dict_or_json
+        else:
+            return DataJson._deserialize_json(dict_or_json)
 
     @staticmethod
     def _deserialize_json(json_path_or_url):
@@ -129,7 +138,7 @@ quiso decir 'http://{}'?
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = self._deserialize_json(datajson_path)
+        datajson = self._to_dict(datajson_path)
         res = self.validator.is_valid(datajson)
         return res
 
@@ -156,7 +165,7 @@ quiso decir 'http://{}'?
                     }
                 }
         """
-        datajson = self._deserialize_json(datajson_path)
+        datajson = self._to_dict(datajson_path)
 
         # Genero árbol de errores para explorarlo
         errors_iterator = self.validator.iter_errors(datajson)
