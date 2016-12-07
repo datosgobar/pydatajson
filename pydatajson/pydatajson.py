@@ -65,7 +65,7 @@ class DataJson(object):
                 `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
-        schema = cls._to_dict(schema_path)
+        schema = cls._json_to_dict(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
@@ -78,38 +78,35 @@ class DataJson(object):
         return validator
 
     @staticmethod
-    def _to_dict(dict_or_json):
-        assert isinstance(dict_or_json, (dict, str, unicode))
-
-        if isinstance(dict_or_json, dict):
-            return dict_or_json
-        else:
-            return DataJson._deserialize_json(dict_or_json)
-
-    @staticmethod
-    def _deserialize_json(json_path_or_url):
+    def _json_to_dict(dict_or_json_path):
         """Toma el path a un JSON y devuelve el diccionario que representa.
 
-        Asume que el parámetro es una URL si comienza con 'http' o 'https', o
-        un path local de lo contrario.
+        Si el argumento es un dict, lo deja pasar. Si es un string asume que el
+        parámetro es una URL si comienza con 'http' o 'https', o un path local
+        de lo contrario.
 
         Args:
-            json_path_or_url (str): Path local o URL remota a un archivo de
-                texto plano en formato JSON.
+            dict_or_json_path (dict or str): Si es un str, path local o URL
+                remota a un archivo de texto plano en formato JSON.
 
         Returns:
             dict: El diccionario que resulta de deserializar
-                json_path_or_url.
+                dict_or_json_path.
 
         """
-        parsed_url = urlparse(json_path_or_url)
+        assert isinstance(dict_or_json_path, (dict, str, unicode))
+
+        if isinstance(dict_or_json_path, dict):
+            return dict_or_json_path
+
+        parsed_url = urlparse(dict_or_json_path)
 
         if parsed_url.scheme in ["http", "https"]:
-            req = requests.get(json_path_or_url)
+            req = requests.get(dict_or_json_path)
             json_string = req.content
 
         else:
-            # En caso de que json_path_or_url parezca ser una URL remota,
+            # En caso de que dict_or_json_path parezca ser una URL remota,
             # advertirlo
             path_start = parsed_url.path.split(".")[0]
             if path_start == "www" or path_start.isdigit():
@@ -117,9 +114,9 @@ class DataJson(object):
 La dirección del archivo JSON ingresada parece una URL, pero no comienza
 con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
 quiso decir 'http://{}'?
-                """.format(json_path_or_url).encode("utf8"))
+                """.format(dict_or_json_path).encode("utf8"))
 
-            with open(json_path_or_url) as json_file:
+            with open(dict_or_json_path) as json_file:
                 json_string = json_file.read()
 
         json_dict = json.loads(json_string, encoding="utf8")
@@ -138,7 +135,7 @@ quiso decir 'http://{}'?
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = self._to_dict(datajson_path)
+        datajson = self._json_to_dict(datajson_path)
         res = self.validator.is_valid(datajson)
         return res
 
@@ -165,7 +162,7 @@ quiso decir 'http://{}'?
                     }
                 }
         """
-        datajson = self._to_dict(datajson_path)
+        datajson = self._json_to_dict(datajson_path)
 
         # Genero árbol de errores para explorarlo
         errors_iterator = self.validator.iter_errors(datajson)
