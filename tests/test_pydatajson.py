@@ -150,6 +150,11 @@ class DataJsonTestCase(unittest.TestCase):
         self.run_case(case_filename)
 
     @load_case_filename()
+    def test_validity_of_invalid_multiple_fields_type(self, case_filename):
+        """Catalog_publisher y distribution_bytesize fallan."""
+        self.run_case(case_filename)
+
+    @load_case_filename()
     def test_validity_of_invalid_dataset_theme_type(self, case_filename):
         self.run_case(case_filename)
 
