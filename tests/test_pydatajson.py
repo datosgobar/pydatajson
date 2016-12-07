@@ -149,6 +149,11 @@ class DataJsonTestCase(unittest.TestCase):
     def test_validity_of_invalid_catalog_publisher_type(self, case_filename):
         self.run_case(case_filename)
 
+    @unittest.skip("skip")
+    @load_case_filename()
+    def test_validity_of_invalid_publisher_mbox_format(self, case_filename):
+        self.run_case(case_filename)
+
     @load_case_filename()
     def test_validity_of_invalid_multiple_fields_type(self, case_filename):
         """Catalog_publisher y distribution_bytesize fallan."""
