@@ -16,12 +16,17 @@
 		"format": { "$ref": "mixed-types.json#stringOrNull" },
 		"mediaType": { "$ref": "mixed-types.json#stringOrNull" },
 		"license": { "$ref": "mixed-types.json#stringOrNull" },
-		"byteSize": { "$ref": "mixed-types.json#stringOrNull" },
+		"byteSize": {
+			"anyOf": [
+				{ "type": "integer" },
+				{ "type": "null" }
+			]
+		 },
 		"modified": { "$ref": "mixed-types.json#stringOrNull" },
 		"rights": { "$ref": "mixed-types.json#stringOrNull" },
 		"field": {
 			"anyOf": [
-				{ 
+				{
 					"type": "array",
 					"items": { "$ref": "field.json" }
 				},

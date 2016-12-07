@@ -39,12 +39,12 @@ class DataJsonTestCase(unittest.TestCase):
     def tearDownClass(cls):
         del(cls.dj)
 
-    def run_case(self, case_filename):
+    def run_case(self, case_filename, expected_dict=None):
 
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         result_path = os.path.join(self.RESULTS_DIR, case_filename + ".json")
 
-        expected_dict = json.load(open(result_path))
+        expected_dict = expected_dict or json.load(open(result_path))
 
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
@@ -54,7 +54,7 @@ class DataJsonTestCase(unittest.TestCase):
         elif expected_dict["status"] == "ERROR":
             self.assertFalse(response_bool)
         else:
-            print("EL CASO DE TESTEO {} TIENE UN status INVALIDO".format(
+            raise Exception("EL CASO DE TESTEO {} TIENE UN status INVALIDO".format(
                 case_filename))
 
         self.assertEqual(expected_dict, response_dict)
@@ -73,11 +73,28 @@ class DataJsonTestCase(unittest.TestCase):
 
         return case_decorator
 
-    # Tests de campos requeridos
+    # Tests de CAMPOS REQUERIDOS
 
+    # Tests de inputs válidos
     @load_case_filename()
     def test_validity_of_full_data(self, case_filename):
-        self.run_case(case_filename)
+        exp = {
+            "status": "OK",
+            "error": {
+                "catalog": {
+                    "status": "OK",
+                    "title": "Datos Argentina"
+                },
+                "dataset": [
+                    {
+                        "status": "OK",
+                        "title": "Sistema de contrataciones electrónicas"
+                    }
+
+                ]
+            }
+        }
+        self.run_case(case_filename, exp)
 
     @load_case_filename()
     def test_validity_of_minimum_data(self, case_filename):
@@ -87,6 +104,7 @@ class DataJsonTestCase(unittest.TestCase):
     def test_validity_of_empty_minimum_data(self, case_filename):
         self.run_case(case_filename)
 
+    # Tests de inputs inválidos
     @load_case_filename()
     def test_validity_of_missing_catalog_title(self, case_filename):
         self.run_case(case_filename)
@@ -111,8 +129,18 @@ class DataJsonTestCase(unittest.TestCase):
     def test_validity_of_multiple_missing_descriptions(self, case_filename):
         self.run_case(case_filename)
 
-    # Tests de tipos de campos
+    # Tests de TIPOS DE CAMPOS
 
+    # Tests de inputs válidos
+    @load_case_filename()
+    def test_validity_of_null_dataset_theme(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_null_field_description(self, case_filename):
+        self.run_case(case_filename)
+
+    # Tests de inputs inválidos
     @load_case_filename()
     def test_validity_of_invalid_catalog_publisher_type(self, case_filename):
         self.run_case(case_filename)
@@ -129,231 +157,7 @@ class DataJsonTestCase(unittest.TestCase):
     def test_validity_of_null_catalog_publisher(self, case_filename):
         self.run_case(case_filename)
 
-    @load_case_filename()
-    def test_validity_of_null_dataset_theme(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_null_field_description(self, case_filename):
-        self.run_case(case_filename)
-
-    def test_is_valid_catalog_full(self):
-        """Testea estructura de data.json completo bien formado."""
-
-        res = self.dj.is_valid_catalog(self.get_sample("full_data.json"))
-        self.assertTrue(res)
-
-    def test_is_valid_catalog_required_fields(self):
-        """ Estructura de data.json que sólo contiene campos obligatorios)."""
-
-        res = self.dj.is_valid_catalog(self.get_sample("minimum_data.json"))
-        self.assertTrue(res)
-
-        res = self.dj.is_valid_catalog(
-            self.get_sample("empty_minimum_data.json"))
-        self.assertTrue(res)
-
-    def test_is_valid_catalog_missing_catalog_title(self):
-        """Estructura de data.json en el que un catálogo no tiene título."""
-
-        res = self.dj.is_valid_catalog(
-            self.get_sample("missing_catalog_title.json"))
-        self.assertFalse(res)
-
-    def test_is_valid_catalog_missing_dataset_title(self):
-        """Estructura de data.json en el que un dataset no tiene título."""
-
-        res = self.dj.is_valid_catalog(
-            self.get_sample("missing_dataset_title.json"))
-        self.assertFalse(res)
-
-    def test_is_valid_catalog_missing_distribution_title(self):
-        """Estructura de data.json en el que un recurso no tiene título."""
-
-        res = self.dj.is_valid_catalog(
-            self.get_sample("missing_distribution_title.json"))
-        self.assertFalse(res)
-
-    def test_validate_catalog_full_data(self):
-        """ Testea `validate_catalog` contra un data.json bien formado."""
-
-        exp = {
-            "status": "OK",
-            "error": {
-                "catalog": {
-                    "status": "OK",
-                    "title": "Datos Argentina"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "title": "Sistema de contrataciones electrónicas"
-                    }
-
-                ]
-            }
-        }
-
-        datajson = self.get_sample("full_data.json")
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
-    def test_validate_catalog_missing_catalog_description(self):
-        """ Testea `validate_catalog` contra un data.json sin descripción de
-        catálogo."""
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "ERROR",
-                    "title": "Título del Catálogo 1"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "title": "Título del Dataset 1"
-                    },
-                    {
-                        "status": "OK",
-                        "title": "Título del Dataset 2"
-                    }
-                ]
-            }
-        }
-
-        datajson = self.get_sample("missing_catalog_description.json")
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
-    def test_validate_catalog_missing_dataset_description(self):
-        """ Testea `validate_catalog` contra un data.json sin descripción de
-        dataset."""
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "OK",
-                    "title": "Título del Catálogo 1"
-                },
-                "dataset": [
-                    {
-                        "status": "ERROR",
-                        "title": "Título del Dataset 1"
-                    },
-                    {
-                        "status": "OK",
-                        "title": "Título del Dataset 2"
-                    }
-                ]
-            }
-        }
-
-        datajson = self.get_sample("missing_dataset_description.json")
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
-    def test_validate_catalog_multiple_missing_descriptions(self):
-        """ Testea `validate_catalog` contra un data.json sin descripción de
-        catálogo ni datasets (2)."""
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "ERROR",
-                    "title": "Título del Catálogo 1"
-                },
-                "dataset": [
-                    {
-                        "status": "ERROR",
-                        "title": "Título del Dataset 1"
-                    },
-                    {
-                        "status": "ERROR",
-                        "title": "Título del Dataset 2"
-                    }
-                ]
-            }
-        }
-
-        datajson = self.get_sample("multiple_missing_descriptions.json")
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
-    def test_validate_catalog_missing_distribution_title(self):
-        """ Testea `validate_catalog` contra un data.json sin título en una
-        distribución."""
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "OK",
-                    "title": ""
-                },
-                "dataset": [
-                    {
-                        "status": "ERROR",
-                        "title": ""
-                    }
-                ]
-            }
-        }
-
-        datajson = self.get_sample("missing_distribution_title.json")
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
-    def test_validate_catalog_missing_dataset_title(self):
-        """ Testea `validate_catalog` contra un data.json sin título en un
-        dataset."""
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "OK",
-                    "title": ""
-                },
-                "dataset": [
-                    {
-                        "status": "ERROR",
-                        "title": None
-                    }
-                ]
-            }
-        }
-
-        datajson = self.get_sample("missing_dataset_title.json")
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
-    def test_validate_catalog_missing_catalog_title(self):
-        """ Testea `validate_catalog` contra un data.json sin título de
-        catálogo."""
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "ERROR",
-                    "title": None
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "title": ""
-                    }
-                ]
-            }
-        }
-
-        datajson = self.get_sample("missing_catalog_title.json")
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
+    # Tests contra una URL REMOTA
     @my_vcr.use_cassette()
     def test_validate_catalog_remote_datajson(self):
         """ Testea `validate_catalog` contra dos data.json remotos."""
