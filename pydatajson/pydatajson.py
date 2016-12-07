@@ -159,17 +159,28 @@ quiso decir 'http://{}'?
         datajson = self._deserialize_json(datajson_path)
 
         # Genero árbol de errores para explorarlo
-        error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
+        errors_iterator = self.validator.iter_errors(datajson)
+        error_tree = jsonschema.ErrorTree(errors_iterator)
 
-        def _dataset_result(index, dataset):
+        global_status = "OK" if error_tree.total_errors == 0 else "ERROR"
+
+        catalog_status = "OK" if (error_tree.errors == {} and
+                                  "publisher" not in error_tree) else "ERROR"
+
+        def _dataset_result(idx, dataset):
             """Dado un dataset y su índice en el data.json, devuelve una
             diccionario con el resultado de su validación. """
-            dataset_total_errors = error_tree["dataset"][index].total_errors
-
-            result = {
-                "status": "OK" if dataset_total_errors == 0 else "ERROR",
-                "title": dataset.get("title")
-            }
+            if "dataset" not in error_tree:
+                result = {
+                    "status": "OK",
+                    "title": dataset.get("title")
+                }
+            else:
+                dataset_total_errors = error_tree["dataset"][idx].total_errors
+                result = {
+                    "status": "OK" if dataset_total_errors == 0 else "ERROR",
+                    "title": dataset.get("title")
+                }
 
             return result
 
@@ -178,10 +189,10 @@ quiso decir 'http://{}'?
         ]
 
         res = {
-            "status": "OK" if error_tree.total_errors == 0 else "ERROR",
+            "status": global_status,
             "error": {
                 "catalog": {
-                    "status": "OK" if error_tree.errors == {} else "ERROR",
+                    "status": catalog_status,
                     "title": datajson.get("title")
                 },
                 "dataset": datasets_results
