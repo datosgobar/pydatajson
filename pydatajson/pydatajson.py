@@ -164,52 +164,51 @@ quiso decir 'http://{}'?
         """
         datajson = self._json_to_dict(datajson_path)
 
-        # Genero árbol de errores para explorarlo
-        errors_iterator = self.validator.iter_errors(datajson)
-        error_tree = jsonschema.ErrorTree(errors_iterator)
-
-        global_status = "OK" if error_tree.total_errors == 0 else "ERROR"
-
-        catalog_status = "OK" if (error_tree.errors == {} and
-                                  "publisher" not in error_tree) else "ERROR"
-
-        def _dataset_result(idx, dataset):
-            """Dado un dataset y su índice en el data.json, devuelve una
-            diccionario con el resultado de su validación. """
-            if "dataset" not in error_tree:
-                result = {
-                    "status": "OK",
-                    "title": dataset.get("title")
-                }
-            else:
-                dataset_total_errors = error_tree["dataset"][idx].total_errors
-                result = {
-                    "status": "OK" if dataset_total_errors == 0 else "ERROR",
-                    "title": dataset.get("title")
-                }
-
-            return result
-
-        if "dataset" in datajson:
-            datasets_results = [
-                _dataset_result(i, ds) for i, ds in
-                enumerate(datajson["dataset"])
-            ]
-        else:
-            datasets_results = None
-
-        res = {
-            "status": global_status,
+        # La respuesta por default se devuelve si no hay errores
+        default_response = {
+            "status": "OK",
             "error": {
                 "catalog": {
-                    "status": catalog_status,
+                    "status": "OK",
                     "title": datajson.get("title")
                 },
-                "dataset": datasets_results
+                "dataset": [
+                    {
+                        "status": "OK",
+                        "title": dataset.get("title")
+                    } for dataset in datajson["dataset"]
+                ] if ("dataset" in datajson and
+                      isinstance(datajson["dataset"], list)) else None
             }
         }
 
-        return res
+        def _update_response(validation_error, response):
+            """Actualiza la respuesta por default acorde a un error de
+            validación."""
+            new_response = response
+
+            # El status del catálogo entero será ERROR
+            response["status"] = "ERROR"
+
+            path = validation_error.path
+
+            if len(path) >= 2 and path[0] == "dataset":
+                # El error está a nivel de un dataset particular o inferior
+                response["error"]["dataset"][path[1]]["status"] = "ERROR"
+            else:
+                # El error está a nivel de catálogo
+                response["error"]["catalog"]["status"] = "ERROR"
+
+            return new_response
+
+        # Genero la lista de errores en la instancia a validar
+        errors_iterator = self.validator.iter_errors(datajson)
+
+        final_response = default_response
+        for error in errors_iterator:
+            final_response = _update_response(error, final_response)
+
+        return final_response
 
 
 def main():
