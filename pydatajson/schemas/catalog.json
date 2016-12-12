@@ -14,7 +14,10 @@
 			"required": ["name", "mbox"],
 			"properties": {
 				"name": { "type": "string" },
-				"mbox": { "type": "string" }
+				"mbox": { 
+					"type": "string",
+			       		"format": "email"
+				}
 			}
 		},
 		"dataset": {

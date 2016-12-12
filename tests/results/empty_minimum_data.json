@@ -1,13 +1,13 @@
 {
-    "status": "OK",
+    "status": "ERROR",
     "error": {
         "catalog": {
-            "status": "OK",
+            "status": "ERROR",
             "title": ""
         },
         "dataset": [
             {
-                "status": "OK",
+                "status": "ERROR",
                 "title": ""
             }
         ]
