@@ -149,7 +149,6 @@ class DataJsonTestCase(unittest.TestCase):
     def test_validity_of_invalid_catalog_publisher_type(self, case_filename):
         self.run_case(case_filename)
 
-    #@unittest.skip("skip")
     @load_case_filename()
     def test_validity_of_invalid_publisher_mbox_format(self, case_filename):
         self.run_case(case_filename)
@@ -169,6 +168,42 @@ class DataJsonTestCase(unittest.TestCase):
 
     @load_case_filename()
     def test_validity_of_null_catalog_publisher(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_empty_mandatory_string(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_empty_optional_string(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_accrualperiodicity(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_date(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_datetime(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_email(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_uri(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_invalid_dataset_type(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_missing_dataset(self, case_filename):
         self.run_case(case_filename)
 
     # Tests contra una URL REMOTA
