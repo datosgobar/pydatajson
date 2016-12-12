@@ -1,5 +1,5 @@
 {
-    "status": "OK",
+    "status": "ERROR",
     "error": {
         "catalog": {
             "status": "OK",
@@ -7,7 +7,7 @@
         },
         "dataset": [
             {
-                "status": "OK",
+                "status": "ERROR",
                 "title": "Sistema de contrataciones electrónicas"
             }
 

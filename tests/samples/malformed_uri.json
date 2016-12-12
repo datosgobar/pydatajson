@@ -10,7 +10,7 @@
     "language": [
         "spa"
     ],
-    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
+    "superThemeTaxonomy": "datos.gob.ar/superThemeTaxonomy.json",
     "themeTaxonomy": [
         {
             "id": "convocatorias",

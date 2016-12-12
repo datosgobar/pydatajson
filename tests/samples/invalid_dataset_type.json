@@ -1,6 +1,6 @@
 {
     "title": "Datos Argentina",
-    "description": "",
+    "description": "Portal de Datos Abiertos del Gobierno de la República Argentina",
     "publisher": {
         "name": "Ministerio de Modernización",
         "mbox": "datos@modernizacion.gob.ar"
@@ -47,8 +47,7 @@
     "homepage": "http://datos.gob.ar",
     "rights": "Derechos especificados en la licencia.",
     "spatial": "ARG",
-    "dataset": [
-        {
+    "dataset": {
             "title": "Sistema de contrataciones electrónicas",
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
@@ -151,8 +150,7 @@
                             "title": "objeto_convocatoria",
                             "type": "string",
                             "description": "Objeto/objetivo de la convocatoria"
-                        }
-                    ]
+                    }
                 }
             ]
         }

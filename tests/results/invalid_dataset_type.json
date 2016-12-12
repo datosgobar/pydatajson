@@ -1,0 +1,10 @@
+{
+    "status": "OK",
+    "error": {
+        "catalog": {
+            "status": "OK",
+            "title": "Datos Argentina"
+        },
+        "dataset": null
+    }
+}
