@@ -72,8 +72,10 @@ class DataJson(object):
         resolver = jsonschema.RefResolver(
             base_uri=urljoin('file:', schema_path), referrer=schema)
 
+        format_checker = jsonschema.FormatChecker()
+
         validator = jsonschema.Draft4Validator(
-            schema=schema, resolver=resolver)
+            schema=schema, resolver=resolver, format_checker=format_checker)
 
         return validator
 
