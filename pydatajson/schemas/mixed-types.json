@@ -17,5 +17,17 @@
 			{ "type": "array" },
 			{ "type": "null" }
 		]
+	},
+	"dateOrDatetimeString": {
+		"anyOf": [
+			{
+				"type": "string",
+				"format": "date"
+			},
+			{
+				"type": "string",
+				"format": "date-time"
+			}
+		]
 	}
 }
