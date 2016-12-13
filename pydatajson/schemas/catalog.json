@@ -30,8 +30,8 @@
 			"type": "string",
 	       		"format": "uri"
 		},
-		"issued": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"issued": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
+		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
 		"themeTaxonomy": {
 			"anyOf": [
