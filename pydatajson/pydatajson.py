@@ -18,6 +18,7 @@ import warnings
 import json
 import jsonschema
 import requests
+from pprint import pprint
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -215,13 +216,21 @@ quiso decir 'http://{}'?
 
 
 def main():
-    """En caso de ejecutar el módulo como script, se corre esta función."""
+    """Permite ejecutar el módulo por línea de comandos.
+
+    Valida un path o url a un archivo data.json devolviendo True/False si es
+    válido y luego el resultado completo.
+
+    Example:
+        python pydatajson.py http://181.209.63.71/data.json
+        python pydatajson.py ~/github/pydatajson/tests/samples/full_data.json
+    """
     datajson_file = sys.argv[1]
     dj = DataJson()
     bool_res = dj.is_valid_catalog(datajson_file)
     full_res = dj.validate_catalog(datajson_file)
-    print(bool_res)
-    print(full_res)
+    pprint(bool_res)
+    pprint(full_res)
 
 
 if __name__ == '__main__':
