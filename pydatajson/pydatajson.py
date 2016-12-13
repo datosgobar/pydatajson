@@ -11,6 +11,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
+import sys
 import os.path
 from urlparse import urljoin, urlparse
 import warnings
@@ -215,7 +216,12 @@ quiso decir 'http://{}'?
 
 def main():
     """En caso de ejecutar el módulo como script, se corre esta función."""
-    pass
+    datajson_file = sys.argv[1]
+    dj = DataJson()
+    bool_res = dj.is_valid_catalog(datajson_file)
+    full_res = dj.validate_catalog(datajson_file)
+    print(bool_res)
+    print(full_res)
 
 
 if __name__ == '__main__':
