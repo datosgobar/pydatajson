@@ -176,6 +176,9 @@ quiso decir 'http://{}'?
                     "status": "OK",
                     "title": datajson.get("title")
                 },
+                # "dataset" contiene lista de rtas default si el catálogo
+                # contiene la clave "dataset" y además su valor es una lista.
+                # En caso contrario "dataset" es None.
                 "dataset": [
                     {
                         "status": "OK",
@@ -189,26 +192,26 @@ quiso decir 'http://{}'?
         def _update_response(validation_error, response):
             """Actualiza la respuesta por default acorde a un error de
             validación."""
-            new_response = response
+            new_response = response.copy()
 
             # El status del catálogo entero será ERROR
-            response["status"] = "ERROR"
+            new_response["status"] = "ERROR"
 
             path = validation_error.path
 
             if len(path) >= 2 and path[0] == "dataset":
                 # El error está a nivel de un dataset particular o inferior
-                response["error"]["dataset"][path[1]]["status"] = "ERROR"
+                new_response["error"]["dataset"][path[1]]["status"] = "ERROR"
             else:
                 # El error está a nivel de catálogo
-                response["error"]["catalog"]["status"] = "ERROR"
+                new_response["error"]["catalog"]["status"] = "ERROR"
 
             return new_response
 
         # Genero la lista de errores en la instancia a validar
         errors_iterator = self.validator.iter_errors(datajson)
 
-        final_response = default_response
+        final_response = default_response.copy()
         for error in errors_iterator:
             final_response = _update_response(error, final_response)
 

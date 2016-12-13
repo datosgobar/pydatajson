@@ -14,9 +14,9 @@
 			"required": ["name", "mbox"],
 			"properties": {
 				"name": { "$ref": "mixed-types.json#nonEmptyString" },
-				"mbox": { 
+				"mbox": {
 					"type": "string",
-			       		"format": "email"
+			       	"format": "email"
 				}
 			}
 		},
@@ -26,16 +26,13 @@
 		},
 		"title": { "$ref": "mixed-types.json#nonEmptyString" },
 		"description": { "$ref": "mixed-types.json#nonEmptyString" },
-		"superThemeTaxonomy": {
-			"type": "string",
-	       		"format": "uri"
-		},
+		"superThemeTaxonomy": { "type": "string", "format": "uri" },
 		"issued": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
 		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
 		"themeTaxonomy": {
 			"anyOf": [
-				{ 
+				{
 					"type": "array",
 					"items": { "$ref": "theme.json" }
 				},
@@ -44,8 +41,13 @@
 	       	},
 		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"homepage": {
-			"type": "string",
-	       		"format": "uri"
+			"anyOf": [
+				{
+					"type": "string",
+					"format": "uri"
+				},
+				{ "type": "null" }
+			]
 		},
 		"rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"spatial": {

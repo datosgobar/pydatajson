@@ -227,7 +227,7 @@ class DataJsonTestCase(unittest.TestCase):
                 },
                 "dataset": [
                     {
-                        "status": "ERROR",
+                        "status": "OK",
                         "title": "Dataset Demo"
                     }
                 ]
@@ -253,7 +253,7 @@ class DataJsonTestCase(unittest.TestCase):
                 },
                 "dataset": [
                     {
-                        "status": "ERROR",
+                        "status": "OK",
                         "title": "Dataset Demo"
                     }
                 ]

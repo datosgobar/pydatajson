@@ -36,8 +36,11 @@
 		"issued": { "$ref": "mixed-types.json#nonEmptyString" },
 		"superTheme": { "type": "array" },
 		"accrualPeriodicity": {
-			"type": "string",
-			"pattern": "^R/P\\d+[Y|M|W|D]$"
+			"anyOf" : [
+				{"type": "string", "pattern": "^R/P\\d+(\\.\\d+)?[Y|M|W|D]$"},
+				{"type": "string", "pattern": "^R/PT\\d+(\\.\\d+)?[H|M|S]$"},
+				{"type": "string", "pattern": "^eventual$"}
+			]
 		},
 		"contactPoint": {
 			"type": "object",
@@ -59,7 +62,7 @@
 		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"identifier": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
-		"spatial": { 
+		"spatial": {
 			"anyOf": [
 				{ "type": "string" },
 				{ "type": "array" },
@@ -68,8 +71,13 @@
 		},
 		"temporal": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"landingPage": {
-			"type": "string",
-			"format": "uri"
+					"anyOf": [
+						{
+							"type": "string",
+							"format": "uri"
+						},
+						{ "type": "null" }
+					]
 		},
 		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
 	}
