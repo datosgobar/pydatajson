@@ -16,7 +16,15 @@
 			"required": ["name"],
 			"properties": {
 				"name": { "$ref": "mixed-types.json#nonEmptyString" },
-				"mbox": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
+				"mbox": {
+					"anyOf": [
+						{
+							"type": "string",
+							"format": "email"
+						},
+						{ "type": "null" }
+					]
+				}
 			}
 		},
 		"distribution": {
@@ -35,7 +43,15 @@
 			"type": "object",
 			"properties": {
 				"fn": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-				"hasEmail": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
+				"hasEmail": {
+					"anyOf": [
+						{
+							"type": "string",
+							"format": "email"
+						},
+						{ "type": "null" }
+					]
+				}
 			}
 		},
 		"theme": { "$ref": "mixed-types.json#arrayOrNull" },
