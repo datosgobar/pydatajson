@@ -18,7 +18,7 @@ import pydatajson
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
-                 record_mode='new_episodes')
+                 record_mode='once')
 
 
 class DataJsonTestCase(unittest.TestCase):
@@ -54,7 +54,7 @@ class DataJsonTestCase(unittest.TestCase):
         elif expected_dict["status"] == "ERROR":
             self.assertFalse(response_bool)
         else:
-            raise Exception("EL CASO DE TESTEO {} TIENE UN status INVALIDO".format(
+            raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
         self.assertEqual(expected_dict, response_dict)
@@ -216,13 +216,13 @@ class DataJsonTestCase(unittest.TestCase):
         datajson = "http://104.131.35.253/data.json"
 
         res = self.dj.is_valid_catalog(datajson)
-        self.assertTrue(res)
+        self.assertFalse(res)
 
         exp = {
-            "status": "OK",
+            "status": "ERROR",
             "error": {
                 "catalog": {
-                    "status": "OK",
+                    "status": "ERROR",
                     "title": "Andino Demo"
                 },
                 "dataset": [
@@ -242,13 +242,13 @@ class DataJsonTestCase(unittest.TestCase):
         datajson = "http://181.209.63.71/data.json"
 
         res = self.dj.is_valid_catalog(datajson)
-        self.assertTrue(res)
+        self.assertFalse(res)
 
         exp = {
-            "status": "OK",
+            "status": "ERROR",
             "error": {
                 "catalog": {
-                    "status": "OK",
+                    "status": "ERROR",
                     "title": "Andino"
                 },
                 "dataset": [
