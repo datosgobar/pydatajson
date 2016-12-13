@@ -1,17 +1,11 @@
 {
 	"nonEmptyStringOrNull": {
 		"anyOf": [
-			{ 
-				"type": "string",
-		       		"minLength": 1
-			},
+			{ "type": "string", "minLength": 1 },
 			{ "type": "null" }
 		]
 	},
-	"nonEmptyString": {
-		"type": "string",
-		"minLength": 1
-	},
+	"nonEmptyString": { "type": "string", "minLength": 1},
 	"arrayOrNull": {
 		"anyOf": [
 			{ "type": "array" },
@@ -20,14 +14,15 @@
 	},
 	"dateOrDatetimeString": {
 		"anyOf": [
-			{
-				"type": "string",
-				"format": "date"
-			},
-			{
-				"type": "string",
-				"format": "date-time"
-			}
+			{ "type": "string", "format": "date" },
+			{ "type": "string", "format": "date-time" }
+		]
+	},
+	"dateOrDatetimeStringOrNull": {
+		"anyOf": [
+			{ "type": "string", "format": "date" },
+			{ "type": "string", "format": "date-time" },
+			{ "type": "null" }
 		]
 	}
 }
