@@ -27,6 +27,10 @@
 		"description": { "type": "string" },
 		"issued": { "type": "string" },
 		"superTheme": { "type": "array" },
+		"accrualPeriodicity": {
+			"type": "string",
+			"pattern": "^R/P\d+[Y|M|W|D]$"
+		},
 		"contactPoint": {
 			"type": "object",
 			"properties": {
@@ -36,7 +40,6 @@
 		},
 		"theme": { "$ref": "mixed-types.json#arrayOrNull" },
 		"keyword": { "$ref": "mixed-types.json#arrayOrNull" },
-		"accrualPeriodicity": { "$ref": "mixed-types.json#stringOrNull" },
 		"modified": { "$ref": "mixed-types.json#stringOrNull" },
 		"identifier": { "type": "string" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
