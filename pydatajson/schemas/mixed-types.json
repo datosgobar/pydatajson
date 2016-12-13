@@ -1,5 +1,5 @@
 {
-	"nonEmptystringOrNull": {
+	"nonEmptyStringOrNull": {
 		"anyOf": [
 			{ 
 				"type": "string",

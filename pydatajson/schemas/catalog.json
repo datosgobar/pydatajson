@@ -13,7 +13,7 @@
 			"type": "object",
 			"required": ["name", "mbox"],
 			"properties": {
-				"name": { "type": "string" },
+				"name": { "$ref": "mixed-types.json#nonEmptyString" },
 				"mbox": { 
 					"type": "string",
 			       		"format": "email"
@@ -24,11 +24,11 @@
 			"type": "array",
 			"items": { "$ref": "dataset.json" }
 		},
-		"title": { "type": "string" },
-		"description": { "type": "string" },
-		"superThemeTaxonomy": { "type": "string" },
-		"issued": { "$ref": "mixed-types.json#stringOrNull" },
-		"modified": { "$ref": "mixed-types.json#stringOrNull" },
+		"title": { "$ref": "mixed-types.json#nonEmptyString" },
+		"description": { "$ref": "mixed-types.json#nonEmptyString" },
+		"superThemeTaxonomy": { "$ref": "mixed-types.json#nonEmptyString" },
+		"issued": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
 		"themeTaxonomy": {
 			"anyOf": [
@@ -39,9 +39,9 @@
 				{ "type": "null" }
 			]
 	       	},
-		"license": { "$ref": "mixed-types.json#stringOrNull" },
-		"homepage": { "$ref": "mixed-types.json#stringOrNull" },
-		"rights": { "$ref": "mixed-types.json#stringOrNull" },
+		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"homepage": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"spatial": {
 			"anyOf": [
 				{ "type": "string" },

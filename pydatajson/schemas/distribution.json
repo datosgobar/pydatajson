@@ -8,22 +8,22 @@
 		"issued"
 	],
 	"properties": {
-		"accessURL": { "type": "string" },
-		"downloadURL": { "type": "string" },
-		"title": { "type": "string" },
-		"issued": { "type": "string" },
-		"description": { "$ref": "mixed-types.json#stringOrNull" },
-		"format": { "$ref": "mixed-types.json#stringOrNull" },
-		"mediaType": { "$ref": "mixed-types.json#stringOrNull" },
-		"license": { "$ref": "mixed-types.json#stringOrNull" },
+		"accessURL": { "$ref": "mixed-types.json#nonEmptyString" },
+		"downloadURL": { "$ref": "mixed-types.json#nonEmptyString" },
+		"title": { "$ref": "mixed-types.json#nonEmptyString" },
+		"issued": { "$ref": "mixed-types.json#nonEmptyString" },
+		"description": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"format": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"mediaType": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"byteSize": {
 			"anyOf": [
 				{ "type": "integer" },
 				{ "type": "null" }
 			]
 		 },
-		"modified": { "$ref": "mixed-types.json#stringOrNull" },
-		"rights": { "$ref": "mixed-types.json#stringOrNull" },
+		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"field": {
 			"anyOf": [
 				{

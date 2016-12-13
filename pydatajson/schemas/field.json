@@ -2,8 +2,8 @@
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
-		"title": { "$ref": "mixed-types.json#stringOrNull" },
-		"type": { "$ref": "mixed-types.json#stringOrNull" },
-		"description": { "$ref": "mixed-types.json#stringOrNull" }
+		"title": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"type": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"description": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
 	}
 }

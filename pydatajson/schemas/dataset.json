@@ -15,33 +15,33 @@
 			"type": "object",
 			"required": ["name"],
 			"properties": {
-				"name": { "type": "string" },
-				"mbox": { "$ref": "mixed-types.json#stringOrNull" }
+				"name": { "$ref": "mixed-types.json#nonEmptyString" },
+				"mbox": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
 			}
 		},
 		"distribution": {
 		       "type": "array",
 		       "items": { "$ref": "distribution.json" }
 		},
-		"title": { "type": "string" },
-		"description": { "type": "string" },
-		"issued": { "type": "string" },
+		"title": { "$ref": "mixed-types.json#nonEmptyString" },
+		"description": { "$ref": "mixed-types.json#nonEmptyString" },
+		"issued": { "$ref": "mixed-types.json#nonEmptyString" },
 		"superTheme": { "type": "array" },
 		"accrualPeriodicity": {
 			"type": "string",
-			"pattern": "^R/P\d+[Y|M|W|D]$"
+			"pattern": "^R/P\\d+[Y|M|W|D]$"
 		},
 		"contactPoint": {
 			"type": "object",
 			"properties": {
-				"fn": { "$ref": "mixed-types.json#stringOrNull" },
-				"hasEmail": { "$ref": "mixed-types.json#stringOrNull" }
+				"fn": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+				"hasEmail": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
 			}
 		},
 		"theme": { "$ref": "mixed-types.json#arrayOrNull" },
 		"keyword": { "$ref": "mixed-types.json#arrayOrNull" },
-		"modified": { "$ref": "mixed-types.json#stringOrNull" },
-		"identifier": { "type": "string" },
+		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"identifier": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
 		"spatial": { 
 			"anyOf": [
@@ -50,8 +50,8 @@
 				{ "type": "null" }
 			]
 		},
-		"temporal": { "$ref": "mixed-types.json#stringOrNull" },
-		"landingPage": { "$ref": "mixed-types.json#stringOrNull" },
-		"license": { "$ref": "mixed-types.json#stringOrNull" }
+		"temporal": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"landingPage": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
 	}
 }
