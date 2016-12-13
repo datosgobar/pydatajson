@@ -26,7 +26,10 @@
 		},
 		"title": { "$ref": "mixed-types.json#nonEmptyString" },
 		"description": { "$ref": "mixed-types.json#nonEmptyString" },
-		"superThemeTaxonomy": { "$ref": "mixed-types.json#nonEmptyString" },
+		"superThemeTaxonomy": {
+			"type": "string",
+	       		"format": "uri"
+		},
 		"issued": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
@@ -40,7 +43,10 @@
 			]
 	       	},
 		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-		"homepage": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"homepage": {
+			"type": "string",
+	       		"format": "uri"
+		},
 		"rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"spatial": {
 			"anyOf": [

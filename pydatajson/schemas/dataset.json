@@ -51,7 +51,10 @@
 			]
 		},
 		"temporal": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-		"landingPage": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"landingPage": {
+			"type": "string",
+			"format": "uri"
+		},
 		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
 	}
 }

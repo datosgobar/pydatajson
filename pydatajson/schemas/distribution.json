@@ -8,8 +8,14 @@
 		"issued"
 	],
 	"properties": {
-		"accessURL": { "$ref": "mixed-types.json#nonEmptyString" },
-		"downloadURL": { "$ref": "mixed-types.json#nonEmptyString" },
+		"accessURL": {
+			"type": "string",
+			"format": "uri"
+		},
+		"downloadURL": {
+			"type": "string",
+			"format": "uri"
+		},
 		"title": { "$ref": "mixed-types.json#nonEmptyString" },
 		"issued": { "$ref": "mixed-types.json#nonEmptyString" },
 		"description": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
