@@ -16,9 +16,9 @@ import os.path
 from urlparse import urljoin, urlparse
 import warnings
 import json
+from pprint import pprint
 import jsonschema
 import requests
-from pprint import pprint
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
