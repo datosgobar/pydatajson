@@ -8,7 +8,7 @@
 
 ## Casos de testeo **inválidos**:
 
-Están creados en base a `empty_minimum_data.json`, quitando el campo `title` en los tres niveles de la jerarquía de metadatos: Catálogo, Dataset, Recurso:
+Están creados en base a `full_data.json`, quitando el campo `title` en los tres niveles de la jerarquía de metadatos: Catálogo, Dataset, Recurso:
 
 - `missing_catalog_title_data.json`
 - `missing_dataset_title_data.json`
