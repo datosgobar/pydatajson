@@ -1,2 +1,6 @@
 jsonschema
 requests
+# Para validar fechas y horas acorde a ISO 8601
+isodate
+# Para validar URIs
+rfc3987

@@ -82,7 +82,7 @@
             "spatial": "ARG",
             "temporal": "2015-01-01/2015-12-31",
             "landingPage": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
-            "license": "Open Data Commons Open Database License 1.0",
+            "license": "",
             "distribution": [
                 {
                     "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",

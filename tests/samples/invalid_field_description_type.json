@@ -100,7 +100,7 @@
                         {
                             "title": "procedimiento_id",
                             "type": "integer",
-                            "description": "Identificador único del procedimiento de contratación"
+                            "description": 123
                         },
                         {
                             "title": "organismo_unidad_operativa_contrataciones_id",

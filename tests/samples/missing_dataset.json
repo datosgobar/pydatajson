@@ -1,0 +1,50 @@
+{
+    "title": "Datos Argentina",
+    "description": "Portal de Datos Abiertos del Gobierno de la República Argentina",
+    "publisher": {
+        "name": "Ministerio de Modernización",
+        "mbox": "datos@modernizacion.gob.ar"
+    },
+    "issued": "2016-04-14T19:48:05.433640-03:00",
+    "modified": "2016-04-19T19:48:05.433640-03:00",
+    "language": [
+        "spa"
+    ],
+    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
+    "themeTaxonomy": [
+        {
+            "id": "convocatorias",
+            "label": "Convocatorias",
+            "description": "Datasets sobre licitaciones en estado de convocatoria."
+        },
+        {
+            "id": "compras",
+            "label": "Compras",
+            "description": "Datasets sobre compras realizadas."
+        },
+        {
+            "id": "contrataciones",
+            "label": "Contrataciones",
+            "description": "Datasets sobre contrataciones."
+        },
+        {
+            "id": "adjudicaciones",
+            "label": "Adjudicaciones",
+            "description": "Datasets sobre licitaciones adjudicadas."
+        },
+        {
+            "id": "normativa",
+            "label": "Normativa",
+            "description": "Datasets sobre normativa para compras y contrataciones."
+        },
+        {
+            "id": "proveedores",
+            "label": "Proveedores",
+            "description": "Datasets sobre proveedores del Estado."
+        }
+    ],
+    "license": "Open Data Commons Open Database License 1.0",
+    "homepage": "http://datos.gob.ar",
+    "rights": "Derechos especificados en la licencia.",
+    "spatial": "ARG"
+}

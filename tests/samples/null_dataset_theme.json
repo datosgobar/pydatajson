@@ -62,11 +62,7 @@
             "superTheme": [
                 "ECON"
             ],
-            "theme": [
-                "contrataciones",
-                "compras",
-                "convocatorias"
-            ],
+            "theme": null,
             "keyword": [
                 "bienes",
                 "compras",

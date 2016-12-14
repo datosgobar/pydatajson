@@ -11,10 +11,12 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
+import sys
 import os.path
 from urlparse import urljoin, urlparse
 import warnings
 import json
+from pprint import pprint
 import jsonschema
 import requests
 
@@ -65,42 +67,50 @@ class DataJson(object):
                 `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
-        schema = cls._deserialize_json(schema_path)
+        schema = cls._json_to_dict(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
         resolver = jsonschema.RefResolver(
             base_uri=urljoin('file:', schema_path), referrer=schema)
 
+        format_checker = jsonschema.FormatChecker()
+
         validator = jsonschema.Draft4Validator(
-            schema=schema, resolver=resolver)
+            schema=schema, resolver=resolver, format_checker=format_checker)
 
         return validator
 
     @staticmethod
-    def _deserialize_json(json_path_or_url):
+    def _json_to_dict(dict_or_json_path):
         """Toma el path a un JSON y devuelve el diccionario que representa.
 
-        Asume que el parámetro es una URL si comienza con 'http' o 'https', o
-        un path local de lo contrario.
+        Si el argumento es un dict, lo deja pasar. Si es un string asume que el
+        parámetro es una URL si comienza con 'http' o 'https', o un path local
+        de lo contrario.
 
         Args:
-            json_path_or_url (str): Path local o URL remota a un archivo de
-                texto plano en formato JSON.
+            dict_or_json_path (dict or str): Si es un str, path local o URL
+                remota a un archivo de texto plano en formato JSON.
 
         Returns:
             dict: El diccionario que resulta de deserializar
-                json_path_or_url.
+                dict_or_json_path.
 
         """
-        parsed_url = urlparse(json_path_or_url)
+        assert isinstance(dict_or_json_path, (dict, str, unicode))
+
+        if isinstance(dict_or_json_path, dict):
+            return dict_or_json_path
+
+        parsed_url = urlparse(dict_or_json_path)
 
         if parsed_url.scheme in ["http", "https"]:
-            req = requests.get(json_path_or_url)
+            req = requests.get(dict_or_json_path)
             json_string = req.content
 
         else:
-            # En caso de que json_path_or_url parezca ser una URL remota,
+            # En caso de que dict_or_json_path parezca ser una URL remota,
             # advertirlo
             path_start = parsed_url.path.split(".")[0]
             if path_start == "www" or path_start.isdigit():
@@ -108,9 +118,9 @@ class DataJson(object):
 La dirección del archivo JSON ingresada parece una URL, pero no comienza
 con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
 quiso decir 'http://{}'?
-                """.format(json_path_or_url).encode("utf8"))
+                """.format(dict_or_json_path).encode("utf8"))
 
-            with open(json_path_or_url) as json_file:
+            with open(dict_or_json_path) as json_file:
                 json_string = json_file.read()
 
         json_dict = json.loads(json_string, encoding="utf8")
@@ -129,7 +139,7 @@ quiso decir 'http://{}'?
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = self._deserialize_json(datajson_path)
+        datajson = self._json_to_dict(datajson_path)
         res = self.validator.is_valid(datajson)
         return res
 
@@ -156,44 +166,74 @@ quiso decir 'http://{}'?
                     }
                 }
         """
-        datajson = self._deserialize_json(datajson_path)
+        datajson = self._json_to_dict(datajson_path)
 
-        # Genero árbol de errores para explorarlo
-        error_tree = jsonschema.ErrorTree(self.validator.iter_errors(datajson))
-
-        def _dataset_result(index, dataset):
-            """Dado un dataset y su índice en el data.json, devuelve una
-            diccionario con el resultado de su validación. """
-            dataset_total_errors = error_tree["dataset"][index].total_errors
-
-            result = {
-                "status": "OK" if dataset_total_errors == 0 else "ERROR",
-                "title": dataset.get("title")
-            }
-
-            return result
-
-        datasets_results = [
-            _dataset_result(i, ds) for i, ds in enumerate(datajson["dataset"])
-        ]
-
-        res = {
-            "status": "OK" if error_tree.total_errors == 0 else "ERROR",
+        # La respuesta por default se devuelve si no hay errores
+        default_response = {
+            "status": "OK",
             "error": {
                 "catalog": {
-                    "status": "OK" if error_tree.errors == {} else "ERROR",
+                    "status": "OK",
                     "title": datajson.get("title")
                 },
-                "dataset": datasets_results
+                # "dataset" contiene lista de rtas default si el catálogo
+                # contiene la clave "dataset" y además su valor es una lista.
+                # En caso contrario "dataset" es None.
+                "dataset": [
+                    {
+                        "status": "OK",
+                        "title": dataset.get("title")
+                    } for dataset in datajson["dataset"]
+                ] if ("dataset" in datajson and
+                      isinstance(datajson["dataset"], list)) else None
             }
         }
 
-        return res
+        def _update_response(validation_error, response):
+            """Actualiza la respuesta por default acorde a un error de
+            validación."""
+            new_response = response.copy()
+
+            # El status del catálogo entero será ERROR
+            new_response["status"] = "ERROR"
+
+            path = validation_error.path
+
+            if len(path) >= 2 and path[0] == "dataset":
+                # El error está a nivel de un dataset particular o inferior
+                new_response["error"]["dataset"][path[1]]["status"] = "ERROR"
+            else:
+                # El error está a nivel de catálogo
+                new_response["error"]["catalog"]["status"] = "ERROR"
+
+            return new_response
+
+        # Genero la lista de errores en la instancia a validar
+        errors_iterator = self.validator.iter_errors(datajson)
+
+        final_response = default_response.copy()
+        for error in errors_iterator:
+            final_response = _update_response(error, final_response)
+
+        return final_response
 
 
 def main():
-    """En caso de ejecutar el módulo como script, se corre esta función."""
-    pass
+    """Permite ejecutar el módulo por línea de comandos.
+
+    Valida un path o url a un archivo data.json devolviendo True/False si es
+    válido y luego el resultado completo.
+
+    Example:
+        python pydatajson.py http://181.209.63.71/data.json
+        python pydatajson.py ~/github/pydatajson/tests/samples/full_data.json
+    """
+    datajson_file = sys.argv[1]
+    dj = DataJson()
+    bool_res = dj.is_valid_catalog(datajson_file)
+    full_res = dj.validate_catalog(datajson_file)
+    pprint(bool_res)
+    pprint(full_res)
 
 
 if __name__ == '__main__':

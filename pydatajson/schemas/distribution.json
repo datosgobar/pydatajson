@@ -6,5 +6,38 @@
 		"downloadURL",
 		"title",
 		"issued"
-	]
+	],
+	"properties": {
+		"accessURL": {
+			"type": "string",
+			"format": "uri"
+		},
+		"downloadURL": {
+			"type": "string",
+			"format": "uri"
+		},
+		"title": { "$ref": "mixed-types.json#nonEmptyString" },
+		"issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
+		"description": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"format": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"mediaType": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"byteSize": {
+			"anyOf": [
+				{ "type": "integer" },
+				{ "type": "null" }
+			]
+		 },
+		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
+		"rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"field": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": { "$ref": "field.json" }
+				},
+				{ "type": "null" }
+			]
+		}
+	}
 }
