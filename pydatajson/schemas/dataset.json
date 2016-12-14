@@ -33,7 +33,7 @@
 		},
 		"title": { "$ref": "mixed-types.json#nonEmptyString" },
 		"description": { "$ref": "mixed-types.json#nonEmptyString" },
-		"issued": { "$ref": "mixed-types.json#nonEmptyString" },
+		"issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
 		"superTheme": { "type": "array" },
 		"accrualPeriodicity": {
 			"anyOf" : [
@@ -59,7 +59,7 @@
 		},
 		"theme": { "$ref": "mixed-types.json#arrayOrNull" },
 		"keyword": { "$ref": "mixed-types.json#arrayOrNull" },
-		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
 		"identifier": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
 		"spatial": {

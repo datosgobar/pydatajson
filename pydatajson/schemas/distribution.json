@@ -17,7 +17,7 @@
 			"format": "uri"
 		},
 		"title": { "$ref": "mixed-types.json#nonEmptyString" },
-		"issued": { "$ref": "mixed-types.json#nonEmptyString" },
+		"issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
 		"description": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"format": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"mediaType": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
@@ -28,7 +28,7 @@
 				{ "type": "null" }
 			]
 		 },
-		"modified": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
 		"rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"field": {
 			"anyOf": [
