@@ -34,6 +34,7 @@ class DataJsonTestCase(unittest.TestCase):
     def setUpClass(cls):
         cls.dj = pydatajson.DataJson()
         cls.maxDiff = None
+        cls.longMessage = True
 
     @classmethod
     def tearDownClass(cls):
@@ -262,6 +263,34 @@ class DataJsonTestCase(unittest.TestCase):
 
         res = self.dj.validate_catalog(datajson)
         self.assertEqual(exp, res)
+
+    def test_correctness_of_accrualPeriodicity_regex(self):
+        """Prueba que la regex de validación de
+        dataset["accrualPeriodicity"] sea correcta."""
+
+        datajson_path = "tests/samples/full_data.json"
+        datajson = json.load(open(datajson_path))
+
+        valid_values = ['R/P10Y', 'R/P4Y', 'R/P3Y', 'R/P2Y', 'R/P1Y',
+                        'R/P6M', 'R/P4M', 'R/P3M', 'R/P2M', 'R/P1M',
+                        'R/P0.5M', 'R/P0.33M', 'R/P1W', 'R/P0.5W',
+                        'R/P0.33W', 'R/P1D', 'R/PT1H', 'R/PT1S',
+                        'eventual']
+
+        for value in valid_values:
+            datajson["dataset"][0]["accrualPeriodicity"] = value
+            res = self.dj.is_valid_catalog(datajson)
+            self.assertTrue(res, msg=value)
+
+        invalid_values = ['RP10Y', 'R/PY', 'R/P3', 'RR/P2Y', 'R/PnY',
+                          'R/P6MT', 'R/PT', 'R/T1M', 'R/P0.M', '/P0.33M',
+                          'R/P1Week', 'R/P.5W', 'R/P', 'R/T', 'R/PT1H3M',
+                          'eventual ', '']
+
+        for value in invalid_values:
+            datajson["dataset"][0]["accrualPeriodicity"] = value
+            res = self.dj.is_valid_catalog(datajson)
+            self.assertFalse(res, msg=value)
 
 
 if __name__ == '__main__':
