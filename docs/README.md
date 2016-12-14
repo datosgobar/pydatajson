@@ -60,6 +60,8 @@ Ambos métodos mencionados de `DataJson()` son capaces de validar archivos `data
 - Para validar un **archivo local**, `datajson_path_or_url` deberá ser el **path absoluto** a él.
 - Para validar un **archivo remoto**, `datajson_path_or_url` deberá ser una **URL que comience con 'http' o 'https'**.
 
+Alternativamente, también se pueden validar **diccionarios**, es decir, el resultado de deserializar un archivo `data.json` en una variable.
+
 Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
 
 ### Ejemplos
@@ -134,6 +136,21 @@ print validation_report
         ]
     }
 }
+```
+
+### Diccionario (data.json deserializado)
+
+El siguiente fragmento de código tendrá resultados idénticos al primero:
+```python
+import json
+datajson_path = "tests/samples/full_data.json"
+
+datajson = json.load(datajson_path)
+
+validation_result = dj.is_valid_catalog(datajson)
+validation_report = dj.validate_catalog(datajson)
+(...)
+
 ```
 
 ## Tests

@@ -1,6 +1,12 @@
 History
 ===
 
+0.1.1 (2016-12-01)
+------------------
+
+* Se incorpora validación de tipo y formato de campo
+* Los métodos `DataJson.is_valid_catalog()` y `DataJson.validate_catalog()` ahora aceptan un `dict` además de un `path/to/data.json` o una url a un data.json.
+
 0.1.0 (2016-12-01)
 ------------------
 
