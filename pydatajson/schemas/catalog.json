@@ -31,13 +31,8 @@
 		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
 		"language": { "$ref": "mixed-types.json#arrayOrNull" },
 		"themeTaxonomy": {
-			"anyOf": [
-				{
-					"type": "array",
-					"items": { "$ref": "theme.json" }
-				},
-				{ "type": "null" }
-			]
+			"type": "array",
+			"items": { "$ref": "theme.json" }
 	       	},
 		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"homepage": {
