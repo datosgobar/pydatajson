@@ -12,6 +12,24 @@ Paquete en python con herramientas para manipular y validar metadatos de catálo
 * Licencia: MIT license
 * Documentación: https://pydatajson.readthedocs.io.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Instalación](#instalaci%C3%B3n)
+- [Uso](#uso)
+  - [Setup](#setup)
+  - [Posibles validaciones de catálogos](#posibles-validaciones-de-cat%C3%A1logos)
+  - [Ubicación del catálogo a validar](#ubicaci%C3%B3n-del-cat%C3%A1logo-a-validar)
+  - [Ejemplos](#ejemplos)
+    - [Archivo data.json local](#archivo-datajson-local)
+    - [Archivo data.json remoto](#archivo-datajson-remoto)
+  - [Diccionario (data.json deserializado)](#diccionario-datajson-deserializado)
+- [Tests](#tests)
+- [Créditos](#cr%C3%A9ditos)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Instalación
 
 * **Producción:** Desde cualquier parte
