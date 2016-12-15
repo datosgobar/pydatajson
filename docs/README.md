@@ -10,11 +10,12 @@ pydatajson
 Paquete en python con herramientas para manipular y validar metadatos de catálogos de datos en formato data.json.
 
 * Licencia: MIT license
-* Documentación: https://pydatajson.readthedocs.io.
+* Documentación: [https://pydatajson.readthedocs.io](https://pydatajson.readthedocs.io)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+## Indice
 
 - [Instalación](#instalaci%C3%B3n)
 - [Uso](#uso)
@@ -24,7 +25,7 @@ Paquete en python con herramientas para manipular y validar metadatos de catálo
   - [Ejemplos](#ejemplos)
     - [Archivo data.json local](#archivo-datajson-local)
     - [Archivo data.json remoto](#archivo-datajson-remoto)
-  - [Diccionario (data.json deserializado)](#diccionario-datajson-deserializado)
+    - [Diccionario (data.json deserializado)](#diccionario-datajson-deserializado)
 - [Tests](#tests)
 - [Créditos](#cr%C3%A9ditos)
 
