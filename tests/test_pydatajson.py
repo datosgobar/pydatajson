@@ -101,10 +101,6 @@ class DataJsonTestCase(unittest.TestCase):
     def test_validity_of_minimum_data(self, case_filename):
         self.run_case(case_filename)
 
-    @load_case_filename()
-    def test_validity_of_empty_minimum_data(self, case_filename):
-        self.run_case(case_filename)
-
     # Tests de inputs inválidos
     @load_case_filename()
     def test_validity_of_missing_catalog_title(self, case_filename):
