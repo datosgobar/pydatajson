@@ -1,7 +1,7 @@
 History
 ===
 
-0.1.2 (2016-12-01)
+0.1.2 (2016-12-14)
 ------------------
 
 * Se incorpora validación de tipo y formato de campo
