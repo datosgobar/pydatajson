@@ -274,25 +274,33 @@ quiso decir 'http://{}'?
             new_response["status"] = "ERROR"
 
             error_info = {
-                "path": validation_error.path,
-                "instance": validation_error.instance,
-                "schema": validation_error.schema,
-                "message": validation_error.message
+                "message": validation_error.message,
+                "validator": validation_error.validator,
+                "validator_value": validation_error.validator_value
             }
 
-            error_path = error_info["path"]
+            # Error Code 1 para "campo obligatorio faltante"
+            # Error Code 2 para "error en tipo o formato de campo"
+            if validation_error.validator == "required":
+                error_info["error_code"] = 1
+            else:
+                error_info["error_code"] = 2
+                error_info["instance"] = validation_error.instance
+
+            error_path = list(validation_error.path)
 
             if len(error_path) >= 2 and error_path[0] == "dataset":
                 # El error está a nivel de un dataset particular o inferior
-                dataset_index = error_path[1]
-                new_response["error"]["dataset"][
-                    dataset_index]["status"] = "ERROR"
-                new_response["error"]["dataset"][
-                    dataset_index]["errors"].append(validation_error.__dict__)
+                position = new_response["error"]["dataset"][error_path[1]]
+                error_info["relative_path"] = error_path[2:]
+
             else:
                 # El error está a nivel de catálogo
-                new_response["error"]["catalog"]["status"] = "ERROR"
-                new_response["error"]["catalog"]["errors"].append(validation_error.__dict__)
+                position = new_response["error"]["catalog"]
+                error_info["relative_path"] = error_path
+
+            position["status"] = "ERROR"
+            position["errors"].append(error_info)
 
             return new_response
 
