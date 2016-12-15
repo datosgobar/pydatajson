@@ -93,3 +93,7 @@ pypi: ## register the package to PyPi get travis ready to deploy to pip
 	make dist
 	twine upload dist/*
 	python travis_pypi_setup.py
+
+doctoc: ## generate table of contents, doctoc command line tool required
+        ## https://github.com/thlorenz/doctoc
+	doctoc --title **Indice** README.md

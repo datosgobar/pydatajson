@@ -156,7 +156,7 @@ print validation_report
 }
 ```
 
-### Diccionario (data.json deserializado)
+#### Diccionario (data.json deserializado)
 
 El siguiente fragmento de código tendrá resultados idénticos al primero:
 ```python
