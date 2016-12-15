@@ -1,0 +1,801 @@
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/missing_distribution_title.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 1,
+                                       u'message': "u'title' is a required property",
+                                       u'relative_path': [u'distribution',
+                                                          0],
+                                       u'validator': u'required',
+                                       u'validator_value': [u'accessURL',
+                                                            u'downloadURL',
+                                                            u'title',
+                                                            u'issued']}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/malformed_email.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': u'datosATmodernizacion.gob.ar',
+                                      u'message': "u'datosATmodernizacion.gob.ar' is not a u'email'",
+                                      u'relative_path': [u'publisher',
+                                                         u'mbox'],
+                                      u'validator': u'format',
+                                      u'validator_value': u'email'}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/malformed_datetime.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': u'2016-04-1419:48:05.433640-03:00',
+                                      u'message': "u'2016-04-1419:48:05.433640-03:00' is not valid under any of the given schemas",
+                                      u'relative_path': [u'issued'],
+                                      u'validator': u'anyOf',
+                                      u'validator_value': [{u'format': u'date',
+                                                            u'type': u'string'},
+                                                           {u'format': u'date-time',
+                                                            u'type': u'string'},
+                                                           {u'type': u'null'}]}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/missing_catalog_title.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 1,
+                                      u'message': "u'title' is a required property",
+                                      u'relative_path': [],
+                                      u'validator': u'required',
+                                      u'validator_value': [u'dataset',
+                                                           u'title',
+                                                           u'description',
+                                                           u'publisher',
+                                                           u'superThemeTaxonomy']}],
+                         u'status': u'ERROR',
+                         u'title': None},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/invalid_catalog_publisher_type.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': [u'Ministerio de Modernizaci\xf3n',
+                                                    u'datos@modernizacion.gob.ar'],
+                                      u'message': "[u'Ministerio de Modernizaci\\xf3n', u'datos@modernizacion.gob.ar'] is not of type u'object'",
+                                      u'relative_path': [u'publisher'],
+                                      u'validator': u'type',
+                                      u'validator_value': u'object'}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/malformed_uri.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': u'datos.gob.ar/superThemeTaxonomy.json',
+                                      u'message': "u'datos.gob.ar/superThemeTaxonomy.json' is not a u'uri'",
+                                      u'relative_path': [u'superThemeTaxonomy'],
+                                      u'validator': u'format',
+                                      u'validator_value': u'uri'}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/full_data.json
+
+Resultado booleano: True
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'OK'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/invalid_field_description_type.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 2,
+                                       u'instance': [{u'description': 123,
+                                                      u'title': u'procedimiento_id',
+                                                      u'type': u'integer'},
+                                                     {u'description': u'Identificador \xfanico del organismo que realiza la convocatoria. Organismo de m\xe1ximo nivel jer\xe1rquico al que pertenece la unidad operativa de contrataciones.',
+                                                      u'title': u'organismo_unidad_operativa_contrataciones_id',
+                                                      u'type': u'integer'},
+                                                     {u'description': u'Identificador \xfanico de la unidad operativa de contrataciones',
+                                                      u'title': u'unidad_operativa_contrataciones_id',
+                                                      u'type': u'integer'},
+                                                     {u'description': u'Organismo que realiza la convocatoria. Organismo de m\xe1ximo nivel jer\xe1rquico al que pertenece la unidad operativa de contrataciones.',
+                                                      u'title': u'organismo_unidad_operativa_contrataciones_desc',
+                                                      u'type': u'string'},
+                                                     {u'description': u'Unidad operativa de contrataciones.',
+                                                      u'title': u'unidad_operativa_contrataciones_desc',
+                                                      u'type': u'string'},
+                                                     {u'description': u'Tipo de procedimiento al que se adecua la contrataci\xf3n.',
+                                                      u'title': u'tipo_procedimiento_contratacion',
+                                                      u'type': u'string'},
+                                                     {u'description': u'A\xf1o en el que se inici\xf3 el proceso de la convocatoria.',
+                                                      u'title': u'ejercicio_procedimiento_anio',
+                                                      u'type': u'date'},
+                                                     {u'description': u'Fecha de publicaci\xf3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.',
+                                                      u'title': u'fecha_publicacion_convocatoria',
+                                                      u'type': u'date'},
+                                                     {u'description': u'Modalidad bajo la cual se realiza la convocatoria.',
+                                                      u'title': u'modalidad_convocatoria',
+                                                      u'type': u'string'},
+                                                     {u'description': u'Clase de la convocatoria.',
+                                                      u'title': u'clase_convocatoria',
+                                                      u'type': u'string'},
+                                                     {u'description': u'Objeto/objetivo de la convocatoria',
+                                                      u'title': u'objeto_convocatoria',
+                                                      u'type': u'string'}],
+                                       u'message': "[{u'type': u'integer', u'description': 123, u'title': u'procedimiento_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico del organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico de la unidad operativa de contrataciones', u'title': u'unidad_operativa_contrataciones_id'}, {u'type': u'string', u'description': u'Organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Unidad operativa de contrataciones.', u'title': u'unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Tipo de procedimiento al que se adecua la contrataci\\xf3n.', u'title': u'tipo_procedimiento_contratacion'}, {u'type': u'date', u'description': u'A\\xf1o en el que se inici\\xf3 el proceso de la convocatoria.', u'title': u'ejercicio_procedimiento_anio'}, {u'type': u'date', u'description': u'Fecha de publicaci\\xf3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.', u'title': u'fecha_publicacion_convocatoria'}, {u'type': u'string', u'description': u'Modalidad bajo la cual se realiza la convocatoria.', u'title': u'modalidad_convocatoria'}, {u'type': u'string', u'description': u'Clase de la convocatoria.', u'title': u'clase_convocatoria'}, {u'type': u'string', u'description': u'Objeto/objetivo de la convocatoria', u'title': u'objeto_convocatoria'}] is not valid under any of the given schemas",
+                                       u'relative_path': [u'distribution',
+                                                          0,
+                                                          u'field'],
+                                       u'validator': u'anyOf',
+                                       u'validator_value': [{u'items': {u'$ref': u'field.json'},
+                                                             u'type': u'array'},
+                                                            {u'type': u'null'}]}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/empty_mandatory_string.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': u'',
+                                      u'message': "u'' is too short",
+                                      u'relative_path': [u'description'],
+                                      u'validator': u'minLength',
+                                      u'validator_value': 1}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/malformed_date.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': u'2016/04/14',
+                                      u'message': "u'2016/04/14' is not valid under any of the given schemas",
+                                      u'relative_path': [u'issued'],
+                                      u'validator': u'anyOf',
+                                      u'validator_value': [{u'format': u'date',
+                                                            u'type': u'string'},
+                                                           {u'format': u'date-time',
+                                                            u'type': u'string'},
+                                                           {u'type': u'null'}]}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/missing_catalog_description.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 1,
+                                      u'message': "u'description' is a required property",
+                                      u'relative_path': [],
+                                      u'validator': u'required',
+                                      u'validator_value': [u'dataset',
+                                                           u'title',
+                                                           u'description',
+                                                           u'publisher',
+                                                           u'superThemeTaxonomy']}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/missing_dataset_description.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 1,
+                                       u'message': "u'description' is a required property",
+                                       u'relative_path': [],
+                                       u'validator': u'required',
+                                       u'validator_value': [u'title',
+                                                            u'description',
+                                                            u'publisher',
+                                                            u'superTheme',
+                                                            u'distribution',
+                                                            u'accrualPeriodicity',
+                                                            u'issued']}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/invalid_dataset_type.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': {u'accrualPeriodicity': u'R/P1Y',
+                                                    u'contactPoint': {u'fn': u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones. Direcci\xf3n de Compras Electr\xf3nicas.',
+                                                                      u'hasEmail': u'onc-compraselectronicas@modernizacion.gob.ar'},
+                                                    u'description': u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)',
+                                                    u'distribution': [{u'accessURL': u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a',
+                                                                       u'byteSize': 5120,
+                                                                       u'description': u'Listado de las convocatorias abiertas durante el a\xf1o 2015 en el sistema de contrataciones electr\xf3nicas',
+                                                                       u'downloadURL': u'http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv',
+                                                                       u'field': [{u'description': u'Identificador \xfanico del procedimiento de contrataci\xf3n',
+                                                                                   u'title': u'procedimiento_id',
+                                                                                   u'type': u'integer'},
+                                                                                  {u'description': u'Identificador \xfanico del organismo que realiza la convocatoria. Organismo de m\xe1ximo nivel jer\xe1rquico al que pertenece la unidad operativa de contrataciones.',
+                                                                                   u'title': u'organismo_unidad_operativa_contrataciones_id',
+                                                                                   u'type': u'integer'},
+                                                                                  {u'description': u'Identificador \xfanico de la unidad operativa de contrataciones',
+                                                                                   u'title': u'unidad_operativa_contrataciones_id',
+                                                                                   u'type': u'integer'},
+                                                                                  {u'description': u'Organismo que realiza la convocatoria. Organismo de m\xe1ximo nivel jer\xe1rquico al que pertenece la unidad operativa de contrataciones.',
+                                                                                   u'title': u'organismo_unidad_operativa_contrataciones_desc',
+                                                                                   u'type': u'string'},
+                                                                                  {u'description': u'Unidad operativa de contrataciones.',
+                                                                                   u'title': u'unidad_operativa_contrataciones_desc',
+                                                                                   u'type': u'string'},
+                                                                                  {u'description': u'Tipo de procedimiento al que se adecua la contrataci\xf3n.',
+                                                                                   u'title': u'tipo_procedimiento_contratacion',
+                                                                                   u'type': u'string'},
+                                                                                  {u'description': u'A\xf1o en el que se inici\xf3 el proceso de la convocatoria.',
+                                                                                   u'title': u'ejercicio_procedimiento_anio',
+                                                                                   u'type': u'date'},
+                                                                                  {u'description': u'Fecha de publicaci\xf3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.',
+                                                                                   u'title': u'fecha_publicacion_convocatoria',
+                                                                                   u'type': u'date'},
+                                                                                  {u'description': u'Modalidad bajo la cual se realiza la convocatoria.',
+                                                                                   u'title': u'modalidad_convocatoria',
+                                                                                   u'type': u'string'},
+                                                                                  {u'description': u'Clase de la convocatoria.',
+                                                                                   u'title': u'clase_convocatoria',
+                                                                                   u'type': u'string'},
+                                                                                  {u'description': u'Objeto/objetivo de la convocatoria',
+                                                                                   u'title': u'objeto_convocatoria',
+                                                                                   u'type': u'string'}],
+                                                                       u'format': u'CSV',
+                                                                       u'issued': u'2016-04-14T19:48:05.433640-03:00',
+                                                                       u'license': u'Open Data Commons Open Database License 1.0',
+                                                                       u'mediaType': u'text/csv',
+                                                                       u'modified': u'2016-04-19T19:48:05.433640-03:00',
+                                                                       u'rights': u'Derechos especificados en la licencia.',
+                                                                       u'title': u'Convocatorias abiertas durante el a\xf1o 2015'}],
+                                                    u'identifier': u'99db6631-d1c9-470b-a73e-c62daa32c420',
+                                                    u'issued': u'2016-04-14T19:48:05.433640-03:00',
+                                                    u'keyword': [u'bienes',
+                                                                 u'compras',
+                                                                 u'contrataciones'],
+                                                    u'landingPage': u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+                                                    u'language': [u'spa'],
+                                                    u'license': u'Open Data Commons Open Database License 1.0',
+                                                    u'modified': u'2016-04-19T19:48:05.433640-03:00',
+                                                    u'publisher': {u'mbox': u'onc@modernizacion.gob.ar',
+                                                                   u'name': u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'},
+                                                    u'spatial': u'ARG',
+                                                    u'superTheme': [u'ECON'],
+                                                    u'temporal': u'2015-01-01/2015-12-31',
+                                                    u'theme': [u'contrataciones',
+                                                               u'compras',
+                                                               u'convocatorias'],
+                                                    u'title': u'Sistema de contrataciones electr\xf3nicas'},
+                                      u'message': "{u'publisher': {u'mbox': u'onc@modernizacion.gob.ar', u'name': u'Ministerio de Modernizaci\\xf3n. Secretar\\xeda de Modernizaci\\xf3n Administrativa. Oficina Nacional de Contrataciones'}, u'landingPage': u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra', u'description': u'Datos correspondientes al Sistema de Contrataciones Electr\\xf3nicas (Argentina Compra)', u'superTheme': [u'ECON'], u'title': u'Sistema de contrataciones electr\\xf3nicas', u'issued': u'2016-04-14T19:48:05.433640-03:00', u'temporal': u'2015-01-01/2015-12-31', u'modified': u'2016-04-19T19:48:05.433640-03:00', u'language': [u'spa'], u'theme': [u'contrataciones', u'compras', u'convocatorias'], u'keyword': [u'bienes', u'compras', u'contrataciones'], u'accrualPeriodicity': u'R/P1Y', u'spatial': u'ARG', u'license': u'Open Data Commons Open Database License 1.0', u'contactPoint': {u'hasEmail': u'onc-compraselectronicas@modernizacion.gob.ar', u'fn': u'Ministerio de Modernizaci\\xf3n. Secretar\\xeda de Modernizaci\\xf3n Administrativa. Oficina Nacional de Contrataciones. Direcci\\xf3n de Compras Electr\\xf3nicas.'}, u'identifier': u'99db6631-d1c9-470b-a73e-c62daa32c420', u'distribution': [{u'accessURL': u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a', u'rights': u'Derechos especificados en la licencia.', u'description': u'Listado de las convocatorias abiertas durante el a\\xf1o 2015 en el sistema de contrataciones electr\\xf3nicas', u'license': u'Open Data Commons Open Database License 1.0', u'title': u'Convocatorias abiertas durante el a\\xf1o 2015', u'byteSize': 5120, u'format': u'CSV', u'mediaType': u'text/csv', u'modified': u'2016-04-19T19:48:05.433640-03:00', u'downloadURL': u'http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv', u'field': [{u'type': u'integer', u'description': u'Identificador \\xfanico del procedimiento de contrataci\\xf3n', u'title': u'procedimiento_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico del organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico de la unidad operativa de contrataciones', u'title': u'unidad_operativa_contrataciones_id'}, {u'type': u'string', u'description': u'Organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Unidad operativa de contrataciones.', u'title': u'unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Tipo de procedimiento al que se adecua la contrataci\\xf3n.', u'title': u'tipo_procedimiento_contratacion'}, {u'type': u'date', u'description': u'A\\xf1o en el que se inici\\xf3 el proceso de la convocatoria.', u'title': u'ejercicio_procedimiento_anio'}, {u'type': u'date', u'description': u'Fecha de publicaci\\xf3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.', u'title': u'fecha_publicacion_convocatoria'}, {u'type': u'string', u'description': u'Modalidad bajo la cual se realiza la convocatoria.', u'title': u'modalidad_convocatoria'}, {u'type': u'string', u'description': u'Clase de la convocatoria.', u'title': u'clase_convocatoria'}, {u'type': u'string', u'description': u'Objeto/objetivo de la convocatoria', u'title': u'objeto_convocatoria'}], u'issued': u'2016-04-14T19:48:05.433640-03:00'}]} is not of type u'array'",
+                                      u'relative_path': [u'dataset'],
+                                      u'validator': u'type',
+                                      u'validator_value': u'array'}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': None},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/invalid_multiple_fields_type.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': [u'Ministerio de Modernizaci\xf3n',
+                                                    u'datos@modernizacion.gob.ar'],
+                                      u'message': "[u'Ministerio de Modernizaci\\xf3n', u'datos@modernizacion.gob.ar'] is not of type u'object'",
+                                      u'relative_path': [u'publisher'],
+                                      u'validator': u'type',
+                                      u'validator_value': u'object'}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 2,
+                                       u'instance': u'5120',
+                                       u'message': "u'5120' is not valid under any of the given schemas",
+                                       u'relative_path': [u'distribution',
+                                                          0,
+                                                          u'byteSize'],
+                                       u'validator': u'anyOf',
+                                       u'validator_value': [{u'type': u'integer'},
+                                                            {u'type': u'null'}]}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/three_invalid_fields.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 2,
+                                       u'instance': [{u'description': u'123',
+                                                      u'title': u'procedimiento_id',
+                                                      u'type': u'integer'},
+                                                     {u'description': u'Identificador \xfanico del organismo que realiza la convocatoria. Organismo de m\xe1ximo nivel jer\xe1rquico al que pertenece la unidad operativa de contrataciones.',
+                                                      u'title': u'organismo_unidad_operativa_contrataciones_id',
+                                                      u'type': u'integer'},
+                                                     {u'description': u'Identificador \xfanico de la unidad operativa de contrataciones',
+                                                      u'title': u'unidad_operativa_contrataciones_id',
+                                                      u'type': u'integer'},
+                                                     {u'description': u'Organismo que realiza la convocatoria. Organismo de m\xe1ximo nivel jer\xe1rquico al que pertenece la unidad operativa de contrataciones.',
+                                                      u'title': u'organismo_unidad_operativa_contrataciones_desc',
+                                                      u'type': u'string'},
+                                                     {u'description': u'Unidad operativa de contrataciones.',
+                                                      u'title': u'unidad_operativa_contrataciones_desc',
+                                                      u'type': u'string'},
+                                                     {u'description': u'Tipo de procedimiento al que se adecua la contrataci\xf3n.',
+                                                      u'title': u'tipo_procedimiento_contratacion',
+                                                      u'type': u'string'},
+                                                     {u'description': u'A\xf1o en el que se inici\xf3 el proceso de la convocatoria.',
+                                                      u'title': u'ejercicio_procedimiento_anio',
+                                                      u'type': u'date'},
+                                                     {u'description': u'Fecha de publicaci\xf3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.',
+                                                      u'title': u'fecha_publicacion_convocatoria',
+                                                      u'type': u'date'},
+                                                     {u'description': u'Modalidad bajo la cual se realiza la convocatoria.',
+                                                      u'title': u'modalidad_convocatoria',
+                                                      u'type': u'string'},
+                                                     [u'title',
+                                                      u'clase_convocatoria',
+                                                      u'type',
+                                                      u'string',
+                                                      u'description',
+                                                      u'Clase de la convocatoria.'],
+                                                     {u'description': u'Objeto/objetivo de la convocatoria',
+                                                      u'title': u'objeto_convocatoria',
+                                                      u'type': [u'string']}],
+                                       u'message': "[{u'type': u'integer', u'description': u'123', u'title': u'procedimiento_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico del organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico de la unidad operativa de contrataciones', u'title': u'unidad_operativa_contrataciones_id'}, {u'type': u'string', u'description': u'Organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Unidad operativa de contrataciones.', u'title': u'unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Tipo de procedimiento al que se adecua la contrataci\\xf3n.', u'title': u'tipo_procedimiento_contratacion'}, {u'type': u'date', u'description': u'A\\xf1o en el que se inici\\xf3 el proceso de la convocatoria.', u'title': u'ejercicio_procedimiento_anio'}, {u'type': u'date', u'description': u'Fecha de publicaci\\xf3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.', u'title': u'fecha_publicacion_convocatoria'}, {u'type': u'string', u'description': u'Modalidad bajo la cual se realiza la convocatoria.', u'title': u'modalidad_convocatoria'}, [u'title', u'clase_convocatoria', u'type', u'string', u'description', u'Clase de la convocatoria.'], {u'type': [u'string'], u'description': u'Objeto/objetivo de la convocatoria', u'title': u'objeto_convocatoria'}] is not valid under any of the given schemas",
+                                       u'relative_path': [u'distribution',
+                                                          0,
+                                                          u'field'],
+                                       u'validator': u'anyOf',
+                                       u'validator_value': [{u'items': {u'$ref': u'field.json'},
+                                                             u'type': u'array'},
+                                                            {u'type': u'null'}]}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/null_field_description.json
+
+Resultado booleano: True
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'OK'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/multiple_missing_descriptions.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 1,
+                                      u'message': "u'description' is a required property",
+                                      u'relative_path': [],
+                                      u'validator': u'required',
+                                      u'validator_value': [u'dataset',
+                                                           u'title',
+                                                           u'description',
+                                                           u'publisher',
+                                                           u'superThemeTaxonomy']}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 1,
+                                       u'message': "u'description' is a required property",
+                                       u'relative_path': [],
+                                       u'validator': u'required',
+                                       u'validator_value': [u'title',
+                                                            u'description',
+                                                            u'publisher',
+                                                            u'superTheme',
+                                                            u'distribution',
+                                                            u'accrualPeriodicity',
+                                                            u'issued']}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/malformed_accrualperiodicity.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 2,
+                                       u'instance': u'RP1Y',
+                                       u'message': "u'RP1Y' is not valid under any of the given schemas",
+                                       u'relative_path': [u'accrualPeriodicity'],
+                                       u'validator': u'anyOf',
+                                       u'validator_value': [{u'pattern': u'^R/P\\d+(\\.\\d+)?[Y|M|W|D]$',
+                                                             u'type': u'string'},
+                                                            {u'pattern': u'^R/PT\\d+(\\.\\d+)?[H|M|S]$',
+                                                             u'type': u'string'},
+                                                            {u'pattern': u'^eventual$',
+                                                             u'type': u'string'}]}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/null_dataset_theme.json
+
+Resultado booleano: True
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'OK'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/empty_optional_string.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 2,
+                                       u'instance': u'',
+                                       u'message': "u'' is not valid under any of the given schemas",
+                                       u'relative_path': [u'license'],
+                                       u'validator': u'anyOf',
+                                       u'validator_value': [{u'minLength': 1,
+                                                             u'type': u'string'},
+                                                            {u'type': u'null'}]}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/invalid_publisher_mbox_format.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': u'datosATmodernizacion.gob.ar',
+                                      u'message': "u'datosATmodernizacion.gob.ar' is not a u'email'",
+                                      u'relative_path': [u'publisher',
+                                                         u'mbox'],
+                                      u'validator': u'format',
+                                      u'validator_value': u'email'}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/missing_dataset.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 1,
+                                      u'message': "u'dataset' is a required property",
+                                      u'relative_path': [],
+                                      u'validator': u'required',
+                                      u'validator_value': [u'dataset',
+                                                           u'title',
+                                                           u'description',
+                                                           u'publisher',
+                                                           u'superThemeTaxonomy']}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': None},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/missing_dataset_title.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 1,
+                                       u'message': "u'title' is a required property",
+                                       u'relative_path': [],
+                                       u'validator': u'required',
+                                       u'validator_value': [u'title',
+                                                            u'description',
+                                                            u'publisher',
+                                                            u'superTheme',
+                                                            u'distribution',
+                                                            u'accrualPeriodicity',
+                                                            u'issued']}],
+                          u'status': u'ERROR',
+                          u'title': None}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/invalid_dataset_theme_type.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [{u'error_code': 2,
+                                       u'instance': u'contrataciones',
+                                       u'message': "u'contrataciones' is not valid under any of the given schemas",
+                                       u'relative_path': [u'theme'],
+                                       u'validator': u'anyOf',
+                                       u'validator_value': [{u'type': u'array'},
+                                                            {u'type': u'null'}]}],
+                          u'status': u'ERROR',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/missing_catalog_dataset.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 1,
+                                      u'message': "u'dataset' is a required property",
+                                      u'relative_path': [],
+                                      u'validator': u'required',
+                                      u'validator_value': [u'dataset',
+                                                           u'title',
+                                                           u'description',
+                                                           u'publisher',
+                                                           u'superThemeTaxonomy']}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': None},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/null_catalog_publisher.json
+
+Resultado booleano: False
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [{u'error_code': 2,
+                                      u'instance': None,
+                                      u'message': "None is not of type u'object'",
+                                      u'relative_path': [u'publisher'],
+                                      u'validator': u'type',
+                                      u'validator_value': u'object'}],
+                         u'status': u'ERROR',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'ERROR'}
+
+===== CASE END =====
+
+===== CASE BEGIN =====
+
+ARCHIVO ANALIZADO: tests/samples/minimum_data.json
+
+Resultado booleano: True
+
+Resultado completo:
+
+{u'error': {u'catalog': {u'errors': [],
+                         u'status': u'OK',
+                         u'title': u'Datos Argentina'},
+            u'dataset': [{u'errors': [],
+                          u'status': u'OK',
+                          u'title': u'Sistema de contrataciones electr\xf3nicas'}]},
+ u'status': u'OK'}
+
+===== CASE END =====
