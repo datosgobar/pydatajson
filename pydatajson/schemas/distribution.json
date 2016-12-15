@@ -31,13 +31,8 @@
 		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
 		"rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
 		"field": {
-			"anyOf": [
-				{
-					"type": "array",
-					"items": { "$ref": "field.json" }
-				},
-				{ "type": "null" }
-			]
+			"type": "array",
+			"items": { "$ref": "field.json" }
 		}
 	}
 }
