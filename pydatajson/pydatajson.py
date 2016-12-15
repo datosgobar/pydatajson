@@ -288,11 +288,11 @@ quiso decir 'http://{}'?
                 new_response["error"]["dataset"][
                     dataset_index]["status"] = "ERROR"
                 new_response["error"]["dataset"][
-                    dataset_index]["errors"].append(error_info)
+                    dataset_index]["errors"].append(validation_error.__dict__)
             else:
                 # El error está a nivel de catálogo
                 new_response["error"]["catalog"]["status"] = "ERROR"
-                new_response["error"]["catalog"]["errors"].append(error_info)
+                new_response["error"]["catalog"]["errors"].append(validation_error.__dict__)
 
             return new_response
 
