@@ -3,14 +3,38 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": "2016/04/14",
+                    "validator": "anyOf",
+                    "path": [
+                        "issued"
+                    ],
+                    "message": "u'2016/04/14' is not valid under any of the given schemas",
+                    "error_code": 2,
+                    "validator_value": [
+                        {
+                            "type": "string",
+                            "format": "date"
+                        },
+                        {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }

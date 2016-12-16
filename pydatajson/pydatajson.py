@@ -265,7 +265,7 @@ quiso decir 'http://{}'?
             }
         }
 
-        def _update_response(validation_error, response):
+        def _update_response(error, response):
             """Actualiza la respuesta por default acorde a un error de
             validación."""
             new_response = response.copy()
@@ -274,30 +274,24 @@ quiso decir 'http://{}'?
             new_response["status"] = "ERROR"
 
             error_info = {
-                "message": validation_error.message,
-                "validator": validation_error.validator,
-                "validator_value": validation_error.validator_value
+                # Error Code 1 para "campo obligatorio faltante"
+                # Error Code 2 para "error en tipo o formato de campo"
+                "error_code": 1 if error.validator == "required" else 2,
+                "message": error.message,
+                "validator": error.validator,
+                "validator_value": error.validator_value,
+                "path": error.path,
+                # La instancia validada es irrelevante si el error es de tipo 1
+                "instance": None if error.validator == "required" 
+                    else error.instance
             }
 
-            # Error Code 1 para "campo obligatorio faltante"
-            # Error Code 2 para "error en tipo o formato de campo"
-            if validation_error.validator == "required":
-                error_info["error_code"] = 1
-            else:
-                error_info["error_code"] = 2
-                error_info["instance"] = validation_error.instance
-
-            error_path = list(validation_error.path)
-
-            if len(error_path) >= 2 and error_path[0] == "dataset":
+            if len(error.path) >= 2 and error.path[0] == "dataset":
                 # El error está a nivel de un dataset particular o inferior
-                position = new_response["error"]["dataset"][error_path[1]]
-                error_info["relative_path"] = error_path[2:]
-
+                position = new_response["error"]["dataset"][error.path[1]]
             else:
                 # El error está a nivel de catálogo
                 position = new_response["error"]["catalog"]
-                error_info["relative_path"] = error_path
 
             position["status"] = "ERROR"
             position["errors"].append(error_info)

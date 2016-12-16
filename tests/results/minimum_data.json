@@ -3,11 +3,13 @@
     "error": {
         "catalog": {
             "status": "OK",
+            "errors": [],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
         ]

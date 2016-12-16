@@ -3,14 +3,26 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": null,
+                    "validator": "type",
+                    "path": [
+                        "publisher"
+                    ],
+                    "message": "None is not of type u'object'",
+                    "error_code": 2,
+                    "validator_value": "object"
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }

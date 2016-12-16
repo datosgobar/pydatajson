@@ -3,14 +3,51 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": [
+                        "Ministerio de Modernización",
+                        "datos@modernizacion.gob.ar"
+                    ],
+                    "validator": "type",
+                    "path": [
+                        "publisher"
+                    ],
+                    "message": "[u'Ministerio de Modernizaci\\xf3n', u'datos@modernizacion.gob.ar'] is not of type u'object'",
+                    "error_code": 2,
+                    "validator_value": "object"
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "ERROR",
+                "errors": [
+                    {
+                        "instance": "5120",
+                        "validator": "anyOf",
+                        "path": [
+                            "dataset",
+                            0,
+                            "distribution",
+                            0,
+                            "byteSize"
+                        ],
+                        "message": "u'5120' is not valid under any of the given schemas",
+                        "error_code": 2,
+                        "validator_value": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                ],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }

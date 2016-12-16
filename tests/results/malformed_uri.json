@@ -3,14 +3,26 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": "datos.gob.ar/superThemeTaxonomy.json",
+                    "validator": "format",
+                    "path": [
+                        "superThemeTaxonomy"
+                    ],
+                    "message": "u'datos.gob.ar/superThemeTaxonomy.json' is not a u'uri'",
+                    "error_code": 2,
+                    "validator_value": "uri"
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }

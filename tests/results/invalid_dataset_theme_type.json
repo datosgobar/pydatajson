@@ -3,14 +3,35 @@
     "error": {
         "catalog": {
             "status": "OK",
+            "errors": [],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "ERROR",
+                "errors": [
+                    {
+                        "instance": "contrataciones",
+                        "validator": "anyOf",
+                        "path": [
+                            "dataset",
+                            0,
+                            "theme"
+                        ],
+                        "message": "u'contrataciones' is not valid under any of the given schemas",
+                        "error_code": 2,
+                        "validator_value": [
+                            {
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                ],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }
