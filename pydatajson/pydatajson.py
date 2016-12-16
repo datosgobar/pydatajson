@@ -157,13 +157,29 @@ quiso decir 'http://{}'?
                 {
                     "status": "OK",  # resultado de la validación global
                     "error": {
-                        "catalog": {"status": "OK", "title": "Título Catalog"},
+                        "catalog": {
+                            "status": "OK",
+                            "errors": []
+                            "title": "Título Catalog"},
                         "dataset": [
-                            {"status": "OK", "title": "Titulo Dataset 1"},
-                            {"status": "ERROR", "title": "Titulo Dataset 2"}
+                            {
+                                "status": "OK",
+                                "errors": [],
+                                "title": "Titulo Dataset 1"
+                            },
+                            {
+                                "status": "ERROR",
+                                "errors": [error1_info, error2_info, ...],
+                                "title": "Titulo Dataset 2"
+                            }
                         ]
                     }
                 }
+
+            Donde errorN_info es un dict con la información del N-ésimo
+            error encontrado, con las siguientes claves: "path", "instance",
+            "message", "validator", "validator_value", "error_code".
+
         """
         datajson = self._json_to_dict(datajson_path)
 
