@@ -209,8 +209,8 @@ quiso decir 'http://{}'?
                 "validator_value": error.validator_value,
                 "path": list(error.path),
                 # La instancia validada es irrelevante si el error es de tipo 1
-                "instance": None if error.validator == "required" 
-                    else error.instance
+                "instance": (None if error.validator == "required" else
+                             error.instance)
             }
 
             # Identifico a qué nivel de jerarquía sucedió el error.
@@ -247,9 +247,9 @@ def main():
         python pydatajson.py ~/github/pydatajson/tests/samples/full_data.json
     """
     datajson_file = sys.argv[1]
-    dj = DataJson()
-    bool_res = dj.is_valid_catalog(datajson_file)
-    full_res = dj.validate_catalog(datajson_file)
+    dj_instance = DataJson()
+    bool_res = dj_instance.is_valid_catalog(datajson_file)
+    full_res = dj_instance.validate_catalog(datajson_file)
     print(bool_res)
     print(json.dumps(full_res, separators=(",", ": "), indent=4))
 
