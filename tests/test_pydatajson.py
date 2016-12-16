@@ -84,11 +84,13 @@ class DataJsonTestCase(unittest.TestCase):
             "error": {
                 "catalog": {
                     "status": "OK",
+                    "errors": [],
                     "title": "Datos Argentina"
                 },
                 "dataset": [
                     {
                         "status": "OK",
+                        "errors": [],
                         "title": "Sistema de contrataciones electrónicas"
                     }
 
@@ -220,11 +222,36 @@ class DataJsonTestCase(unittest.TestCase):
             "error": {
                 "catalog": {
                     "status": "ERROR",
+                    "errors": [
+                        {
+                            "instance": "",
+                            "validator": "format",
+                            "path": [
+                                "publisher",
+                                "mbox"
+                            ],
+                            "message": "u'' is not a u'email'",
+                            "error_code": 2,
+                            "validator_value": "email"
+                        },
+                        {
+                            "instance": "",
+                            "validator": "minLength",
+                            "path": [
+                                "publisher",
+                                "name"
+                            ],
+                            "message": "u'' is too short",
+                            "error_code": 2,
+                            "validator_value": 1
+                        }
+                    ],
                     "title": "Andino Demo"
                 },
                 "dataset": [
                     {
                         "status": "OK",
+                        "errors": [],
                         "title": "Dataset Demo"
                     }
                 ]
@@ -246,11 +273,36 @@ class DataJsonTestCase(unittest.TestCase):
             "error": {
                 "catalog": {
                     "status": "ERROR",
+                    "errors": [
+                        {
+                            "instance": "",
+                            "validator": "format",
+                            "path": [
+                                "publisher",
+                                "mbox"
+                            ],
+                            "message": "u'' is not a u'email'",
+                            "error_code": 2,
+                            "validator_value": "email"
+                        },
+                        {
+                            "instance": "",
+                            "validator": "minLength",
+                            "path": [
+                                "publisher",
+                                "name"
+                            ],
+                            "message": "u'' is too short",
+                            "error_code": 2,
+                            "validator_value": 1
+                        }
+                    ],
                     "title": "Andino"
                 },
                 "dataset": [
                     {
                         "status": "OK",
+                        "errors": [],
                         "title": "Dataset Demo"
                     }
                 ]
@@ -287,6 +339,12 @@ class DataJsonTestCase(unittest.TestCase):
             datajson["dataset"][0]["accrualPeriodicity"] = value
             res = self.dj.is_valid_catalog(datajson)
             self.assertFalse(res, msg=value)
+
+    @load_case_filename()
+    def test_validity_of_several_assorted_errors(self, case_filename):
+        """Prueba que las listas con info de errores se generen correctamente
+        en presencia de muchos (7) errores de distinto tipo y jerarquía."""
+        self.run_case(case_filename)
 
 
 if __name__ == '__main__':
