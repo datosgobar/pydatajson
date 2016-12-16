@@ -273,6 +273,8 @@ quiso decir 'http://{}'?
             # El status del catálogo entero será ERROR
             new_response["status"] = "ERROR"
 
+            # Adapto la información del ValidationError recibido a los fines
+            # del validador de DataJsons
             error_info = {
                 # Error Code 1 para "campo obligatorio faltante"
                 # Error Code 2 para "error en tipo o formato de campo"
@@ -286,6 +288,7 @@ quiso decir 'http://{}'?
                     else error.instance
             }
 
+            # Identifico a qué nivel de jerarquía sucedió el error.
             if len(error.path) >= 2 and error.path[0] == "dataset":
                 # El error está a nivel de un dataset particular o inferior
                 position = new_response["error"]["dataset"][error.path[1]]
@@ -321,7 +324,7 @@ def main():
     datajson_file = sys.argv[1]
     dj = DataJson()
     bool_res = dj.is_valid_catalog(datajson_file)
-    full_res = dj._validate_catalog(datajson_file)
+    full_res = dj.validate_catalog(datajson_file)
     pprint(bool_res)
     pprint(full_res)
 
