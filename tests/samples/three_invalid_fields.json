@@ -100,7 +100,7 @@
                         {
                             "title": "procedimiento_id",
                             "type": "integer",
-                            "description": "123"
+                            "description": 123
                         },
                         {
                             "title": "organismo_unidad_operativa_contrataciones_id",
