@@ -3,6 +3,22 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": null,
+                    "validator": "required",
+                    "path": [],
+                    "message": "u'dataset' is a required property",
+                    "error_code": 1,
+                    "validator_value": [
+                        "dataset",
+                        "title",
+                        "description",
+                        "publisher",
+                        "superThemeTaxonomy"
+                    ]
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": null

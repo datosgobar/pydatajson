@@ -1,0 +1,152 @@
+{
+    "status": "ERROR",
+    "error": {
+        "catalog": {
+            "status": "ERROR",
+            "errors": [
+                {
+                    "instance": null,
+                    "validator": "required",
+                    "path": [],
+                    "message": "u'title' is a required property",
+                    "error_code": 1,
+                    "validator_value": [
+                        "dataset",
+                        "title",
+                        "description",
+                        "publisher",
+                        "superThemeTaxonomy"
+                    ]
+                },
+                {
+                    "instance": "",
+                    "validator": "anyOf",
+                    "path": [
+                        "rights"
+                    ],
+                    "message": "u'' is not valid under any of the given schemas",
+                    "error_code": 2,
+                    "validator_value": [
+                        {
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                {
+                    "instance": "datosmodernizacion.gob.ar",
+                    "validator": "format",
+                    "path": [
+                        "publisher",
+                        "mbox"
+                    ],
+                    "message": "u'datosmodernizacion.gob.ar' is not a u'email'",
+                    "error_code": 2,
+                    "validator_value": "email"
+                },
+                {
+                    "instance": "datos.gob.ar",
+                    "validator": "anyOf",
+                    "path": [
+                        "homepage"
+                    ],
+                    "message": "u'datos.gob.ar' is not valid under any of the given schemas",
+                    "error_code": 2,
+                    "validator_value": [
+                        {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            ],
+            "title": null
+        },
+        "dataset": [
+            {
+                "status": "ERROR",
+                "errors": [
+                    {
+                        "instance": 123,
+                        "validator": "anyOf",
+                        "path": [
+                            "dataset",
+                            0,
+                            "distribution",
+                            0,
+                            "field",
+                            0,
+                            "description"
+                        ],
+                        "message": "123 is not valid under any of the given schemas",
+                        "error_code": 2,
+                        "validator_value": [
+                            {
+                                "minLength": 1,
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    {
+                        "instance": [
+                            "title",
+                            "clase_convocatoria",
+                            "type",
+                            "string",
+                            "description",
+                            "Clase de la convocatoria."
+                        ],
+                        "validator": "type",
+                        "path": [
+                            "dataset",
+                            0,
+                            "distribution",
+                            0,
+                            "field",
+                            9
+                        ],
+                        "message": "[u'title', u'clase_convocatoria', u'type', u'string', u'description', u'Clase de la convocatoria.'] is not of type u'object'",
+                        "error_code": 2,
+                        "validator_value": "object"
+                    },
+                    {
+                        "instance": [
+                            "string"
+                        ],
+                        "validator": "anyOf",
+                        "path": [
+                            "dataset",
+                            0,
+                            "distribution",
+                            0,
+                            "field",
+                            10,
+                            "type"
+                        ],
+                        "message": "[u'string'] is not valid under any of the given schemas",
+                        "error_code": 2,
+                        "validator_value": [
+                            {
+                                "minLength": 1,
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                ],
+                "title": "Sistema de contrataciones electrónicas"
+            }
+        ]
+    }
+}

@@ -3,14 +3,26 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": "",
+                    "validator": "minLength",
+                    "path": [
+                        "description"
+                    ],
+                    "message": "u'' is too short",
+                    "error_code": 2,
+                    "validator_value": 1
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }

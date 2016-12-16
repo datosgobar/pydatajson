@@ -3,14 +3,30 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": null,
+                    "validator": "required",
+                    "path": [],
+                    "message": "u'description' is a required property",
+                    "error_code": 1,
+                    "validator_value": [
+                        "dataset",
+                        "title",
+                        "description",
+                        "publisher",
+                        "superThemeTaxonomy"
+                    ]
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }

@@ -3,14 +3,27 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": "datosATmodernizacion.gob.ar",
+                    "validator": "format",
+                    "path": [
+                        "publisher",
+                        "mbox"
+                    ],
+                    "message": "u'datosATmodernizacion.gob.ar' is not a u'email'",
+                    "error_code": 2,
+                    "validator_value": "email"
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }
