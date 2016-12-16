@@ -16,7 +16,7 @@
                 "name": { "$ref": "mixed-types.json#nonEmptyString" },
                 "mbox": {
                     "type": "string",
-                       "format": "email"
+                    "format": "email"
                 }
             }
         },
