@@ -280,7 +280,7 @@ quiso decir 'http://{}'?
                 "message": error.message,
                 "validator": error.validator,
                 "validator_value": error.validator_value,
-                "path": error.path,
+                "path": list(error.path),
                 # La instancia validada es irrelevante si el error es de tipo 1
                 "instance": None if error.validator == "required" 
                     else error.instance
