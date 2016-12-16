@@ -1,84 +1,84 @@
 {
-	"$schema": "http://json-schema.org/draft-04/schema#",
-	"type": "object",
-	"required": [
-		"title",
-		"description",
-		"publisher",
-		"superTheme",
-		"distribution",
-		"accrualPeriodicity",
-		"issued"
-	],
-	"properties": {
-		"publisher": {
-			"type": "object",
-			"required": ["name"],
-			"properties": {
-				"name": { "$ref": "mixed-types.json#nonEmptyString" },
-				"mbox": {
-					"anyOf": [
-						{
-							"type": "string",
-							"format": "email"
-						},
-						{ "type": "null" }
-					]
-				}
-			}
-		},
-		"distribution": {
-		       "type": "array",
-		       "items": { "$ref": "distribution.json" }
-		},
-		"title": { "$ref": "mixed-types.json#nonEmptyString" },
-		"description": { "$ref": "mixed-types.json#nonEmptyString" },
-		"issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
-		"superTheme": { "type": "array" },
-		"accrualPeriodicity": {
-			"anyOf" : [
-				{"type": "string", "pattern": "^R/P\\d+(\\.\\d+)?[Y|M|W|D]$"},
-				{"type": "string", "pattern": "^R/PT\\d+(\\.\\d+)?[H|M|S]$"},
-				{"type": "string", "pattern": "^eventual$"}
-			]
-		},
-		"contactPoint": {
-			"type": "object",
-			"properties": {
-				"fn": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-				"hasEmail": {
-					"anyOf": [
-						{
-							"type": "string",
-							"format": "email"
-						},
-						{ "type": "null" }
-					]
-				}
-			}
-		},
-		"theme": { "$ref": "mixed-types.json#arrayOrNull" },
-		"keyword": { "$ref": "mixed-types.json#arrayOrNull" },
-		"modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
-		"identifier": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-		"language": { "$ref": "mixed-types.json#arrayOrNull" },
-		"spatial": {
-			"anyOf": [
-				{ "type": "string" },
-				{ "type": "array" },
-				{ "type": "null" }
-			]
-		},
-		"temporal": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-		"landingPage": {
-					"anyOf": [
-						{
-							"type": "string",
-							"format": "uri"
-						},
-						{ "type": "null" }
-					]
-		},
-		"license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
-	}
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": [
+        "title",
+        "description",
+        "publisher",
+        "superTheme",
+        "distribution",
+        "accrualPeriodicity",
+        "issued"
+    ],
+    "properties": {
+        "publisher": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+                "name": { "$ref": "mixed-types.json#nonEmptyString" },
+                "mbox": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        { "type": "null" }
+                    ]
+                }
+            }
+        },
+        "distribution": {
+               "type": "array",
+               "items": { "$ref": "distribution.json" }
+        },
+        "title": { "$ref": "mixed-types.json#nonEmptyString" },
+        "description": { "$ref": "mixed-types.json#nonEmptyString" },
+        "issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
+        "superTheme": { "type": "array" },
+        "accrualPeriodicity": {
+            "anyOf" : [
+                {"type": "string", "pattern": "^R/P\\d+(\\.\\d+)?[Y|M|W|D]$"},
+                {"type": "string", "pattern": "^R/PT\\d+(\\.\\d+)?[H|M|S]$"},
+                {"type": "string", "pattern": "^eventual$"}
+            ]
+        },
+        "contactPoint": {
+            "type": "object",
+            "properties": {
+                "fn": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+                "hasEmail": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        { "type": "null" }
+                    ]
+                }
+            }
+        },
+        "theme": { "$ref": "mixed-types.json#arrayOrNull" },
+        "keyword": { "$ref": "mixed-types.json#arrayOrNull" },
+        "modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
+        "identifier": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+        "language": { "$ref": "mixed-types.json#arrayOrNull" },
+        "spatial": {
+            "anyOf": [
+                { "type": "string" },
+                { "type": "array" },
+                { "type": "null" }
+            ]
+        },
+        "temporal": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+        "landingPage": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        { "type": "null" }
+                    ]
+        },
+        "license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" }
+    }
 }
