@@ -16,7 +16,6 @@ import os.path
 from urlparse import urljoin, urlparse
 import warnings
 import json
-from pprint import pprint
 import jsonschema
 import requests
 
@@ -174,80 +173,6 @@ quiso decir 'http://{}'?
             "error": {
                 "catalog": {
                     "status": "OK",
-                    "title": datajson.get("title")
-                },
-                # "dataset" contiene lista de rtas default si el catálogo
-                # contiene la clave "dataset" y además su valor es una lista.
-                # En caso contrario "dataset" es None.
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "title": dataset.get("title")
-                    } for dataset in datajson["dataset"]
-                ] if ("dataset" in datajson and
-                      isinstance(datajson["dataset"], list)) else None
-            }
-        }
-
-        def _update_response(validation_error, response):
-            """Actualiza la respuesta por default acorde a un error de
-            validación."""
-            new_response = response.copy()
-
-            # El status del catálogo entero será ERROR
-            new_response["status"] = "ERROR"
-
-            path = validation_error.path
-
-            if len(path) >= 2 and path[0] == "dataset":
-                # El error está a nivel de un dataset particular o inferior
-                new_response["error"]["dataset"][path[1]]["status"] = "ERROR"
-            else:
-                # El error está a nivel de catálogo
-                new_response["error"]["catalog"]["status"] = "ERROR"
-
-            return new_response
-
-        # Genero la lista de errores en la instancia a validar
-        errors_iterator = self.validator.iter_errors(datajson)
-
-        final_response = default_response.copy()
-        for error in errors_iterator:
-            final_response = _update_response(error, final_response)
-
-        return final_response
-
-    def _validate_catalog(self, datajson_path):
-        """Analiza un data.json registrando los errores que encuentra.
-
-        Chequea que el data.json tiene todos los campos obligatorios y que
-        siguen la estructura definida en el schema.
-
-        Args:
-            datajson_path (str): Path al archivo data.json a ser validado.
-
-        Returns:
-            dict: Diccionario resumen de los errores encontrados::
-
-                {
-                    "status": "OK",  # resultado de la validación global
-                    "error": {
-                        "catalog": {"status": "OK", "title": "Título Catalog"},
-                        "dataset": [
-                            {"status": "OK", "title": "Titulo Dataset 1"},
-                            {"status": "ERROR", "title": "Titulo Dataset 2"}
-                        ]
-                    }
-                }
-        """
-        datajson = self._json_to_dict(datajson_path)
-
-        # La respuesta por default se devuelve si no hay errores
-        default_response = {
-            "status": "OK",
-            "error": {
-                "catalog": {
-                    "status": "OK",
                     "title": datajson.get("title"),
                     "errors": []
                 },
@@ -325,8 +250,8 @@ def main():
     dj = DataJson()
     bool_res = dj.is_valid_catalog(datajson_file)
     full_res = dj.validate_catalog(datajson_file)
-    pprint(bool_res)
-    pprint(full_res)
+    print(bool_res)
+    print(json.dumps(full_res, separators=(",", ": "), indent=4))
 
 
 if __name__ == '__main__':
