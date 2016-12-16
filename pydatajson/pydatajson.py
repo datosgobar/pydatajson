@@ -54,6 +54,10 @@ class DataJson(object):
         directorio base (absoluto) y el archivo desde el que se referencia el
         directorio.
 
+        Para poder validar formatos, un Validador requiere que se provea
+        explícitamente un FormatChecker. Actualmente se usa el default de la
+        librería, jsonschema.FormatChecker().
+
         Args:
             schema_filename (str): Nombre del archivo que contiene el esquema
                 validador "maestro".
@@ -130,7 +134,8 @@ quiso decir 'http://{}'?
         """Valida que un archivo `data.json` cumpla con el schema definido.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
-        siguen la estructura definida en el schema.
+        tanto los campos obligatorios como los opcionales siguen la estructura
+        definida en el schema.
 
         Args:
             datajson_path (str): Path al archivo data.json a ser validado.
@@ -146,7 +151,8 @@ quiso decir 'http://{}'?
         """Analiza un data.json registrando los errores que encuentra.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
-        siguen la estructura definida en el schema.
+        tanto los campos obligatorios como los opcionales siguen la estructura
+        definida en el schema.
 
         Args:
             datajson_path (str): Path al archivo data.json a ser validado.
