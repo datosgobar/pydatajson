@@ -1,7 +1,7 @@
 History
 =======
 
-0.1.4 (2016-12-16)
+0.1.3 (2016-12-19)
 ------------------
 
 * Al resultado de `DataJson.validate_catalog()` se le incorpora una lista (`"errors"`) con información de los errores encontrados durante la validación en cada nivel de jerarquía ("catalog" y cada elemento de "dataset")
