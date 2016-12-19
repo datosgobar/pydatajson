@@ -104,14 +104,15 @@ print validation_report
     "error": {
         "catalog": {
             "status": "OK",
+            "errors": [],
             "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "OK",
+                "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }
-
         ]
     }
 }
@@ -120,7 +121,7 @@ print validation_report
 #### Archivo data.json remoto
 
 ```python
-datajson_url = "http://104.131.35.253/data.json"
+datajson_url = "http://181.209.63.71/data.json"
 validation_result = dj.is_valid_catalog(datajson_url)
 validation_report = dj.validate_catalog(datajson_url)
 
@@ -133,24 +134,37 @@ print validation_report
     "error": {
         "catalog": {
             "status": "ERROR",
-            "title": "Título del portal"
+            "errors": [
+                {
+                    "instance": "",
+                    "validator": "format",
+                    "path": [
+                        "publisher",
+                        "mbox"
+                    ],
+                    "message": "u'' is not a u'email'",
+                    "error_code": 2,
+                    "validator_value": "email"
+                },
+                {
+                    "instance": "",
+                    "validator": "minLength",
+                    "path": [
+                        "publisher",
+                        "name"
+                    ],
+                    "message": "u'' is too short",
+                    "error_code": 2,
+                    "validator_value": 1
+                }
+            ],
+            "title": "Andino"
         },
         "dataset": [
             {
-                "status": "ERROR",
-                "title": "Dataset ejemplo 04"
-            },
-            {
-                "status": "ERROR",
-                "title": "Dataset ejemplo 03"
-            },
-            {
-                "status": "ERROR",
-                "title": "Dataset ejemplo 02"
-            },
-            {
-                "status": "ERROR",
-                "title": "Dataset ejemplo 01"
+                "status": "OK",
+                "errors": [],
+                "title": "Dataset Demo"
             }
         ]
     }

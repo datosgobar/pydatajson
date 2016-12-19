@@ -1,8 +1,8 @@
 {
-    "title": "Datos Argentina",
+    "description": "Portal de Datos Abiertos del Gobierno de la República Argentina",
     "publisher": {
         "name": "Ministerio de Modernización",
-        "mbox": "datos@modernizacion.gob.ar"
+        "mbox": "datosmodernizacion.gob.ar"
     },
     "issued": "2016-04-14T19:48:05.433640-03:00",
     "modified": "2016-04-19T19:48:05.433640-03:00",
@@ -43,12 +43,13 @@
         }
     ],
     "license": "Open Data Commons Open Database License 1.0",
-    "homepage": "http://datos.gob.ar",
-    "rights": "Derechos especificados en la licencia.",
+    "homepage": "datos.gob.ar",
+    "rights": "",
     "spatial": "ARG",
     "dataset": [
         {
             "title": "Sistema de contrataciones electrónicas",
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones",
                 "mbox": "onc@modernizacion.gob.ar"
@@ -98,7 +99,7 @@
                         {
                             "title": "procedimiento_id",
                             "type": "integer",
-                            "description": "Identificador único del procedimiento de contratación"
+                            "description": 123
                         },
                         {
                             "title": "organismo_unidad_operativa_contrataciones_id",
@@ -140,14 +141,14 @@
                             "type": "string",
                             "description": "Modalidad bajo la cual se realiza la convocatoria."
                         },
-                        {
-                            "title": "clase_convocatoria",
-                            "type": "string",
-                            "description": "Clase de la convocatoria."
-                        },
+			[
+                            "title", "clase_convocatoria",
+                            "type", "string",
+                            "description", "Clase de la convocatoria."
+			],
                         {
                             "title": "objeto_convocatoria",
-                            "type": "string",
+                            "type": ["string"],
                             "description": "Objeto/objetivo de la convocatoria"
                         }
                     ]

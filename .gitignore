@@ -67,3 +67,6 @@ target/
 
 # Vim swap files
 *.swp
+
+# Archivos de desarrollo
+allresults.py

@@ -3,6 +3,125 @@
     "error": {
         "catalog": {
             "status": "ERROR",
+            "errors": [
+                {
+                    "instance": {
+                        "publisher": {
+                            "mbox": "onc@modernizacion.gob.ar",
+                            "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
+                        },
+                        "landingPage": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+                        "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
+                        "superTheme": [
+                            "ECON"
+                        ],
+                        "title": "Sistema de contrataciones electrónicas",
+                        "issued": "2016-04-14T19:48:05.433640-03:00",
+                        "temporal": "2015-01-01/2015-12-31",
+                        "modified": "2016-04-19T19:48:05.433640-03:00",
+                        "language": [
+                            "spa"
+                        ],
+                        "theme": [
+                            "contrataciones",
+                            "compras",
+                            "convocatorias"
+                        ],
+                        "keyword": [
+                            "bienes",
+                            "compras",
+                            "contrataciones"
+                        ],
+                        "accrualPeriodicity": "R/P1Y",
+                        "spatial": "ARG",
+                        "license": "Open Data Commons Open Database License 1.0",
+                        "contactPoint": {
+                            "hasEmail": "onc-compraselectronicas@modernizacion.gob.ar",
+                            "fn": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones. Dirección de Compras Electrónicas."
+                        },
+                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                        "distribution": [
+                            {
+                                "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+                                "rights": "Derechos especificados en la licencia.",
+                                "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                                "license": "Open Data Commons Open Database License 1.0",
+                                "title": "Convocatorias abiertas durante el año 2015",
+                                "byteSize": 5120,
+                                "format": "CSV",
+                                "mediaType": "text/csv",
+                                "modified": "2016-04-19T19:48:05.433640-03:00",
+                                "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+                                "field": [
+                                    {
+                                        "type": "integer",
+                                        "description": "Identificador único del procedimiento de contratación",
+                                        "title": "procedimiento_id"
+                                    },
+                                    {
+                                        "type": "integer",
+                                        "description": "Identificador único del organismo que realiza la convocatoria. Organismo de máximo nivel jerárquico al que pertenece la unidad operativa de contrataciones.",
+                                        "title": "organismo_unidad_operativa_contrataciones_id"
+                                    },
+                                    {
+                                        "type": "integer",
+                                        "description": "Identificador único de la unidad operativa de contrataciones",
+                                        "title": "unidad_operativa_contrataciones_id"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "description": "Organismo que realiza la convocatoria. Organismo de máximo nivel jerárquico al que pertenece la unidad operativa de contrataciones.",
+                                        "title": "organismo_unidad_operativa_contrataciones_desc"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "description": "Unidad operativa de contrataciones.",
+                                        "title": "unidad_operativa_contrataciones_desc"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "description": "Tipo de procedimiento al que se adecua la contratación.",
+                                        "title": "tipo_procedimiento_contratacion"
+                                    },
+                                    {
+                                        "type": "date",
+                                        "description": "Año en el que se inició el proceso de la convocatoria.",
+                                        "title": "ejercicio_procedimiento_anio"
+                                    },
+                                    {
+                                        "type": "date",
+                                        "description": "Fecha de publicación de la convocatoria en formato AAAA-MM-DD, ISO 8601.",
+                                        "title": "fecha_publicacion_convocatoria"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "description": "Modalidad bajo la cual se realiza la convocatoria.",
+                                        "title": "modalidad_convocatoria"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "description": "Clase de la convocatoria.",
+                                        "title": "clase_convocatoria"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "description": "Objeto/objetivo de la convocatoria",
+                                        "title": "objeto_convocatoria"
+                                    }
+                                ],
+                                "issued": "2016-04-14T19:48:05.433640-03:00"
+                            }
+                        ]
+                    },
+                    "validator": "type",
+                    "path": [
+                        "dataset"
+                    ],
+                    "message": "{u'publisher': {u'mbox': u'onc@modernizacion.gob.ar', u'name': u'Ministerio de Modernizaci\\xf3n. Secretar\\xeda de Modernizaci\\xf3n Administrativa. Oficina Nacional de Contrataciones'}, u'landingPage': u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra', u'description': u'Datos correspondientes al Sistema de Contrataciones Electr\\xf3nicas (Argentina Compra)', u'superTheme': [u'ECON'], u'title': u'Sistema de contrataciones electr\\xf3nicas', u'issued': u'2016-04-14T19:48:05.433640-03:00', u'temporal': u'2015-01-01/2015-12-31', u'modified': u'2016-04-19T19:48:05.433640-03:00', u'language': [u'spa'], u'theme': [u'contrataciones', u'compras', u'convocatorias'], u'keyword': [u'bienes', u'compras', u'contrataciones'], u'accrualPeriodicity': u'R/P1Y', u'spatial': u'ARG', u'license': u'Open Data Commons Open Database License 1.0', u'contactPoint': {u'hasEmail': u'onc-compraselectronicas@modernizacion.gob.ar', u'fn': u'Ministerio de Modernizaci\\xf3n. Secretar\\xeda de Modernizaci\\xf3n Administrativa. Oficina Nacional de Contrataciones. Direcci\\xf3n de Compras Electr\\xf3nicas.'}, u'identifier': u'99db6631-d1c9-470b-a73e-c62daa32c420', u'distribution': [{u'accessURL': u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a', u'rights': u'Derechos especificados en la licencia.', u'description': u'Listado de las convocatorias abiertas durante el a\\xf1o 2015 en el sistema de contrataciones electr\\xf3nicas', u'license': u'Open Data Commons Open Database License 1.0', u'title': u'Convocatorias abiertas durante el a\\xf1o 2015', u'byteSize': 5120, u'format': u'CSV', u'mediaType': u'text/csv', u'modified': u'2016-04-19T19:48:05.433640-03:00', u'downloadURL': u'http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv', u'field': [{u'type': u'integer', u'description': u'Identificador \\xfanico del procedimiento de contrataci\\xf3n', u'title': u'procedimiento_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico del organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_id'}, {u'type': u'integer', u'description': u'Identificador \\xfanico de la unidad operativa de contrataciones', u'title': u'unidad_operativa_contrataciones_id'}, {u'type': u'string', u'description': u'Organismo que realiza la convocatoria. Organismo de m\\xe1ximo nivel jer\\xe1rquico al que pertenece la unidad operativa de contrataciones.', u'title': u'organismo_unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Unidad operativa de contrataciones.', u'title': u'unidad_operativa_contrataciones_desc'}, {u'type': u'string', u'description': u'Tipo de procedimiento al que se adecua la contrataci\\xf3n.', u'title': u'tipo_procedimiento_contratacion'}, {u'type': u'date', u'description': u'A\\xf1o en el que se inici\\xf3 el proceso de la convocatoria.', u'title': u'ejercicio_procedimiento_anio'}, {u'type': u'date', u'description': u'Fecha de publicaci\\xf3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.', u'title': u'fecha_publicacion_convocatoria'}, {u'type': u'string', u'description': u'Modalidad bajo la cual se realiza la convocatoria.', u'title': u'modalidad_convocatoria'}, {u'type': u'string', u'description': u'Clase de la convocatoria.', u'title': u'clase_convocatoria'}, {u'type': u'string', u'description': u'Objeto/objetivo de la convocatoria', u'title': u'objeto_convocatoria'}], u'issued': u'2016-04-14T19:48:05.433640-03:00'}]} is not of type u'array'",
+                    "error_code": 2,
+                    "validator_value": "array"
+                }
+            ],
             "title": "Datos Argentina"
         },
         "dataset": null

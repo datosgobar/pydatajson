@@ -84,11 +84,13 @@ class DataJsonTestCase(unittest.TestCase):
             "error": {
                 "catalog": {
                     "status": "OK",
+                    "errors": [],
                     "title": "Datos Argentina"
                 },
                 "dataset": [
                     {
                         "status": "OK",
+                        "errors": [],
                         "title": "Sistema de contrataciones electrónicas"
                     }
 
@@ -99,10 +101,8 @@ class DataJsonTestCase(unittest.TestCase):
 
     @load_case_filename()
     def test_validity_of_minimum_data(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_empty_minimum_data(self, case_filename):
+        """Un datajson con valores correctos únicamente para las claves
+        requeridas."""
         self.run_case(case_filename)
 
     # Tests de inputs inválidos
@@ -132,6 +132,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     @load_case_filename()
     def test_validity_of_multiple_missing_descriptions(self, case_filename):
+        """Datajson sin descripción de catálogo ni de su único dataset."""
         self.run_case(case_filename)
 
     # Tests de TIPOS DE CAMPOS
@@ -173,30 +174,37 @@ class DataJsonTestCase(unittest.TestCase):
 
     @load_case_filename()
     def test_validity_of_empty_mandatory_string(self, case_filename):
+        """La clave requerida catalog["description"] NO puede ser str vacía."""
         self.run_case(case_filename)
 
     @load_case_filename()
     def test_validity_of_empty_optional_string(self, case_filename):
+        """La clave opcional dataset["license"] SI puede ser str vacía."""
         self.run_case(case_filename)
 
     @load_case_filename()
     def test_validity_of_malformed_accrualperiodicity(self, case_filename):
+        """dataset["accrualPeriodicity"] no cumple con el patrón esperado."""
         self.run_case(case_filename)
 
     @load_case_filename()
     def test_validity_of_malformed_date(self, case_filename):
+        """catalog["issued"] no es una fecha ISO 8601 válida."""
         self.run_case(case_filename)
 
     @load_case_filename()
     def test_validity_of_malformed_datetime(self, case_filename):
+        """catalog["issued"] no es una fecha y hora ISO 8601 válida."""
         self.run_case(case_filename)
 
     @load_case_filename()
     def test_validity_of_malformed_email(self, case_filename):
+        """catalog["publisher"]["mbox"] no es un email válido."""
         self.run_case(case_filename)
 
     @load_case_filename()
     def test_validity_of_malformed_uri(self, case_filename):
+        """catalog["superThemeTaxonomy"] no es una URI válida."""
         self.run_case(case_filename)
 
     @load_case_filename()
@@ -207,9 +215,15 @@ class DataJsonTestCase(unittest.TestCase):
     def test_validity_of_missing_dataset(self, case_filename):
         self.run_case(case_filename)
 
+    @load_case_filename()
+    def test_validity_of_several_assorted_errors(self, case_filename):
+        """Prueba que las listas con info de errores se generen correctamente
+        en presencia de 7 errores de distinto tipo y jerarquía."""
+        self.run_case(case_filename)
+
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette()
-    def test_validate_catalog_remote_datajson(self):
+    def test_validation_of_remote_datajsons(self):
         """ Testea `validate_catalog` contra dos data.json remotos."""
 
         # data.json remoto #1
@@ -224,11 +238,36 @@ class DataJsonTestCase(unittest.TestCase):
             "error": {
                 "catalog": {
                     "status": "ERROR",
+                    "errors": [
+                        {
+                            "instance": "",
+                            "validator": "format",
+                            "path": [
+                                "publisher",
+                                "mbox"
+                            ],
+                            "message": "u'' is not a u'email'",
+                            "error_code": 2,
+                            "validator_value": "email"
+                        },
+                        {
+                            "instance": "",
+                            "validator": "minLength",
+                            "path": [
+                                "publisher",
+                                "name"
+                            ],
+                            "message": "u'' is too short",
+                            "error_code": 2,
+                            "validator_value": 1
+                        }
+                    ],
                     "title": "Andino Demo"
                 },
                 "dataset": [
                     {
                         "status": "OK",
+                        "errors": [],
                         "title": "Dataset Demo"
                     }
                 ]
@@ -250,11 +289,36 @@ class DataJsonTestCase(unittest.TestCase):
             "error": {
                 "catalog": {
                     "status": "ERROR",
+                    "errors": [
+                        {
+                            "instance": "",
+                            "validator": "format",
+                            "path": [
+                                "publisher",
+                                "mbox"
+                            ],
+                            "message": "u'' is not a u'email'",
+                            "error_code": 2,
+                            "validator_value": "email"
+                        },
+                        {
+                            "instance": "",
+                            "validator": "minLength",
+                            "path": [
+                                "publisher",
+                                "name"
+                            ],
+                            "message": "u'' is too short",
+                            "error_code": 2,
+                            "validator_value": 1
+                        }
+                    ],
                     "title": "Andino"
                 },
                 "dataset": [
                     {
                         "status": "OK",
+                        "errors": [],
                         "title": "Dataset Demo"
                     }
                 ]

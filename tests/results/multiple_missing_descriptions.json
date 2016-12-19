@@ -3,18 +3,50 @@
     "error": {
         "catalog": {
             "status": "ERROR",
-            "title": "Título del Catálogo 1"
+            "errors": [
+                {
+                    "instance": null,
+                    "validator": "required",
+                    "path": [],
+                    "message": "u'description' is a required property",
+                    "error_code": 1,
+                    "validator_value": [
+                        "dataset",
+                        "title",
+                        "description",
+                        "publisher",
+                        "superThemeTaxonomy"
+                    ]
+                }
+            ],
+            "title": "Datos Argentina"
         },
         "dataset": [
             {
                 "status": "ERROR",
-                "title": "Título del Dataset 1"
-            },
-            {
-                "status": "ERROR",
-                "title": "Título del Dataset 2"
+                "errors": [
+                    {
+                        "instance": null,
+                        "validator": "required",
+                        "path": [
+                            "dataset",
+                            0
+                        ],
+                        "message": "u'description' is a required property",
+                        "error_code": 1,
+                        "validator_value": [
+                            "title",
+                            "description",
+                            "publisher",
+                            "superTheme",
+                            "distribution",
+                            "accrualPeriodicity",
+                            "issued"
+                        ]
+                    }
+                ],
+                "title": "Sistema de contrataciones electrónicas"
             }
         ]
     }
 }
-
