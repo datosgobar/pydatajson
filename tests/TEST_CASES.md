@@ -1,6 +1,6 @@
 # Estrategia de testeo para `pydatajson`
 
-## Tests de `is_valid_catalog` y `validate_catalog`
+## Tests de `is_valid_catalog` y `validate_catalog` locales
 
 Estas dos funciones son las principales herramientas de validación de archivos `data.json` (de ahroa en más, "datajsons"). Para testearlas, se utilizan datajsons de prueba guardados en [`samples/`](samples/).
 
@@ -23,3 +23,6 @@ Todos los demás datajsons (23) son casos de testeo inválidos, y los errores qu
 - una clave requerida u opcional está presente, pero el tipo del valor que toma no es el esperado, o
 - una clave requerida u opcional está presente y su valor es del tipo esperado, pero el formato no es el correcto.
 
+## Tests de `is_valid_catalog` y `validate_catalog` remotos
+
+Como ambas funciones tienen la capacidad de validar un datajson en una ubicación remota en caso de que se les pase una URL bien formada, la función `test_correctness_of_accrualPeriodicity_regex`.

@@ -207,7 +207,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette()
-    def test_validate_catalog_remote_datajson(self):
+    def test_validation_of_remote_datajsons(self):
         """ Testea `validate_catalog` contra dos data.json remotos."""
 
         # data.json remoto #1
