@@ -257,6 +257,36 @@ quiso decir 'http://{}'?
 
         return final_response
 
+    def generate_datasets_report(self, catalogs, report_path):
+        """Genera reporte de datasets de catálogos.
+
+        Args:
+            catalogs (str o list):
+            report_path (str):
+        """
+        pass
+
+    def generate_harvester_config(self, datasets_report, config_path):
+        """Genera archivo de configuración del harvester según el reporte.
+
+        Args:
+            datasets_report (str):
+            config_path (str):
+        """
+        pass
+
+    def generate_harvestable_catalogs(self, catalogs, datasets_report,
+                                      write_to_file, files_dir):
+        """Genera archivo de configuración del harvester según el reporte.
+
+        Args:
+            datasets_report (str):
+            config_path (str):
+            write_to_file (bool):
+            files_dir (str):
+        """
+        pass
+
 
 def main():
     """Permite ejecutar el módulo por línea de comandos.
