@@ -12,12 +12,14 @@ from __future__ import print_function
 from __future__ import with_statement
 
 import sys
+import io
 import os.path
 from urlparse import urljoin, urlparse
 import warnings
 import json
 import jsonschema
 import requests
+import unicodecsv as csv
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -264,7 +266,66 @@ quiso decir 'http://{}'?
             catalogs (str o list):
             report_path (str):
         """
-        pass
+        report_fieldnames = [
+            'catalog_metadata_url', 'catalog_title', 'catalog_description',
+            'dataset_title', 'dataset_accrualPeriodicity',
+            'valid_dataset_metadata', 'harvest', 'dataset_description',
+            'dataset_publisher_name', 'dataset_superTheme', 'dataset_theme',
+            'dataset_landingPage', 'distributions_list'
+        ]
+
+        # Si se pasa un único catálogo, convertirlo en lista
+        if isinstance(catalogs, (dict, str, unicode)):
+            catalogs = [catalogs]
+
+        with io.open(report_path, 'w', encoding='utf-8') as output:
+            writer = csv.DictWriter(output, report_fieldnames)
+            writer.writeheader()
+
+            for catalog in catalogs:
+                assert isinstance(catalog, (dict, str, unicode))
+
+                if isinstance(catalog, (str, unicode)):
+                    catalog_metadata_url = catalog
+                    catalog = self._json_to_dict(catalog)
+                else:
+                    catalog_metadata_url = None
+
+                validation = self.validate_catalog(catalog)
+
+                for dataset, index in enumerate(catalog["dataset"]):
+
+                    def _stringify_distribution(distribution):
+                        title = distribution.get("title")
+                        url = distribution.get("downloadURL")
+
+                        return "\"{}\": {}".format(title, url)
+
+                    distributions_list = "\n".join(
+                        [_stringify_distribution(d) for d in
+                         dataset["distribution"]])
+
+                    dataset_report = {
+                        "catalog_metadata_url": catalog_metadata_url,
+                        "catalog_title": catalog.get("title"),
+                        "catalog_description": catalog.get("description"),
+                        "dataset_title": dataset.get("title"),
+                        "dataset_accrualPeriodicity": dataset.get(
+                            "accrualPeriodicity"),
+                        "valid_dataset_metadata": (validation["error"][
+                            "datasest"][index]["status"] == "OK"),
+                        "harvest": False,
+                        "dataset_description": dataset.get("description"),
+                        # Esto explota si publisher no es un dict
+                        "dataset_publisher_name": dataset.get("publisher").get(
+                            "name"),
+                        "dataset_superTheme": dataset.get("superTheme"),
+                        "dataset_theme": dataset.get("theme"),
+                        "dataset_landingPage": dataset.get("landingPage"),
+                        "distributions_list": distributions_list
+                    }
+
+                    writer.writerow(dataset_report)
 
     def generate_harvester_config(self, datasets_report, config_path):
         """Genera archivo de configuración del harvester según el reporte.
