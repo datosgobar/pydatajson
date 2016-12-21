@@ -332,10 +332,11 @@ quiso decir 'http://{}'?
         """
         report_fieldnames = [
             'catalog_metadata_url', 'catalog_title', 'catalog_description',
-            'dataset_index', 'dataset_title', 'dataset_accrualPeriodicity',
-            'valid_dataset_metadata', 'harvest', 'dataset_description',
-            'dataset_publisher_name', 'dataset_superTheme', 'dataset_theme',
-            'dataset_landingPage', 'distributions_list'
+            'valid_catalog_metadata', 'dataset_index', 'dataset_title',
+            'dataset_accrualPeriodicity', 'valid_dataset_metadata', 'harvest',
+            'dataset_description', 'dataset_publisher_name',
+            'dataset_superTheme', 'dataset_theme', 'dataset_landingPage',
+            'distributions_list'
         ]
 
         # Si se pasa un único catálogo, convertirlo en lista
@@ -368,6 +369,8 @@ quiso decir 'http://{}'?
                         "catalog_metadata_url": catalog_metadata_url,
                         "catalog_title": catalog.get("title"),
                         "catalog_description": catalog.get("description"),
+                        "valid_catalog_metadata": (1 if validation["error"][
+                            "catalog"]["status"] == "OK" else 0),
                         "dataset_index": index
                     }
 
