@@ -363,16 +363,19 @@ class DataJsonTestCase(unittest.TestCase):
         inputs "muy" inválidos."""
 
         catalogs = [
-            "tests/samples/full_data.json",
-            "tests/samples/several_datasets_for_harvest.json",
+            os.path.join(self.SAMPLES_DIR, "full_data.json"),
+            os.path.join(self.SAMPLES_DIR,
+                         "several_datasets_for_harvest.json"),
             "http://181.209.63.71/data.json",
-            "tests/samples/missing_dataset.json",
+            os.path.join(self.SAMPLES_DIR, "missing_dataset.json"),
             {"papa": "negra"}
         ]
 
-        expected_report_path = "tests/results/expected_datasets_report.csv"
+        expected_report_path = os.path.join(self.RESULTS_DIR,
+                                            "expected_datasets_report.csv")
+        actual_report_path = os.path.join("tests",
+                                          "latest_datasets_report.csv")
 
-        actual_report_path = "tests/test_report.csv"
         self.dj.generate_datasets_report(catalogs, actual_report_path)
 
         with open(expected_report_path) as expected:
@@ -383,6 +386,24 @@ class DataJsonTestCase(unittest.TestCase):
 
         self.assertEqual(expected_str, actual_str)
 
+    def test_generate_harvester_config(self):
+        expected_config_path = os.path.join(self.RESULTS_DIR,
+                                            "expected_harvester_config.csv")
+        actual_config_path = os.path.join("tests",
+                                          "latest_harvester_config.csv")
+
+        report_path = os.path.join(self.SAMPLES_DIR,
+                                   "processed_datasets_report.csv")
+
+        self.dj.generate_harvester_config(report_path, actual_config_path)
+
+        with open(expected_config_path) as expected:
+            expected_str = expected.read()
+
+        with open(actual_config_path) as actual:
+            actual_str = actual.read()
+
+        self.assertEquals(expected_str, actual_str)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
