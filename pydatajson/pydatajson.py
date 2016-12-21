@@ -324,11 +324,24 @@ quiso decir 'http://{}'?
         return dataset_report
 
     def generate_datasets_report(self, catalogs, report_path):
-        """Genera reporte de datasets de catálogos.
+        """Genera un reporte sobre las condiciones de la metadata de los
+        datasets contenidos en uno o varios catálogos.
+
+        El método no devuelve nada, pero genera un "reporte de datasets" en el
+        `report_path` indicado. Dicho reporte es un CSV que consta de una línea
+        por cada dataset presente en los catálogos provistos, con varios campos
+        útiles (`report_fieldnames`) para decidir si harvestear o no cierto
+        dataset.
 
         Args:
-            catalogs (str o list):
-            report_path (str):
+            catalogs (str, dict o list): Uno (str o dict) o varios (list de
+                strs y/o dicts) elementos con la metadata de un catálogo.
+                Tienen que poder ser interpretados por self._json_to_dict()
+            report_path (str): Path donde se espera que se guarde el reporte
+                sobre datasets generado.
+
+        Returns:
+            None
         """
         report_fieldnames = [
             'catalog_metadata_url', 'catalog_title', 'catalog_description',
@@ -392,11 +405,25 @@ no se puede reportar sobre él.
 
     @staticmethod
     def generate_harvester_config(report_path, config_path):
-        """Genera archivo de configuración del harvester según el reporte.
+        """Genera un archivo de configuración del harvester según el reporte
+        provisto.
+
+        Se espera que `report_path` apunte a un archivo producido por
+        `generate_datasets_report(catalogs, report_path)`, al cual se le
+        modificaron algunos 0 (ceros) por 1 (unos) en la columna "harvest".
+
+        Este método no devuelve nada. Como efecto sencudario, genera un
+        archivo de configuración en `config_path` manteniendo de `report_path`
+        únicamente los campos necesarios para el harvester, **de aquellos
+        datasets para los cuales el valor de "harvest" es igual a 1**.
 
         Args:
-            report_path (str):
-            config_path (str):
+            report_path (str): Path a un reporte de datasets procesado.
+            config_path (str): Path donde se generará el archivo de
+                configuración del harvester.
+
+        Returns:
+            None
         """
         with open(report_path) as report_file:
             reader = csv.DictReader(report_file)
