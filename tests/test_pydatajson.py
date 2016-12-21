@@ -25,6 +25,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = os.path.join("tests", "results")
+    TEMP_DIR = os.path.join("tests", "temp")
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -373,7 +374,7 @@ class DataJsonTestCase(unittest.TestCase):
 
         expected_report_path = os.path.join(self.RESULTS_DIR,
                                             "expected_datasets_report.csv")
-        actual_report_path = os.path.join("tests",
+        actual_report_path = os.path.join(self.TEMP_DIR,
                                           "latest_datasets_report.csv")
 
         self.dj.generate_datasets_report(catalogs, actual_report_path)
@@ -389,7 +390,7 @@ class DataJsonTestCase(unittest.TestCase):
     def test_generate_harvester_config(self):
         expected_config_path = os.path.join(self.RESULTS_DIR,
                                             "expected_harvester_config.csv")
-        actual_config_path = os.path.join("tests",
+        actual_config_path = os.path.join(self.TEMP_DIR,
                                           "latest_harvester_config.csv")
 
         report_path = os.path.join(self.SAMPLES_DIR,
