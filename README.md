@@ -189,8 +189,13 @@ validation_report = dj.validate_catalog(datajson)
 ## Tests
 
 Los tests se corren con `nose`. Desde la raíz del repositorio:
+**Configuración inicial:**
+```bash
+$ pip install nose
+$ mkdir tests/temp
 ```
-$ pip install nose  # Sólo la primera vez
+**Correr la suite de tests:**
+```bash
 $ nosetests
 ```
 
