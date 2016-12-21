@@ -343,8 +343,9 @@ quiso decir 'http://{}'?
         if isinstance(catalogs, (dict, str, unicode)):
             catalogs = [catalogs]
 
-        with open(report_path, 'w') as output:
-            writer = csv.DictWriter(output, report_fieldnames)
+        with open(report_path, 'w') as report_file:
+            writer = csv.DictWriter(report_file, report_fieldnames,
+                                    lineterminator="\n")
             writer.writeheader()
 
             for index, catalog in enumerate(catalogs):
@@ -405,6 +406,7 @@ no se puede reportar sobre él.
                                      "dataset_accrualPeriodicity"]
                 writer = csv.DictWriter(config_file,
                                         fieldnames=config_fieldnames,
+                                        lineterminator="\n",
                                         extrasaction='ignore')
                 writer.writeheader()
 
