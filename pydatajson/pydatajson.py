@@ -347,7 +347,7 @@ quiso decir 'http://{}'?
             writer = csv.DictWriter(output, report_fieldnames)
             writer.writeheader()
 
-            for catalog in catalogs:
+            for index, catalog in enumerate(catalogs):
                 assert isinstance(catalog, (dict, str, unicode))
 
                 if isinstance(catalog, (str, unicode)):
@@ -355,6 +355,13 @@ quiso decir 'http://{}'?
                     catalog = self._json_to_dict(catalog)
                 else:
                     catalog_metadata_url = None
+
+                if "dataset" not in catalog:
+                    warnings.warn("""
+El catálogo en la posición {}, "{}", no contiene la clave "dataset", y por ende
+no se puede reportar sobre él.
+""".format(index, catalog_metadata_url).encode("utf-8"))
+                    continue
 
                 validation = self.validate_catalog(catalog)
 
