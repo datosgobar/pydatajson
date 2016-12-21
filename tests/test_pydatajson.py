@@ -356,6 +356,33 @@ class DataJsonTestCase(unittest.TestCase):
             res = self.dj.is_valid_catalog(datajson)
             self.assertFalse(res, msg=value)
 
+    # TESTS DE generate_datasets_report
+    @my_vcr.use_cassette()
+    def test_generate_datasets_report(self):
+        """Prueba que generate_datasets_report funcione correctamente aún con
+        inputs "muy" inválidos."""
+
+        catalogs = [
+            "tests/samples/full_data.json",
+            "tests/samples/several_datasets_for_harvest.json",
+            "http://181.209.63.71/data.json",
+            "tests/samples/missing_dataset.json",
+            {"papa": "negra"}
+        ]
+
+        expected_report_path = "tests/results/expected_datasets_report.csv"
+
+        actual_report_path = "tests/test_report.csv"
+        self.dj.generate_datasets_report(catalogs, actual_report_path)
+
+        with open(expected_report_path) as expected:
+            expected_str = expected.read()
+
+        with open(actual_report_path) as actual:
+            actual_str = actual.read()
+
+        self.assertEqual(expected_str, actual_str)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
