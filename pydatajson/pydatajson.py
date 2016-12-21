@@ -12,7 +12,6 @@ from __future__ import print_function
 from __future__ import with_statement
 
 import sys
-import io
 import os.path
 from urlparse import urljoin, urlparse
 import warnings
@@ -131,6 +130,20 @@ quiso decir 'http://{}'?
         json_dict = json.loads(json_string, encoding="utf8")
 
         return json_dict
+
+    @staticmethod
+    def _traverse_dict(dicc, keys, default_value=None):
+        """Recorre un diccionario siguiendo una lista de claves, y devuelve
+        default_value en caso de que alguna de ellas no exista."""
+        for key in keys:
+            if isinstance(dicc, dict) and key in dicc:
+                dicc = dicc[key]
+            elif isinstance(dicc, list):
+                dicc = dicc[key]
+            else:
+                return default_value
+
+        return dicc
 
     def is_valid_catalog(self, datajson_path):
         """Valida que un archivo `data.json` cumpla con el schema definido.
@@ -259,6 +272,57 @@ quiso decir 'http://{}'?
 
         return final_response
 
+    def _dataset_report_helper(self, dataset, dataset_validation):
+        """Toma un dict con la metadata de un dataset, y devuelve un dict con los
+        valores que generate_datasets_report() usa para reportar sobre él."""
+
+        valid_metadata = 1 if dataset_validation["status"] == "OK" else 0
+
+        publisher_name = self._traverse_dict(dataset, ["publisher", "name"])
+
+        super_themes = None
+        if isinstance(dataset.get("superTheme"), list):
+            strings = [s for s in dataset.get("superTheme")
+                       if isinstance(s, (str, unicode))]
+            super_themes = ", ".join(strings)
+
+        themes = None
+        if isinstance(dataset.get("theme"), list):
+            strings = [s for s in dataset.get("theme")
+                       if isinstance(s, (str, unicode))]
+            themes = ", ".join(strings)
+
+        def _stringify_distribution(distribution):
+            title = distribution.get("title")
+            url = distribution.get("downloadURL")
+
+            return "\"{}\": {}".format(title, url)
+
+        distributions = [d for d in dataset["distribution"]
+                         if isinstance(d, dict)]
+
+        distributions_list = None
+        if isinstance(distributions, list):
+            distributions_strings = [
+                _stringify_distribution(d) for d in distributions
+            ]
+            distributions_list = "\n".join(distributions_strings)
+
+        dataset_report = {
+            "dataset_title": dataset.get("title"),
+            "dataset_accrualPeriodicity": dataset.get("accrualPeriodicity"),
+            "valid_dataset_metadata": valid_metadata,
+            "harvest": 0,
+            "dataset_description": dataset.get("description"),
+            "dataset_publisher_name": publisher_name,
+            "dataset_superTheme": super_themes,
+            "dataset_theme": themes,
+            "dataset_landingPage": dataset.get("landingPage"),
+            "distributions_list": distributions_list
+        }
+
+        return dataset_report
+
     def generate_datasets_report(self, catalogs, report_path):
         """Genera reporte de datasets de catálogos.
 
@@ -268,7 +332,7 @@ quiso decir 'http://{}'?
         """
         report_fieldnames = [
             'catalog_metadata_url', 'catalog_title', 'catalog_description',
-            'dataset_title', 'dataset_accrualPeriodicity',
+            'dataset_index', 'dataset_title', 'dataset_accrualPeriodicity',
             'valid_dataset_metadata', 'harvest', 'dataset_description',
             'dataset_publisher_name', 'dataset_superTheme', 'dataset_theme',
             'dataset_landingPage', 'distributions_list'
@@ -278,7 +342,7 @@ quiso decir 'http://{}'?
         if isinstance(catalogs, (dict, str, unicode)):
             catalogs = [catalogs]
 
-        with io.open(report_path, 'w', encoding='utf-8') as output:
+        with open(report_path, 'w') as output:
             writer = csv.DictWriter(output, report_fieldnames)
             writer.writeheader()
 
@@ -293,55 +357,57 @@ quiso decir 'http://{}'?
 
                 validation = self.validate_catalog(catalog)
 
-                for dataset, index in enumerate(catalog["dataset"]):
+                datasets = []
+                if isinstance(catalog["dataset"], list):
+                    datasets = [d for d in catalog["dataset"]
+                                if isinstance(d, dict)]
 
-                    def _stringify_distribution(distribution):
-                        title = distribution.get("title")
-                        url = distribution.get("downloadURL")
-
-                        return "\"{}\": {}".format(title, url)
-
-                    distributions_list = "\n".join(
-                        [_stringify_distribution(d) for d in
-                         dataset["distribution"]])
+                for index, dataset in enumerate(datasets):
 
                     dataset_report = {
                         "catalog_metadata_url": catalog_metadata_url,
                         "catalog_title": catalog.get("title"),
                         "catalog_description": catalog.get("description"),
-                        "dataset_title": dataset.get("title"),
-                        "dataset_accrualPeriodicity": dataset.get(
-                            "accrualPeriodicity"),
-                        "valid_dataset_metadata": (validation["error"][
-                            "datasest"][index]["status"] == "OK"),
-                        "harvest": False,
-                        "dataset_description": dataset.get("description"),
-                        # Esto explota si publisher no es un dict
-                        "dataset_publisher_name": dataset.get("publisher").get(
-                            "name"),
-                        "dataset_superTheme": dataset.get("superTheme"),
-                        "dataset_theme": dataset.get("theme"),
-                        "dataset_landingPage": dataset.get("landingPage"),
-                        "distributions_list": distributions_list
+                        "dataset_index": index
                     }
+
+                    dataset_validation = validation["error"]["dataset"][index]
+
+                    dataset_report.update(
+                        self._dataset_report_helper(dataset,
+                                                    dataset_validation))
 
                     writer.writerow(dataset_report)
 
-    def generate_harvester_config(self, datasets_report, config_path):
+    @staticmethod
+    def generate_harvester_config(report_path, config_path):
         """Genera archivo de configuración del harvester según el reporte.
 
         Args:
-            datasets_report (str):
+            report_path (str):
             config_path (str):
         """
-        pass
+        with open(report_path) as report_file:
+            reader = csv.DictReader(report_file)
 
-    def generate_harvestable_catalogs(self, catalogs, datasets_report,
+            with open(config_path, 'w') as config_file:
+                config_fieldnames = ["catalog_metadata_url", "dataset_title",
+                                     "dataset_accrualPeriodicity"]
+                writer = csv.DictWriter(config_file,
+                                        fieldnames=config_fieldnames,
+                                        extrasaction='ignore')
+                writer.writeheader()
+
+                for row in reader:
+                    if row["harvest"] == "1":
+                        writer.writerow(row)
+
+    def generate_harvestable_catalogs(self, catalogs, report_path,
                                       write_to_file, files_dir):
         """Genera archivo de configuración del harvester según el reporte.
 
         Args:
-            datasets_report (str):
+            report_path (str):
             config_path (str):
             write_to_file (bool):
             files_dir (str):
