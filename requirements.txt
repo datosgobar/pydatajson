@@ -4,3 +4,5 @@ requests
 isodate
 # Para validar URIs
 rfc3987
+# Para exportar CSVs en unicode
+unicodecsv
