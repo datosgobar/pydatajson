@@ -73,3 +73,4 @@ allresults.py
 
 # Archivos temporales de prueba
 tests/temp/*
+.ipynb_checkpoints

@@ -358,7 +358,7 @@ quiso decir 'http://{}'?
 
         with open(report_path, 'w') as report_file:
             writer = csv.DictWriter(report_file, report_fieldnames,
-                                    lineterminator="\n")
+                                    lineterminator="\n", encoding="utf-8")
             writer.writeheader()
 
             for index, catalog in enumerate(catalogs):
@@ -434,7 +434,8 @@ no se puede reportar sobre él.
                 writer = csv.DictWriter(config_file,
                                         fieldnames=config_fieldnames,
                                         lineterminator="\n",
-                                        extrasaction='ignore')
+                                        extrasaction='ignore',
+                                        encoding='utf-8')
                 writer.writeheader()
 
                 for row in reader:
@@ -451,7 +452,7 @@ no se puede reportar sobre él.
             write_to_file (bool):
             files_dir (str):
         """
-        pass
+        raise NotImplementedError
 
 
 def main():
