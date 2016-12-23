@@ -18,6 +18,7 @@ import warnings
 import json
 import jsonschema
 import requests
+import unicodecsv as csv
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -129,6 +130,20 @@ quiso decir 'http://{}'?
         json_dict = json.loads(json_string, encoding="utf8")
 
         return json_dict
+
+    @staticmethod
+    def _traverse_dict(dicc, keys, default_value=None):
+        """Recorre un diccionario siguiendo una lista de claves, y devuelve
+        default_value en caso de que alguna de ellas no exista."""
+        for key in keys:
+            if isinstance(dicc, dict) and key in dicc:
+                dicc = dicc[key]
+            elif isinstance(dicc, list):
+                dicc = dicc[key]
+            else:
+                return default_value
+
+        return dicc
 
     def is_valid_catalog(self, datajson_path):
         """Valida que un archivo `data.json` cumpla con el schema definido.
@@ -256,6 +271,188 @@ quiso decir 'http://{}'?
             final_response = _update_response(error, final_response)
 
         return final_response
+
+    def _dataset_report_helper(self, dataset, dataset_validation):
+        """Toma un dict con la metadata de un dataset, y devuelve un dict con los
+        valores que generate_datasets_report() usa para reportar sobre él."""
+
+        valid_metadata = 1 if dataset_validation["status"] == "OK" else 0
+
+        publisher_name = self._traverse_dict(dataset, ["publisher", "name"])
+
+        super_themes = None
+        if isinstance(dataset.get("superTheme"), list):
+            strings = [s for s in dataset.get("superTheme")
+                       if isinstance(s, (str, unicode))]
+            super_themes = ", ".join(strings)
+
+        themes = None
+        if isinstance(dataset.get("theme"), list):
+            strings = [s for s in dataset.get("theme")
+                       if isinstance(s, (str, unicode))]
+            themes = ", ".join(strings)
+
+        def _stringify_distribution(distribution):
+            title = distribution.get("title")
+            url = distribution.get("downloadURL")
+
+            return "\"{}\": {}".format(title, url)
+
+        distributions = [d for d in dataset["distribution"]
+                         if isinstance(d, dict)]
+
+        distributions_list = None
+        if isinstance(distributions, list):
+            distributions_strings = [
+                _stringify_distribution(d) for d in distributions
+            ]
+            distributions_list = "\n".join(distributions_strings)
+
+        dataset_report = {
+            "dataset_title": dataset.get("title"),
+            "dataset_accrualPeriodicity": dataset.get("accrualPeriodicity"),
+            "valid_dataset_metadata": valid_metadata,
+            "harvest": 0,
+            "dataset_description": dataset.get("description"),
+            "dataset_publisher_name": publisher_name,
+            "dataset_superTheme": super_themes,
+            "dataset_theme": themes,
+            "dataset_landingPage": dataset.get("landingPage"),
+            "distributions_list": distributions_list
+        }
+
+        return dataset_report
+
+    def generate_datasets_report(self, catalogs, report_path):
+        """Genera un reporte sobre las condiciones de la metadata de los
+        datasets contenidos en uno o varios catálogos.
+
+        El método no devuelve nada, pero genera un "reporte de datasets" en el
+        `report_path` indicado. Dicho reporte es un CSV que consta de una línea
+        por cada dataset presente en los catálogos provistos, con varios campos
+        útiles (`report_fieldnames`) para decidir si harvestear o no cierto
+        dataset.
+
+        Args:
+            catalogs (str, dict o list): Uno (str o dict) o varios (list de
+                strs y/o dicts) elementos con la metadata de un catálogo.
+                Tienen que poder ser interpretados por self._json_to_dict()
+            report_path (str): Path donde se espera que se guarde el reporte
+                sobre datasets generado.
+
+        Returns:
+            None
+        """
+        report_fieldnames = [
+            'catalog_metadata_url', 'catalog_title', 'catalog_description',
+            'valid_catalog_metadata', 'dataset_index', 'dataset_title',
+            'dataset_accrualPeriodicity', 'valid_dataset_metadata', 'harvest',
+            'dataset_description', 'dataset_publisher_name',
+            'dataset_superTheme', 'dataset_theme', 'dataset_landingPage',
+            'distributions_list'
+        ]
+
+        # Si se pasa un único catálogo, convertirlo en lista
+        if isinstance(catalogs, (dict, str, unicode)):
+            catalogs = [catalogs]
+
+        with open(report_path, 'w') as report_file:
+            writer = csv.DictWriter(report_file, report_fieldnames,
+                                    lineterminator="\n", encoding="utf-8")
+            writer.writeheader()
+
+            for index, catalog in enumerate(catalogs):
+                assert isinstance(catalog, (dict, str, unicode))
+
+                if isinstance(catalog, (str, unicode)):
+                    catalog_metadata_url = catalog
+                    catalog = self._json_to_dict(catalog)
+                else:
+                    catalog_metadata_url = None
+
+                if "dataset" not in catalog:
+                    warnings.warn("""
+El catálogo en la posición {}, "{}", no contiene la clave "dataset", y por ende
+no se puede reportar sobre él.
+""".format(index, catalog_metadata_url).encode("utf-8"))
+                    continue
+
+                validation = self.validate_catalog(catalog)
+
+                datasets = []
+                if isinstance(catalog["dataset"], list):
+                    datasets = [d for d in catalog["dataset"]
+                                if isinstance(d, dict)]
+
+                for index, dataset in enumerate(datasets):
+
+                    dataset_report = {
+                        "catalog_metadata_url": catalog_metadata_url,
+                        "catalog_title": catalog.get("title"),
+                        "catalog_description": catalog.get("description"),
+                        "valid_catalog_metadata": (1 if validation["error"][
+                            "catalog"]["status"] == "OK" else 0),
+                        "dataset_index": index
+                    }
+
+                    dataset_validation = validation["error"]["dataset"][index]
+
+                    dataset_report.update(
+                        self._dataset_report_helper(dataset,
+                                                    dataset_validation))
+
+                    writer.writerow(dataset_report)
+
+    @staticmethod
+    def generate_harvester_config(report_path, config_path):
+        """Genera un archivo de configuración del harvester según el reporte
+        provisto.
+
+        Se espera que `report_path` apunte a un archivo producido por
+        `generate_datasets_report(catalogs, report_path)`, al cual se le
+        modificaron algunos 0 (ceros) por 1 (unos) en la columna "harvest".
+
+        Este método no devuelve nada. Como efecto sencudario, genera un
+        archivo de configuración en `config_path` manteniendo de `report_path`
+        únicamente los campos necesarios para el harvester, **de aquellos
+        datasets para los cuales el valor de "harvest" es igual a 1**.
+
+        Args:
+            report_path (str): Path a un reporte de datasets procesado.
+            config_path (str): Path donde se generará el archivo de
+                configuración del harvester.
+
+        Returns:
+            None
+        """
+        with open(report_path) as report_file:
+            reader = csv.DictReader(report_file)
+
+            with open(config_path, 'w') as config_file:
+                config_fieldnames = ["catalog_metadata_url", "dataset_title",
+                                     "dataset_accrualPeriodicity"]
+                writer = csv.DictWriter(config_file,
+                                        fieldnames=config_fieldnames,
+                                        lineterminator="\n",
+                                        extrasaction='ignore',
+                                        encoding='utf-8')
+                writer.writeheader()
+
+                for row in reader:
+                    if row["harvest"] == "1":
+                        writer.writerow(row)
+
+    def generate_harvestable_catalogs(self, catalogs, report_path,
+                                      write_to_file, files_dir):
+        """Genera archivo de configuración del harvester según el reporte.
+
+        Args:
+            report_path (str):
+            config_path (str):
+            write_to_file (bool):
+            files_dir (str):
+        """
+        raise NotImplementedError
 
 
 def main():

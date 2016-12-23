@@ -1,0 +1,4 @@
+catalog_metadata_url,dataset_title,dataset_accrualPeriodicity
+tests/samples/full_data.json,Sistema de contrataciones electrónicas,R/P1Y
+tests/samples/several_datasets_for_harvest.json,Sistema de contrataciones electrónicas,R/P1Y
+tests/samples/several_datasets_for_harvest.json,Sistema de contrataciones electrónicas,R/P1Y

@@ -25,6 +25,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = os.path.join("tests", "results")
+    TEMP_DIR = os.path.join("tests", "temp")
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -356,6 +357,54 @@ class DataJsonTestCase(unittest.TestCase):
             res = self.dj.is_valid_catalog(datajson)
             self.assertFalse(res, msg=value)
 
+    # TESTS DE generate_datasets_report
+    @my_vcr.use_cassette()
+    def test_generate_datasets_report(self):
+        """Prueba que generate_datasets_report funcione correctamente aún con
+        inputs "muy" inválidos."""
+
+        catalogs = [
+            os.path.join(self.SAMPLES_DIR, "full_data.json"),
+            os.path.join(self.SAMPLES_DIR,
+                         "several_datasets_for_harvest.json"),
+            "http://181.209.63.71/data.json",
+            os.path.join(self.SAMPLES_DIR, "missing_dataset.json"),
+            {"papa": "negra"}
+        ]
+
+        expected_report_path = os.path.join(self.RESULTS_DIR,
+                                            "expected_datasets_report.csv")
+        actual_report_path = os.path.join(self.TEMP_DIR,
+                                          "latest_datasets_report.csv")
+
+        self.dj.generate_datasets_report(catalogs, actual_report_path)
+
+        with open(expected_report_path) as expected:
+            expected_str = expected.read()
+
+        with open(actual_report_path) as actual:
+            actual_str = actual.read()
+
+        self.assertEqual(expected_str, actual_str)
+
+    def test_generate_harvester_config(self):
+        expected_config_path = os.path.join(self.RESULTS_DIR,
+                                            "expected_harvester_config.csv")
+        actual_config_path = os.path.join(self.TEMP_DIR,
+                                          "latest_harvester_config.csv")
+
+        report_path = os.path.join(self.SAMPLES_DIR,
+                                   "processed_datasets_report.csv")
+
+        self.dj.generate_harvester_config(report_path, actual_config_path)
+
+        with open(expected_config_path) as expected:
+            expected_str = expected.read()
+
+        with open(actual_config_path) as actual:
+            actual_str = actual.read()
+
+        self.assertEquals(expected_str, actual_str)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
