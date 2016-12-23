@@ -1,6 +1,12 @@
 History
 =======
 
+0.1.4 (2016-12-23)
+------------------
+
+* Se incorpora el método `DataJson.generate_datasets_report()`, que reporta sobre los datasets y la calidad de calidad de metadatos de un conjunto de catálogos.
+* Se incorpora el método `DataJson.generate_harvestable_catalog()`, que crea archivos de configuración para el Harvester a partir de los reportes de `generate_datasets_report()`.
+
 0.1.3 (2016-12-19)
 ------------------
 
