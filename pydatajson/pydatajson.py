@@ -442,17 +442,130 @@ no se puede reportar sobre él.
                     if row["harvest"] == "1":
                         writer.writerow(row)
 
-    def generate_harvestable_catalogs(self, catalogs, report_path,
-                                      write_to_file, files_dir):
-        """Genera archivo de configuración del harvester según el reporte.
+    def _generate_datasets_report(self, catalogs, harvest='none',
+                                  report=None, export_path=None):
+        """Genera un reporte sobre las condiciones de la metadata de los
+        datasets contenidos en uno o varios catálogos.
 
         Args:
-            report_path (str):
-            config_path (str):
-            write_to_file (bool):
-            files_dir (str):
+            catalogs (str, dict o list): Uno (str o dict) o varios (list de
+                strs y/o dicts) elementos con la metadata de un catálogo.
+                Tienen que poder ser interpretados por self._json_to_dict()
+            harvest (str): Criterio a utilizar para determinar el valor del
+                campo "harvest" en el reporte generado.
+            report_path (str): Path a un reporte/config especificando qué
+                datasets marcar con harvest=1 (sólo si harvest=='report').
+            export_path (str): Path donde exportar el reporte generado. Si se
+                especifica, el método no devolverá nada.
+
+        Returns:
+            list: Contiene tantos dicts como datasets estén presentes en
+            `catalogs`, con la data del reporte generado.
         """
-        raise NotImplementedError
+        return NotImplemented
+
+    def _generate_harvester_config(self, harvest='report', report=None,
+                                   catalogs=None, export_path=None):
+        """Genera un archivo de configuración del harvester a partir de un
+        reporte, o un conjunto de catálogos y un criterio de cosecha
+        (_harvest_).
+
+
+        Args:
+            harvest (str): Criterio a utilizar para determinar qué datasets
+                incluir en el archivo de configuración generado.
+            report (list o str): Lista-reporte generada por
+                _generate_datasets_report(), o path a la exportación de ese
+                mismo reporte. Sólo se usa cuando `harvest=='report'`, en cuyo
+                caso `catalogs` se ignora.
+            catalogs (str, dict o list): Uno (str o dict) o varios (list de
+                strs y/o dicts) elementos con la metadata de un catálogo.
+                Tienen que poder ser interpretados por self._json_to_dict()
+            export_parth (str): Path donde exportar el archivo de configuración
+                generado. Si se especifica, el método no devolverá nada.
+
+        Returns:
+            list: Contiene diccionarios con la data necesaria para que el
+            harvester los coseche.
+        """
+        return NotImplemented
+
+    def _generate_harvestable_catalogs(self, catalogs, harvest='all',
+                                       report=None, export_path=None):
+        """Filtra los catálogos provistos según el criterio determinado en
+        `harvest`.
+
+        Args:
+            catalogs (str, dict o list): Uno (str o dict) o varios (list de
+                strs y/o dicts) elementos con la metadata de un catálogo.
+                Tienen que poder ser interpretados por self._json_to_dict()
+            harvest (str): Criterio a utilizar para determina qué datasets
+                conservar de cada catálogo.
+            report (list o str): En caso de que `harvest=='report'`, objeto
+            con un reporte de _generate_datasets_report según el cual filtrar
+                los catálogos provistos.
+            export_path: Path a un archivo JSON o directorio donde exportar
+                los catálogos filtrados, si así se desea. Si termina en ".json"
+                se exportará la lista de catálogos a un único archivo. Si es un
+                directorio, se guardará en él un JSON por catálogo.
+        """
+        return NotImplemented
+
+    def _read(path):
+        """Lee un archivo tabular (CSV o XLSX) a una lista de diccionarios.
+
+        La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
+        ella se decidirá qué método usar par leerlo.
+
+        Si recibe una lista, comprueba que todos sus diccionarios tengan las
+        mismas claves y de ser así, la devuelve intacta. Levanta una Excepción
+        en caso contrario.
+
+        Args:
+            path(str o list): Como 'str', path a un archivo CSV o XLSX.
+
+        Returns:
+            list: Lista de diccionarios con claves idénticas representando el
+            archivo original.
+        """
+
+    def _write(table, path):
+        """ Exporta una tabla en el formato deseado (CSV o XLSX).
+
+        La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
+        ella se decidirá qué método usar par leerlo.
+
+        Args:
+            table (list): Lista "tabular" a ser exportada.
+            path (str): Path al destino de la exportación.
+
+        Returns:
+            None
+        """
+
+    def _read_csv(path):
+        pass
+
+    def _read_xlsx(path):
+        pass
+
+    def _write_csv(table, path):
+        pass
+
+    def _write_xlsx(table, path):
+        pass
+
+    def _extract_datasets_to_harvest(report):
+        """Extrae de un reporte los datos necesarios para reconocer qué
+        datasets marcar para cosecha en cualquier generador.
+
+        Args:
+            report (str o list):
+
+        Returns:
+            list: Lista de tuplas con los títulos de catálogo y dataset de cada
+            reporte extraído.
+        """
 
 
 def main():
