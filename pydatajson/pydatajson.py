@@ -553,8 +553,8 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         elif suffix == "xlsx":
             return self._read_xlsx(path)
         else:
-            raise ValueError("""{} no es un sufijo reconocido. Pruebe con .csv o
-                             .xlsx""".format(suffix))
+            raise ValueError("""
+{} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
 
     def _write(self, table, path):
         """ Exporta una tabla en el formato deseado (CSV o XLSX).
@@ -569,6 +569,23 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         Returns:
             None
         """
+        assert isinstance(path, str)
+        assert isinstance(table, list)
+
+        # Sólo sabe escribir listas de diccionarios con información tabular
+        if not self._is_list_of_matching_dicts(table):
+            raise ValueError("""
+La lista ingresada no esta formada por diccionarios con las mismas claves.""")
+
+        # Deduzco el formato de archivo de `path` y redirijo según corresponda.
+        suffix = path.split(".")[-1]
+        if suffix == "csv":
+            return self._write_csv(table, path)
+        elif suffix == "xlsx":
+            return self._write_xlsx(table, path)
+        else:
+            raise ValueError("""
+{} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
 
     @staticmethod
     def _read_csv(path):
@@ -580,6 +597,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     def _read_xlsx(path):
         return NotImplemented
 
+    @staticmethod
     def _write_csv(table, path):
         return NotImplemented
 
