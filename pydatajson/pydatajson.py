@@ -19,7 +19,7 @@ import json
 import jsonschema
 import requests
 import unicodecsv as csv
-from openpyxl import Workbook
+import openpyxl as pyxl
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -556,6 +556,30 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
             raise ValueError("""
 {} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
 
+    @staticmethod
+    def _read_csv(path):
+        with open(path) as csvfile:
+            reader = csv.DictReader(csvfile)
+            table = list(reader)
+        return table
+
+    @staticmethod
+    def _read_xlsx(path):
+        workbook = pyxl.load_workbook(path)
+        worksheet = workbook.active
+
+        # Asumo que la primera fila contiene los encabezados
+        keys = [cell.value for cell in worksheet.rows[0]]
+        # Compruebo que todas las filas sean tan largas como la de encabezados
+        assert all([len(keys) == len(row) for row in worksheet.rows])
+
+        table = []
+        for cells in worksheet.rows[1:]:
+            table_row = dict(zip(keys, [cell.value for cell in cells]))
+            table.append(table_row)
+
+        return table
+
     def _write(self, table, path):
         """ Exporta una tabla en el formato deseado (CSV o XLSX).
 
@@ -588,17 +612,6 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 {} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
 
     @staticmethod
-    def _read_csv(path):
-        with open(path) as csvfile:
-            reader = csv.DictReader(csvfile)
-            table = list(reader)
-        return table
-
-    @staticmethod
-    def _read_xlsx(path):
-        return NotImplemented
-
-    @staticmethod
     def _write_csv(table, path):
         headers = table[0].keys()
 
@@ -612,7 +625,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     @staticmethod
     def _write_xlsx(table, path):
         headers = table[0].keys()
-        workbook = Workbook()
+        workbook = pyxl.Workbook()
         worksheet = workbook.active
         worksheet.append(headers)
         for row in table:
