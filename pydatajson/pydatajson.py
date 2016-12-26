@@ -19,6 +19,7 @@ import json
 import jsonschema
 import requests
 import unicodecsv as csv
+from openpyxl import Workbook
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -550,7 +551,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         if suffix == "csv":
             return self._read_csv(path)
         elif suffix == "xlsx":
-            return self._read_xlsx(self, path)
+            return self._read_xlsx(path)
         else:
             raise ValueError("""{} no es un sufijo reconocido. Pruebe con .csv o
                              .xlsx""".format(suffix))
@@ -575,16 +576,23 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
             table = list(csv.DictReader(csvfile))
         return table
 
+    @staticmethod
     def _read_xlsx(path):
         return NotImplemented
 
     def _write_csv(table, path):
         return NotImplemented
-        pass
 
+    @staticmethod
     def _write_xlsx(table, path):
-        return NotImplemented
-        pass
+        headers = table[0].keys()
+        workbook = Workbook()
+        worksheet = workbook.active
+        worksheet.append(headers)
+        for row in table:
+            worksheet.append(row.values())
+
+        workbook.save(path)
 
     def _extract_datasets_to_harvest(report):
         """Extrae de un reporte los datos necesarios para reconocer qué
