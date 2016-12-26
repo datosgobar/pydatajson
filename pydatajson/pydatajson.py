@@ -360,6 +360,8 @@ quiso decir 'http://{}'?
                 1 if (dataset_report["catalog_metadata_url"],
                       dataset_report["dataset_title"]) in datasets_to_harvest
                 else 0)
+        else:
+            dataset_report["harvest"] = 0
 
         return dataset_report
 
@@ -384,91 +386,11 @@ quiso decir 'http://{}'?
         catalog_report = [
             self.dataset_report(
                 dataset, datasets_validations[index], index,
-                catalog_fields, harvest
-            ) for index, dataset in enumerate(datasets)
+                catalog_fields, harvest, report=report
+            ).copy() for index, dataset in enumerate(datasets)
         ]
 
         return catalog_report
-
-    def generate_datasets_report(self, catalogs, report_path):
-        """Genera un reporte sobre las condiciones de la metadata de los
-        datasets contenidos en uno o varios catálogos.
-
-        El método no devuelve nada, pero genera un "reporte de datasets" en el
-        `report_path` indicado. Dicho reporte es un CSV que consta de una línea
-        por cada dataset presente en los catálogos provistos, con varios campos
-        útiles (`report_fieldnames`) para decidir si harvestear o no cierto
-        dataset.
-
-        Args:
-            catalogs (str, dict o list): Uno (str o dict) o varios (list de
-                strs y/o dicts) elementos con la metadata de un catálogo.
-                Tienen que poder ser interpretados por self._json_to_dict()
-            report_path (str): Path donde se espera que se guarde el reporte
-                sobre datasets generado.
-
-        Returns:
-            None
-        """
-        report_fieldnames = [
-            'catalog_metadata_url', 'catalog_title', 'catalog_description',
-            'valid_catalog_metadata', 'dataset_index', 'dataset_title',
-            'dataset_accrualPeriodicity', 'valid_dataset_metadata', 'harvest',
-            'dataset_description', 'dataset_publisher_name',
-            'dataset_superTheme', 'dataset_theme', 'dataset_landingPage',
-            'distributions_list'
-        ]
-
-        # Si se pasa un único catálogo, convertirlo en lista
-        if isinstance(catalogs, (dict, str, unicode)):
-            catalogs = [catalogs]
-
-        with open(report_path, 'w') as report_file:
-            writer = csv.DictWriter(report_file, report_fieldnames,
-                                    lineterminator="\n", encoding="utf-8")
-            writer.writeheader()
-
-            for index, catalog in enumerate(catalogs):
-                assert isinstance(catalog, (dict, str, unicode))
-
-                if isinstance(catalog, (str, unicode)):
-                    catalog_metadata_url = catalog
-                    catalog = self._json_to_dict(catalog)
-                else:
-                    catalog_metadata_url = None
-
-                if "dataset" not in catalog:
-                    warnings.warn("""
-El catálogo en la posición {}, "{}", no contiene la clave "dataset", y por ende
-no se puede reportar sobre él.
-""".format(index, catalog_metadata_url).encode("utf-8"))
-                    continue
-
-                validation = self.validate_catalog(catalog)
-
-                datasets = []
-                if isinstance(catalog["dataset"], list):
-                    datasets = [d for d in catalog["dataset"]
-                                if isinstance(d, dict)]
-
-                for index, dataset in enumerate(datasets):
-
-                    dataset_report = {
-                        "catalog_metadata_url": catalog_metadata_url,
-                        "catalog_title": catalog.get("title"),
-                        "catalog_description": catalog.get("description"),
-                        "valid_catalog_metadata": (1 if validation["error"][
-                            "catalog"]["status"] == "OK" else 0),
-                        "dataset_index": index
-                    }
-
-                    dataset_validation = validation["error"]["dataset"][index]
-
-                    dataset_report.update(
-                        self._dataset_report_helper(dataset,
-                                                    dataset_validation))
-
-                    writer.writerow(dataset_report)
 
     @staticmethod
     def generate_harvester_config(report_path, config_path):
@@ -508,78 +430,6 @@ no se puede reportar sobre él.
                 for row in reader:
                     if row["harvest"] == "1":
                         writer.writerow(row)
-
-    def _build_datasets_report(self, catalogs, harvest='none', report=None):
-        """Genera un reporte sobre las condiciones de la metadata de los
-        datasets contenidos en uno o varios catálogos.
-
-        Args:
-            catalogs (str, dict o list): Uno (str o dict) o varios (list de
-                strs y/o dicts) elementos con la metadata de un catálogo.
-                Tienen que poder ser interpretados por self._json_to_dict()
-            harvest (str): Criterio a utilizar para determinar el valor del
-                campo "harvest" en el reporte generado.
-            report (str): Reporte/Config (o path a uno) especificando qué
-                datasets marcar con harvest=1 (sólo si harvest=='report').
-            export_path (str): Path donde exportar el reporte generado. Si se
-                especifica, el método no devolverá nada.
-
-        Returns:
-            list: Contiene tantos dicts como datasets estén presentes en
-            `catalogs`, con la data del reporte generado.
-        """
-        # Si se pasa un único catálogo, convertirlo en lista
-        if isinstance(catalogs, (dict, str, unicode)):
-            catalogs = [catalogs]
-
-        report = []
-
-        for index, catalog in enumerate(catalogs):
-            assert isinstance(catalog, (dict, str, unicode)), """
-El elemento {} de `catalogs` no puede ser interpretado.""".format(index)
-
-            if isinstance(catalog, (str, unicode)):
-                catalog_metadata_url = catalog
-            else:
-                catalog_metadata_url = None
-
-            catalog = self._json_to_dict(catalog)
-
-            if "dataset" not in catalog:
-                warnings.warn("""
-El catálogo en la posición {}, "{}", no contiene la clave "dataset", y por ende
-no se puede reportar sobre él.
-""".format(index, catalog_metadata_url).encode("utf-8"))
-                continue
-
-            validation = self.validate_catalog(catalog)
-
-            datasets = []
-            if isinstance(catalog["dataset"], list):
-                datasets = [d for d in catalog["dataset"]
-                            if isinstance(d, dict)]
-
-            for index, dataset in enumerate(datasets):
-
-                dataset_report = {
-                    "catalog_metadata_url": catalog_metadata_url,
-                    "catalog_title": catalog.get("title"),
-                    "catalog_description": catalog.get("description"),
-                    "valid_catalog_metadata": (1 if validation["error"][
-                        "catalog"]["status"] == "OK" else 0),
-                    "dataset_index": index
-                }
-
-                dataset_validation = validation["error"]["dataset"][index]
-
-                dataset_report.update(
-                    self._dataset_report_helper(dataset,
-                                                dataset_validation,
-                                                harvest))
-
-                report.append(dataset_report)
-
-        return report
 
     def _generate_datasets_report(self, catalogs, harvest='none',
                                   report=None, export_path=None):
