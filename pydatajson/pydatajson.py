@@ -542,13 +542,13 @@ no se puede reportar sobre él.
             if self._is_list_of_matching_dicts(path):
                 return path
             else:
-                raise ValueError("""La lista ingresada no está formada por
-                                 diccionarios con las mismas claves.""")
+                raise ValueError("""
+La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
         # Deduzco el formato de archivo de `path` y redirijo según corresponda.
         suffix = path.split(".")[-1]
         if suffix == "csv":
-            return self._read_csv(self, path)
+            return self._read_csv(path)
         elif suffix == "xlsx":
             return self._read_xlsx(self, path)
         else:
@@ -569,8 +569,11 @@ no se puede reportar sobre él.
             None
         """
 
+    @staticmethod
     def _read_csv(path):
-        return NotImplemented
+        with open(path) as csvfile:
+            table = list(csv.DictReader(csvfile))
+        return table
 
     def _read_xlsx(path):
         return NotImplemented
@@ -607,13 +610,18 @@ def main():
         python pydatajson.py http://181.209.63.71/data.json
         python pydatajson.py ~/github/pydatajson/tests/samples/full_data.json
     """
-    datajson_file = sys.argv[1]
-    dj_instance = DataJson()
-    bool_res = dj_instance.is_valid_catalog(datajson_file)
-    full_res = dj_instance.validate_catalog(datajson_file)
-    print(bool_res)
-    print(json.dumps(full_res, separators=(",", ": "), indent=4))
-
+    try:
+        datajson_file = sys.argv[1]
+        dj_instance = DataJson()
+        bool_res = dj_instance.is_valid_catalog(datajson_file)
+        full_res = dj_instance.validate_catalog(datajson_file)
+        print(bool_res)
+        print(full_res)
+    except IndexError as errmsg:
+        format_str = """
+{}: pydatajson.py fue ejecutado como script sin proveer un argumento
+"""
+        print(format_str.format(errmsg))
 
 if __name__ == '__main__':
     main()
