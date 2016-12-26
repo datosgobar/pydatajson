@@ -513,12 +513,13 @@ no se puede reportar sobre él.
         return NotImplemented
 
     @staticmethod
-    def _is_list_of_matching_dicts(l):
-        elements = [isinstance(d, dict) and d.keys() == l[0].keys()
-                    for d in l]
+    def _is_list_of_matching_dicts(list_of_dicts):
+        elements = [isinstance(d, dict) and d.keys() == list_of_dicts[0].keys()
+                    for d in list_of_dicts]
         return all(elements)
 
-    def _read(self, path):
+    @classmethod
+    def _read(cls, path):
         """Lee un archivo tabular (CSV o XLSX) a una lista de diccionarios.
 
         La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
@@ -540,7 +541,7 @@ no se puede reportar sobre él.
         # Si `path` es una lista, devolverla intacta si tiene formato tabular.
         # Si no, levantar una excepción.
         if isinstance(path, list):
-            if self._is_list_of_matching_dicts(path):
+            if cls._is_list_of_matching_dicts(path):
                 return path
             else:
                 raise ValueError("""
@@ -549,9 +550,9 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         # Deduzco el formato de archivo de `path` y redirijo según corresponda.
         suffix = path.split(".")[-1]
         if suffix == "csv":
-            return self._read_csv(path)
+            return cls._read_csv(path)
         elif suffix == "xlsx":
-            return self._read_xlsx(path)
+            return cls._read_xlsx(path)
         else:
             raise ValueError("""
 {} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
@@ -580,7 +581,8 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
         return table
 
-    def _write(self, table, path):
+    @classmethod
+    def _write(cls, table, path):
         """ Exporta una tabla en el formato deseado (CSV o XLSX).
 
         La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
@@ -593,20 +595,20 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         Returns:
             None
         """
-        assert isinstance(path, str)
-        assert isinstance(table, list)
+        assert isinstance(path, str), "`path` debe ser un string"
+        assert isinstance(table, list), "`table` debe ser una lista de dicts"
 
         # Sólo sabe escribir listas de diccionarios con información tabular
-        if not self._is_list_of_matching_dicts(table):
+        if not cls._is_list_of_matching_dicts(table):
             raise ValueError("""
 La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
         # Deduzco el formato de archivo de `path` y redirijo según corresponda.
         suffix = path.split(".")[-1]
         if suffix == "csv":
-            return self._write_csv(table, path)
+            return cls._write_csv(table, path)
         elif suffix == "xlsx":
-            return self._write_xlsx(table, path)
+            return cls._write_xlsx(table, path)
         else:
             raise ValueError("""
 {} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
@@ -633,18 +635,42 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
         workbook.save(path)
 
-    def _extract_datasets_to_harvest(report):
+    @classmethod
+    def _extract_datasets_to_harvest(cls, report):
         """Extrae de un reporte los datos necesarios para reconocer qué
         datasets marcar para cosecha en cualquier generador.
 
         Args:
-            report (str o list):
+            report (str o list): Reporte (lista de dicts) o path a uno.
 
         Returns:
             list: Lista de tuplas con los títulos de catálogo y dataset de cada
             reporte extraído.
         """
-        return NotImplemented
+        table = cls._read(report)
+        table_keys = table[0].keys()
+        expected_keys = ["catalog_metadata_url", "dataset_title",
+                         "dataset_accrualPeriodicity"]
+
+        # Verifico la presencia de las claves básicas de un config de harvester
+        for key in expected_keys:
+            if key not in table_keys:
+                raise KeyError("""
+El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
+""".format(key))
+
+        if "harvest" in table_keys:
+            # El archivo es un reporte de datasets.
+            datasets_to_harvest = [
+                (row["catalog_metadata_url"], row["dataset_title"]) for row in
+                table if int(row["harvest"])]
+        else:
+            # El archivo es un config de harvester.
+            datasets_to_harvest = [
+                (row["catalog_metadata_url"], row["dataset_title"]) for row in
+                table]
+
+        return datasets_to_harvest
 
 
 def main():
