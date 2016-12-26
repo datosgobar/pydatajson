@@ -590,7 +590,8 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     @staticmethod
     def _read_csv(path):
         with open(path) as csvfile:
-            table = list(csv.DictReader(csvfile))
+            reader = csv.DictReader(csvfile)
+            table = list(reader)
         return table
 
     @staticmethod
@@ -599,7 +600,14 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
     @staticmethod
     def _write_csv(table, path):
-        return NotImplemented
+        headers = table[0].keys()
+
+        with open(path, 'w') as target_file:
+            writer = csv.DictWriter(csvfile=target_file, fieldnames=headers,
+                                    lineterminator="\n", encoding="utf-8")
+            writer.writeheader()
+            for row in table:
+                writer.writerow(row)
 
     @staticmethod
     def _write_xlsx(table, path):
