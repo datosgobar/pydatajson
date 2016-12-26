@@ -163,6 +163,43 @@ quiso decir 'http://{}'?
         res = self.validator.is_valid(datajson)
         return res
 
+    @staticmethod
+    def _update_validation_response(error, response):
+        """Actualiza la respuesta por default acorde a un error de
+        validación."""
+        new_response = response.copy()
+
+        # El status del catálogo entero será ERROR
+        new_response["status"] = "ERROR"
+
+        # Adapto la información del ValidationError recibido a los fines
+        # del validador de DataJsons
+        error_info = {
+            # Error Code 1 para "campo obligatorio faltante"
+            # Error Code 2 para "error en tipo o formato de campo"
+            "error_code": 1 if error.validator == "required" else 2,
+            "message": error.message,
+            "validator": error.validator,
+            "validator_value": error.validator_value,
+            "path": list(error.path),
+            # La instancia validada es irrelevante si el error es de tipo 1
+            "instance": (None if error.validator == "required" else
+                         error.instance)
+        }
+
+        # Identifico a qué nivel de jerarquía sucedió el error.
+        if len(error.path) >= 2 and error.path[0] == "dataset":
+            # El error está a nivel de un dataset particular o inferior
+            position = new_response["error"]["dataset"][error.path[1]]
+        else:
+            # El error está a nivel de catálogo
+            position = new_response["error"]["catalog"]
+
+        position["status"] = "ERROR"
+        position["errors"].append(error_info)
+
+        return new_response
+
     def validate_catalog(self, datajson_path):
         """Analiza un data.json registrando los errores que encuentra.
 
@@ -228,58 +265,22 @@ quiso decir 'http://{}'?
             }
         }
 
-        def _update_response(error, response):
-            """Actualiza la respuesta por default acorde a un error de
-            validación."""
-            new_response = response.copy()
-
-            # El status del catálogo entero será ERROR
-            new_response["status"] = "ERROR"
-
-            # Adapto la información del ValidationError recibido a los fines
-            # del validador de DataJsons
-            error_info = {
-                # Error Code 1 para "campo obligatorio faltante"
-                # Error Code 2 para "error en tipo o formato de campo"
-                "error_code": 1 if error.validator == "required" else 2,
-                "message": error.message,
-                "validator": error.validator,
-                "validator_value": error.validator_value,
-                "path": list(error.path),
-                # La instancia validada es irrelevante si el error es de tipo 1
-                "instance": (None if error.validator == "required" else
-                             error.instance)
-            }
-
-            # Identifico a qué nivel de jerarquía sucedió el error.
-            if len(error.path) >= 2 and error.path[0] == "dataset":
-                # El error está a nivel de un dataset particular o inferior
-                position = new_response["error"]["dataset"][error.path[1]]
-            else:
-                # El error está a nivel de catálogo
-                position = new_response["error"]["catalog"]
-
-            position["status"] = "ERROR"
-            position["errors"].append(error_info)
-
-            return new_response
-
         # Genero la lista de errores en la instancia a validar
         errors_iterator = self.validator.iter_errors(datajson)
 
         final_response = default_response.copy()
         for error in errors_iterator:
-            final_response = _update_response(error, final_response)
+            final_response = self._update_validation_response(error,
+                                                              final_response)
 
         return final_response
 
-    def _dataset_report_helper(self, dataset, dataset_validation):
+    @classmethod
+    def _dataset_report_helper(cls, dataset):
         """Toma un dict con la metadata de un dataset, y devuelve un dict con los
         valores que generate_datasets_report() usa para reportar sobre él."""
 
-        valid_metadata = 1 if dataset_validation["status"] == "OK" else 0
-
-        publisher_name = self._traverse_dict(dataset, ["publisher", "name"])
+        publisher_name = cls._traverse_dict(dataset, ["publisher", "name"])
 
         super_themes = None
         if isinstance(dataset.get("superTheme"), list):
@@ -312,8 +313,6 @@ quiso decir 'http://{}'?
         dataset_report = {
             "dataset_title": dataset.get("title"),
             "dataset_accrualPeriodicity": dataset.get("accrualPeriodicity"),
-            "valid_dataset_metadata": valid_metadata,
-            "harvest": 0,
             "dataset_description": dataset.get("description"),
             "dataset_publisher_name": publisher_name,
             "dataset_superTheme": super_themes,
@@ -323,6 +322,73 @@ quiso decir 'http://{}'?
         }
 
         return dataset_report
+
+    @staticmethod
+    def _catalog_report_helper(catalog, catalog_validation, url):
+        fields = {
+            "catalog_metadata_url": url,
+            "catalog_title": catalog.get("title"),
+            "catalog_description": catalog.get("description"),
+            "valid_catalog_metadata": (
+                1 if catalog_validation["status"] == "OK" else 0)
+        }
+
+        return fields
+
+    def dataset_report(self, dataset, dataset_validation, dataset_index,
+                       catalog_fields={}, harvest='none', report=None):
+        dataset_report = catalog_fields
+        dataset_report.update({
+            "dataset_index": dataset_index,
+            "valid_dataset_metadata": (
+                1 if dataset_validation["status"] == "OK" else 0)
+        })
+        dataset_report.update(self._dataset_report_helper(dataset))
+
+        if harvest == 'all':
+            dataset_report["harvest"] = 1
+        elif harvest == 'none':
+            dataset_report["harvest"] = 0
+        elif harvest == 'valid':
+            dataset_report["harvest"] = (
+                1 if (
+                    int(dataset_report["valid_catalog_metadata"]) and
+                    int(dataset_report["valid_dataset_metadata"])) else 0)
+        elif harvest == 'report':
+            datasets_to_harvest = self._extract_datasets_to_harvest(report)
+            dataset_report["harvest"] = (
+                1 if (dataset_report["catalog_metadata_url"],
+                      dataset_report["dataset_title"]) in datasets_to_harvest
+                else 0)
+
+        return dataset_report
+
+    def catalog_report(self, catalog, harvest='none', report=None):
+
+        url = catalog if isinstance(catalog, (str, unicode)) else None
+        catalog = self._json_to_dict(catalog)
+
+        validation = self.validate_catalog(catalog)
+        catalog_validation = validation["error"]["catalog"]
+        datasets_validations = validation["error"]["dataset"]
+
+        catalog_fields = self._catalog_report_helper(
+            catalog, catalog_validation, url)
+
+        if isinstance(catalog["dataset"], list):
+            datasets = [d if isinstance(d, dict) else {} for d in
+                        catalog["dataset"]]
+        else:
+            datasets = []
+
+        catalog_report = [
+            self.dataset_report(
+                dataset, datasets_validations[index], index,
+                catalog_fields, harvest
+            ) for index, dataset in enumerate(datasets)
+        ]
+
+        return catalog_report
 
     def generate_datasets_report(self, catalogs, report_path):
         """Genera un reporte sobre las condiciones de la metadata de los
@@ -443,6 +509,78 @@ no se puede reportar sobre él.
                     if row["harvest"] == "1":
                         writer.writerow(row)
 
+    def _build_datasets_report(self, catalogs, harvest='none', report=None):
+        """Genera un reporte sobre las condiciones de la metadata de los
+        datasets contenidos en uno o varios catálogos.
+
+        Args:
+            catalogs (str, dict o list): Uno (str o dict) o varios (list de
+                strs y/o dicts) elementos con la metadata de un catálogo.
+                Tienen que poder ser interpretados por self._json_to_dict()
+            harvest (str): Criterio a utilizar para determinar el valor del
+                campo "harvest" en el reporte generado.
+            report (str): Reporte/Config (o path a uno) especificando qué
+                datasets marcar con harvest=1 (sólo si harvest=='report').
+            export_path (str): Path donde exportar el reporte generado. Si se
+                especifica, el método no devolverá nada.
+
+        Returns:
+            list: Contiene tantos dicts como datasets estén presentes en
+            `catalogs`, con la data del reporte generado.
+        """
+        # Si se pasa un único catálogo, convertirlo en lista
+        if isinstance(catalogs, (dict, str, unicode)):
+            catalogs = [catalogs]
+
+        report = []
+
+        for index, catalog in enumerate(catalogs):
+            assert isinstance(catalog, (dict, str, unicode)), """
+El elemento {} de `catalogs` no puede ser interpretado.""".format(index)
+
+            if isinstance(catalog, (str, unicode)):
+                catalog_metadata_url = catalog
+            else:
+                catalog_metadata_url = None
+
+            catalog = self._json_to_dict(catalog)
+
+            if "dataset" not in catalog:
+                warnings.warn("""
+El catálogo en la posición {}, "{}", no contiene la clave "dataset", y por ende
+no se puede reportar sobre él.
+""".format(index, catalog_metadata_url).encode("utf-8"))
+                continue
+
+            validation = self.validate_catalog(catalog)
+
+            datasets = []
+            if isinstance(catalog["dataset"], list):
+                datasets = [d for d in catalog["dataset"]
+                            if isinstance(d, dict)]
+
+            for index, dataset in enumerate(datasets):
+
+                dataset_report = {
+                    "catalog_metadata_url": catalog_metadata_url,
+                    "catalog_title": catalog.get("title"),
+                    "catalog_description": catalog.get("description"),
+                    "valid_catalog_metadata": (1 if validation["error"][
+                        "catalog"]["status"] == "OK" else 0),
+                    "dataset_index": index
+                }
+
+                dataset_validation = validation["error"]["dataset"][index]
+
+                dataset_report.update(
+                    self._dataset_report_helper(dataset,
+                                                dataset_validation,
+                                                harvest))
+
+                report.append(dataset_report)
+
+        return report
+
     def _generate_datasets_report(self, catalogs, harvest='none',
                                   report=None, export_path=None):
         """Genera un reporte sobre las condiciones de la metadata de los
@@ -536,7 +674,8 @@ no se puede reportar sobre él.
             list: Lista de diccionarios con claves idénticas representando el
             archivo original.
         """
-        assert isinstance(path, (str, list))
+        assert isinstance(path, (str, unicode, list)), """
+{} no es un `path` valido""".format(path)
 
         # Si `path` es una lista, devolverla intacta si tiene formato tabular.
         # Si no, levantar una excepción.

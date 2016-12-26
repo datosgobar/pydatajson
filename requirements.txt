@@ -6,3 +6,5 @@ isodate
 rfc3987
 # Para exportar CSVs en unicode
 unicodecsv
+# Para leer y escribir XLSXs
+openpyxl
