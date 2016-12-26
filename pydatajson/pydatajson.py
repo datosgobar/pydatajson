@@ -511,7 +511,13 @@ no se puede reportar sobre él.
         """
         return NotImplemented
 
-    def _read(path):
+    @staticmethod
+    def _is_list_of_matching_dicts(l):
+        elements = [isinstance(d, dict) and d.keys() == l[0].keys()
+                    for d in l]
+        return all(elements)
+
+    def _read(self, path):
         """Lee un archivo tabular (CSV o XLSX) a una lista de diccionarios.
 
         La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
@@ -528,8 +534,28 @@ no se puede reportar sobre él.
             list: Lista de diccionarios con claves idénticas representando el
             archivo original.
         """
+        assert isinstance(path, (str, list))
 
-    def _write(table, path):
+        # Si `path` es una lista, devolverla intacta si tiene formato tabular.
+        # Si no, levantar una excepción.
+        if isinstance(path, list):
+            if self._is_list_of_matching_dicts(path):
+                return path
+            else:
+                raise ValueError("""La lista ingresada no está formada por
+                                 diccionarios con las mismas claves.""")
+
+        # Deduzco el formato de archivo de `path` y redirijo según corresponda.
+        suffix = path.split(".")[-1]
+        if suffix == "csv":
+            return self._read_csv(self, path)
+        elif suffix == "xlsx":
+            return self._read_xlsx(self, path)
+        else:
+            raise ValueError("""{} no es un sufijo reconocido. Pruebe con .csv o
+                             .xlsx""".format(suffix))
+
+    def _write(self, table, path):
         """ Exporta una tabla en el formato deseado (CSV o XLSX).
 
         La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
@@ -544,15 +570,17 @@ no se puede reportar sobre él.
         """
 
     def _read_csv(path):
-        pass
+        return NotImplemented
 
     def _read_xlsx(path):
-        pass
+        return NotImplemented
 
     def _write_csv(table, path):
+        return NotImplemented
         pass
 
     def _write_xlsx(table, path):
+        return NotImplemented
         pass
 
     def _extract_datasets_to_harvest(report):
@@ -566,6 +594,7 @@ no se puede reportar sobre él.
             list: Lista de tuplas con los títulos de catálogo y dataset de cada
             reporte extraído.
         """
+        return NotImplemented
 
 
 def main():
