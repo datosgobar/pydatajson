@@ -337,7 +337,8 @@ quiso decir 'http://{}'?
 
     def dataset_report(self, dataset, dataset_validation, dataset_index,
                        catalog_fields={}, harvest='none', report=None):
-        dataset_report = catalog_fields
+        dataset_report = {}
+        dataset_report.update(catalog_fields)
         dataset_report.update({
             "dataset_index": dataset_index,
             "valid_dataset_metadata": (
@@ -361,9 +362,11 @@ quiso decir 'http://{}'?
                       dataset_report["dataset_title"]) in datasets_to_harvest
                 else 0)
         else:
-            dataset_report["harvest"] = 0
+            raise ValueError("""
+{} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
+'report'.""".format(harvest))
 
-        return dataset_report
+        return dataset_report.copy()
 
     def catalog_report(self, catalog, harvest='none', report=None):
 
@@ -387,7 +390,7 @@ quiso decir 'http://{}'?
             self.dataset_report(
                 dataset, datasets_validations[index], index,
                 catalog_fields, harvest, report=report
-            ).copy() for index, dataset in enumerate(datasets)
+            ) for index, dataset in enumerate(datasets)
         ]
 
         return catalog_report
