@@ -400,46 +400,7 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
 
         return catalog_report
 
-    @staticmethod
-    def generate_harvester_config(report_path, config_path):
-        """Genera un archivo de configuración del harvester según el reporte
-        provisto.
-
-        Se espera que `report_path` apunte a un archivo producido por
-        `generate_datasets_report(catalogs, report_path)`, al cual se le
-        modificaron algunos 0 (ceros) por 1 (unos) en la columna "harvest".
-
-        Este método no devuelve nada. Como efecto sencudario, genera un
-        archivo de configuración en `config_path` manteniendo de `report_path`
-        únicamente los campos necesarios para el harvester, **de aquellos
-        datasets para los cuales el valor de "harvest" es igual a 1**.
-
-        Args:
-            report_path (str): Path a un reporte de datasets procesado.
-            config_path (str): Path donde se generará el archivo de
-                configuración del harvester.
-
-        Returns:
-            None
-        """
-        with open(report_path) as report_file:
-            reader = csv.DictReader(report_file)
-
-            with open(config_path, 'w') as config_file:
-                config_fieldnames = ["catalog_metadata_url", "dataset_title",
-                                     "dataset_accrualPeriodicity"]
-                writer = csv.DictWriter(config_file,
-                                        fieldnames=config_fieldnames,
-                                        lineterminator="\n",
-                                        extrasaction='ignore',
-                                        encoding='utf-8')
-                writer.writeheader()
-
-                for row in reader:
-                    if row["harvest"] == "1":
-                        writer.writerow(row)
-
-    def generate_datasets_report(self, catalogs, harvest='none',
+    def generate_datasets_report(self, catalogs, harvest='valid',
                                  report=None, export_path=None):
         """Genera un reporte sobre las condiciones de la metadata de los
         datasets contenidos en uno o varios catálogos.
@@ -471,8 +432,8 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
         else:
             return full_report
 
-    def _generate_harvester_config(self, harvest='report', report=None,
-                                   catalogs=None, export_path=None):
+    def generate_harvester_config(self, harvest='valid', report=None,
+                                  catalogs=None, export_path=None):
         """Genera un archivo de configuración del harvester a partir de un
         reporte, o un conjunto de catálogos y un criterio de cosecha
         (_harvest_).
@@ -488,14 +449,35 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
             catalogs (str, dict o list): Uno (str o dict) o varios (list de
                 strs y/o dicts) elementos con la metadata de un catálogo.
                 Tienen que poder ser interpretados por self._json_to_dict()
-            export_parth (str): Path donde exportar el archivo de configuración
+            export_path (str): Path donde exportar el archivo de configuración
                 generado. Si se especifica, el método no devolverá nada.
 
         Returns:
             list: Contiene diccionarios con la data necesaria para que el
             harvester los coseche.
         """
-        return NotImplemented
+        if harvest == 'report':
+            datasets_report = self._read(report)
+        else:
+            datasets_report = self.generate_datasets_report(catalogs, harvest)
+
+        config_keys = ["catalog_metadata_url", "dataset_title",
+                       "dataset_accrualPeriodicity"]
+
+        harvester_config = [
+            {
+                # Retengo únicamente los campos que necesita el harvester
+                k: v for k, v in dataset.iteritems() if k in config_keys
+            }
+            # Para aquellost datasets marcados con 'harvest'==1
+            for dataset in datasets_report if int(dataset["harvest"])
+        ]
+
+        if export_path:
+            self._write(harvester_config, export_path)
+            return None
+        else:
+            return harvester_config
 
     def _generate_harvestable_catalogs(self, catalogs, harvest='all',
                                        report=None, export_path=None):
