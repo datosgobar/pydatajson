@@ -356,6 +356,11 @@ quiso decir 'http://{}'?
                     int(dataset_report["valid_catalog_metadata"]) and
                     int(dataset_report["valid_dataset_metadata"])) else 0)
         elif harvest == 'report':
+            if not report:
+                raise ValueError("""
+Usted especificó harvest='report', pero `report` está vacía. Inténtelo
+nuevamente, con un reporte de datasets o el path a uno en `report`.""")
+
             datasets_to_harvest = self._extract_datasets_to_harvest(report)
             dataset_report["harvest"] = (
                 1 if (dataset_report["catalog_metadata_url"],
@@ -380,7 +385,7 @@ quiso decir 'http://{}'?
         catalog_fields = self._catalog_report_helper(
             catalog, catalog_validation, url)
 
-        if isinstance(catalog["dataset"], list):
+        if "dataset" in catalog and isinstance(catalog["dataset"], list):
             datasets = [d if isinstance(d, dict) else {} for d in
                         catalog["dataset"]]
         else:
@@ -434,8 +439,8 @@ quiso decir 'http://{}'?
                     if row["harvest"] == "1":
                         writer.writerow(row)
 
-    def _generate_datasets_report(self, catalogs, harvest='none',
-                                  report=None, export_path=None):
+    def generate_datasets_report(self, catalogs, harvest='none',
+                                 report=None, export_path=None):
         """Genera un reporte sobre las condiciones de la metadata de los
         datasets contenidos en uno o varios catálogos.
 
@@ -454,7 +459,17 @@ quiso decir 'http://{}'?
             list: Contiene tantos dicts como datasets estén presentes en
             `catalogs`, con la data del reporte generado.
         """
-        return NotImplemented
+        catalogs_reports = [self.catalog_report(catalog, harvest, report)
+                            for catalog in catalogs]
+        full_report = []
+        for report in catalogs_reports:
+            full_report.extend(report)
+
+        if export_path:
+            self._write(table=full_report, path=export_path)
+            return None
+        else:
+            return full_report
 
     def _generate_harvester_config(self, harvest='report', report=None,
                                    catalogs=None, export_path=None):
@@ -587,7 +602,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         Returns:
             None
         """
-        assert isinstance(path, str), "`path` debe ser un string"
+        assert isinstance(path, (str, unicode)), "`path` debe ser un string"
         assert isinstance(table, list), "`table` debe ser una lista de dicts"
 
         # Sólo sabe escribir listas de diccionarios con información tabular
@@ -639,6 +654,15 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
             list: Lista de tuplas con los títulos de catálogo y dataset de cada
             reporte extraído.
         """
+        assert isinstance(report, (str, unicode, list))
+
+        # Si `report` es una lista de tuplas con longitud 2, asumimos que es un
+        # reporte procesado para extraer los datasets a harvestear. Se devuelve
+        # intacta.
+        if (isinstance(report, list) and all([isinstance(x, tuple) and
+                                              len(x) == 2 for x in report])):
+            return report
+
         table = cls._read(report)
         table_keys = table[0].keys()
         expected_keys = ["catalog_metadata_url", "dataset_title",
