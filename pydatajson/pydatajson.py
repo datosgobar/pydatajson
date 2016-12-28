@@ -479,8 +479,8 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
         else:
             return harvester_config
 
-    def _generate_harvestable_catalogs(self, catalogs, harvest='all',
-                                       report=None, export_path=None):
+    def generate_harvestable_catalogs(self, catalogs, harvest='all',
+                                      report=None, export_path=None):
         """Filtra los catálogos provistos según el criterio determinado en
         `harvest`.
 
@@ -498,7 +498,54 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
                 se exportará la lista de catálogos a un único archivo. Si es un
                 directorio, se guardará en él un JSON por catálogo.
         """
-        return NotImplemented
+        harvestable_catalogs = [self._json_to_dict(c) for c in catalogs]
+        catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
+                         else None for catalog in catalogs]
+
+        if harvest == 'all':
+            pass
+        elif harvest == 'none':
+            for catalog in harvestable_catalogs:
+                catalog["dataset"] = []
+        elif harvest == 'valid':
+            report = self.generate_datasets_report(catalogs, harvest)
+            return self.generate_harvestable_catalogs(
+                catalogs=catalogs, harvest='report', report=report,
+                export_path=export_path)
+        elif harvest == 'report':
+            datasets_to_harvest = self._extract_datasets_to_harvest(report)
+            for idx_cat, catalog in enumerate(harvestable_catalogs):
+                catalog_url = catalogs_urls[idx_cat]
+                if ("dataset" in catalog and isinstance(catalog["dataset"],
+                                                        list)):
+                    catalog["dataset"] = [
+                        dataset for dataset in catalog["dataset"]
+                        if (catalog_url, dataset.get("title")) in
+                        datasets_to_harvest
+                    ]
+                else:
+                    catalog["dataset"] = []
+        else:
+            raise ValueError("""
+{} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
+'report'.""".format(harvest))
+
+        if export_path and os.path.isdir(export_path):
+            # Creo un JSON por catálogo
+            for idx, catalog in enumerate(harvestable_catalogs):
+                filename = os.path.join(export_path, "catalog_{}".format(idx))
+                with open(filename) as target:
+                    json.dump(catalog, target, ensure_ascii=False, indent=4,
+                              separators=(",", ": "), encoding="utf-8")
+            return None
+        elif export_path:
+            # Creo un único JSON con todos los catálogos
+            with open(export_path) as target:
+                json.dump(harvestable_catalogs, target, ensure_ascii=False,
+                          indent=4, separators=(",", ": "), encoding="utf-8")
+            return None
+        else:
+            return harvestable_catalogs
 
     @staticmethod
     def _is_list_of_matching_dicts(list_of_dicts):
