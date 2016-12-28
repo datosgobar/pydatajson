@@ -12,6 +12,7 @@ from __future__ import print_function
 from __future__ import with_statement
 
 import sys
+import io
 import os.path
 from urlparse import urljoin, urlparse
 import warnings
@@ -20,7 +21,6 @@ import jsonschema
 import requests
 import unicodecsv as csv
 import openpyxl as pyxl
-from io import open
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -126,7 +126,7 @@ con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
 quiso decir 'http://{}'?
                 """.format(dict_or_json_path).encode("utf8"))
 
-            with open(dict_or_json_path) as json_file:
+            with io.open(dict_or_json_path) as json_file:
                 json_string = json_file.read()
 
         json_dict = json.loads(json_string, encoding="utf8")
@@ -336,8 +336,8 @@ quiso decir 'http://{}'?
 
         return fields
 
-    def dataset_report(self, dataset, dataset_validation, dataset_index,
-                       catalog_fields={}, harvest='none', report=None):
+    def _dataset_report(self, dataset, dataset_validation, dataset_index,
+                        catalog_fields, harvest='none', report=None):
         dataset_report = {}
         dataset_report.update(catalog_fields)
         dataset_report.update({
@@ -375,6 +375,7 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
         return dataset_report.copy()
 
     def catalog_report(self, catalog, harvest='none', report=None):
+        """Reporta sobre los datasets de un único catálogo"""
 
         url = catalog if isinstance(catalog, (str, unicode)) else None
         catalog = self._json_to_dict(catalog)
@@ -393,7 +394,7 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
             datasets = []
 
         catalog_report = [
-            self.dataset_report(
+            self._dataset_report(
                 dataset, datasets_validations[index], index,
                 catalog_fields, harvest, report=report
             ) for index, dataset in enumerate(datasets)
@@ -541,7 +542,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 filename = os.path.join(export_path, "catalog_{}".format(idx))
                 file_str = json.dumps(catalog, ensure_ascii=False, indent=4,
                                       separators=(",", ": "), encoding="utf-8")
-                with open(filename, 'w', encoding="utf-8") as target:
+                with io.open(filename, 'w', encoding="utf-8") as target:
                     target.write(file_str)
             return None
         elif export_path:
@@ -549,7 +550,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             file_str = json.dumps(harvestable_catalogs, ensure_ascii=False,
                                   indent=4, separators=(",", ": "),
                                   encoding="utf-8")
-            with open(export_path, 'w', encoding="utf-8") as target:
+            with io.open(export_path, 'w', encoding="utf-8") as target:
                 target.write(file_str)
             return None
         else:
