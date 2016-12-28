@@ -534,13 +534,13 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
             # Creo un JSON por catálogo
             for idx, catalog in enumerate(harvestable_catalogs):
                 filename = os.path.join(export_path, "catalog_{}".format(idx))
-                with open(filename) as target:
+                with open(filename, 'w') as target:
                     json.dump(catalog, target, ensure_ascii=False, indent=4,
                               separators=(",", ": "), encoding="utf-8")
             return None
         elif export_path:
             # Creo un único JSON con todos los catálogos
-            with open(export_path) as target:
+            with open(export_path, 'w') as target:
                 json.dump(harvestable_catalogs, target, ensure_ascii=False,
                           indent=4, separators=(",", ": "), encoding="utf-8")
             return None
