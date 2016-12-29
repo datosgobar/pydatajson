@@ -377,7 +377,8 @@ class DataJsonTestCase(unittest.TestCase):
         actual_report_path = os.path.join(self.TEMP_DIR,
                                           "latest_datasets_report.csv")
 
-        self.dj.generate_datasets_report(catalogs, actual_report_path)
+        self.dj.generate_datasets_report(catalogs, harvest='none',
+                                         export_path=actual_report_path)
 
         with open(expected_report_path) as expected:
             expected_str = expected.read()
@@ -396,7 +397,8 @@ class DataJsonTestCase(unittest.TestCase):
         report_path = os.path.join(self.SAMPLES_DIR,
                                    "processed_datasets_report.csv")
 
-        self.dj.generate_harvester_config(report_path, actual_config_path)
+        self.dj.generate_harvester_config(harvest='report', report=report_path,
+                                          export_path=actual_config_path)
 
         with open(expected_config_path) as expected:
             expected_str = expected.read()
