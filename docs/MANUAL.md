@@ -105,8 +105,34 @@ Validación completa: {}
 
 ### Generación de reportes
 
-El objetivo final de los métodos `generate_X` es proveer la configuración que Harvester necesita para cosechar datasets.
+El objetivo final de los métodos `generate_X` es proveer la configuración que Harvester necesita para cosechar datasets. A continuación, se proveen algunos ejemplos de uso comunes:
 
+#### Crear un archivo de configuración eligiendo manualmente los datasets a federar
 
+```python
+catalogs = [ "tests/samples/full_data.json", "http://181.209.63.71/data.json"]
+report_path = "path/to/report.xlsx"
+dj.generate_datasets_report(
+    catalogs=catalogs,
+    harvest='none', # El reporte generado tendrá `harvest==0` para todos los datasets
+    export_path=report_path
+)
+# A continuación, se debe editar el archivo de Excel 'path/to/report.xlsx', cambiando a '1' el campo 'harvest' para aquellos datasets que se quieran cosechar.
 
+config_path = 'path/to/config.csv'
+dj.generate_harvester_config(
+    harvest='report',
+    report=report_path,
+    export_path=config_path
+)
+```
+El archivo `config_path` puede ser provisto a Harvester para federar los datasets elegidos al editar el reporte intermedio `report_path`.
 
+#### Crear un archivo de configuración que incluya únicamente los datasets con metadata válida
+Conservando las variables anteriores:
+```python
+dj.generate_harvester_config(
+    catalogs=catalogs,
+    harvest='valid'
+    export
+    

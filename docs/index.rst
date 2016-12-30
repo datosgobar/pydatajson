@@ -6,6 +6,7 @@
 
    README.md
    HISTORY.md
+   MANUAL.md
 
 Indices y tablas
 ==================
