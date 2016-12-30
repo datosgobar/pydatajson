@@ -105,12 +105,12 @@ Validación completa: {}
 
 ### Generación de reportes
 
-El objetivo final de los métodos `generate_X` es proveer la configuración que Harvester necesita para cosechar datasets. A continuación, se proveen algunos ejemplos de uso comunes:
+El objetivo final de los métodos `generate_X()` es proveer la configuración que Harvester necesita para cosechar datasets. A continuación, se proveen algunos ejemplos de uso comunes:
 
 #### Crear un archivo de configuración eligiendo manualmente los datasets a federar
 
 ```python
-catalogs = [ "tests/samples/full_data.json", "http://181.209.63.71/data.json"]
+catalogs = ["tests/samples/full_data.json", "http://181.209.63.71/data.json"]
 report_path = "path/to/report.xlsx"
 dj.generate_datasets_report(
     catalogs=catalogs,
@@ -128,11 +128,130 @@ dj.generate_harvester_config(
 ```
 El archivo `config_path` puede ser provisto a Harvester para federar los datasets elegidos al editar el reporte intermedio `report_path`.
 
+Alternativamente, el output de `generate_datasets_report()` se puede editar en un intérprete de python:
+```python
+# Asigno el resultado a una variable en lugar de exportarlo
+datasets_report = dj.generate_datasets_report(
+    catalogs=catalogs,
+    harvest='none', # El reporte generado tendrá `harvest==0` para todos los datasets
+)
+# Imaginemo que sólo se desea federar el primer dataset del reporte:
+datasets_report[0]["harvest"] = 1
+
+config_path = 'path/to/config.csv'
+dj.generate_harvester_config(
+    harvest='report',
+    report=datasets_report,
+    export_path=config_path
+)
+```
+
 #### Crear un archivo de configuración que incluya únicamente los datasets con metadata válida
 Conservando las variables anteriores:
 ```python
 dj.generate_harvester_config(
     catalogs=catalogs,
     harvest='valid'
-    export
-    
+    export_path='path/to/config.csv'
+)
+```
+Para fines ilustrativos, se incluye el siguiente bloque de código que produce los mismos resultados, pero genera el reporte intermedio sobre datasets:
+```python
+datasets_report = dj.generate_datasets_report(
+    catalogs=catalogs,
+    harvest='valid'
+)
+
+# Como el reporte ya contiene la información necesaria sobre los datasets que se pretende cosechar, el argumento `catalogs` es innecesario.
+dj.generate_harvester_config(
+    harvest='report'
+    report=datasets_report
+    export_path='path/to/config.csv'
+)
+```
+
+#### Modificar catálogos para conservar únicamente los datasets válidos
+
+```python
+# Creamos un directorio donde guardar los catálogos
+output_dir = "catalogos_limpios"
+import os; os.mkdir(output_dir)
+
+dj.generate_harvestable_catalogs(
+    catalogs,
+    harvest='valid',
+    export_path=output_dir
+)
+```
+
+**NOTA:** El criterio `'harvest='valid'` considera válido un dataset sí y sólo sí:
+- su propia metadata es válida, y
+- la metadata "global" del catálogo al que pertenece es válida (título, descripción, datos del organismo editor, etcétera)
+
+Por lo tanto, **si un catálogo tiene un error en su título, ninguno de sus datasets será cosechado bajo el criterio harvest='valid'**, y la clave "dataset" será `[]`.
+
+
+## Anexo I: Estructura de respuestas
+
+### validate_catalog()
+
+El resultado de la validación completa de un catálogo, es un diccionario con la siguiente estructura:
+{
+    "status": "OK",  # resultado de la validación global
+    "error": {
+	"catalog": {
+	    "status": "OK", # validez de la metadata propia del catálogo, ignorando los datasets particulares
+	    "errors": []
+	    "title": "Título Catalog"},
+	"dataset": [
+	    {
+		"status": "OK",
+		"errors": [],
+		"title": "Titulo Dataset 1"
+	    },
+	    {
+		"status": "ERROR",
+		"errors": [error1_info, error2_info, ...],
+		"title": "Titulo Dataset 2"
+	    }
+	]
+    }
+}
+
+Si `validate_catalog()` encuentra algún error, éste se reportará en la lista `errors` del nivel correspondiente, a través de un diccionario con las siguientes claves:
+- **path**: Posición en el diccionario de metadata del catálogo donde se encontró el error.
+- **instance**: Valor concreto que no pasó la validación. Es el valor de la clave `path` en la metadata del catálogo.
+- **message**: Descripción humanamente legible explicando el error.
+- **validator**: Nombre del validador violado, ("type" para errores de tipo, "minLength" para errores de cadenas vacías, et cétera).
+- **validator_value**: Valor esperado por el validador `validator`, que no fue respetado.
+- **error_code**: Código describiendo genéricamente el error. Puede ser:
+  - **1**: Valor obligatorio faltante: Un campo obligatorio no se encuentra presente.
+- **2**: Error de tipo y formato: se esperaba un `array` y se encontró un `dict`, se esperaba un `string` en formato `email` y se encontr+o una `string` que no cumple con el formato, et cétera.
+
+### generate_datasets_report()
+El reporte resultante tendrá tantas filas como datasets contenga el conjunto de catálogos ingresado, y contará con los siguientes campos, casi todos autodescriptivos:
+- **catalog_metadata_url**: En caso de que se haya provisto una representación externa de un catálogo, la string de su ubicación; sino `None`.
+- **catalog_title**
+- **catalog_description**
+- **valid_catalog_metadata**: Validez de la metadata "global" del catálogo, es decir, ignorando la metadata de datasets particulares.
+- **dataset_title**:
+- **dataset_description**:
+- **dataset_index**: Posición (comenzando desde cero) en la que aparece el dataset en cuestión en lista del campo `catalog["dataset"]`.
+- **valid_dataset_metadata**: Validez de la metadata *específica a este dataset* que figura en el catálogo (`catalog["dataset"][dataset_index]`).
+- **harvest**: '0' o '1', según se desee excluir o incluir, respectivamente, un dataset de cierto proceso de cosecha. El default es '0', pero se puede controlar a través del parámetro 'harvest'.
+- **dataset_accrualPeriodicity**
+- **dataset_publisher_name**
+- **dataset_superTheme**: Lista los valores que aparecen en el campo dataset["superTheme"], separados por comas.
+- **dataset_theme**: Lista los valores que aparecen en el campo dataset["theme"], separados por comas.
+- **dataset_landingPage**:
+- **distributions_list**: Lista los títulos y direcciones de descarga de todas las distribuciones incluidas en un dataset, separadas por "newline".
+
+La *representación interna* de este reporte es una lista compuesta en su totalidad de diccionarios con las claves mencionadas. La *representación externa* de este reporte, es un archivo con información tabular, en formato CSV o XLSX.
+
+### generate_harvester_config()
+Este reporte se puede generar a partir de un conjunto de catálogos, o a partir del resultado de `generate_datasets_report()`, pues no es más que un subconjunto del mismo. Incluye únicamente las claves necesarias para que el Harvester pueda federar un dataset, si `'harvest'==1`:
+- **catalog_metadata_url**
+- **dataset_title**
+- **dataset_accrualPeriodicity**
+
+La *representación interna* de este reporte es una lista compuesta en su totalidad de diccionarios con las claves mencionadas. La *representación externa* de este reporte, es un archivo con información tabular, en formato CSV o XLSX.
