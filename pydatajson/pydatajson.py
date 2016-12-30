@@ -136,7 +136,20 @@ quiso decir 'http://{}'?
     @staticmethod
     def _traverse_dict(dicc, keys, default_value=None):
         """Recorre un diccionario siguiendo una lista de claves, y devuelve
-        default_value en caso de que alguna de ellas no exista."""
+        default_value en caso de que alguna de ellas no exista.
+        
+        Args:
+            dicc (dict): Diccionario a ser recorrido.
+            keys (list): Lista de claves a ser recorrida. Puede contener
+                índices de listas y claves de diccionarios mezcladas.
+            default_value: Valor devuelto en caso de que `dicc` no se pueda
+                recorrer siguiendo secuencialmente la lista de `keys` hasta
+                el final.
+
+        Returns:
+            object: El valor obtenido siguiendo la lista de `keys` dentro de
+            `dicc`.
+        """
         for key in keys:
             if isinstance(dicc, dict) and key in dicc:
                 dicc = dicc[key]
@@ -278,9 +291,16 @@ quiso decir 'http://{}'?
 
     @classmethod
     def _dataset_report_helper(cls, dataset):
-        """Toma un dict con la metadata de un dataset, y devuelve un dict con los
-        valores que generate_datasets_report() usa para reportar sobre él."""
+        """Toma un dict con la metadata de un dataset, y devuelve un dict coni
+        los valores que dataset_report() usa para reportar sobre él.
 
+        Args:
+            dataset (dict): Diccionario con la metadata de un dataset.
+
+        Returns:
+            dict: Diccionario con los campos a nivel dataset que requiere
+            dataset_report().
+        """
         publisher_name = cls._traverse_dict(dataset, ["publisher", "name"])
 
         super_themes = None
@@ -326,6 +346,18 @@ quiso decir 'http://{}'?
 
     @staticmethod
     def _catalog_report_helper(catalog, catalog_validation, url):
+        """Toma un dict con la metadata de un catálogo, y devuelve un dict con
+        los valores que catalog_report() usa para reportar sobre él.
+
+        Args:
+            catalog (dict): Diccionario con la metadata de un catálogo.
+            validation (dict): Resultado, únicamente a nivel catálogo, de la
+                validación completa de `catalog`.
+
+        Returns:
+            dict: Diccionario con los campos a nivel catálogo que requiere
+            catalog_report().
+        """
         fields = {
             "catalog_metadata_url": url,
             "catalog_title": catalog.get("title"),
@@ -338,6 +370,8 @@ quiso decir 'http://{}'?
 
     def _dataset_report(self, dataset, dataset_validation, dataset_index,
                         catalog_fields, harvest='none', report=None):
+        """ Genera una línea del `catalog_report`, correspondiente a un dataset
+        de los que conforman el catálogo analizado."""
         dataset_report = {}
         dataset_report.update(catalog_fields)
         dataset_report.update({
@@ -375,7 +409,17 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
         return dataset_report.copy()
 
     def catalog_report(self, catalog, harvest='none', report=None):
-        """Reporta sobre los datasets de un único catálogo"""
+        """Reporta sobre los datasets de un único catálogo.
+        
+        Args:
+            catalog (dict, str o unicode): Representación externa (path/URL) o
+                interna (dict) de un catálogo.
+            harvest (str): Criterio de cosecha. Puede ser 'all', 'none',
+            'valid' o 'report'.
+            
+        Returns:
+            list: Lista de diccionarios, con un elemento por cada dataset
+            presente en `¢atalog`."""
 
         url = catalog if isinstance(catalog, (str, unicode)) else None
         catalog = self._json_to_dict(catalog)
@@ -558,6 +602,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
     @staticmethod
     def _is_list_of_matching_dicts(list_of_dicts):
+        """Comprueba que una lista esté compuesta únicamente por diccionarios,
+        que comparten exactamente las mismas claves."""
         elements = [isinstance(d, dict) and d.keys() == list_of_dicts[0].keys()
                     for d in list_of_dicts]
         return all(elements)
