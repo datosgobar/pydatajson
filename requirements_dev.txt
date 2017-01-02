@@ -13,3 +13,4 @@ recommonmark
 twine
 sphinx_rtd_theme
 vcrpy
+sphinxcontrib-napoleon

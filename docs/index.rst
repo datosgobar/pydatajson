@@ -5,8 +5,8 @@
    :maxdepth: 2
 
    README.md
-   HISTORY.md
    MANUAL.md
+   HISTORY.md
 
 Indices y tablas
 ==================

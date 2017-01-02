@@ -1,3 +1,4 @@
+
 Manual de uso del módulo `pydatajson`
 =====================================
 
@@ -196,6 +197,8 @@ Por lo tanto, **si un catálogo tiene un error en su título, ninguno de sus dat
 ### validate_catalog()
 
 El resultado de la validación completa de un catálogo, es un diccionario con la siguiente estructura:
+
+```
 {
     "status": "OK",  # resultado de la validación global
     "error": {
@@ -217,6 +220,7 @@ El resultado de la validación completa de un catálogo, es un diccionario con l
 	]
     }
 }
+```
 
 Si `validate_catalog()` encuentra algún error, éste se reportará en la lista `errors` del nivel correspondiente, a través de un diccionario con las siguientes claves:
 - **path**: Posición en el diccionario de metadata del catálogo donde se encontró el error.
