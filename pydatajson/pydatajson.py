@@ -21,6 +21,7 @@ import jsonschema
 import requests
 import unicodecsv as csv
 import openpyxl as pyxl
+from collections import OrderedDict
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -137,7 +138,7 @@ quiso decir 'http://{}'?
     def _traverse_dict(dicc, keys, default_value=None):
         """Recorre un diccionario siguiendo una lista de claves, y devuelve
         default_value en caso de que alguna de ellas no exista.
-        
+
         Args:
             dicc (dict): Diccionario a ser recorrido.
             keys (list): Lista de claves a ser recorrida. Puede contener
@@ -331,18 +332,18 @@ quiso decir 'http://{}'?
             ]
             distributions_list = "\n".join(distributions_strings)
 
-        dataset_report = {
-            "dataset_title": dataset.get("title"),
-            "dataset_accrualPeriodicity": dataset.get("accrualPeriodicity"),
-            "dataset_description": dataset.get("description"),
-            "dataset_publisher_name": publisher_name,
-            "dataset_superTheme": super_themes,
-            "dataset_theme": themes,
-            "dataset_landingPage": dataset.get("landingPage"),
-            "distributions_list": distributions_list
-        }
+        fields = OrderedDict()
+        fields["dataset_title"] = dataset.get("title")
+        fields["dataset_accrualPeriodicity"] = dataset.get(
+            "accrualPeriodicity")
+        fields["dataset_description"] = dataset.get("description")
+        fields["dataset_publisher_name"] = publisher_name
+        fields["dataset_superTheme"] = super_themes
+        fields["dataset_theme"] = themes
+        fields["dataset_landingPage"] = dataset.get("landingPage")
+        fields["distributions_list"] = distributions_list
 
-        return dataset_report
+        return fields
 
     @staticmethod
     def _catalog_report_helper(catalog, catalog_validation, url):
@@ -358,13 +359,12 @@ quiso decir 'http://{}'?
             dict: Diccionario con los campos a nivel catálogo que requiere
             catalog_report().
         """
-        fields = {
-            "catalog_metadata_url": url,
-            "catalog_title": catalog.get("title"),
-            "catalog_description": catalog.get("description"),
-            "valid_catalog_metadata": (
-                1 if catalog_validation["status"] == "OK" else 0)
-        }
+        fields = OrderedDict()
+        fields["catalog_metadata_url"] = url
+        fields["catalog_title"] = catalog.get("title")
+        fields["catalog_description"] = catalog.get("description")
+        fields["valid_catalog_metadata"] = (
+            1 if catalog_validation["status"] == "OK" else 0)
 
         return fields
 
@@ -372,14 +372,10 @@ quiso decir 'http://{}'?
                         catalog_fields, harvest='none', report=None):
         """ Genera una línea del `catalog_report`, correspondiente a un dataset
         de los que conforman el catálogo analizado."""
-        dataset_report = {}
-        dataset_report.update(catalog_fields)
-        dataset_report.update({
-            "dataset_index": dataset_index,
-            "valid_dataset_metadata": (
-                1 if dataset_validation["status"] == "OK" else 0)
-        })
-        dataset_report.update(self._dataset_report_helper(dataset))
+        dataset_report = OrderedDict(catalog_fields)
+        dataset_report["valid_dataset_metadata"] = (
+            1 if dataset_validation["status"] == "OK" else 0)
+        dataset_report["dataset_index"] = dataset_index
 
         if harvest == 'all':
             dataset_report["harvest"] = 1
@@ -406,17 +402,19 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
 {} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
 'report'.""".format(harvest))
 
+        dataset_report.update(self._dataset_report_helper(dataset))
+
         return dataset_report.copy()
 
     def catalog_report(self, catalog, harvest='none', report=None):
         """Reporta sobre los datasets de un único catálogo.
-        
+
         Args:
             catalog (dict, str o unicode): Representación externa (path/URL) o
                 interna (dict) de un catálogo.
             harvest (str): Criterio de cosecha. Puede ser 'all', 'none',
             'valid' o 'report'.
-            
+
         Returns:
             list: Lista de diccionarios, con un elemento por cada dataset
             presente en `¢atalog`."""
@@ -511,10 +509,10 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
                        "dataset_accrualPeriodicity"]
 
         harvester_config = [
-            {
+            OrderedDict(
                 # Retengo únicamente los campos que necesita el harvester
-                k: v for k, v in dataset.iteritems() if k in config_keys
-            }
+                [(k, v) for (k, v) in dataset.items() if k in config_keys]
+            )
             # Para aquellost datasets marcados con 'harvest'==1
             for dataset in datasets_report if int(dataset["harvest"])
         ]
