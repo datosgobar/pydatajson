@@ -372,6 +372,7 @@ quiso decir 'http://{}'?
                         catalog_fields, harvest='none', report=None):
         """ Genera una línea del `catalog_report`, correspondiente a un dataset
         de los que conforman el catálogo analizado."""
+
         dataset_report = OrderedDict(catalog_fields)
         dataset_report["valid_dataset_metadata"] = (
             1 if dataset_validation["status"] == "OK" else 0)
@@ -407,17 +408,18 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
         return dataset_report.copy()
 
     def catalog_report(self, catalog, harvest='none', report=None):
-        """Reporta sobre los datasets de un único catálogo.
+        """Genera un reporte sobre los datasets de un único catálogo.
 
         Args:
             catalog (dict, str o unicode): Representación externa (path/URL) o
                 interna (dict) de un catálogo.
-            harvest (str): Criterio de cosecha. Puede ser 'all', 'none',
-            'valid' o 'report'.
+            harvest (str): Criterio de cosecha ('all', 'none',
+                'valid' o 'report').
 
         Returns:
             list: Lista de diccionarios, con un elemento por cada dataset
-            presente en `¢atalog`."""
+                presente en `catalog`.
+        """
 
         url = catalog if isinstance(catalog, (str, unicode)) else None
         catalog = self._json_to_dict(catalog)
@@ -451,14 +453,16 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
 
         Args:
             catalogs (str, dict o list): Uno (str o dict) o varios (list de
-                strs y/o dicts) elementos con la metadata de un catálogo.
-                Tienen que poder ser interpretados por self._json_to_dict()
+                strs y/o dicts) catálogos, que deben poder ser interpretados
+                por self._json_to_dict()
             harvest (str): Criterio a utilizar para determinar el valor del
-                campo "harvest" en el reporte generado.
-            report_path (str): Path a un reporte/config especificando qué
+                campo "harvest" en el reporte generado ('all', 'none',
+                'valid' o 'report').
+            report (str): Path a un reporte/config especificando qué
                 datasets marcar con harvest=1 (sólo si harvest=='report').
-            export_path (str): Path donde exportar el reporte generado. Si se
-                especifica, el método no devolverá nada.
+            export_path (str): Path donde exportar el reporte generado (en
+                formato XLSX o CSV). Si se especifica, el método no devolverá
+                nada.
 
         Returns:
             list: Contiene tantos dicts como datasets estén presentes en
@@ -472,35 +476,36 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
 
         if export_path:
             self._write(table=full_report, path=export_path)
-            return None
         else:
             return full_report
 
-    def generate_harvester_config(self, harvest='valid', report=None,
-                                  catalogs=None, export_path=None):
+    def generate_harvester_config(self, catalogs=None, harvest='valid',
+                                  report=None, export_path=None):
         """Genera un archivo de configuración del harvester a partir de un
-        reporte, o un conjunto de catálogos y un criterio de cosecha
-        (_harvest_).
-
+        reporte, o de un conjunto de catálogos y un criterio de cosecha
+        (`harvest`).
 
         Args:
-            harvest (str): Criterio a utilizar para determinar qué datasets
-                incluir en el archivo de configuración generado.
-            report (list o str): Lista-reporte generada por
-                _generate_datasets_report(), o path a la exportación de ese
-                mismo reporte. Sólo se usa cuando `harvest=='report'`, en cuyo
-                caso `catalogs` se ignora.
             catalogs (str, dict o list): Uno (str o dict) o varios (list de
-                strs y/o dicts) elementos con la metadata de un catálogo.
-                Tienen que poder ser interpretados por self._json_to_dict()
-            export_path (str): Path donde exportar el archivo de configuración
-                generado. Si se especifica, el método no devolverá nada.
+                strs y/o dicts) catálogos. Tienen que poder ser interpretados
+                por self._json_to_dict()
+            harvest (str): Criterio para determinar qué datasets incluir en el
+                archivo de configuración generado  ('all', 'none',
+                'valid' o 'report').
+            report (list o str): Tabla de reporte generada por
+                generate_datasets_report() como lista de diccionarios o archivo
+                en formato XLSX o CSV. Sólo se usa cuando `harvest=='report'`,
+                en cuyo caso `catalogs` se ignora.
+            export_path (str): Path donde exportar el reporte generado (en
+                formato XLSX o CSV). Si se especifica, el método no devolverá
+                nada.
 
         Returns:
-            list: Contiene diccionarios con la data necesaria para que el
-            harvester los coseche.
+            list of dicts: Un diccionario con variables de configuración
+            por cada dataset a cosechar.
         """
         if harvest == 'report':
+            # TODO: chequear que se pasa la variable `report`
             datasets_report = self._read(report)
         else:
             datasets_report = self.generate_datasets_report(catalogs, harvest)
@@ -514,12 +519,11 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
                 [(k, v) for (k, v) in dataset.items() if k in config_keys]
             )
             # Para aquellost datasets marcados con 'harvest'==1
-            for dataset in datasets_report if int(dataset["harvest"])
+            for dataset in datasets_report if bool(int(dataset["harvest"]))
         ]
 
         if export_path:
             self._write(harvester_config, export_path)
-            return None
         else:
             return harvester_config
 
@@ -532,20 +536,25 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
             catalogs (str, dict o list): Uno (str o dict) o varios (list de
                 strs y/o dicts) elementos con la metadata de un catálogo.
                 Tienen que poder ser interpretados por self._json_to_dict()
-            harvest (str): Criterio a utilizar para determina qué datasets
-                conservar de cada catálogo.
-            report (list o str): En caso de que `harvest=='report'`, objeto
-            con un reporte de _generate_datasets_report según el cual filtrar
-                los catálogos provistos.
-            export_path: Path a un archivo JSON o directorio donde exportar
-                los catálogos filtrados, si así se desea. Si termina en ".json"
-                se exportará la lista de catálogos a un único archivo. Si es un
-                directorio, se guardará en él un JSON por catálogo.
+            harvest (str): Criterio para determinar qué datasets conservar de
+                cada catálogo ('all', 'none', 'valid' o 'report').
+            report (list o str): Tabla de reporte generada por
+                generate_datasets_report() como lista de diccionarios o archivo
+                en formato XLSX o CSV. Sólo se usa cuando `harvest=='report'`.
+            export_path (str): Path a un archivo JSON o directorio donde
+                exportar los catálogos filtrados. Si termina en ".json" se
+                exportará la lista de catálogos a un único archivo. Si es un
+                directorio, se guardará en él un JSON por catálogo. Si se
+                especifica `export_path`, el método no devolverá nada.
+
+        Returns:
+            list of dicts: Lista de catálogos.
         """
         harvestable_catalogs = [self._json_to_dict(c) for c in catalogs]
         catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
                          else None for catalog in catalogs]
 
+        # aplica los criterios de cosecha
         if harvest == 'all':
             pass
         elif harvest == 'none':
@@ -564,8 +573,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             datasets_to_harvest = self._extract_datasets_to_harvest(report)
             for idx_cat, catalog in enumerate(harvestable_catalogs):
                 catalog_url = catalogs_urls[idx_cat]
-                if ("dataset" in catalog and isinstance(catalog["dataset"],
-                                                        list)):
+                if ("dataset" in catalog and
+                        isinstance(catalog["dataset"], list)):
                     catalog["dataset"] = [
                         dataset for dataset in catalog["dataset"]
                         if (catalog_url, dataset.get("title")) in
@@ -578,6 +587,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 {} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
 'report'.""".format(harvest))
 
+        # devuelve los catálogos harvesteables
         if export_path and os.path.isdir(export_path):
             # Creo un JSON por catálogo
             for idx, catalog in enumerate(harvestable_catalogs):
@@ -586,7 +596,6 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                                       separators=(",", ": "), encoding="utf-8")
                 with io.open(filename, 'w', encoding="utf-8") as target:
                     target.write(file_str)
-            return None
         elif export_path:
             # Creo un único JSON con todos los catálogos
             file_str = json.dumps(harvestable_catalogs, ensure_ascii=False,
@@ -594,7 +603,6 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                                   encoding="utf-8")
             with io.open(export_path, 'w', encoding="utf-8") as target:
                 target.write(file_str)
-            return None
         else:
             return harvestable_catalogs
 
@@ -602,16 +610,16 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
     def _is_list_of_matching_dicts(list_of_dicts):
         """Comprueba que una lista esté compuesta únicamente por diccionarios,
         que comparten exactamente las mismas claves."""
-        elements = [isinstance(d, dict) and d.keys() == list_of_dicts[0].keys()
-                    for d in list_of_dicts]
+        elements = (isinstance(d, dict) and d.keys() == list_of_dicts[0].keys()
+                    for d in list_of_dicts)
         return all(elements)
 
     @classmethod
     def _read(cls, path):
         """Lee un archivo tabular (CSV o XLSX) a una lista de diccionarios.
 
-        La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
-        ella se decidirá qué método usar par leerlo.
+        La extensión del archivo debe ser ".csv" o ".xlsx". En función de
+        ella se decidirá el método a usar para leerlo.
 
         Si recibe una lista, comprueba que todos sus diccionarios tengan las
         mismas claves y de ser así, la devuelve intacta. Levanta una Excepción
@@ -644,7 +652,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
             return cls._read_xlsx(path)
         else:
             raise ValueError("""
-{} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
+{} no es un sufijo reconocido. Pruebe con .csv o .xlsx""".format(suffix))
 
     @staticmethod
     def _read_csv(path):
@@ -661,12 +669,12 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         # Asumo que la primera fila contiene los encabezados
         keys = [cell.value for cell in worksheet.rows[0]]
         # Compruebo que todas las filas sean tan largas como la de encabezados
+        # Esto puede fallar cuando una celda de excel fue usada y luego borrada
+        # porque cuenta como
         assert all([len(keys) == len(row) for row in worksheet.rows])
 
-        table = []
-        for cells in worksheet.rows[1:]:
-            table_row = dict(zip(keys, [cell.value for cell in cells]))
-            table.append(table_row)
+        table = [dict(zip(keys, [cell.value for cell in row]))
+                 for row in worksheet.rows[1:]]
 
         return table
 
@@ -675,14 +683,11 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
         """ Exporta una tabla en el formato deseado (CSV o XLSX).
 
         La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
-        ella se decidirá qué método usar par leerlo.
+        ella se decidirá qué método usar para escribirlo.
 
         Args:
-            table (list): Lista "tabular" a ser exportada.
-            path (str): Path al destino de la exportación.
-
-        Returns:
-            None
+            table (list of dicts): Tabla a ser exportada.
+            path (str): Path al archivo CSV o XLSX de exportación.
         """
         assert isinstance(path, (str, unicode)), "`path` debe ser un string"
         assert isinstance(table, list), "`table` debe ser una lista de dicts"
@@ -793,6 +798,7 @@ def main():
 {}: pydatajson.py fue ejecutado como script sin proveer un argumento
 """
         print(format_str.format(errmsg))
+
 
 if __name__ == '__main__':
     main()
