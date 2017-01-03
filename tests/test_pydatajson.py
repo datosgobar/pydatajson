@@ -383,6 +383,8 @@ class DataJsonTestCase(unittest.TestCase):
              (u'distributions_list', u'"Convocatorias abiertas durante el año 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv')])]
 
     def test_catalog_report_harvest_valid(self):
+        """catalog_report() marcará para cosecha los datasets con metadata
+        válida si harvest='valid'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(catalog, harvest='valid')
@@ -396,6 +398,8 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertListEqual(actual, expected)
 
     def test_catalog_report_harvest_none(self):
+        """catalog_report() no marcará ningún dataset para cosecha si
+        harvest='none'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(catalog, harvest='none')
@@ -409,6 +413,8 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertListEqual(actual, expected)
 
     def test_catalog_report_harvest_all(self):
+        """catalog_report() marcará todo dataset para cosecha si
+        harvest='all'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(catalog, harvest='all')
@@ -422,6 +428,8 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertListEqual(actual, expected)
 
     def test_catalog_report_harvest_report(self):
+        """catalog_report() marcará para cosecha los datasets presentes en
+        `report` si harvest='report'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         # Compruebo que no se harvestee nada si el reporte no incluye el
@@ -431,7 +439,7 @@ class DataJsonTestCase(unittest.TestCase):
                                         report=report)
 
         expected = list(self.EXPECTED_REPORT)
-        expected[0]["harvest"] = 1
+        expected[0]["harvest"] = 0
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
         self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
