@@ -54,7 +54,7 @@ Los tres métodos toman los mismos cuatro parámetros, que se interpretan de man
   - `'valid'`: Cosechar únicamente los datasets que no contengan errores, ni en su propia metadata ni en la metadata global del catálogo.
   - `'report'`: Cosechar únicamente los datasets indicados por el reporte provisto en `report`.
 - **report**: En caso de que se pretenda cosechar un conjunto específico de catálogos, esta variable debe recibir la representación externa (path a un archivo) o interna (lista de diccionarios) de un reporte que identifique los datasets a cosechar.
-- **export_path**: Esta variable controla el valor de retorno de los métodos de generación. Si es `None`, el método devolverá la representación interna del reporte generado. Si especifica el path a un archivo, el método devolverá `None`, pero escribirá a `export_path` la representación externa del reporte generado.
+- **export_path**: Esta variable controla el valor de retorno de los métodos de generación. Si es `None`, el método devolverá la representación interna del reporte generado. Si especifica el path a un archivo, el método devolverá `None`, pero escribirá a `export_path` la representación externa del reporte generado, en formato CSV o XLSX.
 
 ## Uso
 
@@ -103,10 +103,11 @@ Catálogo: {}
 Validación completa: {}
 """.format(catalog, validation_result, validation_report)
 ```
+Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en el **Anexo I: Estructura de respuestas**.
 
 ### Generación de reportes
 
-El objetivo final de los métodos `generate_X()` es proveer la configuración que Harvester necesita para cosechar datasets. A continuación, se proveen algunos ejemplos de uso comunes:
+El objetivo final de los métodos `generate_X()` es proveer la configuración que Harvester necesita para cosechar datasets. Todos ellos devuelven una "tabla", que consiste en una lista de diccionarios que comparten las mismas claves (consultar ejemplos en el **Anexo I: Estructura de respuestas**). A continuación, se proveen algunos ejemplos de uso comunes:
 
 #### Crear un archivo de configuración eligiendo manualmente los datasets a federar
 
@@ -136,7 +137,7 @@ datasets_report = dj.generate_datasets_report(
     catalogs=catalogs,
     harvest='none', # El reporte generado tendrá `harvest==0` para todos los datasets
 )
-# Imaginemo que sólo se desea federar el primer dataset del reporte:
+# Imaginemos que sólo se desea federar el primer dataset del reporte:
 datasets_report[0]["harvest"] = 1
 
 config_path = 'path/to/config.csv'
@@ -203,19 +204,39 @@ El resultado de la validación completa de un catálogo, es un diccionario con l
     "status": "OK",  # resultado de la validación global
     "error": {
 	"catalog": {
-	    "status": "OK", # validez de la metadata propia del catálogo, ignorando los datasets particulares
-	    "errors": []
+            # validez de la metadata propia del catálogo, ignorando los
+            # datasets particulares
+	    "status": "OK",
+ 	    "errors": []
 	    "title": "Título Catalog"},
 	"dataset": [
 	    {
-		"status": "OK",
+		# Validez de la metadata propia de cada dataset
+                "status": "OK",
 		"errors": [],
 		"title": "Titulo Dataset 1"
 	    },
 	    {
 		"status": "ERROR",
-		"errors": [error1_info, error2_info, ...],
-		"title": "Titulo Dataset 2"
+		"errors": [
+                    {
+                        "error_code": 2,
+                        "instance": "",
+                        "message": "'' is not a 'email'",
+                        "path": ["publisher", "mbox"],
+                        "validator": "format",
+                        "validator_value": "email"
+                   },
+                   {
+                        "error_code": 2,
+                        "instance": "",
+                        "message": """ is too short",
+                        "path": ["publisher", "name"],
+                        "validator": "minLength",
+                        "validator_value": 1
+                   }
+               ],
+               "title": "Titulo Dataset 2"
 	    }
 	]
     }
@@ -230,7 +251,7 @@ Si `validate_catalog()` encuentra algún error, éste se reportará en la lista 
 - **validator_value**: Valor esperado por el validador `validator`, que no fue respetado.
 - **error_code**: Código describiendo genéricamente el error. Puede ser:
   - **1**: Valor obligatorio faltante: Un campo obligatorio no se encuentra presente.
-- **2**: Error de tipo y formato: se esperaba un `array` y se encontró un `dict`, se esperaba un `string` en formato `email` y se encontr+o una `string` que no cumple con el formato, et cétera.
+  - **2**: Error de tipo y formato: se esperaba un `array` y se encontró un `dict`, se esperaba un `string` en formato `email` y se encontró una `string` que no cumple con el formato, et cétera.
 
 ### generate_datasets_report()
 El reporte resultante tendrá tantas filas como datasets contenga el conjunto de catálogos ingresado, y contará con los siguientes campos, casi todos autodescriptivos:
@@ -238,8 +259,8 @@ El reporte resultante tendrá tantas filas como datasets contenga el conjunto de
 - **catalog_title**
 - **catalog_description**
 - **valid_catalog_metadata**: Validez de la metadata "global" del catálogo, es decir, ignorando la metadata de datasets particulares.
-- **dataset_title**:
-- **dataset_description**:
+- **dataset_title**
+- **dataset_description**
 - **dataset_index**: Posición (comenzando desde cero) en la que aparece el dataset en cuestión en lista del campo `catalog["dataset"]`.
 - **valid_dataset_metadata**: Validez de la metadata *específica a este dataset* que figura en el catálogo (`catalog["dataset"][dataset_index]`).
 - **harvest**: '0' o '1', según se desee excluir o incluir, respectivamente, un dataset de cierto proceso de cosecha. El default es '0', pero se puede controlar a través del parámetro 'harvest'.
@@ -247,10 +268,36 @@ El reporte resultante tendrá tantas filas como datasets contenga el conjunto de
 - **dataset_publisher_name**
 - **dataset_superTheme**: Lista los valores que aparecen en el campo dataset["superTheme"], separados por comas.
 - **dataset_theme**: Lista los valores que aparecen en el campo dataset["theme"], separados por comas.
-- **dataset_landingPage**:
+- **dataset_landingPage**
 - **distributions_list**: Lista los títulos y direcciones de descarga de todas las distribuciones incluidas en un dataset, separadas por "newline".
 
-La *representación interna* de este reporte es una lista compuesta en su totalidad de diccionarios con las claves mencionadas. La *representación externa* de este reporte, es un archivo con información tabular, en formato CSV o XLSX.
+La *representación interna* de este reporte es una lista compuesta en su totalidad de diccionarios con las claves mencionadas. La *representación externa* de este reporte, es un archivo con información tabular, en formato CSV o XLSX. A continuación, un ejemplo de la _lista de diccionarios_ que devuelve `generate_datasets_report()`:
+```python
+[
+    {
+        "catalog_metadata_url": "http://181.209.63.71/data.json",
+        "catalog_title": "Andino",
+        "catalog_description": "Portal Andino Demo",
+        "valid_catalog_metadata": 0,
+        "dataset_title": "Dataset Demo",
+        "dataset_description": "Este es un dataset de ejemplo, se incluye como material DEMO y no contiene ningun valor estadistico.",
+        "dataset_index": 0,
+        "valid_dataset_metadata": 1,
+        "harvest": 0,
+        "dataset_accrualPeriodicity": "eventual",
+        "dataset_publisher_name": "Andino",
+        "dataset_superThem"": "TECH",
+        "dataset_theme": "Tema.demo",
+        "dataset_landingPage": "https://github.com/datosgobar/portal-andino",
+        "distributions_list": ""Recurso de Ejemplo": http://181.209.63.71/dataset/6897d435-8084-4685-b8ce-304b190755e4/resource/6145bf1c-a2fb-4bb5-b090-bb25f8419198/download/estructura-organica-3.csv"
+    },
+    {
+        "catalog_metadata_url": "http://datos.gob.ar/data.json",
+        "catalog_title": "Portal Nacional de Datos Abiertos",
+        ( ... )
+    }
+]
+```
 
 ### generate_harvester_config()
 Este reporte se puede generar a partir de un conjunto de catálogos, o a partir del resultado de `generate_datasets_report()`, pues no es más que un subconjunto del mismo. Incluye únicamente las claves necesarias para que el Harvester pueda federar un dataset, si `'harvest'==1`:
@@ -258,4 +305,23 @@ Este reporte se puede generar a partir de un conjunto de catálogos, o a partir 
 - **dataset_title**
 - **dataset_accrualPeriodicity**
 
-La *representación interna* de este reporte es una lista compuesta en su totalidad de diccionarios con las claves mencionadas. La *representación externa* de este reporte, es un archivo con información tabular, en formato CSV o XLSX.
+La *representación interna* de este reporte es una lista compuesta en su totalidad de diccionarios con las claves mencionadas. La *representación externa* de este reporte, es un archivo con información tabular, en formato CSV o XLSX. A continuación, un ejemplo con la _lista de diccionarios_ que devuelve `generate_harvester_config()`:
+```python
+[
+    {
+        "catalog_metadata_url": "tests/samples/full_data.json",
+        "dataset_title": "Sistema de contrataciones electrónicas",
+        "dataset_accrualPeriodicity": "R/P1Y"
+    },
+    {
+        "catalog_metadata_url": "tests/samples/several_datasets_for_harvest.json",
+        "dataset_title": "Sistema de Alumbrado Público CABA",
+        "dataset_accrualPeriodicity": "R/P1Y"
+    },
+    {
+        "catalog_metadata_url": "tests/samples/several_datasets_for_harvest.json",
+        "dataset_title": "Listado de Presidentes Argentinos",
+        "dataset_accrualPeriodicity": "R/P1Y"
+    }
+]
+```
