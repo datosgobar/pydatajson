@@ -468,6 +468,11 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
             list: Contiene tantos dicts como datasets estén presentes en
             `catalogs`, con la data del reporte generado.
         """
+        assert isinstance(catalogs, (str, unicode, dict, list))
+        # Si se pasa un único catálogo, genero una lista que lo contenga
+        if isinstance(catalogs, (str, unicode, dict)):
+            catalogs = [catalogs]
+
         catalogs_reports = [self.catalog_report(catalog, harvest, report)
                             for catalog in catalogs]
         full_report = []
@@ -504,8 +509,16 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
             list of dicts: Un diccionario con variables de configuración
             por cada dataset a cosechar.
         """
+        assert isinstance(catalogs, (str, unicode, dict, list))
+        # Si se pasa un único catálogo, genero una lista que lo contenga
+        if isinstance(catalogs, (str, unicode, dict)):
+            catalogs = [catalogs]
+
         if harvest == 'report':
-            # TODO: chequear que se pasa la variable `report`
+            if not report:
+                raise ValueError("""
+Usted eligio 'report' como criterio de harvest, pero no proveyo un valor para
+el argumento 'report'. Por favor, intentelo nuevamente.""")
             datasets_report = self._read(report)
         else:
             datasets_report = self.generate_datasets_report(catalogs, harvest)
@@ -550,6 +563,11 @@ nuevamente, con un reporte de datasets o el path a uno en `report`.""")
         Returns:
             list of dicts: Lista de catálogos.
         """
+        assert isinstance(catalogs, (str, unicode, dict, list))
+        # Si se pasa un único catálogo, genero una lista que lo contenga
+        if isinstance(catalogs, (str, unicode, dict)):
+            catalogs = [catalogs]
+
         harvestable_catalogs = [self._json_to_dict(c) for c in catalogs]
         catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
                          else None for catalog in catalogs]
