@@ -507,7 +507,6 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             list of dicts: Un diccionario con variables de configuración
             por cada dataset a cosechar.
         """
-        assert isinstance(catalogs, (str, unicode, dict, list))
         # Si se pasa un único catálogo, genero una lista que lo contenga
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
@@ -518,8 +517,15 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 Usted eligio 'report' como criterio de harvest, pero no proveyo un valor para
 el argumento 'report'. Por favor, intentelo nuevamente.""")
             datasets_report = self._read(report)
-        else:
+        elif harvest in ['valid', 'none', 'all']:
+            # catalogs no puede faltar para estos criterios
+            assert isinstance(catalogs, (str, unicode, dict, list))
             datasets_report = self.generate_datasets_report(catalogs, harvest)
+        else:
+            raise ValueError("""
+{} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
+'report'.""".format(harvest))
+
 
         config_keys = ["catalog_metadata_url", "dataset_title",
                        "dataset_accrualPeriodicity"]
