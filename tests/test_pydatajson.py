@@ -14,6 +14,7 @@ import json
 import nose
 import vcr
 from collections import OrderedDict
+from mock import MagicMock
 
 import pydatajson
 
@@ -460,6 +461,71 @@ class DataJsonTestCase(unittest.TestCase):
         self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
         # Compruebo que toda la lista sea la esperada
         self.assertListEqual(actual, expected)
+
+    def test_generate_datasets_report(self):
+        """generate_datasets_report() debe unir correctamente los resultados de
+        catalog_report()"""
+
+        return_value = [{"ckan": "in a box", "portal": "andino", "capo": "si"}]
+        self.dj.catalog_report = MagicMock(return_value=return_value)
+
+        catalogs = ["catalogo A", "catalogo B", "catalogo C"]
+        actual = self.dj.generate_datasets_report(catalogs)
+
+        expected = []
+        for catalog in catalogs:
+            expected.extend(return_value)
+
+        self.assertEqual(actual, expected)
+
+    def test_generate_harvester_config(self):
+        """generate_harvester_config() debe filtrar el resultado de
+        generate_datasets_report() a únicamente los 3 campos requeridos."""
+
+        datasets_report = [
+            {
+                "catalog_metadata_url": 1,
+                "dataset_title": 1,
+                "dataset_accrualPeriodicity": 1,
+                "otra key": 1,
+                "harvest": 0
+            },
+            {
+                "catalog_metadata_url": 2,
+                "dataset_title": 2,
+                "dataset_accrualPeriodicity": 2,
+                "otra key": 2,
+                "harvest": 1
+            },
+            {
+                "catalog_metadata_url": 3,
+                "dataset_title": 3,
+                "dataset_accrualPeriodicity": 3,
+                "otra key": 3,
+                "harvest": 1
+            }
+        ]
+
+        expected_config = [
+            {
+                "catalog_metadata_url": 2,
+                "dataset_title": 2,
+                "dataset_accrualPeriodicity": 2,
+            },
+            {
+                "catalog_metadata_url": 3,
+                "dataset_title": 3,
+                "dataset_accrualPeriodicity": 3,
+            }
+        ]
+
+        self.dj.generate_datasets_report = MagicMock(
+            return_value=datasets_report)
+
+        actual_config = self.dj.generate_harvester_config(
+            catalogs="un catalogo", harvest='valid')
+
+        self.assertListEqual(actual_config, expected_config)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
