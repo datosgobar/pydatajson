@@ -390,8 +390,8 @@ quiso decir 'http://{}'?
         elif harvest == 'report':
             if not report:
                 raise ValueError("""
-Usted especificó harvest='report', pero `report` está vacía. Inténtelo
-nuevamente, con un reporte de datasets o el path a uno en `report`.""")
+Usted eligio 'report' como criterio de harvest, pero no proveyo un valor para
+el argumento 'report'. Por favor, intentelo nuevamente.""")
 
             datasets_to_harvest = self._extract_datasets_to_harvest(report)
             dataset_report["harvest"] = (
