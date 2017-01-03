@@ -384,9 +384,7 @@ quiso decir 'http://{}'?
             dataset_report["harvest"] = 0
         elif harvest == 'valid':
             dataset_report["harvest"] = (
-                1 if (
-                    int(dataset_report["valid_catalog_metadata"]) and
-                    int(dataset_report["valid_dataset_metadata"])) else 0)
+                int(dataset_report["valid_dataset_metadata"]))
         elif harvest == 'report':
             if not report:
                 raise ValueError("""
