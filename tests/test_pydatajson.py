@@ -13,6 +13,7 @@ import unittest
 import json
 import nose
 import vcr
+from collections import OrderedDict
 
 import pydatajson
 
@@ -357,56 +358,100 @@ class DataJsonTestCase(unittest.TestCase):
             res = self.dj.is_valid_catalog(datajson)
             self.assertFalse(res, msg=value)
 
-    # TESTS DE generate_datasets_report
-    @my_vcr.use_cassette()
-    def test_generate_datasets_report(self):
-        """Prueba que generate_datasets_report funcione correctamente aún con
-        inputs "muy" inválidos."""
+    # TESTS DE catalog_report
+    # Reporte esperado para "full_data.json", con harvest = 0
+    EXPECTED_REPORT = [
+        OrderedDict(
+            [(u'catalog_metadata_url', u'tests/samples/full_data.json'),
+             (u'catalog_title', u'Datos Argentina'),
+             (u'catalog_description',
+              u'Portal de Datos Abiertos del Gobierno de la República Argentina'),
+             (u'valid_catalog_metadata', 1),
+             (u'valid_dataset_metadata', 1),
+             (u'dataset_index', 0),
+             (u'harvest', 0),
+             (u'dataset_title', u'Sistema de contrataciones electrónicas'),
+             (u'dataset_accrualPeriodicity', u'R/P1Y'),
+             (u'dataset_description',
+              u'Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)'),
+             (u'dataset_publisher_name',
+              u'Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones'),
+             (u'dataset_superTheme', u'ECON'),
+             (u'dataset_theme', u'contrataciones, compras, convocatorias'),
+             (u'dataset_landingPage',
+              u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
+             (u'distributions_list', u'"Convocatorias abiertas durante el año 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv')])]
 
-        catalogs = [
-            os.path.join(self.SAMPLES_DIR, "full_data.json"),
-            os.path.join(self.SAMPLES_DIR,
-                         "several_datasets_for_harvest.json"),
-            "http://181.209.63.71/data.json",
-            os.path.join(self.SAMPLES_DIR, "missing_dataset.json"),
-            {"papa": "negra"}
-        ]
+    def test_catalog_report_harvest_valid(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        expected_report_path = os.path.join(self.RESULTS_DIR,
-                                            "expected_datasets_report.csv")
-        actual_report_path = os.path.join(self.TEMP_DIR,
-                                          "latest_datasets_report.csv")
+        actual = self.dj.catalog_report(catalog, harvest='valid')
 
-        self.dj.generate_datasets_report(catalogs, harvest='none',
-                                         export_path=actual_report_path)
+        expected = list(self.EXPECTED_REPORT)
+        expected[0]["harvest"] = 1
 
-        with open(expected_report_path) as expected:
-            expected_str = expected.read()
+        # Compruebo explícitamente que el valor de 'harvest' sea el esperado
+        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        # Compruebo que toda la lista sea la esperada
+        self.assertListEqual(actual, expected)
 
-        with open(actual_report_path) as actual:
-            actual_str = actual.read()
+    def test_catalog_report_harvest_none(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        self.assertEqual(expected_str, actual_str)
+        actual = self.dj.catalog_report(catalog, harvest='none')
 
-    def test_generate_harvester_config(self):
-        expected_config_path = os.path.join(self.RESULTS_DIR,
-                                            "expected_harvester_config.csv")
-        actual_config_path = os.path.join(self.TEMP_DIR,
-                                          "latest_harvester_config.csv")
+        expected = list(self.EXPECTED_REPORT)
+        expected[0]["harvest"] = 0
 
-        report_path = os.path.join(self.SAMPLES_DIR,
-                                   "processed_datasets_report.csv")
+        # Compruebo explícitamente que el valor de 'harvest' sea el esperado
+        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        # Compruebo que toda la lista sea la esperada
+        self.assertListEqual(actual, expected)
 
-        self.dj.generate_harvester_config(harvest='report', report=report_path,
-                                          export_path=actual_config_path)
+    def test_catalog_report_harvest_all(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        with open(expected_config_path) as expected:
-            expected_str = expected.read()
+        actual = self.dj.catalog_report(catalog, harvest='all')
 
-        with open(actual_config_path) as actual:
-            actual_str = actual.read()
+        expected = list(self.EXPECTED_REPORT)
+        expected[0]["harvest"] = 1
 
-        self.assertEquals(expected_str, actual_str)
+        # Compruebo explícitamente que el valor de 'harvest' sea el esperado
+        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        # Compruebo que toda la lista sea la esperada
+        self.assertListEqual(actual, expected)
+
+    def test_catalog_report_harvest_report(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        # Compruebo que no se harvestee nada si el reporte no incluye el
+        # dataset del catálogo
+        report = [("data.json", "Un dataset que no es")]
+        actual = self.dj.catalog_report(catalog, harvest='report',
+                                        report=report)
+
+        expected = list(self.EXPECTED_REPORT)
+        expected[0]["harvest"] = 1
+
+        # Compruebo explícitamente que el valor de 'harvest' sea el esperado
+        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        # Compruebo que toda la lista sea la esperada
+        self.assertListEqual(actual, expected)
+
+        # Compruebo que sí se harvestee si el reporte incluye el dataset del
+        # catálogo
+        report = [(os.path.join(self.SAMPLES_DIR, "full_data.json"),
+                   "Sistema de contrataciones electrónicas")]
+        actual = self.dj.catalog_report(catalog, harvest='report',
+                                        report=report)
+
+        expected = list(self.EXPECTED_REPORT)
+        expected[0]["harvest"] = 1
+
+        # Compruebo explícitamente que el valor de 'harvest' sea el esperado
+        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        # Compruebo que toda la lista sea la esperada
+        self.assertListEqual(actual, expected)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
