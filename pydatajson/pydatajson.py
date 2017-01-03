@@ -17,11 +17,11 @@ import os.path
 from urlparse import urljoin, urlparse
 import warnings
 import json
+from collections import OrderedDict
 import jsonschema
 import requests
 import unicodecsv as csv
 import openpyxl as pyxl
-from collections import OrderedDict
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -525,7 +525,6 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             raise ValueError("""
 {} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
 'report'.""".format(harvest))
-
 
         config_keys = ["catalog_metadata_url", "dataset_title",
                        "dataset_accrualPeriodicity"]
