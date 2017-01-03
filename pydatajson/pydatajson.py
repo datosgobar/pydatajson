@@ -394,7 +394,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             datasets_to_harvest = self._extract_datasets_to_harvest(report)
             dataset_report["harvest"] = (
                 1 if (dataset_report["catalog_metadata_url"],
-                      dataset_report["dataset_title"]) in datasets_to_harvest
+                      dataset.get("title")) in datasets_to_harvest
                 else 0)
         else:
             raise ValueError("""
