@@ -1,10 +1,11 @@
-Bienvenido a la documentación de pydatajson!
-======================================
+¡Bienvenido a la documentación de pydatajson!
+=============================================
 
 .. toctree::
    :maxdepth: 2
 
    README.md
+   MANUAL.md
    HISTORY.md
 
 Indices y tablas

@@ -1,11 +1,17 @@
 History
 =======
 
+0.1.6 (2017-01-04)
+------------------
+
+* Se incorpora el método `DataJson.generate_harvestable_catalogs()`, que filtra los datasets no deseados de un conjunto de catálogos.
+* Se agrega el parámetro `harvest` a los métodos `DataJson.generate_harvestable_catalogs()`, `DataJson.generate_datasets_report()` y `DataJson.generate_harvester_config()`, para controlar el criterio de elección de los datasets a cosechar.
+
 0.1.4 (2016-12-23)
 ------------------
 
 * Se incorpora el método `DataJson.generate_datasets_report()`, que reporta sobre los datasets y la calidad de calidad de metadatos de un conjunto de catálogos.
-* Se incorpora el método `DataJson.generate_harvestable_catalog()`, que crea archivos de configuración para el Harvester a partir de los reportes de `generate_datasets_report()`.
+* Se incorpora el método `DataJson.generate_harvester_config()`, que crea archivos de configuración para el Harvester a partir de los reportes de `generate_datasets_report()`.
 
 0.1.3 (2016-12-19)
 ------------------

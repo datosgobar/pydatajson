@@ -8,7 +8,7 @@
     "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "dataset": [
         {
-            "title": "Sistema de contrataciones electrónicas",
+            "title": "Sistema de contrataciones electrónicas UNO",
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
             },
@@ -44,7 +44,7 @@
             ]
         },
         {
-            "title": "Sistema de contrataciones electrónicas",
+            "title": "Sistema de contrataciones electrónicas DOS",
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
@@ -64,7 +64,7 @@
             ]
         },
         {
-            "title": "Sistema de contrataciones electrónicas",
+            "title": "Sistema de contrataciones electrónicas TRES",
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
