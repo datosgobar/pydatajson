@@ -34,13 +34,13 @@ class DataJsonTestCase(unittest.TestCase):
         return os.path.join(cls.SAMPLES_DIR, sample_filename)
 
     @classmethod
-    def setUpClass(cls):
+    def setUp(cls):
         cls.dj = pydatajson.DataJson()
         cls.maxDiff = None
         cls.longMessage = True
 
     @classmethod
-    def tearDownClass(cls):
+    def tearDown(cls):
         del(cls.dj)
 
     def run_case(self, case_filename, expected_dict=None):
@@ -526,6 +526,194 @@ class DataJsonTestCase(unittest.TestCase):
             catalogs="un catalogo", harvest='valid')
 
         self.assertListEqual(actual_config, expected_config)
+
+    # TESTS DE GENERATE_HARVESTABLE_CATALOGS
+
+    def test_generate_harvestable_catalogs_all(self):
+
+        catalog = {
+            "title": "Micro Catalogo",
+            "dataset": [
+                {
+                    "title": "Dataset Valido",
+                    "description": "Descripción valida",
+                    "distribution": []
+                },
+                {
+                    "title": "Dataset Invalido"
+                }
+            ]
+        }
+
+        self.dj._json_to_dict = MagicMock(return_value=catalog)
+        catalogs = ["URL Catalogo A", "URL Catalogo B"]
+
+        expected = [self.dj._json_to_dict(c) for c in catalogs]
+        actual = self.dj.generate_harvestable_catalogs(catalogs, harvest='all')
+
+        self.assertEqual(actual, expected)
+
+    def test_generate_harvestable_catalogs_none(self):
+
+        catalog = {
+            "title": "Micro Catalogo",
+            "dataset": [
+                {
+                    "title": "Dataset Valido",
+                    "description": "Descripción valida",
+                    "distribution": []
+                },
+                {
+                    "title": "Dataset Invalido"
+                }
+            ]
+        }
+
+        self.dj._json_to_dict = MagicMock(return_value=catalog)
+        catalogs = ["URL Catalogo A", "URL Catalogo B"]
+
+        harvest_none = self.dj.generate_harvestable_catalogs(
+            catalogs, harvest='none')
+
+        for catalog in harvest_none:
+            # Una lista vacía es "falsa"
+            self.assertFalse(catalog["dataset"])
+
+    def test_generate_harvestable_catalogs_valid(self):
+
+        catalog = {
+            "title": "Micro Catalogo",
+            "dataset": [
+                {
+                    "title": "Dataset Valido",
+                    "description": "Descripción valida",
+                    "distribution": []
+                },
+                {
+                    "title": "Dataset Invalido"
+                }
+            ]
+        }
+
+        report = [
+            {
+                "catalog_metadata_url": "URL Catalogo A",
+                "dataset_title": "Dataset Valido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 1
+            },
+            {
+                "catalog_metadata_url": "URL Catalogo A",
+                "dataset_title": "Dataset Invalido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 0
+            },
+            {
+                "catalog_metadata_url": "URL Catalogo B",
+                "dataset_title": "Dataset Valido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 1
+            },
+            {
+                "catalog_metadata_url": "URL Catalogo B",
+                "dataset_title": "Dataset Invalido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 0
+            }
+        ]
+
+        catalogs = ["URL Catalogo A", "URL Catalogo B"]
+
+        self.dj._json_to_dict = MagicMock(return_value=catalog)
+        self.dj.generate_datasets_report = MagicMock(return_value=report)
+
+        expected_catalog = {
+            "title": "Micro Catalogo",
+            "dataset": [
+                {
+                    "title": "Dataset Valido",
+                    "description": "Descripción valida",
+                    "distribution": []
+                }
+            ]
+        }
+        expected = [expected_catalog, expected_catalog]
+
+        actual = self.dj.generate_harvestable_catalogs(
+            catalogs, harvest='valid')
+
+        self.assertListEqual(actual, expected)
+
+    def test_generate_harvestable_catalogs_report(self):
+
+        catalog = {
+            "title": "Micro Catalogo",
+            "dataset": [
+                {
+                    "title": "Dataset Valido",
+                    "description": "Descripción valida",
+                    "distribution": []
+                },
+                {
+                    "title": "Dataset Invalido"
+                }
+            ]
+        }
+
+        report = [
+            {
+                "catalog_metadata_url": "URL Catalogo A",
+                "dataset_title": "Dataset Valido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 1
+            },
+            {
+                "catalog_metadata_url": "URL Catalogo A",
+                "dataset_title": "Dataset Invalido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 0
+            },
+            {
+                "catalog_metadata_url": "URL Catalogo B",
+                "dataset_title": "Dataset Valido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 1
+            },
+            {
+                "catalog_metadata_url": "URL Catalogo B",
+                "dataset_title": "Dataset Invalido",
+                "dataset_accrualPeriodicity": "eventual",
+                "harvest": 0
+            }
+        ]
+
+        catalogs = ["URL Catalogo A", "URL Catalogo B"]
+
+        self.dj._json_to_dict = MagicMock(return_value=catalog)
+        self.dj.generate_datasets_report = MagicMock(return_value=report)
+
+        expected_catalog = {
+            "title": "Micro Catalogo",
+            "dataset": [
+                {
+                    "title": "Dataset Valido",
+                    "description": "Descripción valida",
+                    "distribution": []
+                }
+            ]
+        }
+        expected = [expected_catalog, expected_catalog]
+
+        datasets_to_harvest = [
+            ("URL Catalogo A", "Dataset Valido"),
+            ("URL Catalogo B", "Dataset Valido")
+        ]
+
+        actual = self.dj.generate_harvestable_catalogs(
+            catalogs, harvest='report', report=datasets_to_harvest)
+
+        # `expected` es igual que en la prueba anterior.
+        self.assertListEqual(actual, expected)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
