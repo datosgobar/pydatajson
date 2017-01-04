@@ -1,5 +1,5 @@
 pydatajson
-===
+==========
 
 [![Coverage Status](https://coveralls.io/repos/github/datosgobar/pydatajson/badge.svg?branch=master)](https://coveralls.io/github/datosgobar/pydatajson?branch=master)
 [![Build Status](https://travis-ci.org/datosgobar/pydatajson.svg?branch=master)](https://travis-ci.org/datosgobar/pydatajson)
@@ -83,7 +83,7 @@ Alternativamente, también se pueden validar **diccionarios**, es decir, el resu
 
 Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
 
-### Ejemplos
+### Ejemplos de validación de catálogos
 
 #### Archivo data.json local
 
@@ -184,6 +184,45 @@ validation_result = dj.is_valid_catalog(datajson)
 validation_report = dj.validate_catalog(datajson)
 (...)
 
+```
+
+### Ejemplos de generación de reportes y configuraciones del Harvester
+
+Si ya se sabe que se desean cosechar todos los datasets [válidos] de uno o varios catálogos, se pueden utilizar directamente el método `generate_harvester_config()`, proveyendo `harvest='all'` o `harvest='valid'` respectivamente. Si se desea revisar manualmente la lista de datasets contenidos, se puede invocar primero `generate_datasets_report()`, editar el reporte generado y luego proveérselo a `generate_harvester_config()`, junto con la opción `harvest='report'`.
+
+#### Crear un archivo de configuración eligiendo manualmente los datasets a federar
+
+```python
+catalogs = ["tests/samples/full_data.json", "http://181.209.63.71/data.json"]
+report_path = "path/to/report.xlsx"
+dj.generate_datasets_report(
+    catalogs=catalogs,
+    harvest='none', # El reporte tendrá `harvest==0` para todos los datasets
+    export_path=report_path
+)
+
+# A continuación, se debe editar el archivo de Excel 'path/to/report.xlsx',
+# cambiando a '1' el campo 'harvest' en los datasets que se quieran cosechar.
+
+config_path = 'path/to/config.csv'
+dj.generate_harvester_config(
+    harvest='report',
+    report=report_path,
+    export_path=config_path
+)
+```
+El archivo `config_path` puede ser provisto a Harvester para federar los datasets elegidos al editar el reporte intermedio `report_path`.
+
+#### Crear un archivo de configuración que incluya únicamente los datasets con metadata válida
+
+Conservando las variables anteriores:
+
+```python
+dj.generate_harvester_config(
+    catalogs=catalogs,
+    harvest='valid'
+    export_path='path/to/config.csv'
+)
 ```
 
 ## Tests
