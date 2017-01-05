@@ -1,20 +1,24 @@
 {
     "dataset": [
         {
-            "publisher_mbox": "datosabiertos@saij.gob.ar",
             "issued": "2016-09-05T18:25:21.249967",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica",
             "superTheme": [
                 "JUST"
             ],
             "title": "Base de datos legislativos Infoleg",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica",
             "theme": [
                 "informacion-juridica"
             ],
-            "contactPoint_hasEmail": "datosabiertos@saij.gob.ar",
             "description": "Base de documentos digitales normativos nacionales: leyes, decisiones administrativas, decretos, resoluciones, disposiciones, acordadas y todo acto administrativo publicado en la primera sección del Boletín Oficial de la República Argentina desde mayo 1997 más la normativa referenciada",
+            "contactPoint": {
+                "hasEmail": "datosabiertos@saij.gob.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg",
+            "publisher": {
+                "mbox": "datosabiertos@saij.gob.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica"
+            },
             "keyword": [
                 "acordadas",
                 "boletín oficial",
@@ -241,20 +245,24 @@
             "identifier": "d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23"
         },
         {
-            "publisher_mbox": "rcoutenceau@jus.gov.ar",
             "issued": "2016-09-08T15:01:56.463663",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Acceso a la Justicia",
             "superTheme": [
                 "JUST"
             ],
             "title": "Centros de Acceso a la Justicia -CAJ-",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Acceso a la Justicia",
             "theme": [
                 "acceso-a-justicia"
             ],
-            "contactPoint_hasEmail": "rcoutenceau@jus.gov.ar",
             "description": "Este conjunto de datos contiene la información correspondiente a los Centros de Acceso a la Justicia -CAJ- que están activos. Los CAJ tienen por objetivo promover y facilitar el acceso a la justicia de los sectores más vulnerables, a través de asesoramiento y atención profesional, ya sea jurídico o psicosocial.",
+            "contactPoint": {
+                "hasEmail": "rcoutenceau@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Acceso a la Justicia"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/centros-de-acceso-a-la-justicia",
+            "publisher": {
+                "mbox": "rcoutenceau@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Acceso a la Justicia"
+            },
             "keyword": [
                 "CAJ",
                 "acceso a justicia",
@@ -323,20 +331,24 @@
             "identifier": "9775fcdf-99b9-47f6-87ae-6d46cfd15b40"
         },
         {
-            "publisher_mbox": "fmichele@dnrec.jus.gov.ar",
             "issued": "2016-09-28T14:57:47.665668",
-            "publisher_name": "Ministerio de Justicia. Subsecretaría de Asuntos Registrales. Direccion Nacional Registro Nacional de Reincidencia",
             "superTheme": [
                 "JUST"
             ],
             "title": "Sistema de Consulta Nacional de Rebeldías y Capturas - Co.Na.R.C.",
-            "contactPoint_fn": "Ministerio de Justicia. Subsecretaría de Asuntos Registrales. Direccion Nacional Registro Nacional de Reincidencia",
             "theme": [
                 "sistema-registral"
             ],
-            "contactPoint_hasEmail": "mpolimeni@dnrec.jus.gov.ar",
             "description": "La base Co.Na.R.C., creada a partir de la sanción del decreto 346/2009, se conforma con las comunicaciones que los tribunales realizan al Registro Nacional de Reincidencia de toda medida restrictiva a la libertad ambulatoria que se dicta en el marco de una causa penal, en cualquier jurisdicción del país (ámbito federal, nacional, provincial y de la CABA).  La base sólo refleja las órdenes de detención vigentes hasta las 7:00 hs. de la fecha de actualización.",
+            "contactPoint": {
+                "hasEmail": "mpolimeni@dnrec.jus.gov.ar",
+                "fn": "Ministerio de Justicia. Subsecretaría de Asuntos Registrales. Direccion Nacional Registro Nacional de Reincidencia"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/conarc",
+            "publisher": {
+                "mbox": "fmichele@dnrec.jus.gov.ar",
+                "name": "Ministerio de Justicia. Subsecretaría de Asuntos Registrales. Direccion Nacional Registro Nacional de Reincidencia"
+            },
             "keyword": [
                 "capturas",
                 "detención",
@@ -411,20 +423,24 @@
             "identifier": "e042c362-ff39-476f-9328-056a9de753f0"
         },
         {
-            "publisher_mbox": "uniddjjoa@jus.gov.ar",
             "issued": "2016-09-09T21:47:48.029246",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Oficina Anticorrupción.",
             "superTheme": [
                 "JUST"
             ],
             "title": "Declaración Jurada Patrimonial Integral de carácter público",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Oficina Anticorrupción.",
             "theme": [
                 "anticorrupcion"
             ],
-            "contactPoint_hasEmail": "uniddjjoa@jus.gov.ar",
             "description": "Datos correspondiente a las Declaraciones Juradas Patrimoniales Integrales presentadas por los sujetos obligados conforme lo normado en la Ley de Ética Pública 25.188 modificada por la Ley 26.857, reglamentada por el Decreto Nro. 895/2013 y la Resolución General AFIP Nro. 3511/2013 y Resolución M.J. y D.H. Nro. 1695/2013. La utilización de este conjunto de datos se encuentra regulada por el Art. 11 de la Ley de Ética Pública 25.188.",
+            "contactPoint": {
+                "hasEmail": "uniddjjoa@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Oficina Anticorrupción."
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/declaraciones-juradas-patrimoniales-integrales",
+            "publisher": {
+                "mbox": "uniddjjoa@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Oficina Anticorrupción."
+            },
             "keyword": [
                 "DDJJ",
                 "Ley 25188",
@@ -478,20 +494,24 @@
             "identifier": "4680199f-6234-4262-8a2a-8f7993bf784d"
         },
         {
-            "publisher_mbox": "dmiralles@jus.gov.ar",
             "issued": "2016-09-19T13:46:06.092494",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Inspección General de Justicia",
             "superTheme": [
                 "JUST"
             ],
             "title": "Entidades constituidas en la Inspección General de Justicia",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Inspección General de Justicia",
             "theme": [
                 "sistema-registral"
             ],
-            "contactPoint_hasEmail": "dmiralles@jus.gov.ar",
             "description": "Datos de Entidades, Domicilios, Balances, Autoridades y Asambleas de las Entidades constituidas en la Inspección General de Justicia - IGJ",
+            "contactPoint": {
+                "hasEmail": "dmiralles@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Inspección General de Justicia"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj",
+            "publisher": {
+                "mbox": "dmiralles@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Inspección General de Justicia"
+            },
             "keyword": [
                 "IGJ",
                 "asambleas",
@@ -644,20 +664,24 @@
             "identifier": "da045e06-35cb-4bdd-9b5e-ddee6712c86c"
         },
         {
-            "publisher_mbox": "accesobd@dnrpa.gov.ar",
             "issued": "2016-07-12T13:35:32.251134",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios.",
             "superTheme": [
                 "JUST"
             ],
             "title": "Estadística de Inscripciones Iniciales de Automotores y Motovehículos",
-            "contactPoint_fn": "Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios.",
             "theme": [
                 "sistema-registral"
             ],
-            "contactPoint_hasEmail": "accesobd@dnrpa.gov.ar",
             "description": "En este conjunto de datos se detalla la cantidad de automotores 0km inscriptos, discriminados por año, mes, provincia. Se consideran automotores: automóviles, camiones, inclusive los llamados tractores para semirremolque, camionetas, rurales, jeeps, furgones de reparto, ómnibus, microómnibus y colectivos, sus respectivos remolques y acoplados, todos ellos aún cuando no estuvieran carrozados. Se consideran motovehículos: ciclomotores, motocicletas, motocarro (motocargas y motofurgones), motonetas, triciclos y cuatriciclos con motor.",
+            "contactPoint": {
+                "hasEmail": "accesobd@dnrpa.gov.ar",
+                "fn": "Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios."
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/inscripciones-iniciales-de-automotores-y-motovehiculos",
+            "publisher": {
+                "mbox": "accesobd@dnrpa.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios."
+            },
             "keyword": [
                 "automotores",
                 "inscripciones",
@@ -690,8 +714,13 @@
             "superTheme": [
                 "JUST"
             ],
+            "contactPoint": {
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Dirección Nacional del Servicio Penitenciario Federal"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/internos-del-servicio-penitenciario-federal-spf",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Dirección Nacional del Servicio Penitenciario Federal",
+            "publisher": {
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Dirección Nacional del Servicio Penitenciario Federal"
+            },
             "keyword": [
                 "SPF",
                 "condenados",
@@ -710,7 +739,6 @@
                 "sistema-penitenciario"
             ],
             "accrualPeriodicity": "R/P1M",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Dirección Nacional del Servicio Penitenciario Federal",
             "distribution": [
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/internos-del-servicio-penitenciario-federal-spf/archivo/47e53feb-ca88-4322-a663-e511485213a0",
@@ -770,20 +798,24 @@
             "identifier": "6d0e08b3-041c-40c1-9ea6-962db3747677"
         },
         {
-            "publisher_mbox": "accesobd@dnrpa.gov.ar",
             "issued": "2016-07-11T17:42:30.442323",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios.",
             "superTheme": [
                 "JUST"
             ],
             "title": "Listado de Registros Seccionales de la Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios",
-            "contactPoint_fn": "Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios.",
             "theme": [
                 "sistema-registral"
             ],
-            "contactPoint_hasEmail": "accesobd@dnrpa.gov.ar",
             "description": "En este conjunto de datos se detallan los datos de los Registros Seccionales donde se realizan los trámites registrales de los vehículos (automotores, motovehículos y maquinarias agrícolas, viales e industriales y créditos prendarios) de todo el país.",
+            "contactPoint": {
+                "hasEmail": "accesobd@dnrpa.gov.ar",
+                "fn": "Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios."
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/listado-de-registros-seccionales-de-la-dnrnpa",
+            "publisher": {
+                "mbox": "accesobd@dnrpa.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Asuntos Registrales. Dirección Nacional de Registros Nacionales de la Propiedad Automotor y Créditos Prendarios."
+            },
             "keyword": [
                 "automotores",
                 "maquinarias",
@@ -809,20 +841,24 @@
             "identifier": "bbdac295-c88e-4e2d-8f74-a845a2e93a61"
         },
         {
-            "publisher_mbox": "oficinadecretos@jus.gov.ar",
             "issued": "2016-09-14T17:29:44.287403",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Oficina Decretos",
             "superTheme": [
                 "JUST"
             ],
             "title": "Magistrados de la Justicia Federal y de la Justicia Nacional",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Oficina Decretos",
             "theme": [
                 "poder-judicial"
             ],
-            "contactPoint_hasEmail": "oficinadecretos@jus.gov.ar",
             "description": "En este conjunto de datos se detalla la estructura y la nómina de jueces, fiscales y defensores de la justicia nacional y de la justicia federal de la República Argentina, estado de cobertura de cargos, estado de los concursos destinados a cubrir los cargos que se encuentran vacantes, decretos y/o resoluciones de designación y/o traslado de los jueces, fiscales o defensoresos y presidente y ministro en funciones al momento de la designación.",
+            "contactPoint": {
+                "hasEmail": "oficinadecretos@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Oficina Decretos"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/magistrados-justicia-federal-y-de-la-justicia-nacional",
+            "publisher": {
+                "mbox": "oficinadecretos@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Relaciones con el Poder Judicial y Asuntos Penitenciarios. Oficina Decretos"
+            },
             "keyword": [
                 "cargo",
                 "concurso",
@@ -872,20 +908,24 @@
             "identifier": "3c18d46e-729e-4973-8efd-f54cab18b7e3"
         },
         {
-            "publisher_mbox": "allamosa@jus.gov.ar",
             "issued": "2016-07-12T13:51:29.820576",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Mediación y Métodos Participativos de Resolución de Conflictos.",
             "superTheme": [
                 "JUST"
             ],
             "title": "Estadística de mediaciones prejudiciales y judiciales",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Mediación y Métodos Participativos de Resolución de Conflictos.",
             "theme": [
                 "acceso-a-justicia"
             ],
-            "contactPoint_hasEmail": "allamosa@jus.gov.ar",
             "description": "En este conjunto de datos se detalla la cantidad de mediaciones prejudiciales y judiciales (remitidas por el Juez una vez iniciado el juicio) registradas en el Sistema Mepre, que está operativo desde febrero de 2014 y que registra la totalidad de las mediaciones prejudiciales efectuadas desde la fecha de su implementación.",
+            "contactPoint": {
+                "hasEmail": "allamosa@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Mediación y Métodos Participativos de Resolución de Conflictos."
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/mediaciones-prejudiciales-y-judiciales",
+            "publisher": {
+                "mbox": "allamosa@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Subsecretaría de Acceso a la Justicia. Dirección Nacional de Mediación y Métodos Participativos de Resolución de Conflictos."
+            },
             "keyword": [
                 "mediación",
                 "prejudicial",
@@ -908,20 +948,24 @@
             "identifier": "a9767469-d903-4158-aa76-b21dd37e8aff"
         },
         {
-            "publisher_mbox": "registro_femicidios@jus.gov.ar",
             "issued": "2016-09-14T14:04:25.296524",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Dirección Nacional de Asuntos Jurídicos en materia de Derechos Humanos. Unidad de Registro, Sistematización y Seguimiento de femicidios y de homicidios agravados por el género",
             "superTheme": [
                 "JUST"
             ],
             "title": "Registro, Sistematización y Seguimiento de Femicidios y Homicidios Agravados por el Género",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Dirección Nacional de Asuntos Jurídicos en materia de Derechos Humanos. Unidad de Registro, Sistematización y Seguimiento de femicidios y de homicidios agravados por el género",
             "theme": [
                 "derechos-humanos"
             ],
-            "contactPoint_hasEmail": "registro_femicidios@jus.gov.ar",
             "description": "Se registran los femicidios y homicidios agravados por el género desde el año 2012 a la fecha. La base se nutre de diversas fuentes: articulos de prensa escrita, denuncias policiales y judiciales, denuncias realizadas ante la Secretaría de Derechos Humanos.",
+            "contactPoint": {
+                "hasEmail": "registro_femicidios@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Dirección Nacional de Asuntos Jurídicos en materia de Derechos Humanos. Unidad de Registro, Sistematización y Seguimiento de femicidios y de homicidios agravados por el género"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/registro-sistematizacion-y-seguimiento-de-femicidios-y-homicidios-agravados-por-el-genero",
+            "publisher": {
+                "mbox": "registro_femicidios@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Dirección Nacional de Asuntos Jurídicos en materia de Derechos Humanos. Unidad de Registro, Sistematización y Seguimiento de femicidios y de homicidios agravados por el género"
+            },
             "keyword": [
                 "femicidios",
                 "genero",
@@ -945,20 +989,24 @@
             "identifier": "27bb9b2c-521b-406c-bdf9-98110ef73f34"
         },
         {
-            "publisher_mbox": "addhh@jus.gob.ar",
             "issued": "2016-09-30T18:34:43.987076",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Registro Unificado de Víctimas del Terrorismo de Estado",
             "superTheme": [
                 "JUST"
             ],
             "title": "Registro Unificado de Víctimas del Terrorismo de Estado -RUVTE-",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Registro Unificado de Víctimas del Terrorismo de Estado",
             "theme": [
                 "derechos-humanos"
             ],
-            "contactPoint_hasEmail": "addhh@jus.gob.ar",
             "description": "Registro unificado del listado de Víctimas del accionar represivo ilegal del Estado argentino entre 1966 y 1983 (víctimas de desaparición forzada y de asesinato) y del listado de casos en investigación incluidos en el listado de la Conadep, sin denuncia formal ante la Secretaría de Derechos Humanos y Pluralismo Cultural de la Nación, que revisten la categoría de “presunción de desaparición forzada”.",
+            "contactPoint": {
+                "hasEmail": "addhh@jus.gob.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Registro Unificado de Víctimas del Terrorismo de Estado"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/registro-unificado-de-victimas-del-terrorismo-de-estado-ruvte",
+            "publisher": {
+                "mbox": "addhh@jus.gob.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Registro Unificado de Víctimas del Terrorismo de Estado"
+            },
             "keyword": [
                 "desaparecidos",
                 "desaparición forzada",
@@ -991,21 +1039,25 @@
             "identifier": "d43fa140-f43f-4cc2-8491-b1d8bb899de4"
         },
         {
-            "publisher_mbox": "CGonzalezGuerra@jus.gov.ar",
             "issued": "2016-07-14T14:48:34.766352",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Política Criminal. Dirección Nacional de Política Criminal en Materia de Justicia y Legislación Penal.",
             "superTheme": [
                 "JUST"
             ],
             "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Política Criminal. Dirección Nacional de Política Criminal en Materia de Justicia y Legislación Penal.",
             "theme": [
                 "politica-criminal",
                 "sistema-penitenciario"
             ],
-            "contactPoint_hasEmail": "CGonzalezGuerra@jus.gov.ar",
             "description": "En este cuerpo de datos se detalla los datos recopilados en el censo realizado sobre el total de la población detenida al día 31 de diciembre de cada año, en cada establecimiento de la República Argentina. La unidad de análisis son las personas alojadas en dichos establecimientos.",
+            "contactPoint": {
+                "hasEmail": "CGonzalezGuerra@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Política Criminal. Dirección Nacional de Política Criminal en Materia de Justicia y Legislación Penal."
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/sneep",
+            "publisher": {
+                "mbox": "CGonzalezGuerra@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Justicia. Subsecretaría de Política Criminal. Dirección Nacional de Política Criminal en Materia de Justicia y Legislación Penal."
+            },
             "keyword": [
                 "SNEEP",
                 "SPF",
@@ -1150,20 +1202,24 @@
             "identifier": "6c03af36-6a1d-4306-b2a8-dd39ad73afb3"
         },
         {
-            "publisher_mbox": "informatica@anmac.gob.ar",
             "issued": "2016-09-02T18:14:39.283242",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Agencia Nacional de materiales Controlados - Coordinación de Sistemas",
             "superTheme": [
                 "JUST"
             ],
             "title": "Solicitudes de Condición de Legítimo Usuario de Armas de Fuego",
-            "contactPoint_fn": "Agencia Nacional de materiales Controlados - Coordinación de Sistemas",
             "theme": [
                 "sistema-registral"
             ],
-            "contactPoint_hasEmail": "informatica@anmac.gob.ar",
             "description": "En este conjunto de datos se detallan las solicitudes de Condición de Legítimo Usuario de Armas de Fuego comprendidas en el \"Sistema de Control Ciudadano para Autorizaciones\".\n \n Los datos son actualizados en forma diaria y son vistos hasta las 00:00 horas del día siguiente del vencimiento de la publicación. Resolución ANMaC N°0009/2016.",
+            "contactPoint": {
+                "hasEmail": "informatica@anmac.gob.ar",
+                "fn": "Agencia Nacional de materiales Controlados - Coordinación de Sistemas"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/solicitudes-condicion-legitimo-usuario-armas-fuego",
+            "publisher": {
+                "mbox": "informatica@anmac.gob.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Agencia Nacional de materiales Controlados - Coordinación de Sistemas"
+            },
             "keyword": [
                 "ANMaC",
                 "RENAR",
@@ -1188,20 +1244,24 @@
             "identifier": "0a0c3def-3d81-4850-854c-7af25831250b"
         },
         {
-            "publisher_mbox": "informatica@anmac.gob.ar",
             "issued": "2016-09-05T18:02:00.514364",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Agencia Nacional de Materiales Controlados - ANMaC. Coordinación de Sistemas.",
             "superTheme": [
                 "JUST"
             ],
             "title": "Solicitudes de Autorización de Portación de Armas de Fuego",
-            "contactPoint_fn": "Agencia Nacional de Materiales Controlados - ANMaC. Coordinación de Sistemas.",
             "theme": [
                 "sistema-registral"
             ],
-            "contactPoint_hasEmail": "informatica@anmac.gob.ar",
             "description": "En este conjunto de datos se detallan las Solicitudes de Autorización de Portación de Armas de Fuego comprendidas en el \"Sistema de Control Ciudadano para Autorizaciones\".\n \n Los datos son actualizados en forma diaria y son vistos hasta las 00:00 horas del día siguiente del vencimiento de la publicación. Resolución ANMaC N°0009/2016.",
+            "contactPoint": {
+                "hasEmail": "informatica@anmac.gob.ar",
+                "fn": "Agencia Nacional de Materiales Controlados - ANMaC. Coordinación de Sistemas."
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/solicitudes-de-autorizacion-de-portacion-de-armas-de-fuego",
+            "publisher": {
+                "mbox": "informatica@anmac.gob.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Agencia Nacional de Materiales Controlados - ANMaC. Coordinación de Sistemas."
+            },
             "keyword": [
                 "ANMaC",
                 "RENAR",
@@ -1225,20 +1285,24 @@
             "identifier": "35278d98-c274-4612-9d1d-72d0d0923368"
         },
         {
-            "publisher_mbox": "dnpcvi@jus.gov.ar",
             "issued": "2016-09-19T17:30:38.744175",
-            "publisher_name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Subsecretaría de Protección de Derechos Humanos. Dirección Nacional de Políticas contra la Violencia Institucional",
             "superTheme": [
                 "JUST"
             ],
             "title": "Registro, Sistematización y Seguimiento de Hechos de Violencia Institucional",
-            "contactPoint_fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Subsecretaría de Protección de Derechos Humanos. Dirección Nacional de Políticas contra la Violencia Institucional",
             "theme": [
                 "derechos-humanos"
             ],
-            "contactPoint_hasEmail": "dnpcvi@jus.gov.ar",
             "description": "El registro analiza las formas de expresión de la violencia institucional sobre la base de las presentaciones, denuncias e informaciones recibidas en la Secretaría de Derechos Humanos.",
+            "contactPoint": {
+                "hasEmail": "dnpcvi@jus.gov.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Subsecretaría de Protección de Derechos Humanos. Dirección Nacional de Políticas contra la Violencia Institucional"
+            },
             "landingPage": "http://datos.jus.gob.ar/dataset/unidad-de-registro-sistematizacion-y-seguimiento-de-hechos-de-violencia-institucional",
+            "publisher": {
+                "mbox": "dnpcvi@jus.gov.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Derechos Humanos y Pluralismo Cultural. Subsecretaría de Protección de Derechos Humanos. Dirección Nacional de Políticas contra la Violencia Institucional"
+            },
             "keyword": [
                 "denuncias",
                 "derechos humanos",
@@ -1262,9 +1326,13 @@
             "identifier": "c64b3899-65df-4024-afe8-bdf971f30dd8"
         }
     ],
+    "publisher": {
+        "mbox": "justiciaabierta@jus.gov.ar",
+        "name": "Ministerio de Justicia y Derechos Humanos"
+    },
     "description": "Portal de Datos de Justicia de la República Argentina. El Portal publica datos del sistema de justicia de modo que pueda ser reutilizada para efectuar visualizaciones o desarrollo de aplicaciones. Esta herramienta se propone como un punto de encuentro entre las organizaciones de justicia y la ciudadanía.",
     "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
-    "publisher_name": "Ministerio de Justicia y Derechos Humanos",
+    "homepage": "http://datos.jus.gob.ar/",
     "title": "Datos Justicia Argentina",
     "themeTaxonomy": [
         {
@@ -1312,6 +1380,5 @@
             "description": "Datasets referidos a los sistemas registrales",
             "label": "Sistema registral"
         }
-    ],
-    "homepage": "http://datos.jus.gob.ar/"
+    ]
 }
