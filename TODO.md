@@ -1,6 +1,6 @@
 ## Tareas
-- transformar xlsx_to_json.py en un módulo independiente
 - agregar a pydatajson una función `read_catalog()` que aproveche xlsx_to_json para leer catalogos en Excel
+- Reemplazar `_json_to_dict()` por `read_catalog` (y la futura `read_json` en todas partes, y asegurarse que los tests sigan corriendo 
 - Agregar pytohn notebook de ejemplo funcional
 
 ## Para discutir
