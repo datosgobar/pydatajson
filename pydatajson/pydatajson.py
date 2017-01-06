@@ -22,8 +22,92 @@ import jsonschema
 import requests
 import unicodecsv as csv
 import openpyxl as pyxl
+import xlsx_to_json
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def read_catalog(catalog):
+    """Toma una representación cualquiera de un catálogo, y devuelve su
+    representación interna (un diccionario de Python con su metadata.)
+
+    Si recibe una representación _interna_ (un diccionario), lo devuelve
+    intacto. Si recibe una representación _externa_ (path/URL a un archivo
+    JSON/XLSX), devuelve su represetación interna, es decir, un diccionario.
+
+    Args:
+        catalog (dict or str): Representación externa/interna de un catálogo.
+        Una representación _externa_ es un path local o una URL remota a un
+        archivo con la metadata de un catálogo, en formato JSON o XLSX. La
+        representación _interna_ de un catálogo es un diccionario.
+
+    Returns:
+        dict: Representación interna de un catálogo para uso en las funciones
+        de esta librería.
+    """
+    assert isinstance(catalog, (dict, str, unicode))
+
+    if isinstance(catalog, dict):
+        catalog_dict = catalog
+
+    # Si parseando `catalog` como una URL se reconoce un esquema, intento leer
+    # el catalogo remoto
+    parsed_url = urlparse(catalog)
+    if parsed_url.scheme in ["http", "https"]:
+        catalog_dict = _read_remote_catalog(catalog)
+    # Si no, asumo que es un archivo local
+    else:
+        # En caso de que catalog parezca ser una URL remota,
+        # advertirlo
+        path_start = parsed_url.path.split(".")[0]
+        if path_start == "www" or path_start.isdigit():
+            warnings.warn("""
+La dirección del archivo JSON ingresada parece una URL, pero no comienza
+con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
+quiso decir 'http://{}'?
+            """.format(catalog).encode("utf8"))
+
+        catalog_dict = _read_local_catalog(catalog)
+
+    return catalog_dict
+
+
+def _read_remote_catalog(catalog):
+    """Lee un catálogo ubicado en una URL remota."""
+    suffix = catalog.split(".")[-1]
+    unknown_suffix_msg = """
+{} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
+    assert suffix in ["json", "xlsx"], unknown_suffix_msg
+
+    res = requests.get(catalog)
+    if suffix == "json":
+        catalog_dict = json.loads(res.content, encoding="utf-8")
+    else:
+        # El archivo está en formato XLSX
+        tmpfilename = ".tmpfile.xlsx"
+        with open(tmpfilename, 'wb') as tmpfile:
+            tmpfile.write(res.content)
+        catalog_dict = xlsx_to_json.read_xlsx_catalog(tmpfilename)
+        os.remove(tmpfilename)
+
+    return catalog_dict
+
+
+def _read_local_catalog(catalog):
+    """ Lee un catálogo ubicado en un path local."""
+    suffix = catalog.split(".")[-1]
+    unknown_suffix_msg = """
+{} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
+    assert suffix in ["json", "xlsx"], unknown_suffix_msg
+
+    if suffix == "json":
+        with open(catalog) as catalog_fp:
+            catalog_dict = json.load(catalog_fp, encoding="utf-8")
+    else:
+        # El archivo está en formato XLSX
+        catalog_dict = xlsx_to_json.read_xlsx_catalog(catalog)
+
+    return catalog_dict
 
 
 class DataJson(object):
