@@ -79,11 +79,11 @@ def _read_remote_catalog(catalog):
 {} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
     assert suffix in ["json", "xlsx"], unknown_suffix_msg
 
-    res = requests.get(catalog)
     if suffix == "json":
-        catalog_dict = json.loads(res.content, encoding="utf-8")
+        catalog_dict = _read_remote_json(catalog)
     else:
         # El archivo está en formato XLSX
+        res = requests.get(catalog)
         tmpfilename = ".tmpfile.xlsx"
         with open(tmpfilename, 'wb') as tmpfile:
             tmpfile.write(res.content)
@@ -91,6 +91,13 @@ def _read_remote_catalog(catalog):
         os.remove(tmpfilename)
 
     return catalog_dict
+
+
+def _read_remote_json(json_url):
+    """Lee una URL remota con un archivo en formato JSON y devuelve el objeto
+    que ésta codifica."""
+    res = requests.get(json_url)
+    return json.loads(res.content, encoding="utf-8")
 
 
 def _read_local_catalog(catalog):
