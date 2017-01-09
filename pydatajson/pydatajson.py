@@ -903,8 +903,8 @@ def main():
         dj_instance = DataJson()
         bool_res = dj_instance.is_valid_catalog(datajson_file)
         full_res = dj_instance.validate_catalog(datajson_file)
-        pretty_full_res = json.dumps(full_res, indent=4, separators=(",",
-                                                                     ": "))
+        pretty_full_res = json.dumps(
+            full_res, indent=4, separators=(",", ": "))
         print(bool_res)
         print(pretty_full_res)
     except IndexError as errmsg:

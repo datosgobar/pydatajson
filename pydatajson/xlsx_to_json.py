@@ -108,7 +108,7 @@ Hay más de una distribución de título {} en el dataset con identificador {}:
     return dataset_index, distribution_index
 
 
-def read_xlsx_catalog(filename):
+def read_local_xlsx_catalog(filename):
     """Genera un diccionario de metadatos de catálogo a partir de un XLSX bien
     formado.
 
@@ -255,7 +255,7 @@ def main():
         # la extensión cambiada.
         data_json = args.pop(0) if args else data_xlsx.replace(".xlsx",".json")
 
-        catalog = read_xlsx_catalog(data_xlsx)
+        catalog = read_local_xlsx_catalog(data_xlsx)
         write_json_catalog(catalog, data_json)
     else:
         print("""
