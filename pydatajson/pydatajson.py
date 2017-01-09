@@ -758,16 +758,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     def _read_xlsx(path):
         workbook = pyxl.load_workbook(path)
         worksheet = workbook.active
-
-        # Asumo que la primera fila contiene los encabezados
-        keys = [cell.value for cell in worksheet.rows[0]]
-        # Compruebo que todas las filas sean tan largas como la de encabezados
-        # Esto puede fallar cuando una celda de excel fue usada y luego borrada
-        # porque cuenta como
-        assert all([len(keys) == len(row) for row in worksheet.rows])
-
-        table = [dict(zip(keys, [cell.value for cell in row]))
-                 for row in worksheet.rows[1:]]
+        table = xlsx_to_json.sheet_to_table(worksheet)
 
         return table
 
