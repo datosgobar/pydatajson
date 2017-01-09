@@ -194,7 +194,7 @@ class DataJson(object):
                 `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
-        schema = cls.read_json(schema_path)
+        schema = read_json(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
@@ -249,7 +249,7 @@ class DataJson(object):
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = self.read_catalog(datajson_path)
+        datajson = read_catalog(datajson_path)
         res = self.validator.is_valid(datajson)
         return res
 
@@ -330,7 +330,7 @@ class DataJson(object):
             "message", "validator", "validator_value", "error_code".
 
         """
-        datajson = self.read_catalog(datajson_path)
+        datajson = read_catalog(datajson_path)
 
         # La respuesta por default se devuelve si no hay errores
         default_response = {
@@ -495,7 +495,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         """
 
         url = catalog if isinstance(catalog, (str, unicode)) else None
-        catalog = self.read_catalog(catalog)
+        catalog = read_catalog(catalog)
 
         validation = self.validate_catalog(catalog)
         catalog_validation = validation["error"]["catalog"]
@@ -643,7 +643,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
 
-        harvestable_catalogs = [self.read_catalog(c) for c in catalogs]
+        harvestable_catalogs = [read_catalog(c) for c in catalogs]
         catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
                          else None for catalog in catalogs]
 
