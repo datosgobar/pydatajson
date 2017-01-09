@@ -122,7 +122,7 @@
                             "type": "integer"
                         }
                     ],
-                    "description": "Base de documentos digitales normativos nacionales: leyes, decisiones administrativas, decretos, resoluciones, disposiciones, acordadas y todo acto administrativo publicado en la primera sección del Boletín ",
+                    "description": "Base de documentos digitales normativos nacionales: leyes, decisiones administrativas, decretos, resoluciones, disposiciones, acordadas y todo acto administrativo publicado en la primera sección del Boletín",
                     "title": "Base Infoleg de Normativa Nacional",
                     "issued": "2016-09-29T11:17:50.274309",
                     "format": "CSV",
