@@ -16,6 +16,7 @@ import openpyxl as pyxl
 def sheet_to_table(worksheet):
     """Transforma una hoja del libro en una lista de diccionarios."""
     def value(cell):
+        """Extrae el valor de una celda de Excel."""
         value = cell.value
         if isinstance(value, (str, unicode)):
             value = value.strip()
@@ -257,7 +258,8 @@ def main():
         # Si hay un segundo parámetro no obligatorio, se asume que ese es el
         # path de destino. Si no se provee, se reutiliza el path de input con
         # la extensión cambiada.
-        data_json = args.pop(0) if args else data_xlsx.replace(".xlsx",".json")
+        data_json = args.pop(0) if args else data_xlsx.replace(".xlsx",
+                                                               ".json")
 
         catalog = read_local_xlsx_catalog(data_xlsx)
         write_json_catalog(catalog, data_json)
