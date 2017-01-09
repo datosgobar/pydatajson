@@ -14,8 +14,7 @@ import json
 import nose
 import vcr
 from collections import OrderedDict
-from mock import MagicMock
-
+import mock
 import pydatajson
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
@@ -467,7 +466,7 @@ class DataJsonTestCase(unittest.TestCase):
         catalog_report()"""
 
         return_value = [{"ckan": "in a box", "portal": "andino", "capo": "si"}]
-        self.dj.catalog_report = MagicMock(return_value=return_value)
+        self.dj.catalog_report = mock.MagicMock(return_value=return_value)
 
         catalogs = ["catalogo A", "catalogo B", "catalogo C"]
         actual = self.dj.generate_datasets_report(catalogs)
@@ -519,7 +518,7 @@ class DataJsonTestCase(unittest.TestCase):
             }
         ]
 
-        self.dj.generate_datasets_report = MagicMock(
+        self.dj.generate_datasets_report = mock.MagicMock(
             return_value=datasets_report)
 
         actual_config = self.dj.generate_harvester_config(
@@ -529,47 +528,35 @@ class DataJsonTestCase(unittest.TestCase):
 
     # TESTS DE GENERATE_HARVESTABLE_CATALOGS
 
-    def test_generate_harvestable_catalogs_all(self):
+    CATALOG = {
+        "title": "Micro Catalogo",
+        "dataset": [
+            {
+                "title": "Dataset Valido",
+                "description": "Descripción valida",
+                "distribution": []
+            },
+            {
+                "title": "Dataset Invalido"
+            }
+        ]
+    }
 
-        catalog = {
-            "title": "Micro Catalogo",
-            "dataset": [
-                {
-                    "title": "Dataset Valido",
-                    "description": "Descripción valida",
-                    "distribution": []
-                },
-                {
-                    "title": "Dataset Invalido"
-                }
-            ]
-        }
+    @mock.patch('pydatajson.pydatajson.read_catalog',
+                return_value=CATALOG.copy())
+    def test_generate_harvestable_catalogs_all(self, patched_read_catalog):
 
-        self.dj._json_to_dict = MagicMock(return_value=catalog)
         catalogs = ["URL Catalogo A", "URL Catalogo B"]
 
-        expected = [self.dj._json_to_dict(c) for c in catalogs]
+        expected = [pydatajson.pydatajson.read_catalog(c) for c in catalogs]
         actual = self.dj.generate_harvestable_catalogs(catalogs, harvest='all')
 
         self.assertEqual(actual, expected)
 
-    def test_generate_harvestable_catalogs_none(self):
+    @mock.patch('pydatajson.pydatajson.read_catalog',
+                return_value=CATALOG.copy())
+    def test_generate_harvestable_catalogs_none(self, patched_read_catalog):
 
-        catalog = {
-            "title": "Micro Catalogo",
-            "dataset": [
-                {
-                    "title": "Dataset Valido",
-                    "description": "Descripción valida",
-                    "distribution": []
-                },
-                {
-                    "title": "Dataset Invalido"
-                }
-            ]
-        }
-
-        self.dj._json_to_dict = MagicMock(return_value=catalog)
         catalogs = ["URL Catalogo A", "URL Catalogo B"]
 
         harvest_none = self.dj.generate_harvestable_catalogs(
@@ -579,53 +566,42 @@ class DataJsonTestCase(unittest.TestCase):
             # Una lista vacía es "falsa"
             self.assertFalse(catalog["dataset"])
 
-    def test_generate_harvestable_catalogs_valid(self):
 
-        catalog = {
-            "title": "Micro Catalogo",
-            "dataset": [
-                {
-                    "title": "Dataset Valido",
-                    "description": "Descripción valida",
-                    "distribution": []
-                },
-                {
-                    "title": "Dataset Invalido"
-                }
-            ]
+    REPORT = [
+        {
+            "catalog_metadata_url": "URL Catalogo A",
+            "dataset_title": "Dataset Valido",
+            "dataset_accrualPeriodicity": "eventual",
+            "harvest": 1
+        },
+        {
+            "catalog_metadata_url": "URL Catalogo A",
+            "dataset_title": "Dataset Invalido",
+            "dataset_accrualPeriodicity": "eventual",
+            "harvest": 0
+        },
+        {
+            "catalog_metadata_url": "URL Catalogo B",
+            "dataset_title": "Dataset Valido",
+            "dataset_accrualPeriodicity": "eventual",
+            "harvest": 1
+        },
+        {
+            "catalog_metadata_url": "URL Catalogo B",
+            "dataset_title": "Dataset Invalido",
+            "dataset_accrualPeriodicity": "eventual",
+            "harvest": 0
         }
+    ]
 
-        report = [
-            {
-                "catalog_metadata_url": "URL Catalogo A",
-                "dataset_title": "Dataset Valido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 1
-            },
-            {
-                "catalog_metadata_url": "URL Catalogo A",
-                "dataset_title": "Dataset Invalido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 0
-            },
-            {
-                "catalog_metadata_url": "URL Catalogo B",
-                "dataset_title": "Dataset Valido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 1
-            },
-            {
-                "catalog_metadata_url": "URL Catalogo B",
-                "dataset_title": "Dataset Invalido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 0
-            }
-        ]
+    @mock.patch('pydatajson.DataJson.generate_datasets_report',
+                return_value=REPORT)
+    @mock.patch('pydatajson.pydatajson.read_catalog',
+                return_value=CATALOG.copy())
+    def test_generate_harvestable_catalogs_valid(self, mock_read_catalog,
+                                                 mock_gen_dsets_report):
 
         catalogs = ["URL Catalogo A", "URL Catalogo B"]
-
-        self.dj._json_to_dict = MagicMock(return_value=catalog)
-        self.dj.generate_datasets_report = MagicMock(return_value=report)
 
         expected_catalog = {
             "title": "Micro Catalogo",
@@ -644,53 +620,14 @@ class DataJsonTestCase(unittest.TestCase):
 
         self.assertListEqual(actual, expected)
 
-    def test_generate_harvestable_catalogs_report(self):
-
-        catalog = {
-            "title": "Micro Catalogo",
-            "dataset": [
-                {
-                    "title": "Dataset Valido",
-                    "description": "Descripción valida",
-                    "distribution": []
-                },
-                {
-                    "title": "Dataset Invalido"
-                }
-            ]
-        }
-
-        report = [
-            {
-                "catalog_metadata_url": "URL Catalogo A",
-                "dataset_title": "Dataset Valido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 1
-            },
-            {
-                "catalog_metadata_url": "URL Catalogo A",
-                "dataset_title": "Dataset Invalido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 0
-            },
-            {
-                "catalog_metadata_url": "URL Catalogo B",
-                "dataset_title": "Dataset Valido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 1
-            },
-            {
-                "catalog_metadata_url": "URL Catalogo B",
-                "dataset_title": "Dataset Invalido",
-                "dataset_accrualPeriodicity": "eventual",
-                "harvest": 0
-            }
-        ]
+    @mock.patch('pydatajson.DataJson.generate_datasets_report',
+                return_value=REPORT)
+    @mock.patch('pydatajson.pydatajson.read_catalog',
+                return_value=CATALOG.copy())
+    def test_generate_harvestable_catalogs_report(self, mock_read_catalog,
+                                                  mock_gen_dsets_report):
 
         catalogs = ["URL Catalogo A", "URL Catalogo B"]
-
-        self.dj._json_to_dict = MagicMock(return_value=catalog)
-        self.dj.generate_datasets_report = MagicMock(return_value=report)
 
         expected_catalog = {
             "title": "Micro Catalogo",
