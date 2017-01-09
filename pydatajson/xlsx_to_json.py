@@ -15,11 +15,11 @@ import openpyxl as pyxl
 
 def sheet_to_table(worksheet):
     """Transforma una hoja del libro en una lista de diccionarios."""
-    headers = [cell.value for cell in worksheet.rows[0]]
+    headers = [cell.value.strip() for cell in worksheet.rows[0]]
     value_rows = [
-        [cell.value for cell in row] for row in worksheet.rows[1:]
+        [cell.value.strip() for cell in row] for row in worksheet.rows[1:]
         # Únicamente considero filas con al menos un campo no-nulo
-        if any([cell.value for cell in row])
+        if any([cell.value.strip() for cell in row])
     ]
     table = [
         # Ignoro los campos con valores nulos (None)
