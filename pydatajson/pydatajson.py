@@ -45,74 +45,103 @@ def read_catalog(catalog):
         dict: Representación interna de un catálogo para uso en las funciones
         de esta librería.
     """
-    assert isinstance(catalog, (dict, str, unicode))
+    unknown_catalog_repr_msg = """
+No se pudo inferir una representación válida de un catálogo del parámetro
+provisto: {}.""".format(catalog)
+    assert isinstance(catalog, (dict, str, unicode)), unknown_catalog_repr_msg
 
     if isinstance(catalog, dict):
         catalog_dict = catalog
-
-    # Si parseando `catalog` como una URL se reconoce un esquema, intento leer
-    # el catalogo remoto
-    parsed_url = urlparse(catalog)
-    if parsed_url.scheme in ["http", "https"]:
-        catalog_dict = _read_remote_catalog(catalog)
-    # Si no, asumo que es un archivo local
     else:
-        # En caso de que catalog parezca ser una URL remota,
-        # advertirlo
+        # catalog es una URL remota o un path local
+        suffix = catalog.split(".")[-1]
+        unknown_suffix_msg = """
+{} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
+        assert suffix in ["json", "xlsx"], unknown_suffix_msg
+
+        if suffix == "json":
+            catalog_dict = read_json(catalog)
+        else:
+            # El archivo está en formato XLSX
+            catalog_dict = read_xlsx_catalog(catalog)
+
+    # Es 'pitonica' esta forma de retornar un valor? O debería ir retornando
+    # los valores intermedios?
+    return catalog_dict
+
+
+def read_json(json_path_or_url):
+    """Toma el path a un JSON y devuelve el diccionario que representa.
+
+    Se asume que el parámetro es una URL si comienza con 'http' o 'https', o
+    un path local de lo contrario.
+
+    Args:
+        json_path_or_url (str): Path local o URL remota a un archivo de texto
+            plano en formato JSON.
+
+    Returns:
+        dict: El diccionario que resulta de deserializar json_path_or_url.
+
+    """
+    assert isinstance(json_path_or_url, (str, unicode))
+
+    parsed_url = urlparse(json_path_or_url)
+    if parsed_url.scheme in ["http", "https"]:
+        res = requests.get(json_path_or_url)
+        json_dict = json.loads(res.content, encoding='utf-8')
+
+    else:
+        # Si json_path_or_url parece ser una URL remota, lo advierto.
+        path_start = parsed_url.path.split(".")[0]
+        if path_start == "www" or path_start.isdigit():
+            warnings.warn("""
+La dirección del archivo JSON ingresada parece una URL, pero no comienza
+con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
+quiso decir 'http://{}'?""".format(json_path_or_url).encode("utf8"))
+
+        with io.open(json_path_or_url) as json_file:
+            json_dict = json.load(json_file, encoding="utf8")
+
+    return json_dict
+
+
+def read_xlsx_catalog(xlsx_path_or_url):
+    """Toma el path a un catálogo en formato XLSX y devuelve el diccionario
+    que representa.
+
+    Se asume que el parámetro es una URL si comienza con 'http' o 'https', o
+    un path local de lo contrario.
+
+    Args:
+        xlsx_path_or_url (str): Path local o URL remota a un libro XLSX de
+            formato específico para guardar los metadatos de un catálogo.
+
+    Returns:
+        dict: El diccionario que resulta de procesar xlsx_path_or_url.
+
+    """
+    assert isinstance(xlsx_path_or_url, (str, unicode))
+
+    parsed_url = urlparse(xlsx_path_or_url)
+    if parsed_url.scheme in ["http", "https"]:
+        res = requests.get(xlsx_path_or_url)
+        tmpfilename = ".tmpfile.xlsx"
+        with open(tmpfilename, 'wb') as tmpfile:
+            tmpfile.write(res.content)
+        catalog_dict = xlsx_to_json.read_local_xlsx_catalog(tmpfilename)
+        os.remove(tmpfilename)
+    else:
+        # Si xlsx_path_or_url parece ser una URL remota, lo advierto.
         path_start = parsed_url.path.split(".")[0]
         if path_start == "www" or path_start.isdigit():
             warnings.warn("""
 La dirección del archivo JSON ingresada parece una URL, pero no comienza
 con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
 quiso decir 'http://{}'?
-            """.format(catalog).encode("utf8"))
+            """.format(xlsx_path_or_url).encode("utf8"))
 
-        catalog_dict = _read_local_catalog(catalog)
-
-    return catalog_dict
-
-
-def _read_remote_catalog(catalog):
-    """Lee un catálogo ubicado en una URL remota."""
-    suffix = catalog.split(".")[-1]
-    unknown_suffix_msg = """
-{} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
-    assert suffix in ["json", "xlsx"], unknown_suffix_msg
-
-    if suffix == "json":
-        catalog_dict = _read_remote_json(catalog)
-    else:
-        # El archivo está en formato XLSX
-        res = requests.get(catalog)
-        tmpfilename = ".tmpfile.xlsx"
-        with open(tmpfilename, 'wb') as tmpfile:
-            tmpfile.write(res.content)
-        catalog_dict = xlsx_to_json.read_xlsx_catalog(tmpfilename)
-        os.remove(tmpfilename)
-
-    return catalog_dict
-
-
-def _read_remote_json(json_url):
-    """Lee una URL remota con un archivo en formato JSON y devuelve el objeto
-    que ésta codifica."""
-    res = requests.get(json_url)
-    return json.loads(res.content, encoding="utf-8")
-
-
-def _read_local_catalog(catalog):
-    """ Lee un catálogo ubicado en un path local."""
-    suffix = catalog.split(".")[-1]
-    unknown_suffix_msg = """
-{} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
-    assert suffix in ["json", "xlsx"], unknown_suffix_msg
-
-    if suffix == "json":
-        with open(catalog) as catalog_fp:
-            catalog_dict = json.load(catalog_fp, encoding="utf-8")
-    else:
-        # El archivo está en formato XLSX
-        catalog_dict = xlsx_to_json.read_xlsx_catalog(catalog)
+        catalog_dict = xlsx_to_json.read_local_xlsx_catalog(xlsx_path_or_url)
 
     return catalog_dict
 
@@ -165,7 +194,7 @@ class DataJson(object):
                 `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
-        schema = cls._json_to_dict(schema_path)
+        schema = cls.read_json(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
@@ -179,51 +208,6 @@ class DataJson(object):
 
         return validator
 
-    @staticmethod
-    def _json_to_dict(dict_or_json_path):
-        """Toma el path a un JSON y devuelve el diccionario que representa.
-
-        Si el argumento es un dict, lo deja pasar. Si es un string asume que el
-        parámetro es una URL si comienza con 'http' o 'https', o un path local
-        de lo contrario.
-
-        Args:
-            dict_or_json_path (dict or str): Si es un str, path local o URL
-                remota a un archivo de texto plano en formato JSON.
-
-        Returns:
-            dict: El diccionario que resulta de deserializar
-                dict_or_json_path.
-
-        """
-        assert isinstance(dict_or_json_path, (dict, str, unicode))
-
-        if isinstance(dict_or_json_path, dict):
-            return dict_or_json_path
-
-        parsed_url = urlparse(dict_or_json_path)
-
-        if parsed_url.scheme in ["http", "https"]:
-            req = requests.get(dict_or_json_path)
-            json_string = req.content
-
-        else:
-            # En caso de que dict_or_json_path parezca ser una URL remota,
-            # advertirlo
-            path_start = parsed_url.path.split(".")[0]
-            if path_start == "www" or path_start.isdigit():
-                warnings.warn("""
-La dirección del archivo JSON ingresada parece una URL, pero no comienza
-con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
-quiso decir 'http://{}'?
-                """.format(dict_or_json_path).encode("utf8"))
-
-            with io.open(dict_or_json_path) as json_file:
-                json_string = json_file.read()
-
-        json_dict = json.loads(json_string, encoding="utf8")
-
-        return json_dict
 
     @staticmethod
     def _traverse_dict(dicc, keys, default_value=None):
@@ -265,7 +249,7 @@ quiso decir 'http://{}'?
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = self._json_to_dict(datajson_path)
+        datajson = self.read_catalog(datajson_path)
         res = self.validator.is_valid(datajson)
         return res
 
@@ -346,7 +330,7 @@ quiso decir 'http://{}'?
             "message", "validator", "validator_value", "error_code".
 
         """
-        datajson = self._json_to_dict(datajson_path)
+        datajson = self.read_catalog(datajson_path)
 
         # La respuesta por default se devuelve si no hay errores
         default_response = {
@@ -511,7 +495,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         """
 
         url = catalog if isinstance(catalog, (str, unicode)) else None
-        catalog = self._json_to_dict(catalog)
+        catalog = self.read_catalog(catalog)
 
         validation = self.validate_catalog(catalog)
         catalog_validation = validation["error"]["catalog"]
@@ -542,8 +526,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         Args:
             catalogs (str, dict o list): Uno (str o dict) o varios (list de
-                strs y/o dicts) catálogos, que deben poder ser interpretados
-                por self._json_to_dict()
+                strs y/o dicts) catálogos.
             harvest (str): Criterio a utilizar para determinar el valor del
                 campo "harvest" en el reporte generado ('all', 'none',
                 'valid' o 'report').
@@ -581,8 +564,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         Args:
             catalogs (str, dict o list): Uno (str o dict) o varios (list de
-                strs y/o dicts) catálogos. Tienen que poder ser interpretados
-                por self._json_to_dict()
+                strs y/o dicts) catálogos.
             harvest (str): Criterio para determinar qué datasets incluir en el
                 archivo de configuración generado  ('all', 'none',
                 'valid' o 'report').
@@ -641,8 +623,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         Args:
             catalogs (str, dict o list): Uno (str o dict) o varios (list de
-                strs y/o dicts) elementos con la metadata de un catálogo.
-                Tienen que poder ser interpretados por self._json_to_dict()
+                strs y/o dicts) catálogos.
             harvest (str): Criterio para determinar qué datasets conservar de
                 cada catálogo ('all', 'none', 'valid' o 'report').
             report (list o str): Tabla de reporte generada por
@@ -662,7 +643,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
 
-        harvestable_catalogs = [self._json_to_dict(c) for c in catalogs]
+        harvestable_catalogs = [self.read_catalog(c) for c in catalogs]
         catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
                          else None for catalog in catalogs]
 
