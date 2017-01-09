@@ -46,9 +46,6 @@ def make_publisher(catalog_or_dataset):
         }
     return level
 
-assert(string_to_list(" pan , vino,gorriones ,23") == ["pan", "vino",
-                                                       "gorriones", "23"])
-
 
 def make_contactPoint(dataset):
     """De estar presentes las claves necesarias, genera el diccionario
