@@ -12,6 +12,14 @@ pydatajson.pydatajson module
     :undoc-members:
     :show-inheritance:
 
+pydatajson.xlsx_to_json module
+------------------------------
+
+.. automodule:: pydatajson.xlsx_to_json
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
