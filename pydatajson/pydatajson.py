@@ -198,8 +198,10 @@ class DataJson(object):
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
+        base_uri = "file:///" + schema_path.replace("\\", "/")
         resolver = jsonschema.RefResolver(
-            base_uri=urljoin('file:', schema_path), referrer=schema)
+            base_uri=base_uri,
+            referrer=schema)
 
         format_checker = jsonschema.FormatChecker()
 
