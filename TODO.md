@@ -1,5 +1,6 @@
 ## Tareas
-- Proobar en Windows
+- Probar en Windows
+- Revisar tests de `_read()` y `_write()` para entender mejor el comportamiento y activar asserts
 
 ## Para discutir
 - Formato "amigable" para revisión de errores: tabla?
