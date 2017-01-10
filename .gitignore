@@ -70,6 +70,7 @@ target/
 
 # Archivos de desarrollo
 allresults.py
+TODO.md
 
 # Archivos temporales de prueba
 tests/temp/*

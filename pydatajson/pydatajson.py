@@ -15,7 +15,7 @@ import sys
 import io
 import platform
 import os.path
-from urlparse import urljoin, urlparse
+from urlparse import urlparse
 import warnings
 import json
 from collections import OrderedDict
@@ -203,19 +203,14 @@ class DataJson(object):
             base_uri = "file:///" + schema_path.replace("\\", "/")
         else:
             base_uri = "file://" + schema_path
-        print(base_uri)
-        resolver = jsonschema.RefResolver(
-            base_uri=base_uri,
-            referrer=schema)
-        print(resolver.base_uri)
-        print(urlparse(resolver.base_uri))
+        resolver = jsonschema.RefResolver(base_uri=base_uri, referrer=schema)
+
         format_checker = jsonschema.FormatChecker()
 
         validator = jsonschema.Draft4Validator(
             schema=schema, resolver=resolver, format_checker=format_checker)
 
         return validator
-
 
     @staticmethod
     def _traverse_dict(dicc, keys, default_value=None):
