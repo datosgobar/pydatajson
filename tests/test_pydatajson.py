@@ -15,6 +15,7 @@ import nose
 import vcr
 from collections import OrderedDict
 import mock
+import filecmp
 import pydatajson
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
@@ -651,6 +652,102 @@ class DataJsonTestCase(unittest.TestCase):
 
         # `expected` es igual que en la prueba anterior.
         self.assertListEqual(actual, expected)
+
+    # TESTS DE _READ y _WRITE
+
+    def test_read_table_from_csv(self):
+        expected_table = [
+            {u'Plato': u'Milanesa', u'Precio': u'Bajo', u'Sabor': u'666'},
+            {u'Plato': u'Thon\xe9, Vitel', u'Precio': u'Alto',
+             u'Sabor': u'8000'},
+            {u'Plato': u'Aceitunas', u'Precio': u'', u'Sabor': u'15'}
+        ]
+        csv_filename = os.path.join(self.SAMPLES_DIR, "read_table.csv")
+        actual_table = self.dj._read(csv_filename)
+
+        self.assertListEqual(actual_table, expected_table)
+
+    def test_read_table_from_xlsx(self):
+        expected_table = [
+            {u'Plato': u'Milanesa', u'Precio': u'Bajo', u'Sabor': 666L},
+            {u'Plato': u'Thon\xe9, Vitel', u'Precio': u'Alto',
+             u'Sabor': 8000L},
+            {u'Plato': u'Aceitunas', u'Sabor': 15L}
+        ]
+        xlsx_filename = os.path.join(self.SAMPLES_DIR, "read_table.xlsx")
+        actual_table = self.dj._read(xlsx_filename)
+
+        self.assertListEqual(actual_table, expected_table)
+
+    WRITEABLE_TABLE = [
+        {u'Plato': u'Milanesa', u'Precio': u'Bajo', u'Sabor': u'666'},
+        {u'Plato': u'Thon\xe9, Vitel', u'Precio': u'Alto',
+         u'Sabor': u'8000'},
+        {u'Plato': u'Aceitunas', u'Precio': u'', u'Sabor': u'15'}
+    ]
+
+    def test_write_table_to_csv(self):
+        expected_filename = os.path.join(self.RESULTS_DIR, "write_table.csv")
+        actual_filename = os.path.join(self.TEMP_DIR, "write_table.csv")
+
+        self.dj._write(self.WRITEABLE_TABLE, actual_filename)
+        comparison = filecmp.cmp(actual_filename, expected_filename)
+        if comparison:
+            os.remove(actual_filename)
+        else:
+            """
+{} se escribió correctamente, pero no es idéntico al esperado. Por favor,
+revíselo manualmente""".format(actual_filename)
+ 
+        # self.assertTrue(comparison)
+
+    def test_write_table_to_xlsx(self):
+        expected_filename = os.path.join(self.RESULTS_DIR, "write_table.xlsx")
+        actual_filename = os.path.join(self.TEMP_DIR, "write_table.xlsx")
+
+        self.dj._write(self.WRITEABLE_TABLE, actual_filename)
+        comparison = filecmp.cmp(actual_filename, expected_filename)
+        if comparison:
+            os.remove(actual_filename)
+        else:
+            """
+{} se escribió correctamente, pero no es idéntico al esperado. Por favor,
+revíselo manualmente""".format(actual_filename)
+ 
+        # self.assertTrue(comparison)
+
+    def test_write_read_csv_loop(self):
+        """Escribir y leer un CSV es una operacion idempotente."""
+        temp_filename = os.path.join(self.TEMP_DIR, "write_read_loop.csv")
+        self.dj._write(self.WRITEABLE_TABLE, temp_filename)
+        read_table = self.dj._read(temp_filename)
+
+        comparison = (self.WRITEABLE_TABLE == read_table)
+        if comparison:
+            os.remove(temp_filename)
+        else:
+            """
+{} se escribió correctamente, pero no es idéntico al esperado. Por favor,
+revíselo manualmente""".format(temp_filename)
+
+        # self.assertListEqual(read_table, self.WRITEABLE_TABLE)
+
+    @unittest.skip("No implementado aún")
+    def test_write_read_xlsx_loop(self):
+        """Escribir y leer un XLSX es una operacion idempotente."""
+        temp_filename = os.path.join(self.TEMP_DIR, "write_read_loop.xlsx")
+        self.dj._write(self.WRITEABLE_TABLE, temp_filename)
+        read_table = self.dj._read(temp_filename)
+
+        comparison = (self.WRITEABLE_TABLE == read_table)
+        if comparison:
+            os.remove(temp_filename)
+            """
+{} se escribió correctamente, pero no es idéntico al esperado. Por favor,
+revíselo manualmente""".format(temp_filename)
+
+        # self.assertListEqual(read_table, self.WRITEABLE_TABLE)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
