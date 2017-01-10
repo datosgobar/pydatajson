@@ -1,6 +1,12 @@
 History
 =======
 
+0.1.7 (2017-01-10)
+------------------
+
+* Se agrega el módulo `xlsx_to_json`, con dos métodos para lectura de archivos locales o remotos, sean JSON genéricos (`xlsx_to_json.read_json()`) o metadatos de catálogos en formato XLSX (`read_local_xlsx_catalog()`).
+* Se agrega el método `pydatajson.read_catalog()` que interpreta todos las representaciones externas o internas de catálogos conocidas, y devuelve un diccionario con sus metadatos.
+
 0.1.6 (2017-01-04)
 ------------------
 
