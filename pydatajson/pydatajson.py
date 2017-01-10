@@ -13,6 +13,7 @@ from __future__ import with_statement
 
 import sys
 import io
+import platform
 import os.path
 from urlparse import urljoin, urlparse
 import warnings
