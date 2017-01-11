@@ -34,7 +34,8 @@ class XlsxToJsonTestCase(unittest.TestCase):
             ],
             "Rebeldes": [
                 {"Nombre": "Luke", "Edad": 56},
-                {"Nombre": "Han", "Edad": 122}
+                {"Nombre": "Han", "Edad": 122},
+                {"Nombre": "Yoda", "Edad": 0}
             ]
         }
 

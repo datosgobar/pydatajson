@@ -31,7 +31,7 @@ def sheet_to_table(worksheet):
     ]
     table = [
         # Ignoro los campos con valores nulos (None)
-        {k: v for (k, v) in zip(headers, row) if v}
+        {k: v for (k, v) in zip(headers, row) if v is not None}
         for row in value_rows
     ]
 
