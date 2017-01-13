@@ -15,7 +15,7 @@ install:
   - "%PYTHON%/Scripts/pip.exe install -r requirements_dev.txt"
   - "%PYTHON%/Scripts/pip.exe install python-coveralls"
   - "%PYTHON%/Scripts/pip.exe install coveralls"
-  - "mkdir tests/temp"
+  - "mkdir tests\\temp"
 
 test_script:
   - "%PYTHON%/Scripts/nosetests"
