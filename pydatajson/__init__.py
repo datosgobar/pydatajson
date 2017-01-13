@@ -7,5 +7,5 @@ import xlsx_to_json
 
 __author__ = """Datos Argentina"""
 __email__ = 'datos@modernizacion.gob.ar'
-__version__ = '0.1.8'
+__version__ = '0.1.10'
 
