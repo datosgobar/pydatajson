@@ -99,10 +99,10 @@ def read_json(json_path_or_url):
             warnings.warn("""
 La dirección del archivo JSON ingresada parece una URL, pero no comienza
 con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
-quiso decir 'http://{}'?""".format(json_path_or_url).encode("utf8"))
+quiso decir 'http://{}'?""".format(json_path_or_url).encode("utf-8"))
 
-        with io.open(json_path_or_url) as json_file:
-            json_dict = json.load(json_file, encoding="utf8")
+        with io.open(json_path_or_url, encoding='utf-8') as json_file:
+            json_dict = json.load(json_file)
 
     return json_dict
 

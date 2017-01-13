@@ -48,7 +48,8 @@ class DataJsonTestCase(unittest.TestCase):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         result_path = os.path.join(self.RESULTS_DIR, case_filename + ".json")
 
-        expected_dict = expected_dict or json.load(open(result_path))
+        expected_dict = expected_dict or json.load(open(result_path),
+                                                   encoding='utf-8')
 
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
