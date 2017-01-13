@@ -17,6 +17,7 @@ from collections import OrderedDict
 import mock
 import filecmp
 import pydatajson
+import io
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
@@ -48,14 +49,14 @@ class DataJsonTestCase(unittest.TestCase):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         result_path = os.path.join(self.RESULTS_DIR, case_filename + ".json")
 
-        expected_dict = expected_dict or json.load(open(result_path),
-                                                   encoding='utf-8')
+        with io.open(result_path, encoding='utf8') as result_file:
+            expected_dict = expected_dict or json.load(result_file)
 
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
 
         if expected_dict["status"] == "OK":
-            self.assertTrue(response_bool)
+            self.assertTrue(response_bool) 
         elif expected_dict["status"] == "ERROR":
             self.assertFalse(response_bool)
         else:
@@ -362,9 +363,10 @@ class DataJsonTestCase(unittest.TestCase):
 
     # TESTS DE catalog_report
     # Reporte esperado para "full_data.json", con harvest = 0
+    LOCAL_URL = os.path.join("tests", "samples", "full_data.json")
     EXPECTED_REPORT = [
         OrderedDict(
-            [(u'catalog_metadata_url', u'tests/samples/full_data.json'),
+            [(u'catalog_metadata_url', LOCAL_URL),
              (u'catalog_title', u'Datos Argentina'),
              (u'catalog_description',
               u'Portal de Datos Abiertos del Gobierno de la República Argentina'),
