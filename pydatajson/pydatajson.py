@@ -702,6 +702,54 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         else:
             return harvestable_catalogs
 
+    def generate_datasets_summary(self, catalog, export_path=None):
+        """Genera un informe sobre los datasets presentes en un catálogo,
+        indicando para cada uno:
+            - Índice en la lista catalog["dataset"]
+            - Título
+            - Identificador
+            - Cantidad de distribuciones
+            - Estado de sus metadatos ["OK"|"ERROR"]
+
+        Es utilizada por la rutina diaria de `libreria-catalogos` para reportar
+        sobre los datasets de los catálogos mantenidos.
+
+        Args:
+            catalog (str o dict): Path a un catálogo en cualquier formato,
+                JSON, XLSX, o diccionario de python.
+            export_path (str): Path donde exportar el informe generado (en
+                formato XLSX o CSV). Si se especifica, el método no devolverá
+                nada.
+
+        Returns:
+            list: Contiene tantos dicts como datasets estén presentes en
+            `catalogs`, con los datos antes mencionados.
+        """
+        return NotImplemented
+
+    def generate_catalog_readme(self, catalog, export_path=None):
+        """Genera una descripción textual en formato Markdown sobre los
+        metadatos generales de un catálogo (título, editor, fecha de
+        publicación, et cetera), junto con:
+            - estado de los metadatos a nivel catálogo,
+            - estado global de los metadatos, y
+            - cantidad de datasets y distribuciones incluidas
+
+        Es utilizada por la rutina diaria de `libreria-catalogos` para generar
+        un README con información básica sobre los catálogos mantenidos.
+
+        Args:
+            catalog (str o dict): Path a un catálogo en cualquier formato,
+                JSON, XLSX, o diccionario de python.
+            export_path (str): Path donde exportar el texto generado (en
+                formato Markdown). Si se especifica, el método no devolverá
+                nada.
+
+        Returns:
+            str: Texto de la descripción generada.
+        """
+        return NotImplemented
+
     @staticmethod
     def _is_list_of_matching_dicts(list_of_dicts):
         """Comprueba que una lista esté compuesta únicamente por diccionarios,
