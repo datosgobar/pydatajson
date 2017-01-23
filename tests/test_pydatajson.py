@@ -363,7 +363,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     # TESTS DE catalog_report
     # Reporte esperado para "full_data.json", con harvest = 0
-    LOCAL_URL = os.path.join("tests", "samples", "full_data.json")
+    LOCAL_URL = os.path.join(SAMPLES_DIR, "full_data.json")
     EXPECTED_REPORT = [
         OrderedDict(
             [(u'catalog_metadata_url', LOCAL_URL),
@@ -733,7 +733,7 @@ revíselo manualmente""".format(actual_filename)
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(temp_filename)
 
-        # self.assertListEqual(read_table, self.WRITEABLE_TABLE)
+        self.assertListEqual(read_table, self.WRITEABLE_TABLE)
 
     @unittest.skip("No implementado aún")
     def test_write_read_xlsx_loop(self):
@@ -749,8 +749,36 @@ revíselo manualmente""".format(temp_filename)
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(temp_filename)
 
-        # self.assertListEqual(read_table, self.WRITEABLE_TABLE)
+        self.assertListEqual(read_table, self.WRITEABLE_TABLE)
 
+    def test_generate_datasets_summary(self):
+        """Genera informe conciso sobre datasets correctamente."""
+        catalog = os.path.join(self.SAMPLES_DIR,
+                               "several_datasets_for_harvest.json")
+        actual = self.dj.generate_datasets_summary(catalog)
+        expected = [
+            OrderedDict([('indice', 0),
+                         ('titulo', 'Sistema de contrataciones electrónicas UNO'),
+                         ('identificador', None),
+                         ('estado_metadatos', 'ERROR'),
+                         ('cant_errores', 4),
+                         ('cant_distribuciones', 4)]),
+            OrderedDict([('indice', 1),
+                         ('titulo', 'Sistema de contrataciones electrónicas DOS'),
+                         ('identificador', None),
+                         ('estado_metadatos', 'OK'),
+                         ('cant_errores', 0),
+                         ('cant_distribuciones', 1)]),
+            OrderedDict([('indice', 2),
+                         ('titulo', 'Sistema de contrataciones electrónicas TRES'),
+                         ('identificador', None),
+                         ('estado_metadatos', 'OK'),
+                         ('cant_errores', 0),
+                         ('cant_distribuciones', 1)])]
 
+        self.assertListEqual(actual, expected)
+
+    def test_generate_catalog_readme(self):
+        pass
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
