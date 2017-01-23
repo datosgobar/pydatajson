@@ -658,42 +658,53 @@ class DataJsonTestCase(unittest.TestCase):
 
     # TESTS DE _READ y _WRITE
 
+    CSV_TABLE = [
+        OrderedDict([(u'Plato', u'Milanesa'),
+                     (u'Precio', u'Bajo'),
+                     (u'Sabor', u'666')]),
+        OrderedDict([(u'Plato', u'Thoné, Vitel'),
+                     (u'Precio', u'Alto'),
+                     (u'Sabor', u'8000')]),
+        OrderedDict([(u'Plato', u'Aceitunas'),
+                     (u'Precio', u''),
+                     (u'Sabor', u'15')])
+    ]
+
+    XLSX_TABLE = [
+        OrderedDict([(u'Plato', u'Milanesa'),
+                     (u'Precio', u'Bajo'),
+                     (u'Sabor', 666)]),
+        OrderedDict([(u'Plato', u'Thoné, Vitel'),
+                     (u'Precio', u'Alto'),
+                     (u'Sabor', 8000)]),
+        OrderedDict([(u'Plato', u'Aceitunas'),
+                     (u'Precio', u'Gratis'),
+                     (u'Sabor', 15)])
+    ]
+
     def test_read_table_from_csv(self):
-        expected_table = [
-            {u'Plato': u'Milanesa', u'Precio': u'Bajo', u'Sabor': u'666'},
-            {u'Plato': u'Thon\xe9, Vitel', u'Precio': u'Alto',
-             u'Sabor': u'8000'},
-            {u'Plato': u'Aceitunas', u'Precio': u'', u'Sabor': u'15'}
-        ]
         csv_filename = os.path.join(self.SAMPLES_DIR, "read_table.csv")
         actual_table = self.dj._read(csv_filename)
+        expected_table = self.CSV_TABLE
 
-        self.assertListEqual(actual_table, expected_table)
+        for (actual_row, expected_row) in zip(actual_table, expected_table):
+            self.assertEqual(actual_row, expected_row)
 
     def test_read_table_from_xlsx(self):
-        expected_table = [
-            {u'Plato': u'Milanesa', u'Precio': u'Bajo', u'Sabor': 666L},
-            {u'Plato': u'Thon\xe9, Vitel', u'Precio': u'Alto',
-             u'Sabor': 8000L},
-            {u'Plato': u'Aceitunas', u'Sabor': 15L}
-        ]
         xlsx_filename = os.path.join(self.SAMPLES_DIR, "read_table.xlsx")
         actual_table = self.dj._read(xlsx_filename)
+        expected_table = self.XLSX_TABLE
 
-        self.assertListEqual(actual_table, expected_table)
+        for (actual_row, expected_row) in zip(actual_table, expected_table):
+            self.assertEqual(dict(actual_row), dict(expected_row))
 
-    WRITEABLE_TABLE = [
-        {u'Plato': u'Milanesa', u'Precio': u'Bajo', u'Sabor': u'666'},
-        {u'Plato': u'Thon\xe9, Vitel', u'Precio': u'Alto',
-         u'Sabor': u'8000'},
-        {u'Plato': u'Aceitunas', u'Precio': u'', u'Sabor': u'15'}
-    ]
+        #self.assertListEqual(actual_table, self.XLSX_TABLE)
 
     def test_write_table_to_csv(self):
         expected_filename = os.path.join(self.RESULTS_DIR, "write_table.csv")
         actual_filename = os.path.join(self.TEMP_DIR, "write_table.csv")
 
-        self.dj._write(self.WRITEABLE_TABLE, actual_filename)
+        self.dj._write(self.CSV_TABLE, actual_filename)
         comparison = filecmp.cmp(actual_filename, expected_filename)
         if comparison:
             os.remove(actual_filename)
@@ -702,13 +713,14 @@ class DataJsonTestCase(unittest.TestCase):
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(actual_filename)
  
-        # self.assertTrue(comparison)
+        self.assertTrue(comparison)
 
+    @unittest.skip("Requiere función auxiliar para comparar worksheets")
     def test_write_table_to_xlsx(self):
         expected_filename = os.path.join(self.RESULTS_DIR, "write_table.xlsx")
         actual_filename = os.path.join(self.TEMP_DIR, "write_table.xlsx")
 
-        self.dj._write(self.WRITEABLE_TABLE, actual_filename)
+        self.dj._write(self.XLSX_TABLE, actual_filename)
         comparison = filecmp.cmp(actual_filename, expected_filename)
         if comparison:
             os.remove(actual_filename)
@@ -717,15 +729,15 @@ revíselo manualmente""".format(actual_filename)
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(actual_filename)
  
-        # self.assertTrue(comparison)
+        self.assertTrue(comparison)
 
     def test_write_read_csv_loop(self):
         """Escribir y leer un CSV es una operacion idempotente."""
         temp_filename = os.path.join(self.TEMP_DIR, "write_read_loop.csv")
-        self.dj._write(self.WRITEABLE_TABLE, temp_filename)
+        self.dj._write(self.CSV_TABLE, temp_filename)
         read_table = self.dj._read(temp_filename)
 
-        comparison = (self.WRITEABLE_TABLE == read_table)
+        comparison = (self.CSV_TABLE == read_table)
         if comparison:
             os.remove(temp_filename)
         else:
@@ -733,7 +745,7 @@ revíselo manualmente""".format(actual_filename)
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(temp_filename)
 
-        self.assertListEqual(read_table, self.WRITEABLE_TABLE)
+        self.assertListEqual(read_table, self.CSV_TABLE)
 
     @unittest.skip("No implementado aún")
     def test_write_read_xlsx_loop(self):
@@ -742,7 +754,7 @@ revíselo manualmente""".format(temp_filename)
         self.dj._write(self.WRITEABLE_TABLE, temp_filename)
         read_table = self.dj._read(temp_filename)
 
-        comparison = (self.WRITEABLE_TABLE == read_table)
+        comparison = (self.XLSX_TABLE == read_table)
         if comparison:
             os.remove(temp_filename)
             """
@@ -779,6 +791,24 @@ revíselo manualmente""".format(temp_filename)
         self.assertListEqual(actual, expected)
 
     def test_generate_catalog_readme(self):
-        pass
+        """Genera README para presentar un catálogo."""
+        catalog = os.path.join(self.SAMPLES_DIR,
+                               "several_datasets_for_harvest.json")
+        actual_filename = os.path.join(self.TEMP_DIR, "catalog_readme.md")
+
+        expected_filename = os.path.join(self.RESULTS_DIR, "catalog_readme.md")
+
+        self.dj.generate_catalog_readme(catalog, export_path=actual_filename)
+
+        comparison = filecmp.cmp(actual_filename, expected_filename)
+        if comparison:
+            os.remove(actual_filename)
+        else:
+            """
+{} se escribió correctamente, pero no es idéntico al esperado. Por favor,
+revíselo manualmente""".format(actual_filename)
+
+        self.assertTrue(comparison)
+
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
