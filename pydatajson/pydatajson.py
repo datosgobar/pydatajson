@@ -776,7 +776,53 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         Returns:
             str: Texto de la descripción generada.
         """
-        return NotImplemented
+        catalog = read_catalog(catalog)
+        validation = self.validate_catalog(catalog)
+
+        readme_template = """
+# Catálogo: {title}
+
+## Información General
+
+- **Autor**: {publisher_name}
+- **Correo Electrónico**: {publisher_mbox}
+- **Nombre del catálogo**: {title}
+- **Descripción**:
+
+> {description}
+
+## Estado de los metadatos y cantidad de recursos
+
+Estado metadatos globales | Estado metadatos catálogo | # de Datasets | # de Distribuciones
+--------------------------|---------------------------|---------------|--------------------
+{global_status} | {catalog_status} | {no_of_datasets} | {no_of_distributions}
+
+## Datasets incluidos
+
+Por favor, consulte el informe [`datasets.csv`](datasets.csv).
+"""
+
+        content = {
+            "title": catalog.get("title"),
+            "publisher_name": self._traverse_dict(
+                catalog, ["publisher", "name"]),
+            "publisher_mbox": self._traverse_dict(
+                catalog, ["publisher", "mbox"]),
+            "description": catalog.get("description"),
+            "global_status": validation["status"],
+            "catalog_status": validation["error"]["catalog"]["status"],
+            "no_of_datasets": len(catalog["dataset"]),
+            "no_of_distributions": sum([len(dataset["distribution"]) for
+                                        dataset in catalog["dataset"]])
+        }
+
+        catalog_readme = readme_template.format(**content)
+
+        if export_path:
+            with io.open(export_path, 'w', encoding='utf-8') as target:
+                target.write(catalog_readme)
+        else:
+            return catalog_readme
 
     @staticmethod
     def _is_list_of_matching_dicts(list_of_dicts):
