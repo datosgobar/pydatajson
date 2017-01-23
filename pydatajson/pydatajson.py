@@ -725,7 +725,35 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             list: Contiene tantos dicts como datasets estén presentes en
             `catalogs`, con los datos antes mencionados.
         """
-        return NotImplemented
+        catalog = read_catalog(catalog)
+
+        # Trato de leer todos los datasets bien formados de la lista
+        # catalog["dataset"], si existe.
+        if "dataset" in catalog and isinstance(catalog["dataset"], list):
+            datasets = [d if isinstance(d, dict) else {} for d in
+                        catalog["dataset"]]
+        else:
+            # Si no, considero que no hay datasets presentes
+            datasets = []
+
+        validation = self.validate_catalog(catalog)["error"]["dataset"]
+
+        def info_dataset(index, dataset):
+            info = OrderedDict()
+            info["indice"] = index
+            info["titulo"] = dataset.get("title")
+            info["identificador"] = dataset.get("identifier")
+            info["estado_metadatos"] = validation[index]["status"]
+            info["cant_errores"] = len(validation[index]["errors"])
+            info["cant_distribuciones"] = len(dataset["distribution"])
+
+            return info
+
+        summary = [info_dataset(i, ds) for i, ds in enumerate(datasets)]
+        if export_path:
+            self._write(summary, export_path)
+        else:
+            return summary
 
     def generate_catalog_readme(self, catalog, export_path=None):
         """Genera una descripción textual en formato Markdown sobre los
