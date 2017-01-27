@@ -122,7 +122,7 @@ def read_xlsx_catalog(xlsx_path_or_url):
     if parsed_url.scheme in ["http", "https"]:
         res = requests.get(xlsx_path_or_url)
         tmpfilename = ".tmpfile.xlsx"
-        with open(tmpfilename, 'wb') as tmpfile:
+        with io.open(tmpfilename, 'wb') as tmpfile:
             tmpfile.write(res.content)
         catalog_dict = read_local_xlsx_catalog(tmpfilename)
         os.remove(tmpfilename)
@@ -222,8 +222,8 @@ def read_local_xlsx_catalog(filename):
     Returns:
         dict: Diccionario con los metadatos de un catálogo.
     """
-    assert_xlsx_msg = "El archivo a leer debe tener extensión XLSX."
-    assert filename.endswith(".xlsx"), assert_xlsx_msg
+    assert filename.endswith(".xlsx"), """
+El archivo a leer debe tener extensión XLSX."""
 
     workbook = pyxl.load_workbook(filename)
 
@@ -376,7 +376,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
 def read_csv_table(path):
     """Lee un CSV a una lista de diccionarios."""
-    with open(path) as csvfile:
+    with io.open(path, encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         table = list(reader)
     return table
