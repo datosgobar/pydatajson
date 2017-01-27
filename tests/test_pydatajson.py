@@ -56,7 +56,7 @@ class DataJsonTestCase(unittest.TestCase):
         response_dict = self.dj.validate_catalog(sample_path)
 
         if expected_dict["status"] == "OK":
-            self.assertTrue(response_bool) 
+            self.assertTrue(response_bool)
         elif expected_dict["status"] == "ERROR":
             self.assertFalse(response_bool)
         else:
@@ -570,7 +570,6 @@ class DataJsonTestCase(unittest.TestCase):
             # Una lista vacía es "falsa"
             self.assertFalse(catalog["dataset"])
 
-
     REPORT = [
         {
             "catalog_metadata_url": "URL Catalogo A",
@@ -698,7 +697,7 @@ class DataJsonTestCase(unittest.TestCase):
         for (actual_row, expected_row) in zip(actual_table, expected_table):
             self.assertEqual(dict(actual_row), dict(expected_row))
 
-        #self.assertListEqual(actual_table, self.XLSX_TABLE)
+        self.assertListEqual(actual_table, self.XLSX_TABLE)
 
     def test_write_table_to_csv(self):
         expected_filename = os.path.join(self.RESULTS_DIR, "write_table.csv")
@@ -712,7 +711,7 @@ class DataJsonTestCase(unittest.TestCase):
             """
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(actual_filename)
- 
+
         self.assertTrue(comparison)
 
     @unittest.skip("Requiere función auxiliar para comparar worksheets")
@@ -728,7 +727,7 @@ revíselo manualmente""".format(actual_filename)
             """
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(actual_filename)
- 
+
         self.assertTrue(comparison)
 
     def test_write_read_csv_loop(self):
