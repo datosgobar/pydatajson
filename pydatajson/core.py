@@ -15,15 +15,12 @@ import sys
 import io
 import platform
 import os.path
-from urlparse import urlparse
-import warnings
 import json
 from collections import OrderedDict
 import jsonschema
-import requests
-import unicodecsv as csv
-import openpyxl as pyxl
-import xlsx_to_json
+from . import readers
+from . import helpers
+from . import writers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -76,7 +73,7 @@ class DataJson(object):
                 `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
-        schema = read_json(schema_path)
+        schema = readers.read_json(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
@@ -106,7 +103,7 @@ class DataJson(object):
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = read_catalog(datajson_path)
+        datajson = readers.read_catalog(datajson_path)
         res = self.validator.is_valid(datajson)
         return res
 
@@ -187,7 +184,7 @@ class DataJson(object):
             "message", "validator", "validator_value", "error_code".
 
         """
-        datajson = read_catalog(datajson_path)
+        datajson = readers.read_catalog(datajson_path)
 
         # La respuesta por default se devuelve si no hay errores
         default_response = {
@@ -234,7 +231,7 @@ class DataJson(object):
             dict: Diccionario con los campos a nivel dataset que requiere
             dataset_report().
         """
-        publisher_name = cls._traverse_dict(dataset, ["publisher", "name"])
+        publisher_name = helpers.traverse_dict(dataset, ["publisher", "name"])
 
         super_themes = None
         if isinstance(dataset.get("superTheme"), list):
@@ -352,7 +349,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         """
 
         url = catalog if isinstance(catalog, (str, unicode)) else None
-        catalog = read_catalog(catalog)
+        catalog = readers.read_catalog(catalog)
 
         validation = self.validate_catalog(catalog)
         catalog_validation = validation["error"]["catalog"]
@@ -409,7 +406,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             full_report.extend(report)
 
         if export_path:
-            self._write(table=full_report, path=export_path)
+            writers.write_table(table=full_report, path=export_path)
         else:
             return full_report
 
@@ -446,7 +443,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 raise ValueError("""
 Usted eligio 'report' como criterio de harvest, pero no proveyo un valor para
 el argumento 'report'. Por favor, intentelo nuevamente.""")
-            datasets_report = self._read(report)
+            datasets_report = readers.read_table(report)
         elif harvest in ['valid', 'none', 'all']:
             # catalogs no puede faltar para estos criterios
             assert isinstance(catalogs, (str, unicode, dict, list))
@@ -469,7 +466,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         ]
 
         if export_path:
-            self._write(harvester_config, export_path)
+            writers.write_table(harvester_config, export_path)
         else:
             return harvester_config
 
@@ -500,7 +497,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
 
-        harvestable_catalogs = [read_catalog(c) for c in catalogs]
+        harvestable_catalogs = [readers.read_catalog(c) for c in catalogs]
         catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
                          else None for catalog in catalogs]
 
@@ -542,17 +539,10 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             # Creo un JSON por catálogo
             for idx, catalog in enumerate(harvestable_catalogs):
                 filename = os.path.join(export_path, "catalog_{}".format(idx))
-                file_str = json.dumps(catalog, ensure_ascii=False, indent=4,
-                                      separators=(",", ": "), encoding="utf-8")
-                with io.open(filename, 'w', encoding="utf-8") as target:
-                    target.write(file_str)
+                writers.write_json(catalog, filename)
         elif export_path:
             # Creo un único JSON con todos los catálogos
-            file_str = json.dumps(harvestable_catalogs, ensure_ascii=False,
-                                  indent=4, separators=(",", ": "),
-                                  encoding="utf-8")
-            with io.open(export_path, 'w', encoding="utf-8") as target:
-                target.write(file_str)
+            writers.write_json(harvestable_catalogs, export_path)
         else:
             return harvestable_catalogs
 
@@ -579,7 +569,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             list: Contiene tantos dicts como datasets estén presentes en
             `catalogs`, con los datos antes mencionados.
         """
-        catalog = read_catalog(catalog)
+        catalog = readers.read_catalog(catalog)
 
         # Trato de leer todos los datasets bien formados de la lista
         # catalog["dataset"], si existe.
@@ -630,7 +620,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         Returns:
             str: Texto de la descripción generada.
         """
-        catalog = read_catalog(catalog)
+        catalog = readers.read_catalog(catalog)
         validation = self.validate_catalog(catalog)
 
         readme_template = """
@@ -699,7 +689,7 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
                                               len(x) == 2 for x in report])):
             return report
 
-        table = cls._read(report)
+        table = readers.read_table(report)
         table_keys = table[0].keys()
         expected_keys = ["catalog_metadata_url", "dataset_title",
                          "dataset_accrualPeriodicity"]
