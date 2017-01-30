@@ -4,8 +4,8 @@
 """
 xl_methods
 
-Módulo tomado de https://github.com/abenassi/xlseries para manipular archivos
-en formato XLSX.
+Métodos ligeramente modificados a partir de abenassi/xlseries para manipular
+archivos en formato XLSX (https://github.com/abenassi/xlseries).
 """
 
 

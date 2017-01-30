@@ -366,15 +366,15 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     # Deduzco el formato de archivo de `path` y redirijo según corresponda.
     suffix = path.split(".")[-1]
     if suffix == "csv":
-        return read_csv_table(path)
+        return _read_csv_table(path)
     elif suffix == "xlsx":
-        return read_xlsx_table(path)
+        return _read_xlsx_table(path)
     else:
         raise ValueError("""
 {} no es un sufijo reconocido. Pruebe con .csv o .xlsx""".format(suffix))
 
 
-def read_csv_table(path):
+def _read_csv_table(path):
     """Lee un CSV a una lista de diccionarios."""
     with open(path) as csvfile:
         reader = csv.DictReader(csvfile)
@@ -382,7 +382,7 @@ def read_csv_table(path):
     return table
 
 
-def read_xlsx_table(path):
+def _read_xlsx_table(path):
     """Lee la hoja activa de un archivo XLSX a una lista de diccionarios."""
     workbook = pyxl.load_workbook(path)
     worksheet = workbook.active

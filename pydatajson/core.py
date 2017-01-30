@@ -583,6 +583,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         validation = self.validate_catalog(catalog)["error"]["dataset"]
 
         def info_dataset(index, dataset):
+            """Recolecta información básica de un dataset."""
             info = OrderedDict()
             info["indice"] = index
             info["titulo"] = dataset.get("title")
@@ -595,7 +596,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         summary = [info_dataset(i, ds) for i, ds in enumerate(datasets)]
         if export_path:
-            self._write(summary, export_path)
+            writers.write_table(summary, export_path)
         else:
             return summary
 
