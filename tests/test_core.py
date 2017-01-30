@@ -481,9 +481,10 @@ class DataJsonTestCase(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_generate_harvester_config(self):
+    def test_generate_harvester_config_freq_none(self):
         """generate_harvester_config() debe filtrar el resultado de
-        generate_datasets_report() a únicamente los 3 campos requeridos."""
+        generate_datasets_report() a únicamente los 3 campos requeridos, y
+        conservar el accrualPeriodicity original."""
 
         datasets_report = [
             {
@@ -519,6 +520,56 @@ class DataJsonTestCase(unittest.TestCase):
                 "catalog_metadata_url": 3,
                 "dataset_title": 3,
                 "dataset_accrualPeriodicity": 3,
+            }
+        ]
+
+        self.dj.generate_datasets_report = mock.MagicMock(
+            return_value=datasets_report)
+
+        actual_config = self.dj.generate_harvester_config(
+            catalogs="un catalogo", harvest='valid', frequency=None)
+
+        self.assertListEqual(actual_config, expected_config)
+
+    def test_generate_harvester_config_no_freq(self):
+        """generate_harvester_config() debe filtrar el resultado de
+        generate_datasets_report() a únicamente los 3 campos requeridos, y
+        usar "R/P1D" como accrualPeriodicity"""
+
+        datasets_report = [
+            {
+                "catalog_metadata_url": 1,
+                "dataset_title": 1,
+                "dataset_accrualPeriodicity": 1,
+                "otra key": 1,
+                "harvest": 0
+            },
+            {
+                "catalog_metadata_url": 2,
+                "dataset_title": 2,
+                "dataset_accrualPeriodicity": 2,
+                "otra key": 2,
+                "harvest": 1
+            },
+            {
+                "catalog_metadata_url": 3,
+                "dataset_title": 3,
+                "dataset_accrualPeriodicity": 3,
+                "otra key": 3,
+                "harvest": 1
+            }
+        ]
+
+        expected_config = [
+            {
+                "catalog_metadata_url": 2,
+                "dataset_title": 2,
+                "dataset_accrualPeriodicity": "R/P1D",
+            },
+            {
+                "catalog_metadata_url": 3,
+                "dataset_title": 3,
+                "dataset_accrualPeriodicity": "R/P1D",
             }
         ]
 

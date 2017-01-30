@@ -15,6 +15,8 @@ import sys
 import io
 import platform
 import os.path
+import warnings
+import re
 import json
 from collections import OrderedDict
 import jsonschema
@@ -411,7 +413,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             return full_report
 
     def generate_harvester_config(self, catalogs=None, harvest='valid',
-                                  report=None, export_path=None):
+                                  report=None, frequency='R/P1D',
+                                  export_path=None):
         """Genera un archivo de configuración del harvester a partir de un
         reporte, o de un conjunto de catálogos y un criterio de cosecha
         (`harvest`).
@@ -426,6 +429,11 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 generate_datasets_report() como lista de diccionarios o archivo
                 en formato XLSX o CSV. Sólo se usa cuando `harvest=='report'`,
                 en cuyo caso `catalogs` se ignora.
+            frequency (str): Frecuencia de búsqueda de actualizaciones en los
+                datasets a cosechar. Todo intervalo de frecuencia válido según
+                ISO 8601 es válido. Es 'R/P1D' (diariamiente) por omisión, y
+                si se pasa`None`, se conservará el valor de original de cada
+                dataset, `dataset["accrualPeriodicity"]`.
             export_path (str): Path donde exportar el reporte generado (en
                 formato XLSX o CSV). Si se especifica, el método no devolverá
                 nada.
@@ -464,6 +472,20 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             # Para aquellost datasets marcados con 'harvest'==1
             for dataset in datasets_report if bool(int(dataset["harvest"]))
         ]
+
+        if frequency:
+            valid_patterns = [
+                "^R/P\\d+(\\.\\d+)?[Y|M|W|D]$",
+                "^R/PT\\d+(\\.\\d+)?[H|M|S]$"
+            ]
+
+            if any([re.match(pat, frequency) for pat in valid_patterns]):
+                for dataset in harvester_config:
+                    dataset["dataset_accrualPeriodicity"] = frequency
+            else:
+                warnings.warn("""
+{} no es una frecuencia de cosecha valida. Se conservara la frecuencia de
+actualizacion original de cada dataset.""".format(frequency))
 
         if export_path:
             writers.write_table(harvester_config, export_path)
