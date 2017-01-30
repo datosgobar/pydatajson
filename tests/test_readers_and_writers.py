@@ -92,7 +92,7 @@ class ReadersAndWritersTestCase(unittest.TestCase):
         expected_filename = os.path.join(self.RESULTS_DIR, "write_table.csv")
         actual_filename = os.path.join(self.TEMP_DIR, "write_table.csv")
 
-        pydatajson.readers.write_table(self.CSV_TABLE, actual_filename)
+        pydatajson.writers.write_table(self.CSV_TABLE, actual_filename)
         comparison = filecmp.cmp(actual_filename, expected_filename)
         if comparison:
             os.remove(actual_filename)
@@ -122,7 +122,7 @@ revíselo manualmente""".format(actual_filename)
     def test_write_read_csv_loop(self):
         """Escribir y leer un CSV es una operacion idempotente."""
         temp_filename = os.path.join(self.TEMP_DIR, "write_read_loop.csv")
-        pydatajson.readers.write_table(self.CSV_TABLE, temp_filename)
+        pydatajson.writers.write_table(self.CSV_TABLE, temp_filename)
         read_table = pydatajson.readers.read_table(temp_filename)
 
         comparison = (self.CSV_TABLE == read_table)
