@@ -546,18 +546,18 @@ class DataJsonTestCase(unittest.TestCase):
         ]
     }
 
-    @mock.patch('pydatajson.pydatajson.read_catalog',
+    @mock.patch('pydatajson.readers.read_catalog',
                 return_value=CATALOG.copy())
     def test_generate_harvestable_catalogs_all(self, patched_read_catalog):
 
         catalogs = ["URL Catalogo A", "URL Catalogo B"]
 
-        expected = [pydatajson.pydatajson.read_catalog(c) for c in catalogs]
+        expected = [pydatajson.readers.read_catalog(c) for c in catalogs]
         actual = self.dj.generate_harvestable_catalogs(catalogs, harvest='all')
 
         self.assertEqual(actual, expected)
 
-    @mock.patch('pydatajson.pydatajson.read_catalog',
+    @mock.patch('pydatajson.readers.read_catalog',
                 return_value=CATALOG.copy())
     def test_generate_harvestable_catalogs_none(self, patched_read_catalog):
 
@@ -599,7 +599,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     @mock.patch('pydatajson.DataJson.generate_datasets_report',
                 return_value=REPORT)
-    @mock.patch('pydatajson.pydatajson.read_catalog',
+    @mock.patch('pydatajson.readers.read_catalog',
                 return_value=CATALOG.copy())
     def test_generate_harvestable_catalogs_valid(self, mock_read_catalog,
                                                  mock_gen_dsets_report):
@@ -625,7 +625,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     @mock.patch('pydatajson.DataJson.generate_datasets_report',
                 return_value=REPORT)
-    @mock.patch('pydatajson.pydatajson.read_catalog',
+    @mock.patch('pydatajson.readers.read_catalog',
                 return_value=CATALOG.copy())
     def test_generate_harvestable_catalogs_report(self, mock_read_catalog,
                                                   mock_gen_dsets_report):
