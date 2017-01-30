@@ -15,136 +15,16 @@ import sys
 import io
 import platform
 import os.path
-from urlparse import urlparse
 import warnings
+import re
 import json
 from collections import OrderedDict
 import jsonschema
-import requests
-import unicodecsv as csv
-import openpyxl as pyxl
-import xlsx_to_json
+from . import readers
+from . import helpers
+from . import writers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
-def read_catalog(catalog):
-    """Toma una representación cualquiera de un catálogo, y devuelve su
-    representación interna (un diccionario de Python con su metadata.)
-
-    Si recibe una representación _interna_ (un diccionario), lo devuelve
-    intacto. Si recibe una representación _externa_ (path/URL a un archivo
-    JSON/XLSX), devuelve su represetación interna, es decir, un diccionario.
-
-    Args:
-        catalog (dict or str): Representación externa/interna de un catálogo.
-        Una representación _externa_ es un path local o una URL remota a un
-        archivo con la metadata de un catálogo, en formato JSON o XLSX. La
-        representación _interna_ de un catálogo es un diccionario.
-
-    Returns:
-        dict: Representación interna de un catálogo para uso en las funciones
-        de esta librería.
-    """
-    unknown_catalog_repr_msg = """
-No se pudo inferir una representación válida de un catálogo del parámetro
-provisto: {}.""".format(catalog)
-    assert isinstance(catalog, (dict, str, unicode)), unknown_catalog_repr_msg
-
-    if isinstance(catalog, dict):
-        catalog_dict = catalog
-    else:
-        # catalog es una URL remota o un path local
-        suffix = catalog.split(".")[-1]
-        unknown_suffix_msg = """
-{} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
-        assert suffix in ["json", "xlsx"], unknown_suffix_msg
-
-        if suffix == "json":
-            catalog_dict = read_json(catalog)
-        else:
-            # El archivo está en formato XLSX
-            catalog_dict = read_xlsx_catalog(catalog)
-
-    # Es 'pitonica' esta forma de retornar un valor? O debería ir retornando
-    # los valores intermedios?
-    return catalog_dict
-
-
-def read_json(json_path_or_url):
-    """Toma el path a un JSON y devuelve el diccionario que representa.
-
-    Se asume que el parámetro es una URL si comienza con 'http' o 'https', o
-    un path local de lo contrario.
-
-    Args:
-        json_path_or_url (str): Path local o URL remota a un archivo de texto
-            plano en formato JSON.
-
-    Returns:
-        dict: El diccionario que resulta de deserializar json_path_or_url.
-
-    """
-    assert isinstance(json_path_or_url, (str, unicode))
-
-    parsed_url = urlparse(json_path_or_url)
-    if parsed_url.scheme in ["http", "https"]:
-        res = requests.get(json_path_or_url)
-        json_dict = json.loads(res.content, encoding='utf-8')
-
-    else:
-        # Si json_path_or_url parece ser una URL remota, lo advierto.
-        path_start = parsed_url.path.split(".")[0]
-        if path_start == "www" or path_start.isdigit():
-            warnings.warn("""
-La dirección del archivo JSON ingresada parece una URL, pero no comienza
-con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
-quiso decir 'http://{}'?""".format(json_path_or_url).encode("utf-8"))
-
-        with io.open(json_path_or_url, encoding='utf-8') as json_file:
-            json_dict = json.load(json_file)
-
-    return json_dict
-
-
-def read_xlsx_catalog(xlsx_path_or_url):
-    """Toma el path a un catálogo en formato XLSX y devuelve el diccionario
-    que representa.
-
-    Se asume que el parámetro es una URL si comienza con 'http' o 'https', o
-    un path local de lo contrario.
-
-    Args:
-        xlsx_path_or_url (str): Path local o URL remota a un libro XLSX de
-            formato específico para guardar los metadatos de un catálogo.
-
-    Returns:
-        dict: El diccionario que resulta de procesar xlsx_path_or_url.
-
-    """
-    assert isinstance(xlsx_path_or_url, (str, unicode))
-
-    parsed_url = urlparse(xlsx_path_or_url)
-    if parsed_url.scheme in ["http", "https"]:
-        res = requests.get(xlsx_path_or_url)
-        tmpfilename = ".tmpfile.xlsx"
-        with open(tmpfilename, 'wb') as tmpfile:
-            tmpfile.write(res.content)
-        catalog_dict = xlsx_to_json.read_local_xlsx_catalog(tmpfilename)
-        os.remove(tmpfilename)
-    else:
-        # Si xlsx_path_or_url parece ser una URL remota, lo advierto.
-        path_start = parsed_url.path.split(".")[0]
-        if path_start == "www" or path_start.isdigit():
-            warnings.warn("""
-La dirección del archivo JSON ingresada parece una URL, pero no comienza
-con 'http' o 'https' así que será tratada como una dirección local. ¿Tal vez
-quiso decir 'http://{}'?
-            """.format(xlsx_path_or_url).encode("utf8"))
-
-        catalog_dict = xlsx_to_json.read_local_xlsx_catalog(xlsx_path_or_url)
-
-    return catalog_dict
 
 
 class DataJson(object):
@@ -195,7 +75,7 @@ class DataJson(object):
                 `schema_filename` dentro de `schema_dir`.
         """
         schema_path = os.path.join(schema_dir, schema_filename)
-        schema = read_json(schema_path)
+        schema = readers.read_json(schema_path)
 
         # Según https://github.com/Julian/jsonschema/issues/98
         # Permite resolver referencias locales a otros esquemas.
@@ -212,34 +92,7 @@ class DataJson(object):
 
         return validator
 
-    @staticmethod
-    def _traverse_dict(dicc, keys, default_value=None):
-        """Recorre un diccionario siguiendo una lista de claves, y devuelve
-        default_value en caso de que alguna de ellas no exista.
-
-        Args:
-            dicc (dict): Diccionario a ser recorrido.
-            keys (list): Lista de claves a ser recorrida. Puede contener
-                índices de listas y claves de diccionarios mezcladas.
-            default_value: Valor devuelto en caso de que `dicc` no se pueda
-                recorrer siguiendo secuencialmente la lista de `keys` hasta
-                el final.
-
-        Returns:
-            object: El valor obtenido siguiendo la lista de `keys` dentro de
-            `dicc`.
-        """
-        for key in keys:
-            if isinstance(dicc, dict) and key in dicc:
-                dicc = dicc[key]
-            elif isinstance(dicc, list):
-                dicc = dicc[key]
-            else:
-                return default_value
-
-        return dicc
-
-    def is_valid_catalog(self, datajson_path):
+    def is_valid_catalog(self, catalog):
         """Valida que un archivo `data.json` cumpla con el schema definido.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -247,13 +100,13 @@ class DataJson(object):
         definida en el schema.
 
         Args:
-            datajson_path (str): Path al archivo data.json a ser validado.
+            catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
 
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = read_catalog(datajson_path)
-        res = self.validator.is_valid(datajson)
+        catalog = readers.read_catalog(catalog)
+        res = self.validator.is_valid(catalog)
         return res
 
     @staticmethod
@@ -293,7 +146,7 @@ class DataJson(object):
 
         return new_response
 
-    def validate_catalog(self, datajson_path):
+    def validate_catalog(self, catalog):
         """Analiza un data.json registrando los errores que encuentra.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -301,7 +154,7 @@ class DataJson(object):
         definida en el schema.
 
         Args:
-            datajson_path (str): Path al archivo data.json a ser validado.
+            catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
 
         Returns:
             dict: Diccionario resumen de los errores encontrados::
@@ -333,7 +186,7 @@ class DataJson(object):
             "message", "validator", "validator_value", "error_code".
 
         """
-        datajson = read_catalog(datajson_path)
+        catalog = readers.read_catalog(catalog)
 
         # La respuesta por default se devuelve si no hay errores
         default_response = {
@@ -341,7 +194,7 @@ class DataJson(object):
             "error": {
                 "catalog": {
                     "status": "OK",
-                    "title": datajson.get("title"),
+                    "title": catalog.get("title"),
                     "errors": []
                 },
                 # "dataset" contiene lista de rtas default si el catálogo
@@ -352,14 +205,14 @@ class DataJson(object):
                         "status": "OK",
                         "title": dataset.get("title"),
                         "errors": []
-                    } for dataset in datajson["dataset"]
-                ] if ("dataset" in datajson and
-                      isinstance(datajson["dataset"], list)) else None
+                    } for dataset in catalog["dataset"]
+                ] if ("dataset" in catalog and
+                      isinstance(catalog["dataset"], list)) else None
             }
         }
 
         # Genero la lista de errores en la instancia a validar
-        errors_iterator = self.validator.iter_errors(datajson)
+        errors_iterator = self.validator.iter_errors(catalog)
 
         final_response = default_response.copy()
         for error in errors_iterator:
@@ -380,7 +233,7 @@ class DataJson(object):
             dict: Diccionario con los campos a nivel dataset que requiere
             dataset_report().
         """
-        publisher_name = cls._traverse_dict(dataset, ["publisher", "name"])
+        publisher_name = helpers.traverse_dict(dataset, ["publisher", "name"])
 
         super_themes = None
         if isinstance(dataset.get("superTheme"), list):
@@ -498,7 +351,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         """
 
         url = catalog if isinstance(catalog, (str, unicode)) else None
-        catalog = read_catalog(catalog)
+        catalog = readers.read_catalog(catalog)
 
         validation = self.validate_catalog(catalog)
         catalog_validation = validation["error"]["catalog"]
@@ -555,12 +408,13 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             full_report.extend(report)
 
         if export_path:
-            self._write(table=full_report, path=export_path)
+            writers.write_table(table=full_report, path=export_path)
         else:
             return full_report
 
     def generate_harvester_config(self, catalogs=None, harvest='valid',
-                                  report=None, export_path=None):
+                                  report=None, frequency='R/P1D',
+                                  export_path=None):
         """Genera un archivo de configuración del harvester a partir de un
         reporte, o de un conjunto de catálogos y un criterio de cosecha
         (`harvest`).
@@ -575,6 +429,11 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 generate_datasets_report() como lista de diccionarios o archivo
                 en formato XLSX o CSV. Sólo se usa cuando `harvest=='report'`,
                 en cuyo caso `catalogs` se ignora.
+            frequency (str): Frecuencia de búsqueda de actualizaciones en los
+                datasets a cosechar. Todo intervalo de frecuencia válido según
+                ISO 8601 es válido. Es 'R/P1D' (diariamiente) por omisión, y
+                si se pasa`None`, se conservará el valor de original de cada
+                dataset, `dataset["accrualPeriodicity"]`.
             export_path (str): Path donde exportar el reporte generado (en
                 formato XLSX o CSV). Si se especifica, el método no devolverá
                 nada.
@@ -592,7 +451,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 raise ValueError("""
 Usted eligio 'report' como criterio de harvest, pero no proveyo un valor para
 el argumento 'report'. Por favor, intentelo nuevamente.""")
-            datasets_report = self._read(report)
+            datasets_report = readers.read_table(report)
         elif harvest in ['valid', 'none', 'all']:
             # catalogs no puede faltar para estos criterios
             assert isinstance(catalogs, (str, unicode, dict, list))
@@ -614,8 +473,22 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             for dataset in datasets_report if bool(int(dataset["harvest"]))
         ]
 
+        if frequency:
+            valid_patterns = [
+                "^R/P\\d+(\\.\\d+)?[Y|M|W|D]$",
+                "^R/PT\\d+(\\.\\d+)?[H|M|S]$"
+            ]
+
+            if any([re.match(pat, frequency) for pat in valid_patterns]):
+                for dataset in harvester_config:
+                    dataset["dataset_accrualPeriodicity"] = frequency
+            else:
+                warnings.warn("""
+{} no es una frecuencia de cosecha valida. Se conservara la frecuencia de
+actualizacion original de cada dataset.""".format(frequency))
+
         if export_path:
-            self._write(harvester_config, export_path)
+            writers.write_table(harvester_config, export_path)
         else:
             return harvester_config
 
@@ -646,7 +519,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
 
-        harvestable_catalogs = [read_catalog(c) for c in catalogs]
+        harvestable_catalogs = [readers.read_catalog(c) for c in catalogs]
         catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
                          else None for catalog in catalogs]
 
@@ -688,17 +561,10 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             # Creo un JSON por catálogo
             for idx, catalog in enumerate(harvestable_catalogs):
                 filename = os.path.join(export_path, "catalog_{}".format(idx))
-                file_str = json.dumps(catalog, ensure_ascii=False, indent=4,
-                                      separators=(",", ": "), encoding="utf-8")
-                with io.open(filename, 'w', encoding="utf-8") as target:
-                    target.write(file_str)
+                writers.write_json(catalog, filename)
         elif export_path:
             # Creo un único JSON con todos los catálogos
-            file_str = json.dumps(harvestable_catalogs, ensure_ascii=False,
-                                  indent=4, separators=(",", ": "),
-                                  encoding="utf-8")
-            with io.open(export_path, 'w', encoding="utf-8") as target:
-                target.write(file_str)
+            writers.write_json(harvestable_catalogs, export_path)
         else:
             return harvestable_catalogs
 
@@ -725,7 +591,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             list: Contiene tantos dicts como datasets estén presentes en
             `catalogs`, con los datos antes mencionados.
         """
-        catalog = read_catalog(catalog)
+        catalog = readers.read_catalog(catalog)
 
         # Trato de leer todos los datasets bien formados de la lista
         # catalog["dataset"], si existe.
@@ -739,6 +605,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         validation = self.validate_catalog(catalog)["error"]["dataset"]
 
         def info_dataset(index, dataset):
+            """Recolecta información básica de un dataset."""
             info = OrderedDict()
             info["indice"] = index
             info["titulo"] = dataset.get("title")
@@ -751,7 +618,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         summary = [info_dataset(i, ds) for i, ds in enumerate(datasets)]
         if export_path:
-            self._write(summary, export_path)
+            writers.write_table(summary, export_path)
         else:
             return summary
 
@@ -776,7 +643,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         Returns:
             str: Texto de la descripción generada.
         """
-        catalog = read_catalog(catalog)
+        catalog = readers.read_catalog(catalog)
         validation = self.validate_catalog(catalog)
 
         readme_template = """
@@ -804,9 +671,9 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
 
         content = {
             "title": catalog.get("title"),
-            "publisher_name": self._traverse_dict(
+            "publisher_name": helpers.traverse_dict(
                 catalog, ["publisher", "name"]),
-            "publisher_mbox": self._traverse_dict(
+            "publisher_mbox": helpers.traverse_dict(
                 catalog, ["publisher", "mbox"]),
             "description": catalog.get("description"),
             "global_status": validation["status"],
@@ -823,120 +690,6 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
                 target.write(catalog_readme)
         else:
             return catalog_readme
-
-    @staticmethod
-    def _is_list_of_matching_dicts(list_of_dicts):
-        """Comprueba que una lista esté compuesta únicamente por diccionarios,
-        que comparten exactamente las mismas claves."""
-        elements = (isinstance(d, dict) and d.keys() == list_of_dicts[0].keys()
-                    for d in list_of_dicts)
-        return all(elements)
-
-    @classmethod
-    def _read(cls, path):
-        """Lee un archivo tabular (CSV o XLSX) a una lista de diccionarios.
-
-        La extensión del archivo debe ser ".csv" o ".xlsx". En función de
-        ella se decidirá el método a usar para leerlo.
-
-        Si recibe una lista, comprueba que todos sus diccionarios tengan las
-        mismas claves y de ser así, la devuelve intacta. Levanta una Excepción
-        en caso contrario.
-
-        Args:
-            path(str o list): Como 'str', path a un archivo CSV o XLSX.
-
-        Returns:
-            list: Lista de diccionarios con claves idénticas representando el
-            archivo original.
-        """
-        assert isinstance(path, (str, unicode, list)), """
-{} no es un `path` valido""".format(path)
-
-        # Si `path` es una lista, devolverla intacta si tiene formato tabular.
-        # Si no, levantar una excepción.
-        if isinstance(path, list):
-            if cls._is_list_of_matching_dicts(path):
-                return path
-            else:
-                raise ValueError("""
-La lista ingresada no esta formada por diccionarios con las mismas claves.""")
-
-        # Deduzco el formato de archivo de `path` y redirijo según corresponda.
-        suffix = path.split(".")[-1]
-        if suffix == "csv":
-            return cls._read_csv(path)
-        elif suffix == "xlsx":
-            return cls._read_xlsx(path)
-        else:
-            raise ValueError("""
-{} no es un sufijo reconocido. Pruebe con .csv o .xlsx""".format(suffix))
-
-    @staticmethod
-    def _read_csv(path):
-        with open(path) as csvfile:
-            reader = csv.DictReader(csvfile)
-            table = list(reader)
-        return table
-
-    @staticmethod
-    def _read_xlsx(path):
-        workbook = pyxl.load_workbook(path)
-        worksheet = workbook.active
-        table = xlsx_to_json.sheet_to_table(worksheet)
-
-        return table
-
-    @classmethod
-    def _write(cls, table, path):
-        """ Exporta una tabla en el formato deseado (CSV o XLSX).
-
-        La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
-        ella se decidirá qué método usar para escribirlo.
-
-        Args:
-            table (list of dicts): Tabla a ser exportada.
-            path (str): Path al archivo CSV o XLSX de exportación.
-        """
-        assert isinstance(path, (str, unicode)), "`path` debe ser un string"
-        assert isinstance(table, list), "`table` debe ser una lista de dicts"
-
-        # Sólo sabe escribir listas de diccionarios con información tabular
-        if not cls._is_list_of_matching_dicts(table):
-            raise ValueError("""
-La lista ingresada no esta formada por diccionarios con las mismas claves.""")
-
-        # Deduzco el formato de archivo de `path` y redirijo según corresponda.
-        suffix = path.split(".")[-1]
-        if suffix == "csv":
-            return cls._write_csv(table, path)
-        elif suffix == "xlsx":
-            return cls._write_xlsx(table, path)
-        else:
-            raise ValueError("""
-{} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
-
-    @staticmethod
-    def _write_csv(table, path):
-        headers = table[0].keys()
-
-        with open(path, 'w') as target_file:
-            writer = csv.DictWriter(csvfile=target_file, fieldnames=headers,
-                                    lineterminator="\n", encoding="utf-8")
-            writer.writeheader()
-            for row in table:
-                writer.writerow(row)
-
-    @staticmethod
-    def _write_xlsx(table, path):
-        headers = table[0].keys()
-        workbook = pyxl.Workbook()
-        worksheet = workbook.active
-        worksheet.append(headers)
-        for row in table:
-            worksheet.append(row.values())
-
-        workbook.save(path)
 
     @classmethod
     def _extract_datasets_to_harvest(cls, report):
@@ -959,7 +712,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
                                               len(x) == 2 for x in report])):
             return report
 
-        table = cls._read(report)
+        table = readers.read_table(report)
         table_keys = table[0].keys()
         expected_keys = ["catalog_metadata_url", "dataset_title",
                          "dataset_accrualPeriodicity"]

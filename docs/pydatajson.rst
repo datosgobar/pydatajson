@@ -4,18 +4,34 @@ pydatajson package
 Submodules
 ----------
 
-pydatajson.pydatajson module
-----------------------------
+pydatajson.core module
+----------------------
 
-.. automodule:: pydatajson.pydatajson
+.. automodule:: pydatajson.core
     :members:
     :undoc-members:
     :show-inheritance:
 
-pydatajson.xlsx_to_json module
-------------------------------
+pydatajson.helpers module
+-------------------------
 
-.. automodule:: pydatajson.xlsx_to_json
+.. automodule:: pydatajson.helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pydatajson.readers module
+-------------------------
+
+.. automodule:: pydatajson.readers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pydatajson.writers module
+-------------------------
+
+.. automodule:: pydatajson.writers
     :members:
     :undoc-members:
     :show-inheritance:
