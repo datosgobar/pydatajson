@@ -376,7 +376,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
 def read_csv_table(path):
     """Lee un CSV a una lista de diccionarios."""
-    with io.open(path, encoding='utf-8') as csvfile:
+    with open(path) as csvfile:
         reader = csv.DictReader(csvfile)
         table = list(reader)
     return table
