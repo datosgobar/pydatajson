@@ -51,9 +51,9 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 def _write_csv_table(table, path):
     headers = table[0].keys()
 
-    with io.open(path, 'w', encoding='utf-8') as target_file:
+    with open(path, 'w') as target_file:
         writer = csv.DictWriter(csvfile=target_file, fieldnames=headers,
-                                lineterminator="\n")
+                                lineterminator="\n", encoding='utf-8')
         writer.writeheader()
         for row in table:
             writer.writerow(row)
