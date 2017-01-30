@@ -211,21 +211,21 @@ Hay más de una distribución de título {} en el dataset con identificador {}:
     return dataset_index, distribution_index
 
 
-def read_local_xlsx_catalog(filename):
+def read_local_xlsx_catalog(xlsx_path):
     """Genera un diccionario de metadatos de catálogo a partir de un XLSX bien
     formado.
 
     Args:
-        filename (str): Path a un archivo XLSX "template" para describir la
+        xlsx_path (str): Path a un archivo XLSX "template" para describir la
             metadata de un catálogo.
 
     Returns:
         dict: Diccionario con los metadatos de un catálogo.
     """
-    assert filename.endswith(".xlsx"), """
+    assert xlsx_path.endswith(".xlsx"), """
 El archivo a leer debe tener extensión XLSX."""
 
-    workbook = pyxl.load_workbook(filename)
+    workbook = pyxl.load_workbook(xlsx_path)
 
     catalogs = helpers.sheet_to_table(workbook["Catalog"])
     # Debe haber exactamente un catálogo en la hoja 'Catalog'

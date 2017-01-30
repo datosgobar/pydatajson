@@ -92,7 +92,7 @@ class DataJson(object):
 
         return validator
 
-    def is_valid_catalog(self, datajson_path):
+    def is_valid_catalog(self, catalog):
         """Valida que un archivo `data.json` cumpla con el schema definido.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -100,13 +100,13 @@ class DataJson(object):
         definida en el schema.
 
         Args:
-            datajson_path (str): Path al archivo data.json a ser validado.
+            catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
 
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        datajson = readers.read_catalog(datajson_path)
-        res = self.validator.is_valid(datajson)
+        catalog = readers.read_catalog(catalog)
+        res = self.validator.is_valid(catalog)
         return res
 
     @staticmethod
@@ -146,7 +146,7 @@ class DataJson(object):
 
         return new_response
 
-    def validate_catalog(self, datajson_path):
+    def validate_catalog(self, catalog):
         """Analiza un data.json registrando los errores que encuentra.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -154,7 +154,7 @@ class DataJson(object):
         definida en el schema.
 
         Args:
-            datajson_path (str): Path al archivo data.json a ser validado.
+            catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
 
         Returns:
             dict: Diccionario resumen de los errores encontrados::
@@ -186,7 +186,7 @@ class DataJson(object):
             "message", "validator", "validator_value", "error_code".
 
         """
-        datajson = readers.read_catalog(datajson_path)
+        catalog = readers.read_catalog(catalog)
 
         # La respuesta por default se devuelve si no hay errores
         default_response = {
@@ -194,7 +194,7 @@ class DataJson(object):
             "error": {
                 "catalog": {
                     "status": "OK",
-                    "title": datajson.get("title"),
+                    "title": catalog.get("title"),
                     "errors": []
                 },
                 # "dataset" contiene lista de rtas default si el catálogo
@@ -205,14 +205,14 @@ class DataJson(object):
                         "status": "OK",
                         "title": dataset.get("title"),
                         "errors": []
-                    } for dataset in datajson["dataset"]
-                ] if ("dataset" in datajson and
-                      isinstance(datajson["dataset"], list)) else None
+                    } for dataset in catalog["dataset"]
+                ] if ("dataset" in catalog and
+                      isinstance(catalog["dataset"], list)) else None
             }
         }
 
         # Genero la lista de errores en la instancia a validar
-        errors_iterator = self.validator.iter_errors(datajson)
+        errors_iterator = self.validator.iter_errors(catalog)
 
         final_response = default_response.copy()
         for error in errors_iterator:

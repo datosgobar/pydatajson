@@ -70,14 +70,14 @@ def _write_xlsx_table(table, path):
     workbook.save(path)
 
 
-def write_json(obj, target_file):
+def write_json(obj, path):
     """Escribo un objeto a un archivo JSON con codificación UTF-8."""
     obj_str = json.dumps(obj, indent=4, separators=(",", ": "),
                          ensure_ascii=False)
-    with io.open(target_file, "w", encoding='utf-8') as target:
+    with io.open(path, "w", encoding='utf-8') as target:
         target.write(obj_str)
 
 
-def write_json_catalog(catalog, target_file):
+def write_json_catalog(catalog, path):
     """Función de compatibilidad con releases anteriores."""
-    write_json(catalog, target_file)
+    write_json(catalog, path)
