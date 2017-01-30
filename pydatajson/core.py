@@ -648,9 +648,9 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
 
         content = {
             "title": catalog.get("title"),
-            "publisher_name": self._traverse_dict(
+            "publisher_name": helpers.traverse_dict(
                 catalog, ["publisher", "name"]),
-            "publisher_mbox": self._traverse_dict(
+            "publisher_mbox": helpers.traverse_dict(
                 catalog, ["publisher", "mbox"]),
             "description": catalog.get("description"),
             "global_status": validation["status"],
