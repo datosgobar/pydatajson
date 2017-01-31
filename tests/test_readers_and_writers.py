@@ -12,6 +12,7 @@ import unittest
 import json
 import nose
 import vcr
+import mock
 from collections import OrderedDict
 import filecmp
 from .context import pydatajson
@@ -98,6 +99,13 @@ class ReadersAndWritersTestCase(unittest.TestCase):
 
         self.assertListEqual(actual_table, expected_table)
 
+    @nose.tools.raises(ValueError)
+    def test_read_table_from_invalid_format(self):
+        """Si se quiere leer un formato desconocido (no XLSX ni CSV),
+        read_table levanta un Assertion Error."""
+        pydatajson.readers.read_table(
+            os.path.join(self.SAMPLES_DIR, "full_data.json"))
+
     def test_write_table_to_csv(self):
         expected_filename = os.path.join(self.RESULTS_DIR, "write_table.csv")
         actual_filename = os.path.join(self.TEMP_DIR, "write_table.csv")
@@ -124,6 +132,13 @@ revíselo manualmente""".format(actual_filename)
         self.assertTrue(xl_methods.compare_cells(actual_wb, expected_wb))
 
         os.remove(actual_filename)
+
+    @nose.tools.raises(ValueError)
+    def test_write_table_to_invalid_format(self):
+        """Si se quiere escribir un formato desconocido (no XLSX ni CSV),
+        write_table levanta un Assertion Error."""
+        pydatajson.writers.write_table(
+            self.CSV_TABLE, os.path.join(self.SAMPLES_DIR, "full_data.json"))
 
     def test_write_read_csv_loop(self):
         """Escribir y leer un CSV es una operacion idempotente."""
@@ -157,16 +172,43 @@ revíselo manualmente""".format(temp_filename)
 
         os.remove(temp_filename)
 
+    # TESTS DE READ_CATALOG
+
+    def test_read_catalog_passes_dictionaries(self):
+        """read_catalog "no toca" el input si recibe un diccionario."""
+        a_dict = {"a": 1, "b": 2}
+        self.assertEqual(a_dict, pydatajson.readers.read_catalog(a_dict))
+
     def test_read_local_xlsx_catalog(self):
-        workbook_path = os.path.join(self.SAMPLES_DIR,
-                                     "catalogo_justicia.xlsx")
-        actual_dict = pydatajson.readers.read_local_xlsx_catalog(workbook_path)
+        """read_catalog puede leer XLSX locales."""
+        expected_catalog = pydatajson.readers.read_catalog(
+            os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json"))
+        actual_catalog = pydatajson.readers.read_catalog(
+            os.path.join(self.SAMPLES_DIR, "catalogo_justicia.xlsx"))
 
-        result_path = os.path.join(self.RESULTS_DIR, "catalogo_justicia.json")
-        with open(result_path) as result_file:
-            expected_dict = json.load(result_file, encoding='utf-8')
+        self.assertDictEqual(actual_catalog, expected_catalog)
 
-        self.assertDictEqual(actual_dict, expected_dict)
+    @my_vcr.use_cassette()
+    def test_read_remote_xlsx_catalog(self):
+        """read_catalog puede leer XLSX remotos."""
+        catalog_url = "".join([
+            "https://github.com/datosgobar/pydatajson/raw/master/",
+            "tests/samples/catalogo_justicia.xlsx"])
+
+        expected_catalog = pydatajson.readers.read_catalog(
+            os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json"))
+        actual_catalog = pydatajson.readers.read_catalog(catalog_url)
+
+        self.assertDictEqual(actual_catalog, expected_catalog)
+
+    @mock.patch('pydatajson.writers.write_json')
+    def test_write_json_catalog_is_write_json(self, mock_write_json):
+        obj = [1, 2, 3]
+        path = os.path.join(self.TEMP_DIR, "test.json")
+
+        pydatajson.writers.write_json_catalog(obj, path)
+
+        pydatajson.writers.write_json.assert_called_once_with(obj, path)
 
 
 if __name__ == '__main__':
