@@ -72,41 +72,79 @@ class HelpersTestCase(unittest.TestCase):
 
         self.assertListEqual(actual_list, expected_list)
 
+    SAMPLE_DICT = pydatajson.readers.read_catalog(
+        os.path.join(SAMPLES_DIR, "full_data.json"))
+
     def test_traverse_dict_correct_keys(self):
         """traverse_dict devuelve un valor si toda clave buscada existe."""
-        pass
+        expected = "onc@modernizacion.gob.ar"
+        actual = pydatajson.helpers.traverse_dict(
+            self.SAMPLE_DICT, ["dataset", 0, "publisher", "mbox"])
+
+        self.assertEqual(actual, expected)
 
     def test_traverse_dict_index_out_of_range(self):
         """traverse_dict devuelve el valor por omisión si un índice está fuera
         del rango de su lista."""
-        pass
+        # Usando el valor de retorno por omisión, 'None'
+        actual = pydatajson.helpers.traverse_dict(
+            self.SAMPLE_DICT, ["dataset", 12, "publisher", "mbox"])
+        self.assertIsNone(actual)
+
+        # Usando un valor por omisión distinto.
+        expected = "MISSING"
+        actual = pydatajson.helpers.traverse_dict(
+            self.SAMPLE_DICT, ["dataset", 12, "publisher", "mbox"], expected)
+
+        self.assertEqual(actual, expected)
 
     def test_traverse_dict_missing_key(self):
         """traverse_dict devuelve el valor por omisión si una clave no existe
         en un diccionario."""
-        pass
+        actual = pydatajson.helpers.traverse_dict(
+            self.SAMPLE_DICT, ["dataset", 12, "owner", "mbox"])
+        self.assertIsNone(actual)
 
     def test_traverse_dict_string_index_for_list(self):
         """traverse_dict devuelve el valor por omisión si se pasa un string
         como índice de una lista."""
-        pass
+        actual = pydatajson.helpers.traverse_dict(
+            self.SAMPLE_DICT, ["dataset", "0", "owner", "mbox"])
+        self.assertIsNone(actual)
 
-    def test_is_list_of_matching_dicts_bad_input(self):
-        """is_list_of_matching_dicts levanta errores si el input no es una
-        lista compuesta únicamente de diccionarios."""
-        # input no lista
-        # lista con elemns no dict
-        pass
+    @nose.tools.raises(AssertionError)
+    def test_is_list_of_matching_dicts_with_not_list(self):
+        """is_list_of_matching_dicts levanta error si el input no es una
+        lista."""
+        pydatajson.helpers.is_list_of_matching_dicts({})
+
+    @nose.tools.raises(AssertionError)
+    def test_is_list_of_matching_dicts_with_list_of_not_dicts(self):
+        """is_list_of_matching_dicts levanta error si el input es una
+        lista pero alguno de sus elementos no es un diccionario."""
+        pydatajson.helpers.is_list_of_matching_dicts([{}, (), {}, {}])
 
     def test_is_list_of_matching_dicts_with_matched_dicts(self):
         """is_list_of_matching_dicts devuelve True si todos los elementos del
         input tienen las mismas claves."""
-        pass
+        result = pydatajson.helpers.is_list_of_matching_dicts([
+            {"a": 1, "b": 2},
+            {"a": 1, "b": 2},
+            {"a": 1, "b": 2}
+        ])
+
+        self.assertTrue(result)
 
     def test_is_list_of_matching_dicts_with_mismatched_dicts(self):
         """is_list_of_matching_dicts devuelve False si no todos los elementos
         del input tienen las mismas claves."""
-        pass
+        result = pydatajson.helpers.is_list_of_matching_dicts([
+            {"a": 1, "b": 2},
+            {"a": 1},
+            {"a": 1, "b": 2}
+        ])
+
+        self.assertFalse(result)
 
 
 if __name__ == '__main__':
