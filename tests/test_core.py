@@ -465,6 +465,25 @@ class DataJsonTestCase(unittest.TestCase):
         # Compruebo que toda la lista sea la esperada
         self.assertListEqual(actual, expected)
 
+    @nose.tools.raises(ValueError)
+    def test_catalog_report_harvest_report_without_report_file(self):
+        """Si harvest='report' y report='None', se levanta un ValueError."""
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+        self.dj.catalog_report(catalog, harvest='report')
+
+    @nose.tools.raises(ValueError)
+    def test_catalog_report_invalid_harvest_value(self):
+        """Si harvest not in ["all", "none", "valid", "report"] se levanta un
+        ValueError."""
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+        self.dj.catalog_report(catalog, harvest='harvest')
+
+    def test_catalog_report_missing_datasets(self):
+        """Si la clave "dataset" de un catalogo no esta presente, el reporte es
+        una tabla vacía."""
+        catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
+        self.assertListEqual(self.dj.catalog_report(catalog), [])
+
     def test_generate_datasets_report(self):
         """generate_datasets_report() debe unir correctamente los resultados de
         catalog_report()"""
@@ -480,6 +499,28 @@ class DataJsonTestCase(unittest.TestCase):
             expected.extend(return_value)
 
         self.assertEqual(actual, expected)
+
+    def test_generate_datasets_report_single_catalog(self):
+        """Invocar generate_datasets_report con una str que sea la ruta a un
+        catálogo, o con una lista que sólo contenga esa misma string dan el
+        mismo resultado."""
+        catalog_str = os.path.join(self.SAMPLES_DIR, "full_data.json")
+        catalog_list = [catalog_str]
+
+        report_str = self.dj.generate_datasets_report(catalog_str)
+        report_list = self.dj.generate_datasets_report(catalog_list)
+
+        self.assertListEqual(report_str, report_list)
+
+    @mock.patch('pydatajson.writers.write_table')
+    def test_export_generate_datasets_report(self, write_table_mock):
+        """Si se pasa una ruta en `export_path`, generate_datasets_report llama
+        a writers.write_table."""
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        self.dj.generate_datasets_report(catalog, export_path="una ruta")
+
+        pydatajson.writers.write_table.assert_called_once()
 
     def test_generate_harvester_config_freq_none(self):
         """generate_harvester_config() debe filtrar el resultado de
