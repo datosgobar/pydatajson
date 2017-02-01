@@ -130,6 +130,26 @@ for catalog in catalogs:
 ```
 Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en el **Anexo I: Estructura de respuestas**.
 
+### Transformación de `data.xlsx` a `data.json`
+
+La lectura de un archivo de metadatos por parte de `pydatajson.readers.read_catalog` **no realiza ningún tipo de verificación sobre la validez de los metadatos leídos**. Por ende, si se quiere generar un archivo en formato JSON estándar únicamente en caso de que los metadatos de archivo XLSX sean válidos, se deberá realizar la validación por separado.
+
+El siguiente código, por ejemplo, escribe a disco un catálogos de metadatos en formato JSONO sí y sólo sí los metadatos del XLSX leído son válidos:
+```
+from pydatajson.readers import read_catalog
+from pydatajson.writers import write_json
+from pydatajson import DataJson
+
+dj = DataJson()
+catalogo_xlsx = "tests/samples/catalogo_justicia.xlsx"
+
+catalogo = read_catalog(catalogo_xlsx)
+if dj.is_valid_catalog(catalogo):
+    write_json(obj=catalogo, path="tests/temp/catalogo_justicia.json"
+else:
+    print "Se encontraron metadatos inválidos. Operación de escritura cancelada."
+```
+
 ### Generación de reportes
 
 El objetivo final de los métodos `generate_datasets_report`, `generate_harvester_config` y `generate_harvestable_catalogs`,  es proveer la configuración que Harvester necesita para cosechar datasets. Todos ellos devuelven una "tabla", que consiste en una lista de diccionarios que comparten las mismas claves (consultar ejemplos en el **Anexo I: Estructura de respuestas**). A continuación, se proveen algunos ejemplos de uso comunes:
@@ -210,13 +230,6 @@ dj.generate_harvestable_catalogs(
     export_path=output_dir
 )
 ```
-
-**NOTA:** El criterio `'harvest='valid'` considera válido un dataset sí y sólo sí:
-- su propia metadata es válida, y
-- la metadata "global" del catálogo al que pertenece es válida (título, descripción, datos del organismo editor, etcétera)
-
-Por lo tanto, **si un catálogo tiene un error en su título, ninguno de sus datasets será cosechado bajo el criterio harvest='valid'**, y la clave "dataset" será `[]`.
-
 
 ## Anexo I: Estructura de respuestas
 
