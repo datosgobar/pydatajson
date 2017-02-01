@@ -207,6 +207,13 @@ $ mkdir tests/temp
 $ nosetests
 ```
 
+## Recursos de interés
+
+* [Estándar ISO 8601 - Wikipedia](https://es.wikipedia.org/wiki/ISO_8601)
+* [JSON SChema - Sitio oficial del estándar](http://json-schema.org/)
+* [Documentación completa de `pydatajson` - Read the Docs](http://pydatajson.readthedocs.io)
+* [Guía para el uso y la publicación de metafatos](https://docs.google.com/document/d/1Z7XhpzOinvITN_9wqUbOYpceDzic3KTOHLtHcGCPAwo/edit)
+
 ## Créditos
 
 El validador de archivos `data.json` desarrollado es mayormente un envoltorio (*wrapper*) alrededor de la librería [`jsonschema`](https://github.com/Julian/jsonschema), que implementa el vocabulario definido por [JSONSchema.org](http://json-schema.org/) para anotar y validar archivos JSON.
