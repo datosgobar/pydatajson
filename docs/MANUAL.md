@@ -150,6 +150,8 @@ else:
     print "Se encontraron metadatos inválidos. Operación de escritura cancelada."
 ```
 
+Para más información y una versión más detallada de esta rutina en Jupyter Notebook, dirigirse [aquí](samples/caso-uso-1-pydatajson-xlsx-justicia-valido.ipynb) (metadatos válidos) y [aquí](samples/caso-uso-2-pydatajson-xlsx-justicia-no-valido.ipynb) (metadatos inválidos).
+
 ### Generación de reportes
 
 El objetivo final de los métodos `generate_datasets_report`, `generate_harvester_config` y `generate_harvestable_catalogs`,  es proveer la configuración que Harvester necesita para cosechar datasets. Todos ellos devuelven una "tabla", que consiste en una lista de diccionarios que comparten las mismas claves (consultar ejemplos en el **Anexo I: Estructura de respuestas**). A continuación, se proveen algunos ejemplos de uso comunes:
@@ -362,4 +364,78 @@ La *representación interna* de este reporte es una lista compuesta en su totali
         "dataset_accrualPeriodicity": "R/P1Y"
     }
 ]
+```
+
+### generate_datasets_summary()
+
+Se genera a partir de un único catálogo, y contiene, para cada uno de dus datasets:
+
+* **Índice**: El índice, identificador posicional del dataset dentro de la lista `catalog["dataset"]`.
+* **Título**: dataset["title"], si lo tiene (es un campo obligatorio).
+* **Identificador**: dataset["identifier"], si lo tiene (es un campo recomendado).
+* **Cantidad de Errores**: Cuántos errores de validación contiene el dataset, según figure en el detalle de `validate_catalog`
+* **Cantidad de Distribuiones**: El largo de la lista `dataset["distribution"]`
+
+A continuación, un fragmento del resultado de este método al aplicarlo sobre el Catálogo del Ministerio de Justicia:
+```
+[OrderedDict([(u'indice', 0),
+              (u'titulo', u'Base de datos legislativos Infoleg'),
+              (u'identificador', u'd9a963ea-8b1d-4ca3-9dd9-07a4773e8c23'),
+              (u'estado_metadatos', u'OK'),
+              (u'cant_errores', 0),
+              (u'cant_distribuciones', 3)]),
+ OrderedDict([(u'indice', 1),
+              (u'titulo', u'Centros de Acceso a la Justicia -CAJ-'),
+              (u'identificador', u'9775fcdf-99b9-47f6-87ae-6d46cfd15b40'),
+              (u'estado_metadatos', u'OK'),
+              (u'cant_errores', 0),
+              (u'cant_distribuciones', 1)]),
+ OrderedDict([(u'indice', 2),
+              (u'titulo',
+               u'Sistema de Consulta Nacional de Rebeld\xedas y Capturas - Co.Na.R.C.'),
+              (u'identificador', u'e042c362-ff39-476f-9328-056a9de753f0'),
+              (u'estado_metadatos', u'OK'),
+              (u'cant_errores', 0),
+              (u'cant_distribuciones', 1)]),
+
+( ... 13 datasets más ...)
+
+ OrderedDict([(u'indice', 15),
+              (u'titulo',
+               u'Registro, Sistematizaci\xf3n y Seguimiento de Hechos de Violencia Institucional'),
+              (u'identificador', u'c64b3899-65df-4024-afe8-bdf971f30dd8'),
+              (u'estado_metadatos', u'OK'),
+              (u'cant_errores', 0),
+              (u'cant_distribuciones', 1)])]
+```
+
+### generate_catalog_readme()
+
+Este reporte en texto plano se pretende como primera introducción somera al contenido de un catálogo, como figurarán en la [Librería de Catálogos](https://github.com/datosgobar/libreria-catalogos/). Incluye datos clave sobre el editor responsable del catálogo, junto con:
+- estado de los metadatos a nivel catálogo,
+- estado global de los metadatos, y
+- cantidad de datasets y distribuciones incluidas.
+
+A continuación, el resultado de este método al aplicarlo sobre el Catálogo del Ministerio de Justicia:
+```
+# Catálogo: Datos Justicia Argentina
+
+## Información General
+
+- **Autor**: Ministerio de Justicia y Derechos Humanos
+- **Correo Electrónico**: justiciaabierta@jus.gov.ar
+- **Nombre del catálogo**: Datos Justicia Argentina
+- **Descripción**:
+
+> Portal de Datos de Justicia de la República Argentina. El Portal publica datos del sistema de justicia de modo que pueda ser reutilizada para efectuar visualizaciones o desarrollo de aplicaciones. Esta herramienta se propone como un punto de encuentro entre las organizaciones de justicia y la ciudadanía.
+
+## Estado de los metadatos y cantidad de recursos
+
+Estado metadatos globales | Estado metadatos catálogo | # de Datasets | # de Distribuciones
+--------------------------|---------------------------|---------------|--------------------
+OK | OK | 16 | 56
+
+## Datasets incluidos
+
+Por favor, consulte el informe [`datasets.csv`](datasets.csv).
 ```
