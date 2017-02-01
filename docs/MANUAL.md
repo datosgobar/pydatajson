@@ -135,7 +135,7 @@ Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en 
 La lectura de un archivo de metadatos por parte de `pydatajson.readers.read_catalog` **no realiza ningún tipo de verificación sobre la validez de los metadatos leídos**. Por ende, si se quiere generar un archivo en formato JSON estándar únicamente en caso de que los metadatos de archivo XLSX sean válidos, se deberá realizar la validación por separado.
 
 El siguiente código, por ejemplo, escribe a disco un catálogos de metadatos en formato JSONO sí y sólo sí los metadatos del XLSX leído son válidos:
-```
+```python
 from pydatajson.readers import read_catalog
 from pydatajson.writers import write_json
 from pydatajson import DataJson
@@ -145,7 +145,7 @@ catalogo_xlsx = "tests/samples/catalogo_justicia.xlsx"
 
 catalogo = read_catalog(catalogo_xlsx)
 if dj.is_valid_catalog(catalogo):
-    write_json(obj=catalogo, path="tests/temp/catalogo_justicia.json"
+    write_json(obj=catalogo, path="tests/temp/catalogo_justicia.json")
 else:
     print "Se encontraron metadatos inválidos. Operación de escritura cancelada."
 ```
