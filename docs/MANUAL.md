@@ -8,6 +8,8 @@ En el marco de la política de Datos Abiertos, y el Decreto 117/2016, *"Plan de 
 
 Para facilitar y automatizar la validación, manipulación y transformación de archivos `data.json`, se creó el módulo `pydatajson`
 
+Para aquellos organismos que por distintos motivos no cuenten con un archivo de metadatos en formato estándar (JSON) describiendo el catálogo de datasets presente en su portal, se creó una [plantilla en formato XLSX](samples/plantilla_data.xlsx) que facilita la carga de metadatos, y cuyo contenido puede ser programáticamente convertido por este módulo al formato JSON que los estándares especifican.
+
 ## Glosario
 
 Un Portal de datos consiste en un *catálogo*, compuesto por *datasets*, que a su vez son cada uno un conjunto de *distribuciones*. De la "Guía para el uso y la publicación de metadatos".
@@ -18,25 +20,33 @@ Un Portal de datos consiste en un *catálogo*, compuesto por *datasets*, que a s
 
 * **Distribución o recurso**: Es la unidad mínima de un catálogo de datos. Se trata de los activos de datos que se publican allí y que pueden ser descargados y re-utilizados por un usuario como archivos. Los recursos pueden tener diversos formatos (.csv, .shp, etc.). Están acompañados de información contextual asociada (“metadata”) que describe el tipo de información que se publica, el proceso por el cual se obtiene, la descripción de los campos del recurso y cualquier información extra que facilite su interpretación, procesamiento y lectura.
 
-## Métodos
+* **data.json y data.xlsx**: Son las dos _representaciones externas_ de los metadatos de un catálogo que `pydatajson` comprende. Para poder ser analizados programáticamente, los metadatos de un catálogo deben estar representados en un formato estandarizado: el PAD establece el archivo `data.json` para tal fin, y para extender la cobertura del programa hemos incluido una plantilla XLSX que denominamos `data.xlsx`.
 
-El módulo cuenta actualmente con dos categorías principales de métodos:
+* **diccionario de metadatos**: Es la _representación interna_ que la librería tiene de los metadatos de un catálogo. Todas las rutinas de la librería `pydatajson` que manipulan catálogos, toman como entrada una _representación externa_ (`data.json` o `data.xlsx`) del catálogo, y lo primero que hacen es "leerla" y generar una _representación interna_ de la información que la rutina sea capaz de manipular. En Python, la clase `dict` ("diccionario") nos provee la flexibilidad justa para esta tarea.
 
-- **validación de metadata de catálogos** enteros, y
-- **generación de reportes sobre datasets** pertenecientes a cierto(s) catálogo(s).
+## Funcionalidades
 
-Estos métodos no tienen acceso *directo* a ningún catálogo, dataset ni distribución, sino únicamente a sus *representaciones*: archivos o partes de archivos en formato JSON que describen ciertas propiedades. Por conveniencia, en este documento se usan frases como "validar el dataset X", cuando una versión más precisa sería "validar la fracción del archivo `data.json` que consiste en una representación del dataset X en forma de diccionario". La diferencia es sutil, pero conviene mantenerla presente.
+La librería cuenta con funciones para tres objetivos principales:
+- **validación de metadatos de catálogos** y los datasets,
+- **generación de reportes** sobre el contenido y la validez de los metadatos de catálogos y datasets, y
+- **transformación de archivos de metadatos** al formato estándar (JSON).
+
+
+Como se menciona en el Glosario estos métodos no tienen acceso *directo* a ningún catálogo, dataset ni distribución, sino únicamente a sus *representaciones externas*: archivos o partes de archivos en formato JSON que describen ciertas propiedades. Por conveniencia, en este documento se usan frases como "validar el dataset X", cuando una versión más precisa sería "validar la fracción del archivo `data.json` que consiste en una representación del dataset X en forma de diccionario". La diferencia es sutil, pero conviene mantenerla presente.
+
+Todos los métodos públicos de la librería toman como primer parámetro `catalog`:
+- o bien un diccionario de metadatos (una _representación interna_),
+- o la ruta (local o remota) a un archivo de metadatos en formato legible (idealmente JSON, alternativamente XLSX).
+
+Cuando el parámetro esperado es `catalogs`, en plural, se le puede pasar o un único catálogo, o una lista de ellos.
+
+Todos los métodos comienzan por convertir `catalog(s)` en una **representación interna** unívoca: un diccionario cuyas claves son las definidas en el [Perfil de Metadatos](https://docs.google.com/spreadsheets/d/1PqlkhB1o0u2xKDYuex3UC-UIPubSjxKCSBxfG9QhQaA/edit?usp=sharing). La conversión se realiza a través de `pydatajson.readers.read_catalog(catalog)`: éste es la función que todos ellos invocan para obtener un diccionario de metadatos estándar.
 
 ### Métodos de validación de metadatos
 
-Los siguientes métodos toman una **representación externa de un catálogo**, que puede ser:
-- una `string` con el path a un archivo local o la URL de un archivo externo en formato JSON que contiene la metadata de un catálogo, o
-- un objeto `dict` que contiene la metadata de un catálogo.
-
 * **is_valid_catalog(catalog) -> bool**: Responde `True` únicamente si el catálogo no contiene ningún error.
-* **validate_catalog(catalog) -> dict**: Responde un diccionario con información detallada sobre la validez "global" de la metadata, junto con detalles sobre la validez de la metadata a nivel catálogo y cada uno de sus datasets. De haberlos, incluye una lista con información sobre los errores encontrados.
+* **validate_catalog(catalog) -> dict**: Responde un diccionario con información detallada sobre la validez "global" de los metadatos, junto con detalles sobre la validez de los metadatos a nivel catálogo y cada uno de sus datasets. De haberlos, incluye una lista con información sobre los errores encontrados.
 
-Tanto estos dos métodos, como cualquier otro que reciba un argumento `catalog(s)`, comienzan por convertir la representación externa de un catálogo a una **representación interna** unívoca: un diccionario cuyas claves son las definidas en el [Perfil de Metadatos](https://docs.google.com/spreadsheets/d/1PqlkhB1o0u2xKDYuex3UC-UIPubSjxKCSBxfG9QhQaA/edit?usp=sharing).
 
 ### Métodos de generación de reportes
 
@@ -56,6 +66,10 @@ Los tres métodos toman los mismos cuatro parámetros, que se interpretan de man
 - **report**: En caso de que se pretenda cosechar un conjunto específico de catálogos, esta variable debe recibir la representación externa (path a un archivo) o interna (lista de diccionarios) de un reporte que identifique los datasets a cosechar.
 - **export_path**: Esta variable controla el valor de retorno de los métodos de generación. Si es `None`, el método devolverá la representación interna del reporte generado. Si especifica el path a un archivo, el método devolverá `None`, pero escribirá a `export_path` la representación externa del reporte generado, en formato CSV o XLSX.
 
+Existen dos métodos, cuyos reportes se incluyen diariamente entre los archivos que disponibiliza el repositorio [`libreria-catalogos`](https://github.com/datosgobar/libreria-catalogos/):
+
+- **generate_datasets_summary()**: , y
+- **generate_catalog_readme()**
 ## Uso
 
 ### Setup
