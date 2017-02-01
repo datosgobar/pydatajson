@@ -7,7 +7,7 @@ pydatajson
 [![Stories in Ready](https://badge.waffle.io/datosgobar/pydatajson.png?label=ready&title=Ready)](https://waffle.io/datosgobar/pydatajson)
 [![Documentation Status](http://readthedocs.org/projects/pydatajson/badge/?version=latest)](http://pydatajson.readthedocs.io/en/latest/?badge=latest)
 
-Paquete en python con herramientas para manipular y validar metadatos de catálogos de datos en formato data.json.
+Paquete en python con herramientas para manipular y validar metadatos de catálogos de datos.
 
 * Licencia: MIT license
 * Documentación: [https://pydatajson.readthedocs.io](https://pydatajson.readthedocs.io)
@@ -44,9 +44,12 @@ $ pip install pydatajson
 $ pip install -e .
 ```
 
-## Uso
+## Usos
 
-La librería implementa el objeto `DataJson` con varios métodos para verificar la integridad de archivos de metadatos `data.json` (locales o remotos) y manipular su contenido.
+La librería cuenta con funciones para tres objetivos principales:
+- validación de metadatos de catálogos y los datasets,
+- generación de reportes sobre el contenido y la validez de los metadatos de catálogos y datasets, y
+- transformación de archivos de metadatos al formato estándar (JSON).
 
 ### Setup
 
@@ -58,14 +61,7 @@ from pydatajson import DataJson
 dj = DataJson()
 ```
 
-Si se desea utilizar un esquema alternativo, se debe especificar un **directorio absoluto** donde se almacenan los esquemas (`schema_dir`) y un nombre de esquema de validación (`schema_filename`), relativo al directorio  de los esquemas. Por ejemplo, si nuestro esquema alternativo se encuentra en `/home/datosgobar/metadatos-portal/esquema_de_validacion.json`, especificaremos:
-
-```python
-from pydatajson import DataJson
-
-dj = DataJson(schema_filename="esquema_de_validacion.json",
-              schema_dir="/home/datosgobar/metadatos-portal")
-```
+Si se desea utilizar un esquema alternativo, por favor, consulte la sección "Uso > Setup" del [manual oficial](docs/MANUAL.md), o la documentación oficial.
 
 ### Posibles validaciones de catálogos
 
