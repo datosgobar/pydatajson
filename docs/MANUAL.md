@@ -44,17 +44,25 @@ Todos los métodos comienzan por convertir `catalog(s)` en una **representación
 
 ### Métodos de validación de metadatos
 
-* **is_valid_catalog(catalog) -> bool**: Responde `True` únicamente si el catálogo no contiene ningún error.
-* **validate_catalog(catalog) -> dict**: Responde un diccionario con información detallada sobre la validez "global" de los metadatos, junto con detalles sobre la validez de los metadatos a nivel catálogo y cada uno de sus datasets. De haberlos, incluye una lista con información sobre los errores encontrados.
+* **pydatajson.DataJson.is_valid_catalog(catalog) -> bool**: Responde `True` únicamente si el catálogo no contiene ningún error.
+* **pydatajson.DataJson.validate_catalog(catalog) -> dict**: Responde un diccionario con información detallada sobre la validez "global" de los metadatos, junto con detalles sobre la validez de los metadatos a nivel catálogo y cada uno de sus datasets. De haberlos, incluye una lista con información sobre los errores encontrados.
 
+### Métodos de transformación de formatos de metadatos
+
+Transformar un archivo de metadatos de un formato a otro implica un primer paso de lectura de un formato, y un segundo paso de escritura a un formato distinto. Para respetar las disposiciones del PAD, sólo se pueden escribir catálogos en formato JSON.
+
+* **pydatajson.readers.read_catalog()**: Método que todas las funciones de DataJson llaman en primer lugar para interpretar cualquier tipo de representación externa de un catálogo.
+* **pydatajson.writers.write_json_catalog()**: Fina capa de abstracción sobre `pydatajson.writers.write_json`, que simplemente vuelca un objeto de Python a un archivo en formato JSON.
 
 ### Métodos de generación de reportes
 
+#### Para federación de datasets
+
 Los siguientes métodos toman una o varias representaciones externas de catálogos, y las procesan para generar reportes específicos sobre su contenido:
 
-- **generate_datasets_report()**: Devuelve un reporte con información clave sobre cada dataset incluido en un catálogo, junto con variables indicando la validez de sus metadatos.
-- **generate_harvester_config()**: Devuelve un reporte con los campos mínimos que requiere el Harvester para federar un conjunto de datasets.
-- **generate_harvestable_catalogs()**: Devuelve la lista de catálogos ingresada, filtrada de forma que cada uno incluya únicamente los datasets que se pretende que el Harvester federe.
+- **pydatajson.DataJson.generate_datasets_report()**: Devuelve un reporte con información clave sobre cada dataset incluido en un catálogo, junto con variables indicando la validez de sus metadatos.
+- **pydatajson.DataJson.generate_harvester_config()**: Devuelve un reporte con los campos mínimos que requiere el Harvester para federar un conjunto de datasets.
+- **pydatajson.DataJson.generate_harvestable_catalogs()**: Devuelve la lista de catálogos ingresada, filtrada de forma que cada uno incluya únicamente los datasets que se pretende que el Harvester federe.
 
 Los tres métodos toman los mismos cuatro parámetros, que se interpretan de manera muy similar:
 - **catalogs**: Representación externa de un catálogo, o una lista compuesta por varias de ellas.
@@ -66,10 +74,15 @@ Los tres métodos toman los mismos cuatro parámetros, que se interpretan de man
 - **report**: En caso de que se pretenda cosechar un conjunto específico de catálogos, esta variable debe recibir la representación externa (path a un archivo) o interna (lista de diccionarios) de un reporte que identifique los datasets a cosechar.
 - **export_path**: Esta variable controla el valor de retorno de los métodos de generación. Si es `None`, el método devolverá la representación interna del reporte generado. Si especifica el path a un archivo, el método devolverá `None`, pero escribirá a `export_path` la representación externa del reporte generado, en formato CSV o XLSX.
 
+**generate_harvester_config()** puede tomar un parámetro extra, `frequency`, que permitirá indicarle a la rutina de cosecha de con qué frecuencia debe intentar actualizar su versión de cierto dataset. Por omisión, lo hará diariamente.
+
+### Para presentación de catálogos y datasets
+
 Existen dos métodos, cuyos reportes se incluyen diariamente entre los archivos que disponibiliza el repositorio [`libreria-catalogos`](https://github.com/datosgobar/libreria-catalogos/):
 
-- **generate_datasets_summary()**: , y
-- **generate_catalog_readme()**
+- **pydatajson.DataJson.generate_datasets_summary()**: Devuelve un informe tabular (en formato CSV o XLSX) sobre los datasets de un catálogo, detallando cuántas distribuciones tiene y el estado de sus propios metadatos.
+- **pydatajson.DataJson.generate_catalog_readme()**: Genera un archivo de texto plano en formato Markdown para ser utilizado como "README", es decir, como texto introductorio al contenido del catálogo.
+
 ## Uso
 
 ### Setup
@@ -93,35 +106,33 @@ dj = DataJson(schema_filename="esquema_de_validacion.json",
 
 ### Validación de catálogos
 
-Los métodos de validación de catálogos procesan un catálogo por llamada. En el siguiente ejemplo, `catalogs` contiene las tres representaciones de un catálogo que DataJson entiende:
+Los métodos de validación de catálogos procesan un catálogo por llamada. En el siguiente ejemplo, `catalogs` contiene las cinco representaciones de un catálogo que DataJson entiende:
 ```python
 from pydatajson import DataJson
 
 dj = DataJson()
 catalogs = [
-    "tests/samples/full_data.json", # path local
-    "http://181.209.63.71/data.json", # URL remota
-    # El siguiente catálogo está incompleto 
+    "tests/samples/full_data.json", # archivo JSON local
+    "http://181.209.63.71/data.json", # archivo JSON remoto
+    "tests/samples/catalogo_justicia.xlsx", # archivo XLSX local
+    "https://raw.githubusercontent.com/datosgobar/pydatajson/master/tests/samples/catalogo_justicia.xlsx", # archivo XLSX remoto
     {
         "title": "Catálogo del Portal Nacional",
-        "dataset": []
+	"description" "Datasets abiertos para el ciudadano."
+        "dataset": [...],
+	(...)
     } # diccionario de Python
 ]
 
 for catalog in catalogs:
     validation_result = dj.is_valid_catalog(catalog)
     validation_report = dj.validate_catalog(catalog)
-    print """
-Catálogo: {}
-¿Es válida su metadata?: {}
-Validación completa: {}
-""".format(catalog, validation_result, validation_report)
 ```
 Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en el **Anexo I: Estructura de respuestas**.
 
 ### Generación de reportes
 
-El objetivo final de los métodos `generate_X()` es proveer la configuración que Harvester necesita para cosechar datasets. Todos ellos devuelven una "tabla", que consiste en una lista de diccionarios que comparten las mismas claves (consultar ejemplos en el **Anexo I: Estructura de respuestas**). A continuación, se proveen algunos ejemplos de uso comunes:
+El objetivo final de los métodos `generate_datasets_report`, `generate_harvester_config` y `generate_harvestable_catalogs`,  es proveer la configuración que Harvester necesita para cosechar datasets. Todos ellos devuelven una "tabla", que consiste en una lista de diccionarios que comparten las mismas claves (consultar ejemplos en el **Anexo I: Estructura de respuestas**). A continuación, se proveen algunos ejemplos de uso comunes:
 
 #### Crear un archivo de configuración eligiendo manualmente los datasets a federar
 
