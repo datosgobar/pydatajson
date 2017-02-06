@@ -5,12 +5,12 @@ pydatajson
 [![Build Status](https://travis-ci.org/datosgobar/pydatajson.svg?branch=master)](https://travis-ci.org/datosgobar/pydatajson)
 [![PyPI](https://badge.fury.io/py/pydatajson.svg)](http://badge.fury.io/py/pydatajson)
 [![Stories in Ready](https://badge.waffle.io/datosgobar/pydatajson.png?label=ready&title=Ready)](https://waffle.io/datosgobar/pydatajson)
-[![Documentation Status](http://readthedocs.org/projects/pydatajson/badge/?version=latest)](http://pydatajson.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](http://readthedocs.org/projects/pydatajson/badge/?version=stable)](http://pydatajson.readthedocs.io/es/stable/?badge=stable)
 
 Paquete en python con herramientas para manipular y validar metadatos de catálogos de datos.
 
 * Licencia: MIT license
-* Documentación: [https://pydatajson.readthedocs.io](https://pydatajson.readthedocs.io)
+* Documentación: [https://pydatajson.readthedocs.io/es/stable](https://pydatajson.readthedocs.io/es/stable)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
