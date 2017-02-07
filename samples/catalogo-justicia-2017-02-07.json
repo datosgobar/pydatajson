@@ -22,15 +22,14 @@
             "keyword": [
                 "acordadas",
                 "boletín oficial",
-                "decisiones",
-                "administrativas",
+                "decisiones administrativas",
                 "decretos",
                 "disposiciones",
                 "leyes",
                 "resoluciones"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-19T18:19:32.496552",
+            "modified": "2017-02-07T15:02:02.932346",
             "accrualPeriodicity": "R/P1M",
             "distribution": [
                 {
@@ -126,8 +125,8 @@
                     "title": "Base Infoleg de Normativa Nacional",
                     "issued": "2016-09-29T11:17:50.274309",
                     "format": "CSV",
-                    "modified": "2016-12-19T12:38:58.700747",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/8db246a2-48dd-4f2f-b08e-ab6293747882/download/baseinfolegnormativanacional.csv"
+                    "modified": "2017-02-06T16:34:31.148698",
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/8db246a2-48dd-4f2f-b08e-ab6293747882/download/base-infoleg-normativa-nacional.csv"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
@@ -182,8 +181,8 @@
                     "title": "Base Complementaria Infoleg de Normas Modificadas",
                     "issued": "2016-10-14T16:02:49.841535",
                     "format": "CSV",
-                    "modified": "2016-12-19T14:48:05.348064",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/d9fbf1d5-679e-4833-bcdc-3a8f58523d18/download/basecomplementariainfolegnormasmodificadas.csv"
+                    "modified": "2017-02-07T11:03:16.062729",
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/d9fbf1d5-679e-4833-bcdc-3a8f58523d18/download/base-complementaria-infoleg-normas-modificadas.csv"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
@@ -238,8 +237,8 @@
                     "title": "Base Complementaria Infoleg de Normas Modificatorias",
                     "issued": "2016-10-18T17:26:58.415087",
                     "format": "CSV",
-                    "modified": "2016-12-19T14:47:21.330355",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/f9170086-6538-44f1-8c7e-3e193c1fea7f/download/basecomplementariainfolegnormasmodificatorias.csv"
+                    "modified": "2017-02-07T12:01:59.925023",
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/f9170086-6538-44f1-8c7e-3e193c1fea7f/download/base-complementaria-infoleg-normas-modificatorias.csv"
                 }
             ],
             "identifier": "d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23"
@@ -273,7 +272,7 @@
                 "vulnerable"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-11-30T14:19:05.433974",
+            "modified": "2017-01-04T14:42:53.327243",
             "accrualPeriodicity": "R/P1M",
             "distribution": [
                 {
@@ -355,7 +354,7 @@
                 "rebeldías"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-21T12:08:10.905736",
+            "modified": "2017-02-07T15:15:29.858209",
             "accrualPeriodicity": "R/P1D",
             "distribution": [
                 {
@@ -412,11 +411,11 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Sistema de Consulta Nacional de Rebeldías y Capturas (base Co.Na.R.C.) vigentes al 21-12-2016",
+                    "description": "Sistema de Consulta Nacional de Rebeldías y Capturas (base Co.Na.R.C.) vigentes al 07-02-2017. Para optimizar los resultados de búsqueda ingresar por apellido y por documento.",
                     "title": "Sistema de Consulta Nacional de Rebeldías y Capturas",
                     "issued": "2016-10-06T13:36:46.495627",
                     "format": "CSV",
-                    "modified": "2016-12-21T09:04:05.877238",
+                    "modified": "2017-02-07T09:39:23.328620",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/e042c362-ff39-476f-9328-056a9de753f0/resource/a95d0e79-08c4-49b9-88b8-d569484bf1d7/download/rebeldias-y-capturas.csv"
                 }
             ],
@@ -522,7 +521,7 @@
                 "sociedades"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-07T16:01:29.898326",
+            "modified": "2017-02-03T17:43:43.247834",
             "accrualPeriodicity": "R/P1M",
             "distribution": [
                 {
@@ -783,7 +782,7 @@
                 "transferencias"
             ],
             "license": "Creative Commons Attribution",
-            "modified": "2016-12-05T18:13:17.429300",
+            "modified": "2017-02-01T14:28:43.491607",
             "accrualPeriodicity": "R/P1M",
             "distribution": [
                 {
@@ -792,7 +791,7 @@
                     "title": "Estadística de inscripciones iniciales de automotores y motovehículos",
                     "issued": "2016-10-05T16:22:51.223278",
                     "format": "CSV",
-                    "modified": "2016-12-05T15:00:51.294963",
+                    "modified": "2017-02-01T11:26:41.235283",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/de4560f4-8620-4cb5-a3a5-e3e5684c0e45/resource/2436ab65-44da-4f45-a59d-5e09136e1df2/download/estadistica-inscripciones-iniciales-autos-motos.csv"
                 }
             ],
@@ -942,7 +941,7 @@
                 "transferencias"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-01T20:11:25.275826",
+            "modified": "2017-02-01T14:55:25.781527",
             "accrualPeriodicity": "R/P1M",
             "distribution": [
                 {
@@ -951,7 +950,7 @@
                     "title": "Listado de Registros Seccionales de todo el país",
                     "issued": "2016-09-14T12:23:11.131935",
                     "format": "CSV",
-                    "modified": "2016-12-01T17:11:05.351900",
+                    "modified": "2017-02-01T11:54:02.995768",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/bbdac295-c88e-4e2d-8f74-a845a2e93a61/resource/54bd9fa1-a059-4411-b146-457791e882f8/download/listado-registros-seccionales.csv"
                 }
             ],
@@ -991,7 +990,7 @@
                 "órgano"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-07T20:43:07.256061",
+            "modified": "2017-02-06T17:52:08.748878",
             "accrualPeriodicity": "eventual",
             "distribution": [
                 {
@@ -1000,7 +999,7 @@
                     "title": "Magistrados de la Justicia Federal y de la Justicia Nacional",
                     "issued": "2016-10-14T13:45:28.954424",
                     "format": "CSV",
-                    "modified": "2016-12-07T17:38:50.689433",
+                    "modified": "2017-02-06T14:51:08.662745",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/3c8c1fea-c97b-4368-b31b-da244d66adb3/download/magistrados-justicia-federal-nacional.csv"
                 },
                 {
@@ -1009,7 +1008,7 @@
                     "title": "Designación de magistrados de la Justicia Federal y de la Justicia Nacional",
                     "issued": "2016-10-14T16:23:54.581290",
                     "format": "CSV",
-                    "modified": "2016-12-07T17:40:26.155069",
+                    "modified": "2017-02-06T14:50:11.594013",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/ac34ee63-7e86-4f15-b57b-c6a35f71ea6e/download/magistrados-justicia-federal-nacional-designaciones.csv"
                 },
                 {
@@ -1018,7 +1017,7 @@
                     "title": "Renuncia de magistrados de la Justicia Federal y de la Justicia Nacional",
                     "issued": "2016-10-14T16:24:29.971004",
                     "format": "CSV",
-                    "modified": "2016-12-07T17:41:49.776250",
+                    "modified": "2017-02-06T14:50:42.904249",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/551c8132-4aef-419a-8f7b-020bb613980b/download/magistrados-justicia-federal-nacional-renuncias.csv"
                 }
             ],
@@ -1186,7 +1185,7 @@
                 "prisión"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-07T15:53:26.926811",
+            "modified": "2017-01-23T18:42:43.288219",
             "accrualPeriodicity": "R/P1Y",
             "distribution": [
                 {
@@ -1195,7 +1194,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2015",
                     "issued": "2016-10-24T15:48:25.606071",
                     "format": "CSV",
-                    "modified": "2016-12-06T14:26:36.775736",
+                    "modified": "2017-01-23T13:39:16.073007",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/b2c3f47c-b78d-4967-98be-0ab81dd0b415/download/sneep-2015.csv"
                 },
                 {
@@ -1213,7 +1212,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2013",
                     "issued": "2016-07-14T14:49:44.071583",
                     "format": "CSV",
-                    "modified": "2016-12-06T15:17:18.345712",
+                    "modified": "2017-01-23T13:36:13.673762",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/f39839a0-cd4a-47a9-bb30-dba81ae61cae/download/sneep-2013.csv"
                 },
                 {
@@ -1222,7 +1221,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2012",
                     "issued": "2016-07-14T14:28:23.684877",
                     "format": "CSV",
-                    "modified": "2016-12-07T11:16:54.299344",
+                    "modified": "2017-01-23T13:32:48.346483",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/e289393f-4bfa-49af-8ba2-dbe64a9ba303/download/sneep-2012.csv"
                 },
                 {
@@ -1231,7 +1230,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2011",
                     "issued": "2016-07-14T14:14:43.125350",
                     "format": "CSV",
-                    "modified": "2016-12-06T15:06:55.029084",
+                    "modified": "2017-01-23T15:26:28.256549",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/0b5cf2e0-de16-4b71-b3c1-99aeb63d8165/download/sneep-2011.csv"
                 },
                 {
@@ -1240,7 +1239,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2010",
                     "issued": "2016-07-14T14:01:11.093059",
                     "format": "CSV",
-                    "modified": "2016-12-06T15:09:15.457540",
+                    "modified": "2017-01-23T12:43:43.907560",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/ed1061a5-3d28-4664-82a4-2406231cc0c8/download/sneep-2010.csv"
                 },
                 {
@@ -1249,7 +1248,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2009",
                     "issued": "2016-07-14T13:47:14.516686",
                     "format": "CSV",
-                    "modified": "2016-12-06T15:56:13.943542",
+                    "modified": "2017-01-23T15:24:03.467021",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/e8cc11d5-0c05-4958-a791-26005adc9562/download/sneep-2009.csv"
                 },
                 {
@@ -1258,7 +1257,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2008",
                     "issued": "2016-07-14T13:41:32.437436",
                     "format": "CSV",
-                    "modified": "2016-12-07T12:20:01.481411",
+                    "modified": "2017-01-23T12:09:20.239714",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/f627e52e-e55c-4d7f-bb0b-034a474479a9/download/sneep-2008.csv"
                 },
                 {
@@ -1267,7 +1266,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2007",
                     "issued": "2016-07-14T13:37:12.544681",
                     "format": "CSV",
-                    "modified": "2016-12-06T16:04:00.383514",
+                    "modified": "2017-01-23T12:08:18.507507",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/d47a67c0-63d7-411d-bd32-19957776f31f/download/sneep-2007.csv"
                 },
                 {
@@ -1285,7 +1284,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2005",
                     "issued": "2016-07-14T13:21:59.291459",
                     "format": "CSV",
-                    "modified": "2016-12-07T11:18:22.729648",
+                    "modified": "2017-01-23T10:54:22.786989",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/81209a1c-782e-4e65-b04c-2bcb39f9c316/download/sneep-2005.csv"
                 },
                 {
@@ -1294,7 +1293,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2004",
                     "issued": "2016-07-14T12:53:43.445809",
                     "format": "CSV",
-                    "modified": "2016-12-07T11:34:57.975814",
+                    "modified": "2017-01-23T10:43:27.767224",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/124e804b-98c1-4460-ae6a-c392eb7b21a5/download/sneep-2004.csv"
                 },
                 {
@@ -1303,7 +1302,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2003",
                     "issued": "2016-07-14T12:48:42.257399",
                     "format": "CSV",
-                    "modified": "2016-12-07T12:20:32.267502",
+                    "modified": "2017-01-23T10:24:48.560057",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/a1170dc3-2c57-4b80-bf7a-438cfc3beefd/download/sneep-2003.csv"
                 },
                 {
@@ -1312,7 +1311,7 @@
                     "title": "Sistema Nacional de Estadísticas sobre Ejecución de la Pena – SNEEP - 2002",
                     "issued": "2016-07-14T12:30:40.201469",
                     "format": "CSV",
-                    "modified": "2016-12-07T12:21:37.859378",
+                    "modified": "2017-01-23T10:22:14.295048",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/0c05bf5b-e547-42bf-8518-9a80a2ea1b45/download/sneep-2002.csv"
                 }
             ],
@@ -1345,7 +1344,7 @@
                 "portación"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-16T14:51:02.482044",
+            "modified": "2017-02-02T14:12:49.356159",
             "accrualPeriodicity": "R/P0.5M",
             "distribution": [
                 {
@@ -1354,7 +1353,7 @@
                     "title": "Solicitudes de Condición de Legítimo Usuario de Armas de Fuego",
                     "issued": "2016-10-18T13:04:43.515767",
                     "format": "CSV",
-                    "modified": "2016-12-16T11:47:01.707897",
+                    "modified": "2017-02-02T11:11:07.701743",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/0a0c3def-3d81-4850-854c-7af25831250b/resource/0ecec60a-0723-4232-a401-6565ebb282cf/download/solicitudes-de-condicion-de-legitimo-usuario-de-armas-de-fuego.csv"
                 }
             ],
@@ -1386,7 +1385,7 @@
                 "portación"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-12-16T14:50:45.413434",
+            "modified": "2017-02-02T14:13:24.854483",
             "accrualPeriodicity": "R/P0.5M",
             "distribution": [
                 {
@@ -1395,7 +1394,7 @@
                     "title": "Solicitudes de Autorización de Portación de Armas de Fuego",
                     "issued": "2016-10-05T12:41:06.725445",
                     "format": "CSV",
-                    "modified": "2016-12-16T11:48:39.776623",
+                    "modified": "2017-02-02T11:09:21.743196",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/35278d98-c274-4612-9d1d-72d0d0923368/resource/2e0a4e06-0d2e-4e78-861d-1105e558e493/download/solicitudes-de-autorizacion-de-portacion-de-armas-de-fuego.csv"
                 }
             ],
@@ -1427,7 +1426,7 @@
                 "violencia institucional"
             ],
             "license": "Open Data Commons Open Database License (ODbL)",
-            "modified": "2016-11-30T18:17:22.710496",
+            "modified": "2016-12-26T18:17:06.698774",
             "accrualPeriodicity": "R/P3M",
             "distribution": [
                 {
@@ -1436,11 +1435,99 @@
                     "title": "Seguimiento de hechos de violencia institucional",
                     "issued": "2016-09-30T10:34:17.459968",
                     "format": "CSV",
-                    "modified": "2016-09-30T16:02:40.545302",
+                    "modified": "2016-12-26T13:31:13.224335",
                     "downloadURL": "http://datos.jus.gob.ar/dataset/c64b3899-65df-4024-afe8-bdf971f30dd8/resource/56dbd545-f102-4fbd-be48-0edb9b1f846c/download/violencia-institucional.csv"
                 }
             ],
             "identifier": "c64b3899-65df-4024-afe8-bdf971f30dd8"
+        },
+        {
+            "issued": "2016-12-19T12:13:11.208126",
+            "superTheme": [
+                "JUST"
+            ],
+            "title": "Base SAIJ de Normativa Provincial",
+            "theme": [
+                "informacion-juridica"
+            ],
+            "description": "Base de documentos digitales normativos provinciales: leyes, decretos leyes, textos ordenados, códigos y Constituciones publicados en el Boletín Oficial de la Provincia correspondiente",
+            "contactPoint": {
+                "hasEmail": "datosabiertos@saij.gob.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica"
+            },
+            "landingPage": "http://datos.jus.gob.ar/dataset/base-saij-de-normativa-provincial",
+            "publisher": {
+                "mbox": "datosabiertos@saij.gob.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica"
+            },
+            "keyword": [
+                "boletín oficial",
+                "codigos provinciales",
+                "constituciones provinciales",
+                "decretos",
+                "leyes"
+            ],
+            "license": "Open Data Commons Open Database License (ODbL)",
+            "modified": "2017-02-06T16:41:25.105684",
+            "accrualPeriodicity": "R/P1M",
+            "distribution": [
+                {
+                    "accessURL": "http://datos.jus.gob.ar/dataset/base-saij-de-normativa-provincial/archivo/0ebc70cc-0e71-4158-ab75-9759339e4cbd",
+                    "description": "Base de documentos digitales normativos provinciales: leyes, decretos leyes, textos ordenados, códigos y Constituciones publicados en el Boletín Oficial de la Provincia correspondiente.",
+                    "title": "Base SAIJ de Normativa Provincial",
+                    "issued": "2016-12-19T12:13:11.208126",
+                    "format": "CSV",
+                    "modified": "2017-02-06T16:41:25.105684",
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d59c2d29-d561-4ad2-a032-cc82b40db2d3/resource/0ebc70cc-0e71-4158-ab75-9759339e4cbd/download/base-saij-normativa-provincial.csv"
+                }
+            ],
+            "identifier": "d59c2d29-d561-4ad2-a032-cc82b40db2d3"
+        },
+        {
+            "issued": "2016-11-24T12:42:33.865637",
+            "superTheme": [
+                "JUST"
+            ],
+            "title": "Tesauro SAIJ de Derecho Argentino",
+            "theme": [
+                "informacion-juridica"
+            ],
+            "description": "El Tesauro SAIJ es un sistema de organización del conocimiento jurídico, en forma de lista de términos controlados que representan conceptos. Se utiliza para hacer más eficiente para el usuario el acceso a la información contenida en un archivo o centro de documentación que administre material vinculado con el Derecho argentino.",
+            "contactPoint": {
+                "hasEmail": "datosabiertos@saij.gob.ar",
+                "fn": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica"
+            },
+            "landingPage": "http://datos.jus.gob.ar/dataset/tesauro-saij-de-derecho-argentino",
+            "publisher": {
+                "mbox": "datosabiertos@saij.gob.ar",
+                "name": "Ministerio de Justicia y Derechos Humanos. Secretaría de Planificación Estratégica. Dirección Nacional del Sistema Argentino de Información Jurídica"
+            },
+            "keyword": [
+                "acordadas",
+                "decisiones administrativas",
+                "decretos",
+                "disposiciones",
+                "inteligencia juridica",
+                "leyes",
+                "resoluciones",
+                "tesauro jurídico",
+                "vocabularios controlados"
+            ],
+            "license": "Open Data Commons Open Database License (ODbL)",
+            "modified": "2016-12-01T11:30:07.105775",
+            "accrualPeriodicity": "R/P1M",
+            "distribution": [
+                {
+                    "accessURL": "http://datos.jus.gob.ar/dataset/tesauro-saij-de-derecho-argentino/archivo/0a823ec3-4609-41b6-8af8-93afd23aaf9c",
+                    "description": "Tesauro SAIJ de Derecho Argentino",
+                    "title": "Tesauro SAIJ de Derecho Argentino",
+                    "issued": "2016-11-24T12:42:33.865637",
+                    "format": "RDF",
+                    "modified": "2016-12-01T11:30:07.105775",
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/e41e8224-f868-4688-9fae-94d320f8ee5e/resource/0a823ec3-4609-41b6-8af8-93afd23aaf9c/download/tesauro-saij.rdf"
+                }
+            ],
+            "identifier": "e41e8224-f868-4688-9fae-94d320f8ee5e"
         }
     ],
     "publisher": {
