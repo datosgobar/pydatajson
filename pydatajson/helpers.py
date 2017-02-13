@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Módulo principal de pydatajson
-
-Contiene la clase DataJson que reúne los métodos públicos para trabajar con
-archivos data.json.
-"""
+"""Métodos auxiliares"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
