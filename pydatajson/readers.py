@@ -20,6 +20,7 @@ import requests
 import unicodecsv as csv
 import openpyxl as pyxl
 from . import helpers
+from .ckan_reader import read_ckan_catalog
 
 
 def read_catalog(catalog):
