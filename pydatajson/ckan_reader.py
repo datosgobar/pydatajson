@@ -7,9 +7,26 @@ de CKAN v3.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
+import os.path
 import logging
-from ckanapi import RemoteCKAN
+import json
 from urlparse import urljoin
+from ckanapi import RemoteCKAN
+
+ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
+                       "accrualPeriodicity.json")) as frequencies:
+    FREQUENCIES = json.load(frequencies)
+
+with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
+                       "superThemeTaxonomy.json")) as super_themes:
+    SUPER_THEMES = json.load(super_themes)
+
+
+def try_stuff():
+    print(FREQUENCIES)
+    print(SUPER_THEMES)
+
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
