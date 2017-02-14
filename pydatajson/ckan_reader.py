@@ -163,7 +163,7 @@ se puede completar dataset['contactPoint']['%s'].""",
     }
 
     accrual = [extra["value"].lower() for extra in package["extras"] if
-               extra["key"].startswith("Frecuencia")]
+               extra["key"].lower().startswith("frecuencia")]
 
     if len(accrual) == 0:
         logging.info("""
