@@ -201,7 +201,6 @@ Se encontro mas de un valor de frecuencia de actualización en 'extras' para el
 Se encontró '%s' como frecuencia de actualización, pero no es mapeable a una
 'accrualPeriodicity' conocida. La clave no se pudo completar.""", accrual[0])
 
-
     if super_theme:
         dataset["superTheme"] = super_theme
 
