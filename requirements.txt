@@ -8,3 +8,5 @@ rfc3987
 unicodecsv
 # Para leer y escribir XLSXs
 openpyxl==2.4.1
+# Para consultar programáticamente la API de CKAN
+ckanapi==4.0
