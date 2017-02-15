@@ -4,6 +4,14 @@ pydatajson package
 Submodules
 ----------
 
+pydatajson.ckan_reader module
+-----------------------------
+
+.. automodule:: pydatajson.ckan_reader
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pydatajson.core module
 ----------------------
 
