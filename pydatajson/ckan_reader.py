@@ -22,14 +22,6 @@ with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
                        "superThemeTaxonomy.json")) as super_themes:
     SUPER_THEMES = json.load(super_themes)
 
-
-def try_stuff():
-    print(FREQUENCIES)
-    print(SUPER_THEMES)
-
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 logging.basicConfig(format='%(asctime)s [%(levelname)s]: %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
 
