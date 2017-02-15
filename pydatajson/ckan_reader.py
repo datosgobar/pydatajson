@@ -179,21 +179,28 @@ se puede completar dataset['contactPoint']['%s'].""",
         "anual": "R/P1Y"
     }
 
-    accrual = [extra["value"].lower() for extra in package["extras"] if
-               extra["key"].lower().startswith("frecuencia")]
+    if "extras" in package:
+        accrual = [extra["value"].lower() for extra in package["extras"] if
+                   extra["key"].lower().startswith("frecuencia")]
 
-    if len(accrual) == 0:
-        logging.info("""
+        if len(accrual) == 0:
+            logging.info("""
 No se encontraron valores de frecuencia de actualización en 'extras' para el
 'package' '%s'. No se puede completar dataset['accrualPeriodicity'].""",
-                     package['name'])
-    elif len(accrual) > 1:
-        logging.info("""
+                         package['name'])
+        elif len(accrual) > 1:
+            logging.info("""
 Se encontro mas de un valor de frecuencia de actualización en 'extras' para el
 'package' '%s'. No se puede completar dataset['accrualPeriodicity'].\n %s""",
-                     package['name'], accrual)
-    else:
-        dataset["accrualPeriodicity"] = interval_mapping[accrual[0]]
+                         package['name'], accrual)
+        else:
+            try:
+                dataset["accrualPeriodicity"] = interval_mapping[accrual[0]]
+            except KeyError:
+                logging.warn("""
+Se encontró '%s' como frecuencia de actualización, pero no es mapeable a una
+'accrualPeriodicity' conocida. La clave no se pudo completar.""", accrual[0])
+
 
     if super_theme:
         dataset["superTheme"] = super_theme
