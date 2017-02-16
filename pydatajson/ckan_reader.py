@@ -245,10 +245,6 @@ Se encontraron claves con nombres similares pero no idénticos a "Temática
 global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
 \n%s""", package['name'], almost_accrual)
 
-    if 'landingPage' not in dataset or dataset['landingPage'] == '':
-        url_path = ["dataset", dataset["identifier"]]
-        dataset['landingPage'] = urljoin(portal_url, "/".join(url_path))
-
     dataset["distribution"] = map_resources_to_distributions(resources,
                                                              portal_url)
     dataset["theme"] = [grp['name'] for grp in groups]
