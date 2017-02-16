@@ -28,14 +28,19 @@ logging.basicConfig(format='%(asctime)s [%(levelname)s]: %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
 
 
-def read_ckan_catalog(portal_url, super_theme=None):
+def read_ckan_catalog(portal_url):
+    """Convierte los metadatos de un portal disponibilizados por la Action API
+    v3 de CKAN al estándar data.json.
+
+    Args:
+        portal_url (str): URL de un portal de datos CKAN que soporte la API v3.
+
+    Returns:
+        dict: Representación interna de un catálogo para uso en las funciones
+        de esta librería.
+    """
     portal = RemoteCKAN(portal_url)
     catalog = {}
-
-    if super_theme is None:
-        logging.warn("""
-No se proveyó un valor para 'superTheme', que es una propiedad requerida de
-todos los datasets, y no se encuentra en la API de CKAN.""")
 
     try:
         status = portal.call_action('status_show')
@@ -50,7 +55,7 @@ todos los datasets, y no se encuentra en la API de CKAN.""")
 
         catalog = map_status_to_catalog(status)
         catalog["dataset"] = map_packages_to_datasets(
-            packages, portal_url, super_theme)
+            packages, portal_url)
         catalog["themeTaxonomy"] = map_groups_to_themes(groups)
     except:
         logging.error(
@@ -102,12 +107,15 @@ de 'status'.""")
     return catalog
 
 
-def map_packages_to_datasets(packages, portal_url, super_theme):
-    return [map_package_to_dataset(pkg, portal_url, super_theme)
+def map_packages_to_datasets(packages, portal_url):
+    """Mapea una lista de 'packages' de CKAN a 'datasets' de data.json."""
+    return [map_package_to_dataset(pkg, portal_url)
             for pkg in packages]
 
 
-def map_package_to_dataset(package, portal_url, super_theme=None):
+def map_package_to_dataset(package, portal_url):
+    """Mapea un diccionario con metadatos de cierto 'package' de CKAN a un
+    diccionario con metadatos de un 'dataset' según el estándar data.json."""
     dataset = dict()
     resources = package["resources"]
     groups = package["groups"]
@@ -254,10 +262,13 @@ global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
 
 
 def map_resources_to_distributions(resources, portal_url):
+    """Mapea una lista de 'resources' CKAN a 'distributions' de data.json."""
     return [map_resource_to_distribution(res, portal_url) for res in resources]
 
 
 def map_resource_to_distribution(resource, portal_url):
+    """Mapea un diccionario con metadatos de cierto 'resource' CKAN a dicts
+    con metadatos de una 'distribution' según el estándar data.json."""
     distribution = dict()
 
     distribution_mapping = {
@@ -288,10 +299,13 @@ se puede completar distribution['%s'].""",
 
 
 def map_groups_to_themes(groups):
+    """Mapea una lista de 'groups' de CKAN a 'themes' de data.json."""
     return [map_group_to_theme(grp) for grp in groups]
 
 
 def map_group_to_theme(group):
+    """Mapea un diccionario con metadatos de cierto 'group' de CKAN a un
+    diccionario con metadatos de un 'theme' según el estándar data.json."""
     theme = dict()
 
     theme_mapping = {
