@@ -16,7 +16,8 @@ from ckanapi import RemoteCKAN
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
                        "accrualPeriodicity.json")) as frequencies:
-    FREQUENCIES = json.load(frequencies)
+    RAW_FREQUENCIES = json.load(frequencies)
+    FREQUENCIES = {row["description"]: row["id"] for row in RAW_FREQUENCIES}
 
 with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
                        "superThemeTaxonomy.json")) as super_themes:
@@ -162,18 +163,13 @@ La clave '%s' no está en el endpoint 'package_show' para el package '%s'. No
 se puede completar dataset['contactPoint']['%s'].""",
                              package_key, package['name'], contact_key)
 
-    interval_mapping = {
-        "diaria": "R/P1D",
-        "mensual": "R/P1M",
-        "eventual": "eventual",
-        "quincenal": "R/P15D",
-        "trimestral": "R/P3M",
-        "anual": "R/P1Y"
-    }
-
+    # Si existen campos extras en la información del package, busco las claves
+    # "Frecuencia de actualización" y "Temática global" para completar los
+    # campos "accrualPeriodicity" y "superTheme" del dataset, respectivamente.
     if "extras" in package:
-        accrual = [extra["value"].lower() for extra in package["extras"] if
-                   extra["key"].lower().startswith("frecuencia")]
+        # "Frecuencia de actualización" => "accrualPeriodicity"
+        accrual = [extra["value"] for extra in package["extras"] if
+                   extra["key"] == "Frecuencia de actualización"]
 
         if len(accrual) == 0:
             logging.info("""
@@ -187,11 +183,31 @@ Se encontro mas de un valor de frecuencia de actualización en 'extras' para el
                          package['name'], accrual)
         else:
             try:
-                dataset["accrualPeriodicity"] = interval_mapping[accrual[0]]
+                dataset["accrualPeriodicity"] = FREQUENCIES[accrual[0]]
             except KeyError:
                 logging.warn("""
 Se encontró '%s' como frecuencia de actualización, pero no es mapeable a una
 'accrualPeriodicity' conocida. La clave no se pudo completar.""", accrual[0])
+
+        # Busco claves que son casi "Frecuencia de actualización" para lanzar
+        # advertencias si las hay.
+        def clean_str(s):
+            replacements = {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u",
+                            ":": "", ".": ""}
+            for old, new in replacements.iteritems():
+                s = s.replace(old, new)
+            return s.lower().strip()
+
+        almost_accrual = [
+            extra for extra in package["extras"] if
+            clean_str(extra["key"]) == "frecuencia de actualizacion" and
+            extra["key"] != "Frecuencia de actualización"]
+
+        if almost_accrual:
+            logging.warn("""
+Se encontraron claves con nombres similares pero no idénticos a "Frecuencia de
+actualización" en 'extras' para el 'package' '%s'. Por favor, considere
+corregirlas:\n%s""", package['name'], almost_accrual)
 
     if super_theme:
         dataset["superTheme"] = super_theme
