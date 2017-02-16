@@ -88,7 +88,6 @@
                         "error_code": 2,
                         "validator_value": [
                             {
-                                "minLength": 1,
                                 "type": "string"
                             },
                             {
@@ -136,7 +135,6 @@
                         "error_code": 2,
                         "validator_value": [
                             {
-                                "minLength": 1,
                                 "type": "string"
                             },
                             {
