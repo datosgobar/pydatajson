@@ -21,7 +21,8 @@ with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
 
 with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
                        "superThemeTaxonomy.json")) as super_themes:
-    SUPER_THEMES = json.load(super_themes)
+    RAW_SUPER_THEMES = json.load(super_themes)
+    SUPER_THEMES = {row["label"]: row["id"] for row in RAW_SUPER_THEMES}
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s]: %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -209,8 +210,40 @@ Se encontraron claves con nombres similares pero no idénticos a "Frecuencia de
 actualización" en 'extras' para el 'package' '%s'. Por favor, considere
 corregirlas:\n%s""", package['name'], almost_accrual)
 
-    if super_theme:
-        dataset["superTheme"] = super_theme
+        # "Temática global" => "superTheme"
+        super_theme = [extra["value"] for extra in package["extras"] if
+                       extra["key"] == "Temática global"]
+
+        if len(super_theme) == 0:
+            logging.info("""
+No se encontraron valores de temática global en 'extras' para el
+'package' '%s'. No se puede completar dataset['superTheme'].""",
+                         package['name'])
+        elif len(super_theme) > 1:
+            logging.info("""
+Se encontro mas de un valor de temática global en 'extras' para el
+'package' '%s'. No se puede completar dataset['superTheme'].\n %s""",
+                         package['name'], super_theme)
+        else:
+            try:
+                dataset["superTheme"] = [SUPER_THEMES[super_theme[0]]]
+            except KeyError:
+                logging.warn("""
+Se encontró '%s' como temática global, pero no es mapeable a un
+'superTheme' conocido. La clave no se pudo completar.""", super_theme[0])
+
+        # Busco claves que son casi "Temática global" para lanzar
+        # advertencias si las hay.
+        almost_super_theme = [
+            extra for extra in package["extras"] if
+            clean_str(extra["key"]) == "tematica global" and
+            extra["key"] != "Temática global"]
+
+        if almost_super_theme:
+            logging.warn("""
+Se encontraron claves con nombres similares pero no idénticos a "Temática
+global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
+\n%s""", package['name'], almost_accrual)
 
     if 'landingPage' not in dataset or dataset['landingPage'] == '':
         url_path = ["dataset", dataset["identifier"]]
