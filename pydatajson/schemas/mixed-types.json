@@ -22,7 +22,8 @@
         "anyOf": [
             { "type": "string", "format": "date" },
             { "type": "string", "format": "date-time" },
-            { "type": "null" }
+            { "type": "null" },
+            { "type": "string", "maxLength": 0 }
         ]
     },
     "stringOrNull": {
