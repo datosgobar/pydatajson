@@ -1,6 +1,13 @@
 History
 =======
 
+0.2.5 (2017-02-16)
+------------------
+
+* Se agrega una nueva función a `readers`, `read_ckan_catalog`, que traduce los metadatos que disponibiliza la Action API v3 de CKAN al estándar `data.json`. Esta función _no_ está integrada a `read_catalog`.
+
+* Se modifican todos los esquemas de validación, de modo que los campos opcionales de cualquier tipo y nivel acepten strings vacías.
+
 0.2.0 (2017-01-31)
 ------------------
 
