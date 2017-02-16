@@ -18,18 +18,19 @@
         },
         "title": { "$ref": "mixed-types.json#nonEmptyString" },
         "issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
-        "description": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-        "format": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-        "mediaType": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
-        "license": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+        "description": { "$ref": "mixed-types.json#stringOrNull" },
+        "format": { "$ref": "mixed-types.json#stringOrNull" },
+        "mediaType": { "$ref": "mixed-types.json#stringOrNull" },
+        "license": { "$ref": "mixed-types.json#stringOrNull" },
         "byteSize": {
             "anyOf": [
                 { "type": "integer" },
-                { "type": "null" }
+                { "type": "null" },
+                { "type": "string", "maxLength": 0 }
             ]
          },
         "modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
-        "rights": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+        "rights": { "$ref": "mixed-types.json#stringOrNull" },
         "field": {
             "type": "array",
             "items": { "$ref": "field.json" }
