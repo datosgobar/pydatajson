@@ -19,6 +19,7 @@ import warnings
 import re
 import json
 from collections import OrderedDict
+from datetime import datetime
 import jsonschema
 from . import readers
 from . import helpers
@@ -758,6 +759,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         return_list = []
 
         for catalog in catalogs:
+            # Leo catálogo
+            catalog = readers.read_catalog(catalog)
             # Obtengo summary para los indicadores del estado de los metadatos
             summary = self.generate_datasets_summary(catalog)
             cant_ok = 0
@@ -782,9 +785,98 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'datasets_meta_error_cant': cant_error,
                 'datasets_meta_ok_pct': datasets_ok_pct
             }
+
+            # Genero los indicadores relacionados con fechas, y los agrego
+            result.update(self._generate_date_indicators(catalog))
+
             return_list.append(result)
 
         return return_list
+
+    @staticmethod
+    def _parse_date_string(date_string):
+        """Parsea un string de una fecha con el formato de la norma
+        ISO 8601 (es decir, las fechas utilizadas en los catálogos) en un 
+        objeto datetime de la librería estándar de python. Se tiene en cuenta
+        únicamente la fecha y se ignora completamente la hora.
+        
+        Args:
+            date_string (str): fecha con formato ISO 8601.
+        
+        Returns:
+            datetime de la fecha especificada por date_string.
+        """
+
+        # La fecha cumple con la norma ISO 8601: YYYY-mm-ddThh-MM-ss.
+        # Nos interesa solo la parte de fecha, y no la hora. Se hace un
+        # split por la letra 'T' y nos quedamos con el primer elemento.
+        date_string = date_string.split('T')[0]
+
+        # Crea un objeto datetime a partir del formato especificado
+        return datetime.strptime(date_string, "%Y-%m-%d")
+
+    def _generate_date_indicators(self, catalog):
+        """Genera indicadores relacionados a las fechas de publicación
+        y actualización del catálogo pasado por parámetro.
+        
+        Args:
+            catalog (dict o str): path de un catálogo en formatos aceptados,
+            o un diccionario de python
+            
+        Returns:
+            dict con indicadores
+        """
+        result = {}
+
+        # 'issued' no es obligatorio, ignoramos un indicador si no existe
+        date_issued = catalog.get('issued', None)
+        if isinstance(date_issued, str):
+            date = self._parse_date_string(date_issued)
+            dias_ultima_actualizacion = (datetime.now() - date).days
+            result.update({
+                'catalogo_ultima_actualizacion_dias': dias_ultima_actualizacion
+            })
+
+        actualizados = 0
+        desactualizados = 0
+        for dataset in catalog['dataset']:
+            # Parseo la fecha de publicación, y la frecuencia de actualización
+            periodicity = dataset['accrualPeriodicity']
+
+            # Si la periodicity es eventual, se considera como actualizado
+            if periodicity == 'eventual':
+                actualizados += 1
+                continue
+
+            date = self._parse_date_string(dataset['issued'])
+            periodicity = periodicity.strip("R/P")
+            interval_value = int(periodicity[:-1])
+            interval = periodicity[-1]
+            frequency = 0
+
+            if interval == "Y":
+                frequency = 365 + interval_value/4  # Años bisiestos!
+            elif interval == "M":
+                # Aprox. 1 de cada 2 meses de 31 dias, sino 30
+                frequency = 30 + interval_value/2
+            elif interval == "W":
+                frequency = 7
+            elif interval == "D":
+                frequency = 1
+            # Frecuencias horarias...?
+
+            interval = interval_value * frequency
+            diff = datetime.now() - date
+            if diff.days < interval:
+                actualizados += 1
+            else:
+                desactualizados += 1
+
+        result.update({
+            'datasets_desactualizados_cant': desactualizados,
+            'datasets_actualizados_cant': actualizados
+        })
+        return result
 
 
 def main():

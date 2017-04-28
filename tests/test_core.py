@@ -804,11 +804,12 @@ revíselo manualmente""".format(actual_filename)
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(2) / 3
+            'datasets_meta_ok_pct': 100 * float(2) / 3,
+            'datasets_actualizados_cant': 1,
+            'datasets_desactualizados_cant': 2
         }]
 
         comparison = indicators == expected
-
         # Si la comparación falla, probar sin el indicador de porcentaje,
         # comparándolo aparte
         if not comparison:
