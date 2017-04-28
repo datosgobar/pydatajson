@@ -799,25 +799,34 @@ revíselo manualmente""".format(actual_filename)
 
         indicators = self.dj.generate_catalog_indicators(catalog)
 
+        # Resultados esperados haciendo cuentas manuales sobre el catálogo
+        from datetime import datetime
+        dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
         expected = [{
             'datasets_cant': 3,
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
             'datasets_meta_ok_pct': 100 * float(2) / 3,
+            'catalogo_ultima_actualizacion_dias': dias_diff,
             'datasets_actualizados_cant': 1,
-            'datasets_desactualizados_cant': 2
+            'datasets_desactualizados_cant': 2,
+            'datasets_actualizados_pct': 100 * float(1) / 3
         }]
 
         comparison = indicators == expected
-        # Si la comparación falla, probar sin el indicador de porcentaje,
-        # comparándolo aparte
+        # Si la comparación falla, probar sin los indicadores de porcentaje,
+        # comparándolos aparte
         if not comparison:
             indicators_pct = indicators[0].pop('datasets_meta_ok_pct')
             expected_pct = expected[0].pop('datasets_meta_ok_pct')
-
             self.assertAlmostEqual(indicators_pct, expected_pct)
-        self.assertTrue(indicators == expected)
+
+            indicators_pct = indicators[0].pop('datasets_actualizados_pct')
+            expected_pct = expected[0].pop('datasets_actualizados_pct')
+            self.assertAlmostEqual(indicators_pct, expected_pct)
+
+        self.assertListEqual(indicators, expected)
 
 
 if __name__ == '__main__':

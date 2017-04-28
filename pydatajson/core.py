@@ -830,7 +830,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         # 'issued' no es obligatorio, ignoramos un indicador si no existe
         date_issued = catalog.get('issued', None)
-        if isinstance(date_issued, str):
+        if isinstance(date_issued, (unicode, str)):
             date = self._parse_date_string(date_issued)
             dias_ultima_actualizacion = (datetime.now() - date).days
             result.update({
@@ -872,9 +872,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             else:
                 desactualizados += 1
 
+        datasets_total = len(catalog['dataset'])
+        actualizados_pct = 100 * float(actualizados) / datasets_total
         result.update({
             'datasets_desactualizados_cant': desactualizados,
-            'datasets_actualizados_cant': actualizados
+            'datasets_actualizados_cant': actualizados,
+            'datasets_actualizados_pct': actualizados_pct
         })
         return result
 
