@@ -839,6 +839,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         actualizados = 0
         desactualizados = 0
+        periodicity_amount = {
+            "Anual": 0,
+            "Mensual": 0,
+            "Semanal": 0,
+            "Diaria": 0
+        }
         for dataset in catalog['dataset']:
             # Parseo la fecha de publicación, y la frecuencia de actualización
             periodicity = dataset['accrualPeriodicity']
@@ -856,13 +862,17 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
             if interval == "Y":
                 period = 365 + interval_value/4  # Años bisiestos!
+                periodicity_amount['Anual'] += 1
             elif interval == "M":
                 # Aprox. 1 de cada 2 meses de 31 dias, sino 30
                 period = 30 + interval_value/2
+                periodicity_amount['Mensual'] += 1
             elif interval == "W":
                 period = 7
+                periodicity_amount['Semanal'] += 1
             elif interval == "D":
                 period = 1
+                periodicity_amount['Diaria'] += 1
             # Frecuencias horarias...?
 
             interval = interval_value * period
@@ -877,7 +887,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         result.update({
             'datasets_desactualizados_cant': desactualizados,
             'datasets_actualizados_cant': actualizados,
-            'datasets_actualizados_pct': actualizados_pct
+            'datasets_actualizados_pct': actualizados_pct,
+            'datasets_frecuencia_cant': periodicity_amount
         })
         return result
 

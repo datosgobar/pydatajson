@@ -811,7 +811,13 @@ revíselo manualmente""".format(actual_filename)
             'catalogo_ultima_actualizacion_dias': dias_diff,
             'datasets_actualizados_cant': 1,
             'datasets_desactualizados_cant': 2,
-            'datasets_actualizados_pct': 100 * float(1) / 3
+            'datasets_actualizados_pct': 100 * float(1) / 3,
+            'datasets_frecuencia_cant': {
+                'Anual': 2,
+                'Diaria': 0,
+                'Mensual': 0,
+                'Semanal': 0
+            },
         }]
 
         comparison = indicators == expected
