@@ -852,22 +852,22 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             periodicity = periodicity.strip("R/P")
             interval_value = int(periodicity[:-1])
             interval = periodicity[-1]
-            frequency = 0
+            period = 0
 
             if interval == "Y":
-                frequency = 365 + interval_value/4  # Años bisiestos!
+                period = 365 + interval_value/4  # Años bisiestos!
             elif interval == "M":
                 # Aprox. 1 de cada 2 meses de 31 dias, sino 30
-                frequency = 30 + interval_value/2
+                period = 30 + interval_value/2
             elif interval == "W":
-                frequency = 7
+                period = 7
             elif interval == "D":
-                frequency = 1
+                period = 1
             # Frecuencias horarias...?
 
-            interval = interval_value * frequency
-            diff = datetime.now() - date
-            if diff.days < interval:
+            interval = interval_value * period
+            diff = (datetime.now() - date).days
+            if diff < interval:
                 actualizados += 1
             else:
                 desactualizados += 1
