@@ -748,7 +748,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             obtener indicadores
 
         Returns:
-            list of dicts: indicadores esperados
+            list: lista con diccionarios de los indicadores esperados
         """
 
         assert isinstance(catalogs, (str, unicode, dict, list))
@@ -804,7 +804,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             date_string (str): fecha con formato ISO 8601.
         
         Returns:
-            datetime de la fecha especificada por date_string.
+            datetime: objeto fecha especificada por date_string.
         """
 
         # La fecha cumple con la norma ISO 8601: YYYY-mm-ddThh-MM-ss.
@@ -821,10 +821,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         
         Args:
             catalog (dict o str): path de un catálogo en formatos aceptados,
-            o un diccionario de python
+                o un diccionario de python
             
         Returns:
-            dict con indicadores
+            dict: diccionario con indicadores
         """
         result = {}
 
