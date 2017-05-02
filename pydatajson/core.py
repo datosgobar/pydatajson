@@ -737,6 +737,55 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return datasets_to_harvest
 
+    def generate_catalog_indicators(self, catalogs):
+        """Genera una lista de diccionarios con varios indicadores sobre
+        los catálogos provistos, tales como la cantidad de datasets válidos,
+        días desde su última fecha actualizada, entre otros.
+
+        Args:
+            catalogs (str o list): uno o más catalogos sobre los que se quiera
+                obtener indicadores
+
+        Returns:
+            list of dicts: indicadores esperados
+        """
+
+        assert isinstance(catalogs, (str, unicode, dict, list))
+        # Si se pasa un único catálogo, genero una lista que lo contenga
+        if isinstance(catalogs, (str, unicode, dict)):
+            catalogs = [catalogs]
+
+        return_list = []
+
+        for catalog in catalogs:
+            # Obtengo summary para los indicadores del estado de los metadatos
+            summary = self.generate_datasets_summary(catalog)
+            cant_ok = 0
+            cant_error = 0
+
+            cant_distribuciones = 0
+            datasets_total = len(summary)
+            for dataset in summary:
+                cant_distribuciones += dataset['cant_distribuciones']
+
+                if dataset['estado_metadatos'] == "OK":
+                    cant_ok += 1
+                else:  # == "ERROR"
+                    cant_error += 1
+
+            datasets_ok_pct = 100 * float(cant_ok)/datasets_total
+
+            result = {
+                'datasets_cant': len(summary),
+                'distribuciones_cant': cant_distribuciones,
+                'datasets_meta_ok_cant': cant_ok,
+                'datasets_meta_error_cant': cant_error,
+                'datasets_meta_ok_pct': datasets_ok_pct
+            }
+            return_list.append(result)
+
+        return return_list
+
 
 def main():
     """Permite ejecutar el módulo por línea de comandos.
