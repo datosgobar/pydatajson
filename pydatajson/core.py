@@ -744,7 +744,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         Args:
             catalogs (str o list): uno o más catalogos sobre los que se quiera
-            obtener indicadores
+                obtener indicadores
 
         Returns:
             list of dicts: indicadores esperados
