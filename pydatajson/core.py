@@ -815,20 +815,29 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         # Crea un objeto datetime a partir del formato especificado
         return datetime.strptime(date_string, "%Y-%m-%d")
 
-    def _generate_date_indicators(self, catalog):
+    def _generate_date_indicators(self, catalog, tolerance=0.2):
         """Genera indicadores relacionados a las fechas de publicación
-        y actualización del catálogo pasado por parámetro.
+        y actualización del catálogo pasado por parámetro. La evaluación de si
+        un catálogo se encuentra actualizado o no tiene un porcentaje de
+        tolerancia hasta que se lo considere como tal, dado por el parámetro 
+        tolerance.
         
         Args:
             catalog (dict o str): path de un catálogo en formatos aceptados,
                 o un diccionario de python
             
+            tolerance (float): porcentaje de tolerancia hasta que se considere 
+                un catálogo como desactualizado, por ejemplo un catálogo con 
+                período de actualización de 10 días se lo considera como 
+                desactualizado a partir de los 12 con una tolerancia del 20%.
+                También acepta valores negativos.
+                
         Returns:
             dict: diccionario con indicadores
         """
         result = {}
-
-        # 'issued' no es obligatorio, ignoramos un indicador si no existe
+        # Cálculo de días desde su última actualización.
+        # 'issued' no es obligatorio, ignoramos el indicador si no existe
         date_issued = catalog.get('issued', None)
         if isinstance(date_issued, (unicode, str)):
             date = self._parse_date_string(date_issued)
@@ -840,10 +849,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         actualizados = 0
         desactualizados = 0
         periodicity_amount = {
-            "Anual": 0,
-            "Mensual": 0,
-            "Semanal": 0,
-            "Diaria": 0
+            'Anual': 0,
+            'Mensual': 0,
+            'Semanal': 0,
+            'Diaria': 0,
+            'Horaria': 0,
+            'Continuamente actualizado': 0
         }
         for dataset in catalog['dataset']:
             # Parseo la fecha de publicación, y la frecuencia de actualización
@@ -854,34 +865,39 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 actualizados += 1
                 continue
 
+            # Calculo el período de días que puede pasar sin actualizarse
+            # Se parsea el período especificado por accrualPeriodicity,
+            # cumple con el estándar ISO 8601 para tiempos con repetición
             date = self._parse_date_string(dataset['issued'])
             periodicity = periodicity.strip("R/P")
             interval_value = int(periodicity[:-1])
             interval = periodicity[-1]
             period = 0
 
-            if interval == "Y":
+            if interval == 'Y':
                 period = 365 + interval_value/4  # Años bisiestos!
                 periodicity_amount['Anual'] += 1
-            elif interval == "M":
+            elif interval == 'M':
                 # Aprox. 1 de cada 2 meses de 31 dias, sino 30
                 period = 30 + interval_value/2
                 periodicity_amount['Mensual'] += 1
-            elif interval == "W":
+            elif interval == 'W':
                 period = 7
                 periodicity_amount['Semanal'] += 1
-            elif interval == "D":
+            elif interval == 'D':
                 period = 1
                 periodicity_amount['Diaria'] += 1
-            elif interval == "H":
-                period = 0.042  # Approx 1 hora
+            # Valores debajo de 1 día se les da el día entero para actualizar
+            elif interval == 'H':
+                period = 1
                 periodicity_amount['Horaria'] += 1
-            elif interval == "S":  # continuamente actualizado
-                actualizados += 1
-                continue
+            elif interval == 'S':  # continuamente actualizado
+                period = 1
+                periodicity_amount['Continuamente actualizado'] += 1
 
-            interval = interval_value * period
-            diff = (datetime.now() - date).days
+            interval = interval_value * period * (1 + tolerance)
+            diff = float((datetime.now() - date).days)
+
             if diff < interval:
                 actualizados += 1
             else:

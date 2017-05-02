@@ -16,7 +16,7 @@
             "superTheme": [
                 "ECON", "HEAL"
             ],
-            "accrualPeriodicity": "R/P1Y",
+            "accrualPeriodicity": "R/P1W",
             "issued": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {
@@ -73,7 +73,7 @@
             "superTheme": [
                 "ECON"
             ],
-            "accrualPeriodicity": "R/P1Y",
+            "accrualPeriodicity": "R/P1M",
             "issued": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {

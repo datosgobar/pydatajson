@@ -813,10 +813,12 @@ revíselo manualmente""".format(actual_filename)
             'datasets_desactualizados_cant': 2,
             'datasets_actualizados_pct': 100 * float(1) / 3,
             'datasets_frecuencia_cant': {
-                'Anual': 2,
+                'Anual': 0,
                 'Diaria': 0,
-                'Mensual': 0,
-                'Semanal': 0
+                'Mensual': 1,
+                'Semanal': 1,
+                'Horaria': 0,
+                'Continuamente actualizado': 0
             },
         }]
 
