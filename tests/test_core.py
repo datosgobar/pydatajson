@@ -804,7 +804,10 @@ revíselo manualmente""".format(actual_filename)
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(2) / 3
+            'datasets_meta_ok_pct': 100 * float(2) / 3,
+            'distribuciones_formatos_cant': {
+                "CSV": 1
+            }
         }]
 
         comparison = indicators == expected
@@ -816,7 +819,7 @@ revíselo manualmente""".format(actual_filename)
             expected_pct = expected[0].pop('datasets_meta_ok_pct')
 
             self.assertAlmostEqual(indicators_pct, expected_pct)
-        self.assertTrue(indicators == expected)
+        self.assertListEqual(indicators, expected)
 
 
 if __name__ == '__main__':

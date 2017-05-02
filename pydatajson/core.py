@@ -782,9 +782,45 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'datasets_meta_error_cant': cant_error,
                 'datasets_meta_ok_pct': datasets_ok_pct
             }
+
+            # Agrego la cuenta de los formatos de las distribuciones
+            count = self._count_distribution_formats(catalog)
+            result.update({
+                'distribuciones_formatos_cant': count
+            })
             return_list.append(result)
 
         return return_list
+
+    @staticmethod
+    def _count_distribution_formats(catalog):
+        """Cuenta los formatos especificados por el campo 'format' de cada
+        distribución de un catálogo. 
+        
+        Args:
+            catalog (str o dict): path a un catálogo, o un dict de python que
+            contenga a un catálogo ya leído.
+        
+        Returns:
+            dict con los formatos de las distribuciones encontradas como
+            claves, con la cantidad de ellos en sus valores.
+        """
+
+        # Leo catálogo
+        catalog = readers.read_catalog(catalog)
+        formats = {}
+        for dataset in catalog['dataset']:
+            for distribution in dataset['distribution']:
+                # 'format' es recomendado, no obligatorio. Puede no estar.
+                distribution_format = distribution.get('format', None)
+
+                if distribution_format:
+                    # Si no está en el diccionario, devuelvo 0
+                    count = formats.get(distribution_format, 0)
+
+                    formats[distribution_format] = count + 1
+
+        return formats
 
 
 def main():
