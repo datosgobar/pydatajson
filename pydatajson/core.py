@@ -873,7 +873,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             elif interval == "D":
                 period = 1
                 periodicity_amount['Diaria'] += 1
-            # Frecuencias horarias...?
+            elif interval == "H":
+                period = 0.042  # Approx 1 hora
+                periodicity_amount['Horaria'] += 1
+            elif interval == "S":  # continuamente actualizado
+                actualizados += 1
+                continue
 
             interval = interval_value * period
             diff = (datetime.now() - date).days
