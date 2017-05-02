@@ -797,7 +797,7 @@ revíselo manualmente""".format(actual_filename)
     def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalog_indicators(catalog)
+        indicators = self.dj.generate_catalogs_indicators(catalog)
 
         # Resultados esperados haciendo cuentas manuales sobre el catálogo
         from datetime import datetime
