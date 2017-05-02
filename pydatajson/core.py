@@ -738,7 +738,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return datasets_to_harvest
 
-    def generate_catalog_indicators(self, catalogs):
+    def generate_catalogs_indicators(self, catalogs):
         """Genera una lista de diccionarios con varios indicadores sobre
         los catálogos provistos, tales como la cantidad de datasets válidos,
         días desde su última fecha actualizada, entre otros.
@@ -776,7 +776,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 else:  # == "ERROR"
                     cant_error += 1
 
-            datasets_ok_pct = 100 * float(cant_ok)/datasets_total
+            datasets_ok_pct = round(100 * float(cant_ok)/datasets_total, 2)
 
             result = {
                 'datasets_cant': len(summary),
@@ -904,7 +904,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 desactualizados += 1
 
         datasets_total = len(catalog['dataset'])
-        actualizados_pct = 100 * float(actualizados) / datasets_total
+        actualizados_pct = round(100 * float(actualizados) / datasets_total, 2)
         result.update({
             'datasets_desactualizados_cant': desactualizados,
             'datasets_actualizados_cant': actualizados,

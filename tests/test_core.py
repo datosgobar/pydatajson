@@ -807,11 +807,11 @@ revíselo manualmente""".format(actual_filename)
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(2) / 3,
+            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
             'catalogo_ultima_actualizacion_dias': dias_diff,
             'datasets_actualizados_cant': 1,
             'datasets_desactualizados_cant': 2,
-            'datasets_actualizados_pct': 100 * float(1) / 3,
+            'datasets_actualizados_pct': round(100 * float(1) / 3, 2),
             'datasets_frecuencia_cant': {
                 'Anual': 0,
                 'Diaria': 0,
@@ -825,14 +825,6 @@ revíselo manualmente""".format(actual_filename)
         comparison = indicators == expected
         # Si la comparación falla, probar sin los indicadores de porcentaje,
         # comparándolos aparte
-        if not comparison:
-            indicators_pct = indicators[0].pop('datasets_meta_ok_pct')
-            expected_pct = expected[0].pop('datasets_meta_ok_pct')
-            self.assertAlmostEqual(indicators_pct, expected_pct)
-
-            indicators_pct = indicators[0].pop('datasets_actualizados_pct')
-            expected_pct = expected[0].pop('datasets_actualizados_pct')
-            self.assertAlmostEqual(indicators_pct, expected_pct)
 
         self.assertListEqual(indicators, expected)
 
