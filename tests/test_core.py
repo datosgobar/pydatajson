@@ -794,7 +794,7 @@ revíselo manualmente""".format(actual_filename)
 
         self.assertTrue(comparison)
 
-    def test_generate_catalog_indicators(self):
+    def test_generate_catalogs_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0]
@@ -835,5 +835,7 @@ revíselo manualmente""".format(actual_filename)
 
         for k, v in expected.items():
             self.assertTrue(indicators[k], v)
+
+
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
