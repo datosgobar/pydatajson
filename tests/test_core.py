@@ -794,5 +794,30 @@ revíselo manualmente""".format(actual_filename)
 
         self.assertTrue(comparison)
 
+    def test_generate_catalog_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalog_indicators(catalog)
+
+        expected = [{
+            'datasets_cant': 3,
+            'distribuciones_cant': 6,
+            'datasets_meta_ok_cant': 2,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': 100 * float(2) / 3
+        }]
+
+        comparison = indicators == expected
+
+        # Si la comparación falla, probar sin el indicador de porcentaje,
+        # comparándolo aparte
+        if not comparison:
+            indicators_pct = indicators[0].pop('datasets_meta_ok_pct')
+            expected_pct = expected[0].pop('datasets_meta_ok_pct')
+
+            self.assertAlmostEqual(indicators_pct, expected_pct)
+        self.assertTrue(indicators == expected)
+
+
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
