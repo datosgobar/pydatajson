@@ -34,6 +34,8 @@ class DataJson(object):
     ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
+    CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
+
     def __init__(self,
                  schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
                  schema_dir=ABSOLUTE_SCHEMA_DIR):
@@ -789,7 +791,16 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'distribuciones_formatos_cant': count
             })
             return_list.append(result)
+            fields_count = self._count_required_and_optional_fields(catalog)
+            total_rec = fields_count['total_recomendado']
+            total_opt = fields_count['total_optativo']
 
+            recomendados_pct = float(fields_count['recomendado']) / total_rec
+            optativos_pct = float(fields_count['optativo']) / total_opt
+            result.update({
+                'campos_recomendados_pct': recomendados_pct,
+                'campos_optativos_pct': optativos_pct
+            })
         return return_list
 
     @staticmethod
@@ -822,6 +833,46 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return formats
 
+    def _count_required_and_optional_fields(self, catalog):
+        catalog = readers.read_catalog(catalog)
+
+        catalog_fields_path = os.path.join(self.CATALOG_FIELDS_PATH,
+                                           'fields.json')
+        with open(catalog_fields_path) as f:
+            catalog_fields = json.load(f)
+        fields_count = self._count_recursive(catalog, catalog_fields)
+
+        return fields_count
+
+    def _count_recursive(self, dataset, fields):
+        key_count = {
+            'recomendado': 0,
+            'optativo': 0,
+            'requerido': 0,
+            'total_optativo': 0,
+            'total_recomendado': 0,
+            'total_requerido': 0
+        }
+
+        for k, v in fields.items():
+            if isinstance(v, dict):
+                if k not in dataset:
+                    continue
+                elements = dataset[k]
+                if not isinstance(elements, list):  # elements seguro es dict
+                    elements = [dataset[k].copy()]
+                for d in elements:
+                    result = self._count_recursive(d, v)
+                    for key in result:
+                        key_count[key] += result[key]
+            else:
+                key_count['total_' + v] += 1
+
+                if k in dataset:
+                    key_count[v] += 1
+
+        return key_count
+
 
 def main():
     """Permite ejecutar el módulo por línea de comandos.
@@ -851,3 +902,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
