@@ -794,19 +794,33 @@ revíselo manualmente""".format(actual_filename)
 
         self.assertTrue(comparison)
 
-    def test_generate_catalog_indicators(self):
+    def test_generate_catalogs_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalog_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
 
+        # Resultados esperados haciendo cuentas manuales sobre el catálogo
         expected = {
             'datasets_cant': 3,
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(2) / 3,
+            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+        }
+
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
+
+    def test_format_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+
+        expected = {
             'distribuciones_formatos_cant': {
-                "CSV": 1
+                'CSV': 1,
+                'XLSX': 1,
+                'PDF': 1
             }
         }
 
@@ -817,11 +831,11 @@ revíselo manualmente""".format(actual_filename)
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
 
         # Se espera un único catálogo como resultado, índice 0
-        indicators = self.dj.generate_catalog_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
 
         expected = {
             'campos_recomendados_pct': 0.0,
-            'campos_optativos_pct': 0.0
+            'campos_optativos_pct': 0.0,
         }
 
         for k, v in expected.items():
@@ -831,7 +845,7 @@ revíselo manualmente""".format(actual_filename)
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         # Se espera un único catálogo como resultado, índice 0
-        indicators = self.dj.generate_catalog_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
 
         expected = {
             'campos_recomendados_pct': 1.0,

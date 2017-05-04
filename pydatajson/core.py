@@ -739,7 +739,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return datasets_to_harvest
 
-    def generate_catalog_indicators(self, catalogs):
+    def generate_catalogs_indicators(self, catalogs):
         """Genera una lista de diccionarios con varios indicadores sobre
         los catálogos provistos, tales como la cantidad de datasets válidos,
         días desde su última fecha actualizada, entre otros.
