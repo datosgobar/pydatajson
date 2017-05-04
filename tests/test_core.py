@@ -797,9 +797,9 @@ revíselo manualmente""".format(actual_filename)
     def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalog_indicators(catalog)
+        indicators = self.dj.generate_catalog_indicators(catalog)[0]
 
-        expected = [{
+        expected = {
             'datasets_cant': 3,
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
@@ -808,19 +808,38 @@ revíselo manualmente""".format(actual_filename)
             'distribuciones_formatos_cant': {
                 "CSV": 1
             }
-        }]
+        }
 
-        comparison = indicators == expected
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
 
-        # Si la comparación falla, probar sin el indicador de porcentaje,
-        # comparándolo aparte
-        if not comparison:
-            indicators_pct = indicators[0].pop('datasets_meta_ok_pct')
-            expected_pct = expected[0].pop('datasets_meta_ok_pct')
+    def test_field_indicators_on_min_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
 
-            self.assertAlmostEqual(indicators_pct, expected_pct)
-        self.assertListEqual(indicators, expected)
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalog_indicators(catalog)[0]
 
+        expected = {
+            'campos_recomendados_pct': 0.0,
+            'campos_optativos_pct': 0.0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_field_indicators_on_full_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalog_indicators(catalog)[0]
+
+        expected = {
+            'campos_recomendados_pct': 1.0,
+            'campos_optativos_pct': 1.0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

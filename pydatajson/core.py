@@ -798,8 +798,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             recomendados_pct = float(fields_count['recomendado']) / total_rec
             optativos_pct = float(fields_count['optativo']) / total_opt
             result.update({
-                'campos_recomendados_pct': recomendados_pct,
-                'campos_optativos_pct': optativos_pct
+                'campos_recomendados_pct': round(recomendados_pct, 2),
+                'campos_optativos_pct': round(optativos_pct, 2)
             })
         return return_list
 
