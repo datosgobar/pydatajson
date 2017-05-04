@@ -749,7 +749,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             obtener indicadores
 
         Returns:
-            list of dicts: indicadores esperados
+            list: lista de diccionarios con los indicadores esperados
         """
 
         assert isinstance(catalogs, (str, unicode, dict, list))
@@ -834,17 +834,46 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         return formats
 
     def _count_required_and_optional_fields(self, catalog):
+        """Cuenta los campos obligatorios/recomendados/requeridos usados en
+        'catalog', junto con la cantidad máxima de dichos campos.
+        
+        Args:
+            catalog (str o dict): path a un catálogo, o un dict de python que
+                contenga a un catálogo ya leído   
+        
+        Returns:
+            dict: diccionario con las claves 'recomendado', 'optativo',
+                'requerido', 'recomendado_total', 'optativo_total',
+                'requerido_total', con la cantidad como valores.
+        """
+
         catalog = readers.read_catalog(catalog)
 
+        # Archivo .json con el uso de cada campo. Lo cargamos a un dict
         catalog_fields_path = os.path.join(self.CATALOG_FIELDS_PATH,
                                            'fields.json')
         with open(catalog_fields_path) as f:
             catalog_fields = json.load(f)
-        fields_count = self._count_recursive(catalog, catalog_fields)
 
-        return fields_count
+        # Armado recursivo del resultado
+        return self._count_recursive(catalog, catalog_fields)
 
     def _count_recursive(self, dataset, fields):
+        """Cuenta la información de campos optativos/recomendados/requeridos
+        desde 'fields', y cuenta la ocurrencia de los mismos en 'dataset'.
+        
+        Args:
+            dataset (dict): diccionario con claves a ser verificadas.
+            fields (dict): diccionario con los campos a verificar en dataset 
+                como claves, y 'optativo', 'recomendado', o 'requerido' como 
+                valores. Puede tener objetios anidados pero no arrays.
+        
+        Returns:
+            dict: diccionario con las claves 'recomendado', 'optativo',
+                'requerido', 'recomendado_total', 'optativo_total',
+                'requerido_total', con la cantidad como valores.
+        """
+
         key_count = {
             'recomendado': 0,
             'optativo': 0,
@@ -855,17 +884,27 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         }
 
         for k, v in fields.items():
+            # Si la clave es un diccionario se implementa recursivamente el
+            # mismo algoritmo
             if isinstance(v, dict):
-                if k not in dataset:
+                if k not in dataset: # Si dataset no tiene a key, pasamos
                     continue
+
+                # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
+                # list, 'publisher' no. Si no es lista, lo metemos en una
                 elements = dataset[k]
-                if not isinstance(elements, list):  # elements seguro es dict
+                if not isinstance(elements, list):
                     elements = [dataset[k].copy()]
-                for d in elements:
-                    result = self._count_recursive(d, v)
+                for element in elements:
+
+                    # Llamada recursiva y suma del resultado al nuestro
+                    result = self._count_recursive(element, v)
                     for key in result:
                         key_count[key] += result[key]
+            # Es un elemento normal (no iterable), se verifica si está en
+            # dataset o no. Se suma 1 siempre al total de su tipo
             else:
+                # total_requerido, total_recomendado, o total_optativo
                 key_count['total_' + v] += 1
 
                 if k in dataset:
