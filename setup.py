@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
+import os
 
 with open(os.path.abspath('README.md')) as readme_file:
     readme = readme_file.read()
@@ -17,7 +18,7 @@ with open(os.path.abspath("requirements_dev.txt")) as f:
 
 setup(
     name='pydatajson',
-    version='0.2.7',
+    version='0.2.8',
     description="Paquete en python con herramientas para generar y validar metadatos de catálogos de datos en formato data.json.",
     long_description=readme + '\n\n' + history,
     author="Datos Argentina",
