@@ -797,17 +797,28 @@ revíselo manualmente""".format(actual_filename)
     def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalogs_indicators(catalog)
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
 
         # Resultados esperados haciendo cuentas manuales sobre el catálogo
-        from datetime import datetime
-        dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
-        expected = [{
+        expected = {
             'datasets_cant': 3,
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
             'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+        }
+
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
+
+    def test_date_indicators(self):
+        from datetime import datetime
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+        dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
+
+        expected = {
             'catalogo_ultima_actualizacion_dias': dias_diff,
             'datasets_actualizados_cant': 1,
             'datasets_desactualizados_cant': 2,
@@ -820,14 +831,9 @@ revíselo manualmente""".format(actual_filename)
                 'Horaria': 0,
                 'Continuamente actualizado': 0
             },
-        }]
+        }
 
-        comparison = indicators == expected
-        # Si la comparación falla, probar sin los indicadores de porcentaje,
-        # comparándolos aparte
-
-        self.assertListEqual(indicators, expected)
-
-
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
