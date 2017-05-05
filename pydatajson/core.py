@@ -752,8 +752,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         Returns:
             tuple: 2 elementos, el primero una lista de diccionarios con los
                 indicadores esperados, uno por catálogo pasado, y el segundo
-                son indicadores a nivel global, datos sobre la lista entera en
-                general.
+                un diccionario con indicadores a nivel global,
+                datos sobre la lista entera en general.
         """
 
         assert isinstance(catalogs, (str, unicode, dict, list))
@@ -763,8 +763,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         # Leo todos los catálogos
         catalogs = [readers.read_catalog(catalog) for catalog in catalogs]
-        network_indicators = {} # Para la red global
-        return_list = []
+
+        network_indicators = {}  # Para la red global
+        indicators_list = []
 
         for catalog in catalogs:
             # Obtengo summary para los indicadores del estado de los metadatos
@@ -791,14 +792,29 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'datasets_meta_error_cant': cant_error,
                 'datasets_meta_ok_pct': datasets_ok_pct
             }
-            return_list.append(result)
+            indicators_list.append(result)
 
         if central_catalog:
             central_catalog = readers.read_catalog(central_catalog)
             fed_indicators = self._federation_indicators(catalogs,
                                                          central_catalog)
             network_indicators.update(fed_indicators)
-        return return_list, network_indicators
+
+        # Sumo los indicadores individuales al total
+        indicators_total = indicators_list[0].copy()
+        for i in range(1, len(indicators_list)):
+            indicators_total = helpers.add_dicts(indicators_total,
+                                                 indicators_list[i])
+
+        network_indicators.update(indicators_total)
+        # Los porcentuales no se pueden sumar, tienen que ser recalculados
+        total_pct = float(network_indicators['datasets_meta_ok_cant']) / \
+                    (network_indicators['datasets_meta_ok_cant'] +
+                     network_indicators['datasets_meta_error_cant']) * 100
+        network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
+
+        network_indicators['catalogos_cant'] = len(catalogs)
+        return indicators_list, network_indicators
 
     def _federation_indicators(self, catalogs,
                                central_catalog):

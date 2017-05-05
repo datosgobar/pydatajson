@@ -847,5 +847,29 @@ revíselo manualmente""".format(actual_filename)
 
         for k, v in expected.items():
             self.assertEqual(indicators[k], v)
+
+    def test_network_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        indicators, network_indicators = self.dj.generate_catalog_indicators([
+            one_catalog,
+            other_catalog
+        ])
+
+        # Esperado: suma de los indicadores individuales
+        expected = {
+            'catalogos_cant': 2,
+            'datasets_cant': 4,
+            'distribuciones_cant': 7,
+            'datasets_meta_ok_cant': 3,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': 100 * float(3) / 4
+        }
+
+        for k,v in expected.items():
+            self.assertEqual(network_indicators[k], v)
+
+
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
