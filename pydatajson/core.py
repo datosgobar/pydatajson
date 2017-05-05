@@ -737,7 +737,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return datasets_to_harvest
 
-    def generate_catalog_indicators(self, catalogs):
+    def generate_catalog_indicators(self, catalogs, central_catalog=None):
         """Genera una lista de diccionarios con varios indicadores sobre
         los catálogos provistos, tales como la cantidad de datasets válidos,
         días desde su última fecha actualizada, entre otros.
@@ -745,9 +745,15 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         Args:
             catalogs (str o list): uno o más catalogos sobre los que se quiera
                 obtener indicadores
+            central_catalog (str): catálogo central sobre el cual comparar los
+                datasets subidos en la lista anterior. De no pasarse no se 
+                generarán indicadores de federación de datasets.
 
         Returns:
-            list of dicts: indicadores esperados
+            tuple: 2 elementos, el primero una lista de diccionarios con los
+                indicadores esperados, uno por catálogo pasado, y el segundo 
+                son indicadores a nivel global, datos sobre la lista entera en 
+                general.
         """
 
         assert isinstance(catalogs, (str, unicode, dict, list))
@@ -755,6 +761,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
 
+        # Leo todos los catálogos
+        catalogs = [readers.read_catalog(catalog) for catalog in catalogs]
+        network_indicators = {} # Para la red global
         return_list = []
 
         for catalog in catalogs:
@@ -784,7 +793,66 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             }
             return_list.append(result)
 
-        return return_list
+        if central_catalog:
+            central_catalog = readers.read_catalog(central_catalog)
+            fed_indicators = self._federation_indicators(catalogs,
+                                                         central_catalog)
+            network_indicators.update(fed_indicators)
+        return return_list, network_indicators
+
+    def _federation_indicators(self, catalogs,
+                               central_catalog):
+        """Cuenta la cantidad de datasets incluídos tanto en la lista
+        'catalogs' como en el catálogo central, y genera indicadores a partir
+        de esa información.
+        
+        Args:
+            catalogs (list): lista de diccionarios, de catálogos ya parseados
+            central_catalog (dict): catálogo central, ya parseado a un dict
+        """
+
+        federados = 0  # En ambos catálogos
+        no_federados = 0
+
+        # Lo busco uno por uno a ver si está en la lista de catálogos
+        for catalog in catalogs:
+            for dataset in catalog['dataset']:
+                found = False
+                for central_dataset in central_catalog['dataset']:
+                    if self._datasets_equal(dataset, central_dataset):
+                        found = True
+                        federados += 1
+                        break
+                if not found:
+                    no_federados += 1
+
+        federados_pct = round(float(federados) / (federados + no_federados), 2)
+        result = {
+            'datasets_federados_cant': federados,
+            'datasets_no_federados_cant': no_federados,
+            'datasets_federados_pct': federados_pct
+        }
+        return result
+
+    @staticmethod
+    def _datasets_equal(dataset, other):
+        """Función de igualdad de dos datasets: se consideran iguales si 
+        los valores de los campos 'title', 'publisher.name', 
+        'accrualPeriodicity' e 'issued' son iguales en ambos.
+        
+        Args:
+            dataset (dict): un dataset, generado por la lectura de un catálogo
+            other (dict): idem anterior
+        
+        Returns:
+            bool: True si son iguales, False caso contrario
+        """
+
+        return dataset['title'] == other['title'] and \
+            dataset['publisher'].get('name') == \
+            other['publisher'].get('name') and \
+            dataset['accrualPeriodicity'] == other['accrualPeriodicity'] and \
+            dataset['issued'] == other['issued']
 
 
 def main():

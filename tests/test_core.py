@@ -797,7 +797,7 @@ revíselo manualmente""".format(actual_filename)
     def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalog_indicators(catalog)
+        indicators = self.dj.generate_catalog_indicators(catalog)[0]
 
         expected = [{
             'datasets_cant': 3,
@@ -818,6 +818,34 @@ revíselo manualmente""".format(actual_filename)
             self.assertAlmostEqual(indicators_pct, expected_pct)
         self.assertTrue(indicators == expected)
 
+    def test_federation_indicators_same_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
+        indicators = self.dj.generate_catalog_indicators(catalog, catalog)[1]
+
+        # Esperado: todos los datasets están federados
+        expected = {
+            'datasets_federados_cant': 3,
+            'datasets_no_federados_cant': 0,
+            'datasets_federados_pct': 1.0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_federation_indicators_no_datasets(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
+        indicators = self.dj.generate_catalog_indicators(catalog, central)[1]
+
+        # Esperado: todos los datasets están federados
+        expected = {
+            'datasets_federados_cant': 0,
+            'datasets_no_federados_cant': 3,
+            'datasets_federados_pct': 0.0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
