@@ -746,13 +746,13 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             catalogs (str o list): uno o más catalogos sobre los que se quiera
                 obtener indicadores
             central_catalog (str): catálogo central sobre el cual comparar los
-                datasets subidos en la lista anterior. De no pasarse no se 
+                datasets subidos en la lista anterior. De no pasarse no se
                 generarán indicadores de federación de datasets.
 
         Returns:
             tuple: 2 elementos, el primero una lista de diccionarios con los
-                indicadores esperados, uno por catálogo pasado, y el segundo 
-                son indicadores a nivel global, datos sobre la lista entera en 
+                indicadores esperados, uno por catálogo pasado, y el segundo
+                son indicadores a nivel global, datos sobre la lista entera en
                 general.
         """
 
@@ -805,7 +805,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         """Cuenta la cantidad de datasets incluídos tanto en la lista
         'catalogs' como en el catálogo central, y genera indicadores a partir
         de esa información.
-        
+
         Args:
             catalogs (list): lista de diccionarios, de catálogos ya parseados
             central_catalog (dict): catálogo central, ya parseado a un dict
@@ -836,14 +836,14 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
     @staticmethod
     def _datasets_equal(dataset, other):
-        """Función de igualdad de dos datasets: se consideran iguales si 
-        los valores de los campos 'title', 'publisher.name', 
+        """Función de igualdad de dos datasets: se consideran iguales si
+        los valores de los campos 'title', 'publisher.name',
         'accrualPeriodicity' e 'issued' son iguales en ambos.
-        
+
         Args:
             dataset (dict): un dataset, generado por la lectura de un catálogo
             other (dict): idem anterior
-        
+
         Returns:
             bool: True si son iguales, False caso contrario
         """
