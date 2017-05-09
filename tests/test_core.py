@@ -811,6 +811,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertTrue(indicators[k], v)
 
+
     def test_date_indicators(self):
         from datetime import datetime
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
@@ -836,6 +837,50 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertTrue(indicators[k], v)
 
+
+    def test_format_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+
+        expected = {
+            'distribuciones_formatos_cant': {
+                'CSV': 1,
+                'XLSX': 1,
+                'PDF': 1
+            }
+        }
+
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
+
+    def test_field_indicators_on_min_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
+
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+
+        expected = {
+            'campos_recomendados_pct': 0.0,
+            'campos_optativos_pct': 0.0,
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_field_indicators_on_full_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+
+        expected = {
+            'campos_recomendados_pct': 1.0,
+            'campos_optativos_pct': 1.0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
