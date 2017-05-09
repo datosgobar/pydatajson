@@ -128,7 +128,7 @@ def parse_repeating_time_interval(date_str):
         value_end = date_str.find(interval)
         if value_end < 0:
             continue
-        days += int(date_str[index:value_end]) * intervals[interval]
+        days += int(float(date_str[index:value_end]) * intervals[interval])
         index = value_end
 
     return max(days, 1)
