@@ -901,7 +901,14 @@ revíselo manualmente""".format(actual_filename)
             'distribuciones_cant': 7,
             'datasets_meta_ok_cant': 3,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(3) / 4
+            'datasets_meta_ok_pct': 100 * float(3) / 4,
+            'distribuciones_formatos_cant': {
+                'CSV': 2,
+                'XLSX': 1,
+                'PDF': 1
+            },
+            'campos_optativos_pct': 0.22,
+            'campos_recomendados_pct': 0.55
         }
 
         for k,v in expected.items():
