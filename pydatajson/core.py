@@ -854,6 +854,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             dict: diccionario con indicadores
         """
         result = {}
+
         # Cálculo de días desde su última actualización.
         # 'issued' no es obligatorio, ignoramos el indicador si no existe
         date_issued = catalog.get('issued', None)
@@ -866,14 +867,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         actualizados = 0
         desactualizados = 0
-        periodicity_amount = {
-            'Anual': 0,
-            'Mensual': 0,
-            'Semanal': 0,
-            'Diaria': 0,
-            'Horaria': 0,
-            'Continuamente actualizado': 0
-        }
+        periodicity_amount = {}
+
         for dataset in catalog['dataset']:
             # Parseo la fecha de publicación, y la frecuencia de actualización
             periodicity = dataset['accrualPeriodicity']
@@ -881,45 +876,26 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             # Si la periodicity es eventual, se considera como actualizado
             if periodicity == 'eventual':
                 actualizados += 1
+                prev_periodicity = periodicity_amount.get(periodicity, 0)
+                periodicity_amount[periodicity] = prev_periodicity + 1
                 continue
 
             # Calculo el período de días que puede pasar sin actualizarse
             # Se parsea el período especificado por accrualPeriodicity,
             # cumple con el estándar ISO 8601 para tiempos con repetición
             date = self._parse_date_string(dataset['issued'])
-            periodicity = periodicity.strip("R/P")
-            interval_value = int(periodicity[:-1])
-            interval = periodicity[-1]
-            period = 0
 
-            if interval == 'Y':
-                period = 365 + interval_value/4  # Años bisiestos!
-                periodicity_amount['Anual'] += 1
-            elif interval == 'M':
-                # Aprox. 1 de cada 2 meses de 31 dias, sino 30
-                period = 30 + interval_value/2
-                periodicity_amount['Mensual'] += 1
-            elif interval == 'W':
-                period = 7
-                periodicity_amount['Semanal'] += 1
-            elif interval == 'D':
-                period = 1
-                periodicity_amount['Diaria'] += 1
-            # Valores debajo de 1 día se les da el día entero para actualizar
-            elif interval == 'H':
-                period = 1
-                periodicity_amount['Horaria'] += 1
-            elif interval == 'S':  # continuamente actualizado
-                period = 1
-                periodicity_amount['Continuamente actualizado'] += 1
-
-            interval = interval_value * period * (1 + tolerance)
+            interval = helpers.parse_repeating_time_interval(periodicity) * \
+                (1 + tolerance)
             diff = float((datetime.now() - date).days)
 
             if diff < interval:
                 actualizados += 1
             else:
                 desactualizados += 1
+
+            prev_periodicity = periodicity_amount.get(periodicity, 0)
+            periodicity_amount[periodicity] = prev_periodicity + 1
 
         datasets_total = len(catalog['dataset'])
         actualizados_pct = round(100 * float(actualizados) / datasets_total, 2)

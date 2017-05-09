@@ -811,7 +811,6 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertTrue(indicators[k], v)
 
-
     def test_date_indicators(self):
         from datetime import datetime
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
@@ -825,18 +824,14 @@ revíselo manualmente""".format(actual_filename)
             'datasets_desactualizados_cant': 2,
             'datasets_actualizados_pct': round(100 * float(1) / 3, 2),
             'datasets_frecuencia_cant': {
-                'Anual': 0,
-                'Diaria': 0,
-                'Mensual': 1,
-                'Semanal': 1,
-                'Horaria': 0,
-                'Continuamente actualizado': 0
+                'R/P1W': 1,
+                'R/P1M': 1,
+                'eventual': 1
             },
         }
 
         for k, v in expected.items():
-            self.assertTrue(indicators[k], v)
-
+            self.assertEqual(indicators[k], v)
 
     def test_format_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
@@ -852,7 +847,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertTrue(indicators[k], v)
+            self.assertEqual(indicators[k], v)
 
     def test_field_indicators_on_min_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
