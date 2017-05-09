@@ -797,31 +797,68 @@ revíselo manualmente""".format(actual_filename)
     def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalog_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
-        expected = [{
+        # Resultados esperados haciendo cuentas manuales sobre el catálogo
+        expected = {
             'datasets_cant': 3,
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(2) / 3
-        }]
+            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+        }
 
-        comparison = indicators == expected
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
 
-        # Si la comparación falla, probar sin el indicador de porcentaje,
-        # comparándolo aparte
-        if not comparison:
-            indicators_pct = indicators[0].pop('datasets_meta_ok_pct')
-            expected_pct = expected[0].pop('datasets_meta_ok_pct')
+    def test_format_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-            self.assertAlmostEqual(indicators_pct, expected_pct)
-        self.assertTrue(indicators == expected)
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'distribuciones_formatos_cant': {
+                'CSV': 1,
+                'XLSX': 1,
+                'PDF': 1
+            }
+        }
+
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
+
+    def test_field_indicators_on_min_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
+
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'campos_recomendados_pct': 0.0,
+            'campos_optativos_pct': 0.0,
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_field_indicators_on_full_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'campos_recomendados_pct': 1.0,
+            'campos_optativos_pct': 1.0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
 
     def test_federation_indicators_same_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalog_indicators(catalog, catalog)[1]
+        indicators = self.dj.generate_catalogs_indicators(catalog, catalog)[1]
 
         # Esperado: todos los datasets están federados
         expected = {
@@ -836,7 +873,7 @@ revíselo manualmente""".format(actual_filename)
     def test_federation_indicators_no_datasets(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
-        indicators = self.dj.generate_catalog_indicators(catalog, central)[1]
+        indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
 
         # Esperado: todos los datasets están federados
         expected = {
@@ -852,7 +889,7 @@ revíselo manualmente""".format(actual_filename)
         one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        indicators, network_indicators = self.dj.generate_catalog_indicators([
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
             one_catalog,
             other_catalog
         ])

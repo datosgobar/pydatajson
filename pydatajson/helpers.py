@@ -124,8 +124,8 @@ def add_dicts(one_dict, other_dict):
     result = {}
     for k, v in one_dict.items():
         if isinstance(v, dict):
-            result[k] = add_dicts(one_dict, other_dict)
+            result[k] = add_dicts(v, other_dict.get(k, {}))
         else:
-            result[k] = one_dict[k] + other_dict[k]
+            result[k] = v + other_dict.get(k, 0)
 
     return result
