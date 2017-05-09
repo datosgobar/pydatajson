@@ -106,3 +106,26 @@ def sheet_to_table(worksheet):
 def string_to_list(string, sep=","):
     """Transforma una string con elementos separados por `sep` en una lista."""
     return [value.strip() for value in string.split(sep)]
+
+
+def add_dicts(one_dict, other_dict):
+    """Suma clave a clave los dos diccionarios. Si algún valor es un
+    diccionario, llama recursivamente a la función. Ambos diccionarios deben
+    tener exactamente las mismas claves, y los valores asociados deben ser
+    sumables, o diccionarios.
+    
+    Args:
+        one_dict (dict)
+        other_dict(dict)
+        
+    Returns:
+        dict: resultado de la suma
+    """
+    result = {}
+    for k, v in one_dict.items():
+        if isinstance(v, dict):
+            result[k] = add_dicts(v, other_dict.get(k, {}))
+        else:
+            result[k] = v + other_dict.get(k, 0)
+
+    return result

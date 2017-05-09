@@ -34,6 +34,8 @@ class DataJson(object):
     ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
+    CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
+
     def __init__(self,
                  schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
                  schema_dir=ABSOLUTE_SCHEMA_DIR):
@@ -736,6 +738,266 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 table]
 
         return datasets_to_harvest
+
+    def generate_catalogs_indicators(self, catalogs, central_catalog=None):
+        """Genera una lista de diccionarios con varios indicadores sobre
+        los catálogos provistos, tales como la cantidad de datasets válidos,
+        días desde su última fecha actualizada, entre otros.
+
+        Args:
+            catalogs (str o list): uno o más catalogos sobre los que se quiera
+                obtener indicadores
+            central_catalog (str): catálogo central sobre el cual comparar los
+                datasets subidos en la lista anterior. De no pasarse no se
+                generarán indicadores de federación de datasets.
+
+        Returns:
+            tuple: 2 elementos, el primero una lista de diccionarios con los
+                indicadores esperados, uno por catálogo pasado, y el segundo
+                un diccionario con indicadores a nivel global,
+                datos sobre la lista entera en general.
+        """
+
+        assert isinstance(catalogs, (str, unicode, dict, list))
+        # Si se pasa un único catálogo, genero una lista que lo contenga
+        if isinstance(catalogs, (str, unicode, dict)):
+            catalogs = [catalogs]
+
+        # Leo todos los catálogos
+        catalogs = [readers.read_catalog(catalog) for catalog in catalogs]
+
+        network_indicators = {}  # Para la red global
+        indicators_list = []
+
+        for catalog in catalogs:
+            # Obtengo summary para los indicadores del estado de los metadatos
+            summary = self.generate_datasets_summary(catalog)
+            cant_ok = 0
+            cant_error = 0
+
+            cant_distribuciones = 0
+            datasets_total = len(summary)
+            for dataset in summary:
+                cant_distribuciones += dataset['cant_distribuciones']
+
+                if dataset['estado_metadatos'] == "OK":
+                    cant_ok += 1
+                else:  # == "ERROR"
+                    cant_error += 1
+
+            datasets_ok_pct = 100 * float(cant_ok)/datasets_total
+
+            result = {
+                'datasets_cant': len(summary),
+                'distribuciones_cant': cant_distribuciones,
+                'datasets_meta_ok_cant': cant_ok,
+                'datasets_meta_error_cant': cant_error,
+                'datasets_meta_ok_pct': datasets_ok_pct
+            }
+
+            # Agrego la cuenta de los formatos de las distribuciones
+            count = self._count_distribution_formats(catalog)
+            result.update({
+                'distribuciones_formatos_cant': count
+            })
+
+            # Agrego porcentaje de campos recomendados/optativos usados
+            fields_count = self._count_required_and_optional_fields(catalog)
+            total_rec = fields_count['total_recomendado']
+            total_opt = fields_count['total_optativo']
+
+            recomendados_pct = float(fields_count['recomendado']) / total_rec
+            optativos_pct = float(fields_count['optativo']) / total_opt
+            result.update({
+                'campos_recomendados_pct': round(recomendados_pct, 2),
+                'campos_optativos_pct': round(optativos_pct, 2)
+            })
+            indicators_list.append(result)
+
+        if central_catalog:
+            central_catalog = readers.read_catalog(central_catalog)
+            fed_indicators = self._federation_indicators(catalogs,
+                                                         central_catalog)
+            network_indicators.update(fed_indicators)
+
+        # Sumo los indicadores individuales al total
+        indicators_total = indicators_list[0].copy()
+        for i in range(1, len(indicators_list)):
+            indicators_total = helpers.add_dicts(indicators_total,
+                                                 indicators_list[i])
+
+        network_indicators.update(indicators_total)
+        # Los porcentuales no se pueden sumar, tienen que ser recalculados
+        total_pct = float(network_indicators['datasets_meta_ok_cant']) / \
+                    (network_indicators['datasets_meta_ok_cant'] +
+                     network_indicators['datasets_meta_error_cant']) * 100
+        network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
+
+        network_indicators['catalogos_cant'] = len(catalogs)
+        return indicators_list, network_indicators
+
+    def _federation_indicators(self, catalogs,
+                               central_catalog):
+        """Cuenta la cantidad de datasets incluídos tanto en la lista
+        'catalogs' como en el catálogo central, y genera indicadores a partir
+        de esa información.
+
+        Args:
+            catalogs (list): lista de diccionarios, de catálogos ya parseados
+            central_catalog (dict): catálogo central, ya parseado a un dict
+        """
+
+        federados = 0  # En ambos catálogos
+        no_federados = 0
+
+        # Lo busco uno por uno a ver si está en la lista de catálogos
+        for catalog in catalogs:
+            for dataset in catalog['dataset']:
+                found = False
+                for central_dataset in central_catalog['dataset']:
+                    if self._datasets_equal(dataset, central_dataset):
+                        found = True
+                        federados += 1
+                        break
+                if not found:
+                    no_federados += 1
+
+        federados_pct = round(float(federados) / (federados + no_federados), 2)
+        result = {
+            'datasets_federados_cant': federados,
+            'datasets_no_federados_cant': no_federados,
+            'datasets_federados_pct': federados_pct
+        }
+        return result
+
+    @staticmethod
+    def _datasets_equal(dataset, other):
+        """Función de igualdad de dos datasets: se consideran iguales si
+        los valores de los campos 'title', 'publisher.name',
+        'accrualPeriodicity' e 'issued' son iguales en ambos.
+
+        Args:
+            dataset (dict): un dataset, generado por la lectura de un catálogo
+            other (dict): idem anterior
+
+        Returns:
+            bool: True si son iguales, False caso contrario
+        """
+
+        return dataset['title'] == other['title'] and \
+            dataset['publisher'].get('name') == \
+            other['publisher'].get('name') and \
+            dataset['accrualPeriodicity'] == other['accrualPeriodicity'] and \
+            dataset['issued'] == other['issued']
+
+    @staticmethod
+    def _count_distribution_formats(catalog):
+        """Cuenta los formatos especificados por el campo 'format' de cada
+        distribución de un catálogo. 
+        
+        Args:
+            catalog (str o dict): path a un catálogo, o un dict de python que
+            contenga a un catálogo ya leído.
+        
+        Returns:
+            dict: diccionario con los formatos de las distribuciones
+            encontradas como claves, con la cantidad de ellos en sus valores.
+        """
+
+        # Leo catálogo
+        catalog = readers.read_catalog(catalog)
+        formats = {}
+        for dataset in catalog['dataset']:
+            for distribution in dataset['distribution']:
+                # 'format' es recomendado, no obligatorio. Puede no estar.
+                distribution_format = distribution.get('format', None)
+
+                if distribution_format:
+                    # Si no está en el diccionario, devuelvo 0
+                    count = formats.get(distribution_format, 0)
+
+                    formats[distribution_format] = count + 1
+
+        return formats
+
+    def _count_required_and_optional_fields(self, catalog):
+        """Cuenta los campos obligatorios/recomendados/requeridos usados en
+        'catalog', junto con la cantidad máxima de dichos campos.
+        
+        Args:
+            catalog (str o dict): path a un catálogo, o un dict de python que
+                contenga a un catálogo ya leído   
+        
+        Returns:
+            dict: diccionario con las claves 'recomendado', 'optativo',
+                'requerido', 'recomendado_total', 'optativo_total',
+                'requerido_total', con la cantidad como valores.
+        """
+
+        catalog = readers.read_catalog(catalog)
+
+        # Archivo .json con el uso de cada campo. Lo cargamos a un dict
+        catalog_fields_path = os.path.join(self.CATALOG_FIELDS_PATH,
+                                           'fields.json')
+        with open(catalog_fields_path) as f:
+            catalog_fields = json.load(f)
+
+        # Armado recursivo del resultado
+        return self._count_recursive(catalog, catalog_fields)
+
+    def _count_recursive(self, dataset, fields):
+        """Cuenta la información de campos optativos/recomendados/requeridos
+        desde 'fields', y cuenta la ocurrencia de los mismos en 'dataset'.
+        
+        Args:
+            dataset (dict): diccionario con claves a ser verificadas.
+            fields (dict): diccionario con los campos a verificar en dataset 
+                como claves, y 'optativo', 'recomendado', o 'requerido' como 
+                valores. Puede tener objetios anidados pero no arrays.
+        
+        Returns:
+            dict: diccionario con las claves 'recomendado', 'optativo',
+                'requerido', 'recomendado_total', 'optativo_total',
+                'requerido_total', con la cantidad como valores.
+        """
+
+        key_count = {
+            'recomendado': 0,
+            'optativo': 0,
+            'requerido': 0,
+            'total_optativo': 0,
+            'total_recomendado': 0,
+            'total_requerido': 0
+        }
+
+        for k, v in fields.items():
+            # Si la clave es un diccionario se implementa recursivamente el
+            # mismo algoritmo
+            if isinstance(v, dict):
+                if k not in dataset: # Si dataset no tiene a key, pasamos
+                    continue
+
+                # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
+                # list, 'publisher' no. Si no es lista, lo metemos en una
+                elements = dataset[k]
+                if not isinstance(elements, list):
+                    elements = [dataset[k].copy()]
+                for element in elements:
+
+                    # Llamada recursiva y suma del resultado al nuestro
+                    result = self._count_recursive(element, v)
+                    for key in result:
+                        key_count[key] += result[key]
+            # Es un elemento normal (no iterable), se verifica si está en
+            # dataset o no. Se suma 1 siempre al total de su tipo
+            else:
+                # total_requerido, total_recomendado, o total_optativo
+                key_count['total_' + v] += 1
+
+                if k in dataset:
+                    key_count[v] += 1
+
+        return key_count
 
 
 def main():
