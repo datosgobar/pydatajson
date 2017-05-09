@@ -813,8 +813,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             contenga a un catálogo ya leído.
         
         Returns:
-            dict con los formatos de las distribuciones encontradas como
-            claves, con la cantidad de ellos en sus valores.
+            dict: diccionario con los formatos de las distribuciones
+            encontradas como claves, con la cantidad de ellos en sus valores.
         """
 
         # Leo catálogo
