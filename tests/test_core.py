@@ -811,6 +811,28 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertTrue(indicators[k], v)
 
+    def test_date_indicators(self):
+        from datetime import datetime
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
+
+        expected = {
+            'catalogo_ultima_actualizacion_dias': dias_diff,
+            'datasets_actualizados_cant': 1,
+            'datasets_desactualizados_cant': 2,
+            'datasets_actualizados_pct': round(100 * float(1) / 3, 2),
+            'datasets_frecuencia_cant': {
+                'R/P1W': 1,
+                'R/P1M': 1,
+                'eventual': 1
+            },
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
     def test_format_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
@@ -825,7 +847,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertTrue(indicators[k], v)
+            self.assertEqual(indicators[k], v)
 
     def test_field_indicators_on_min_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
@@ -848,8 +870,8 @@ revíselo manualmente""".format(actual_filename)
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         expected = {
-            'campos_recomendados_pct': 1.0,
-            'campos_optativos_pct': 1.0
+            'campos_recomendados_pct': 100,
+            'campos_optativos_pct': 100
         }
 
         for k, v in expected.items():
@@ -864,7 +886,7 @@ revíselo manualmente""".format(actual_filename)
         expected = {
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 0,
-            'datasets_federados_pct': 1.0
+            'datasets_federados_pct': 100
         }
 
         for k, v in expected.items():
@@ -879,7 +901,7 @@ revíselo manualmente""".format(actual_filename)
         expected = {
             'datasets_federados_cant': 0,
             'datasets_no_federados_cant': 3,
-            'datasets_federados_pct': 0.0
+            'datasets_federados_pct': 0
         }
 
         for k, v in expected.items():
@@ -907,8 +929,8 @@ revíselo manualmente""".format(actual_filename)
                 'XLSX': 1,
                 'PDF': 1
             },
-            'campos_optativos_pct': 0.22,
-            'campos_recomendados_pct': 0.55
+            'campos_optativos_pct': 21.95,
+            'campos_recomendados_pct': 55.56
         }
 
         for k,v in expected.items():

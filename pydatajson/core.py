@@ -19,6 +19,7 @@ import warnings
 import re
 import json
 from collections import OrderedDict
+from datetime import datetime
 import jsonschema
 from . import readers
 from . import helpers
@@ -771,6 +772,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         fields = {}
         for catalog in catalogs:
+            # Leo catálogo
+            catalog = readers.read_catalog(catalog)
             # Obtengo summary para los indicadores del estado de los metadatos
             summary = self.generate_datasets_summary(catalog)
             cant_ok = 0
@@ -786,7 +789,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 else:  # == "ERROR"
                     cant_error += 1
 
-            datasets_ok_pct = 100 * float(cant_ok)/datasets_total
+            datasets_ok_pct = round(100 * float(cant_ok)/datasets_total, 2)
 
             result = {
                 'datasets_cant': len(summary),
@@ -795,6 +798,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'datasets_meta_error_cant': cant_error,
                 'datasets_meta_ok_pct': datasets_ok_pct
             }
+
+            # Genero los indicadores relacionados con fechas, y los agrego
+            result.update(self._generate_date_indicators(catalog))
 
             # Agrego la cuenta de los formatos de las distribuciones
             count = self._count_distribution_formats(catalog)
@@ -808,9 +814,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             # Sumo a la cuenta total de campos usados/totales
             fields = helpers.add_dicts(fields_count, fields)
 
-            recomendados_pct = float(fields_count['recomendado']) / \
+            recomendados_pct = 100 * float(fields_count['recomendado']) / \
                 fields_count['total_recomendado']
-            optativos_pct = float(fields_count['optativo']) / \
+            optativos_pct = 100 * float(fields_count['optativo']) / \
                 fields_count['total_optativo']
 
             result.update({
@@ -839,8 +845,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                      network_indicators['datasets_meta_error_cant']) * 100
         network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
 
-        rec_pct = float(fields['recomendado']) / fields['total_recomendado']
-        opt_pct = float(fields['optativo']) / fields['total_optativo']
+        rec_pct = 100 * float(fields['recomendado']) / \
+            fields['total_recomendado']
+        opt_pct = 100 * float(fields['optativo']) /\
+            fields['total_optativo']
 
         network_indicators.update({
             'campos_recomendados_pct': round(rec_pct, 2),
@@ -875,11 +883,11 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 if not found:
                     no_federados += 1
 
-        federados_pct = round(float(federados) / (federados + no_federados), 2)
+        federados_pct = 100 * float(federados) / (federados + no_federados)
         result = {
             'datasets_federados_cant': federados,
             'datasets_no_federados_cant': no_federados,
-            'datasets_federados_pct': federados_pct
+            'datasets_federados_pct': round(federados_pct, 2)
         }
         return result
 
@@ -902,6 +910,102 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             other['publisher'].get('name') and \
             dataset['accrualPeriodicity'] == other['accrualPeriodicity'] and \
             dataset['issued'] == other['issued']
+
+    @staticmethod
+    def _parse_date_string(date_string):
+        """Parsea un string de una fecha con el formato de la norma
+        ISO 8601 (es decir, las fechas utilizadas en los catálogos) en un 
+        objeto datetime de la librería estándar de python. Se tiene en cuenta
+        únicamente la fecha y se ignora completamente la hora.
+        
+        Args:
+            date_string (str): fecha con formato ISO 8601.
+        
+        Returns:
+            datetime: objeto fecha especificada por date_string.
+        """
+
+        # La fecha cumple con la norma ISO 8601: YYYY-mm-ddThh-MM-ss.
+        # Nos interesa solo la parte de fecha, y no la hora. Se hace un
+        # split por la letra 'T' y nos quedamos con el primer elemento.
+        date_string = date_string.split('T')[0]
+
+        # Crea un objeto datetime a partir del formato especificado
+        return datetime.strptime(date_string, "%Y-%m-%d")
+
+    def _generate_date_indicators(self, catalog, tolerance=0.2):
+        """Genera indicadores relacionados a las fechas de publicación
+        y actualización del catálogo pasado por parámetro. La evaluación de si
+        un catálogo se encuentra actualizado o no tiene un porcentaje de
+        tolerancia hasta que se lo considere como tal, dado por el parámetro 
+        tolerance.
+        
+        Args:
+            catalog (dict o str): path de un catálogo en formatos aceptados,
+                o un diccionario de python
+            
+            tolerance (float): porcentaje de tolerancia hasta que se considere 
+                un catálogo como desactualizado, por ejemplo un catálogo con 
+                período de actualización de 10 días se lo considera como 
+                desactualizado a partir de los 12 con una tolerancia del 20%.
+                También acepta valores negativos.
+                
+        Returns:
+            dict: diccionario con indicadores
+        """
+        result = {}
+
+        # Cálculo de días desde su última actualización.
+        # 'issued' no es obligatorio, ignoramos el indicador si no existe
+        date_issued = catalog.get('issued', None)
+        if isinstance(date_issued, (unicode, str)):
+            date = self._parse_date_string(date_issued)
+            dias_ultima_actualizacion = (datetime.now() - date).days
+            result.update({
+                'catalogo_ultima_actualizacion_dias': dias_ultima_actualizacion
+            })
+
+        actualizados = 0
+        desactualizados = 0
+        periodicity_amount = {}
+
+        for dataset in catalog['dataset']:
+            # Parseo la fecha de publicación, y la frecuencia de actualización
+            periodicity = dataset['accrualPeriodicity']
+
+            # Si la periodicity es eventual, se considera como actualizado
+            if periodicity == 'eventual':
+                actualizados += 1
+                prev_periodicity = periodicity_amount.get(periodicity, 0)
+                periodicity_amount[periodicity] = prev_periodicity + 1
+                continue
+
+            # Calculo el período de días que puede pasar sin actualizarse
+            # Se parsea el período especificado por accrualPeriodicity,
+            # cumple con el estándar ISO 8601 para tiempos con repetición
+            date = self._parse_date_string(dataset['issued'])
+
+            interval = helpers.parse_repeating_time_interval(periodicity) * \
+                (1 + tolerance)
+            diff = float((datetime.now() - date).days)
+
+            if diff < interval:
+                actualizados += 1
+            else:
+                desactualizados += 1
+
+            prev_periodicity = periodicity_amount.get(periodicity, 0)
+            periodicity_amount[periodicity] = prev_periodicity + 1
+
+        datasets_total = len(catalog['dataset'])
+        actualizados_pct = round(100 * float(actualizados) / datasets_total, 2)
+        result.update({
+            'datasets_desactualizados_cant': desactualizados,
+            'datasets_actualizados_cant': actualizados,
+            'datasets_actualizados_pct': actualizados_pct,
+            'datasets_frecuencia_cant': periodicity_amount
+        })
+        return result
 
     @staticmethod
     def _count_distribution_formats(catalog):
