@@ -820,18 +820,20 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
 
-        rec_pct = float(fields['recomendado']) / fields['total_recomendado']
-        opt_pct = float(fields['optativo']) / fields['total_optativo']
+        rec_pct = 100 * float(fields['recomendado']) / \
+            fields['total_recomendado']
+        opt_pct = 100 * float(fields['optativo']) / \
+            fields['total_optativo']
 
         network_indicators.update({
             'campos_recomendados_pct': round(rec_pct, 2),
             'campos_optativos_pct': round(opt_pct, 2)
         })
-        updated_pct = network_indicators['datasets_actualizados_cant'] / \
+        updated_pct = 100 * network_indicators['datasets_actualizados_cant'] /\
             float(network_indicators['datasets_actualizados_cant'] +
                   network_indicators['datasets_desactualizados_cant'])
 
-        network_indicators['datasets_actualizados_pct'] = updated_pct
+        network_indicators['datasets_actualizados_pct'] = round(updated_pct, 2)
 
     def _generate_indicators(self, catalog):
         """Genera los indicadores de un catálogo individual.
@@ -854,9 +856,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         })
         # Agrego porcentaje de campos recomendados/optativos usados
         fields_count = self._count_required_and_optional_fields(catalog)
-        recomendados_pct = float(fields_count['recomendado']) / \
+        recomendados_pct = 100 * float(fields_count['recomendado']) / \
             fields_count['total_recomendado']
-        optativos_pct = float(fields_count['optativo']) / \
+        optativos_pct = 100 * float(fields_count['optativo']) / \
             fields_count['total_optativo']
         result.update({
             'campos_recomendados_pct': round(recomendados_pct, 2),
@@ -923,14 +925,14 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                     no_federados += 1
 
         if federados or no_federados:
-            federados_pct = float(federados) / (federados + no_federados)
+            federados_pct = 100 * float(federados) / (federados + no_federados)
         else:
             federados_pct = 0
 
         result = {
             'datasets_federados_cant': federados,
             'datasets_no_federados_cant': no_federados,
-            'datasets_federados_pct': federados_pct
+            'datasets_federados_pct': round(federados_pct, 2)
         }
         return result
 

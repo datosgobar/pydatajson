@@ -870,8 +870,8 @@ revíselo manualmente""".format(actual_filename)
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         expected = {
-            'campos_recomendados_pct': 1.0,
-            'campos_optativos_pct': 1.0
+            'campos_recomendados_pct': 100,
+            'campos_optativos_pct': 100
         }
 
         for k, v in expected.items():
@@ -886,7 +886,7 @@ revíselo manualmente""".format(actual_filename)
         expected = {
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 0,
-            'datasets_federados_pct': 1.0
+            'datasets_federados_pct': 100
         }
 
         for k, v in expected.items():
@@ -897,11 +897,11 @@ revíselo manualmente""".format(actual_filename)
         central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
         indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
 
-        # Esperado: todos los datasets están federados
+        # Esperado: ningún dataset está federado
         expected = {
             'datasets_federados_cant': 0,
             'datasets_no_federados_cant': 3,
-            'datasets_federados_pct': 0.0
+            'datasets_federados_pct': 0
         }
 
         for k, v in expected.items():
@@ -929,8 +929,8 @@ revíselo manualmente""".format(actual_filename)
                 'XLSX': 1,
                 'PDF': 1
             },
-            'campos_optativos_pct': 0.22,
-            'campos_recomendados_pct': 0.56
+            'campos_optativos_pct': 21.95,
+            'campos_recomendados_pct': 55.56
         }
 
         for k,v in expected.items():
