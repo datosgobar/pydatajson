@@ -794,11 +794,25 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         network_indicators.update(indicators_total)
         # Genero los indicadores de la red entera,
         self._network_indicator_percentages(fields, network_indicators)
-        
+
         return indicators_list, network_indicators
 
     @staticmethod
     def _network_indicator_percentages(fields, network_indicators):
+        """Encapsula el cálculo de indicadores de porcentaje (de errores, 
+        de campos recomendados/optativos utilizados, de datasets actualizados)
+        sobre la red de nodos entera.
+        
+        Args:
+            fields (dict): Diccionario con claves 'recomendado', 'optativo',
+            'total_recomendado', 'total_optativo', cada uno con valores
+            que representan la cantidad de c/u en la red de nodos entera.
+        
+            network_indicators (dict): Diccionario de la red de nodos, con
+            las cantidades de datasets_meta_ok y datasets_(des)actualizados
+            calculados previamente. Se modificará este argumento con los
+            nuevos indicadores.
+        """
         # Los porcentuales no se pueden sumar, tienen que ser recalculados
         total_pct = float(network_indicators['datasets_meta_ok_cant']) / \
                     (network_indicators['datasets_meta_ok_cant'] +
@@ -820,6 +834,14 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         network_indicators['datasets_actualizados_pct'] = updated_pct
 
     def _generate_indicators(self, catalog):
+        """Genera los indicadores de un catálogo individual.
+        
+        Args:
+            catalog (dict): diccionario de un data.json parseado
+            
+        Returns:
+            dict: diccionario con los indicadores del catálogo provisto
+        """
         result = {}
         # Obtengo summary para los indicadores del estado de los metadatos
         result.update(self._generate_status_indicators(catalog))
@@ -843,6 +865,15 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         return fields_count, result
 
     def _generate_status_indicators(self, catalog):
+        """Genera indicadores básicos sobre el estado de un catálogo
+        
+        Args:
+            catalog (dict): diccionario de un data.json parseado
+        
+        Returns:
+            dict: indicadores básicos sobre el catálogo, tal como la cantidad
+            de datasets, distribuciones y número de errores
+        """
         summary = self.generate_datasets_summary(catalog)
         cant_ok = 0
         cant_error = 0
