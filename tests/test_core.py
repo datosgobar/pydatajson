@@ -875,7 +875,7 @@ revíselo manualmente""".format(actual_filename)
         central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
         indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
 
-        # Esperado: todos los datasets están federados
+        # Esperado: ningún dataset está federado
         expected = {
             'datasets_federados_cant': 0,
             'datasets_no_federados_cant': 3,
