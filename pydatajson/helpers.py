@@ -106,3 +106,29 @@ def sheet_to_table(worksheet):
 def string_to_list(string, sep=","):
     """Transforma una string con elementos separados por `sep` en una lista."""
     return [value.strip() for value in string.split(sep)]
+
+
+def parse_repeating_time_interval(date_str):
+    """Parsea un string con un intervalo de tiempo con repetición especificado
+    por la norma ISO 8601 en una cantidad de días que representa ese intervalo.
+    """
+    intervals = {
+        'Y': 365,
+        'M': 30,
+        'W': 7,
+        'D': 1,
+        'H': 0,
+        'S': 0
+    }
+
+    date_str = date_str.strip('R/P')
+    days = 0
+    index = 0
+    for interval in intervals:
+        value_end = date_str.find(interval)
+        if value_end < 0:
+            continue
+        days += int(float(date_str[index:value_end]) * intervals[interval])
+        index = value_end
+
+    return max(days, 1)

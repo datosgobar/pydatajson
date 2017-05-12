@@ -19,6 +19,7 @@ import warnings
 import re
 import json
 from collections import OrderedDict
+from datetime import datetime
 import jsonschema
 from . import readers
 from . import helpers
@@ -33,6 +34,8 @@ class DataJson(object):
     # Variables por default
     ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
+
+    CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
     def __init__(self,
                  schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
@@ -737,6 +740,282 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return datasets_to_harvest
 
+    def generate_catalogs_indicators(self, catalogs):
+        """Genera una lista de diccionarios con varios indicadores sobre
+        los catálogos provistos, tales como la cantidad de datasets válidos,
+        días desde su última fecha actualizada, entre otros.
+
+        Args:
+            catalogs (str o list): uno o más catalogos sobre los que se quiera
+                obtener indicadores
+
+        Returns:
+            list: lista de diccionarios con los indicadores esperados
+        """
+
+        assert isinstance(catalogs, (str, unicode, dict, list))
+        # Si se pasa un único catálogo, genero una lista que lo contenga
+        if isinstance(catalogs, (str, unicode, dict)):
+            catalogs = [catalogs]
+
+        return_list = []
+
+        for catalog in catalogs:
+            # Leo catálogo
+            catalog = readers.read_catalog(catalog)
+            # Obtengo summary para los indicadores del estado de los metadatos
+            summary = self.generate_datasets_summary(catalog)
+            cant_ok = 0
+            cant_error = 0
+
+            cant_distribuciones = 0
+            datasets_total = len(summary)
+            for dataset in summary:
+                cant_distribuciones += dataset['cant_distribuciones']
+
+                if dataset['estado_metadatos'] == "OK":
+                    cant_ok += 1
+                else:  # == "ERROR"
+                    cant_error += 1
+
+            datasets_ok_pct = round(100 * float(cant_ok)/datasets_total, 2)
+
+            result = {
+                'datasets_cant': len(summary),
+                'distribuciones_cant': cant_distribuciones,
+                'datasets_meta_ok_cant': cant_ok,
+                'datasets_meta_error_cant': cant_error,
+                'datasets_meta_ok_pct': datasets_ok_pct
+            }
+
+
+            # Genero los indicadores relacionados con fechas, y los agrego
+            result.update(self._generate_date_indicators(catalog))
+            return_list.append(result)
+
+            # Agrego la cuenta de los formatos de las distribuciones
+            count = self._count_distribution_formats(catalog)
+            result.update({
+                'distribuciones_formatos_cant': count
+            })
+            return_list.append(result)
+            fields_count = self._count_required_and_optional_fields(catalog)
+            total_rec = fields_count['total_recomendado']
+            total_opt = fields_count['total_optativo']
+
+            recomendados_pct = float(fields_count['recomendado']) / total_rec
+            optativos_pct = float(fields_count['optativo']) / total_opt
+            result.update({
+                'campos_recomendados_pct': round(recomendados_pct, 2),
+                'campos_optativos_pct': round(optativos_pct, 2)
+            })
+        return return_list
+
+    @staticmethod
+    def _parse_date_string(date_string):
+        """Parsea un string de una fecha con el formato de la norma
+        ISO 8601 (es decir, las fechas utilizadas en los catálogos) en un 
+        objeto datetime de la librería estándar de python. Se tiene en cuenta
+        únicamente la fecha y se ignora completamente la hora.
+        
+        Args:
+            date_string (str): fecha con formato ISO 8601.
+        
+        Returns:
+            datetime: objeto fecha especificada por date_string.
+        """
+
+        # La fecha cumple con la norma ISO 8601: YYYY-mm-ddThh-MM-ss.
+        # Nos interesa solo la parte de fecha, y no la hora. Se hace un
+        # split por la letra 'T' y nos quedamos con el primer elemento.
+        date_string = date_string.split('T')[0]
+
+        # Crea un objeto datetime a partir del formato especificado
+        return datetime.strptime(date_string, "%Y-%m-%d")
+
+    def _generate_date_indicators(self, catalog, tolerance=0.2):
+        """Genera indicadores relacionados a las fechas de publicación
+        y actualización del catálogo pasado por parámetro. La evaluación de si
+        un catálogo se encuentra actualizado o no tiene un porcentaje de
+        tolerancia hasta que se lo considere como tal, dado por el parámetro 
+        tolerance.
+        
+        Args:
+            catalog (dict o str): path de un catálogo en formatos aceptados,
+                o un diccionario de python
+            
+            tolerance (float): porcentaje de tolerancia hasta que se considere 
+                un catálogo como desactualizado, por ejemplo un catálogo con 
+                período de actualización de 10 días se lo considera como 
+                desactualizado a partir de los 12 con una tolerancia del 20%.
+                También acepta valores negativos.
+                
+        Returns:
+            dict: diccionario con indicadores
+        """
+        result = {}
+
+        # Cálculo de días desde su última actualización.
+        # 'issued' no es obligatorio, ignoramos el indicador si no existe
+        date_issued = catalog.get('issued', None)
+        if isinstance(date_issued, (unicode, str)):
+            date = self._parse_date_string(date_issued)
+            dias_ultima_actualizacion = (datetime.now() - date).days
+            result.update({
+                'catalogo_ultima_actualizacion_dias': dias_ultima_actualizacion
+            })
+
+        actualizados = 0
+        desactualizados = 0
+        periodicity_amount = {}
+
+        for dataset in catalog['dataset']:
+            # Parseo la fecha de publicación, y la frecuencia de actualización
+            periodicity = dataset['accrualPeriodicity']
+
+            # Si la periodicity es eventual, se considera como actualizado
+            if periodicity == 'eventual':
+                actualizados += 1
+                prev_periodicity = periodicity_amount.get(periodicity, 0)
+                periodicity_amount[periodicity] = prev_periodicity + 1
+                continue
+
+            # Calculo el período de días que puede pasar sin actualizarse
+            # Se parsea el período especificado por accrualPeriodicity,
+            # cumple con el estándar ISO 8601 para tiempos con repetición
+            date = self._parse_date_string(dataset['issued'])
+
+            interval = helpers.parse_repeating_time_interval(periodicity) * \
+                (1 + tolerance)
+            diff = float((datetime.now() - date).days)
+
+            if diff < interval:
+                actualizados += 1
+            else:
+                desactualizados += 1
+
+            prev_periodicity = periodicity_amount.get(periodicity, 0)
+            periodicity_amount[periodicity] = prev_periodicity + 1
+
+        datasets_total = len(catalog['dataset'])
+        actualizados_pct = round(100 * float(actualizados) / datasets_total, 2)
+        result.update({
+            'datasets_desactualizados_cant': desactualizados,
+            'datasets_actualizados_cant': actualizados,
+            'datasets_actualizados_pct': actualizados_pct,
+            'datasets_frecuencia_cant': periodicity_amount
+        })
+        return result
+
+    @staticmethod
+    def _count_distribution_formats(catalog):
+        """Cuenta los formatos especificados por el campo 'format' de cada
+        distribución de un catálogo. 
+        
+        Args:
+            catalog (str o dict): path a un catálogo, o un dict de python que
+            contenga a un catálogo ya leído.
+        
+        Returns:
+            dict: diccionario con los formatos de las distribuciones
+            encontradas como claves, con la cantidad de ellos en sus valores.
+        """
+
+        # Leo catálogo
+        catalog = readers.read_catalog(catalog)
+        formats = {}
+        for dataset in catalog['dataset']:
+            for distribution in dataset['distribution']:
+                # 'format' es recomendado, no obligatorio. Puede no estar.
+                distribution_format = distribution.get('format', None)
+
+                if distribution_format:
+                    # Si no está en el diccionario, devuelvo 0
+                    count = formats.get(distribution_format, 0)
+
+                    formats[distribution_format] = count + 1
+
+        return formats
+
+    def _count_required_and_optional_fields(self, catalog):
+        """Cuenta los campos obligatorios/recomendados/requeridos usados en
+        'catalog', junto con la cantidad máxima de dichos campos.
+        
+        Args:
+            catalog (str o dict): path a un catálogo, o un dict de python que
+                contenga a un catálogo ya leído   
+        
+        Returns:
+            dict: diccionario con las claves 'recomendado', 'optativo',
+                'requerido', 'recomendado_total', 'optativo_total',
+                'requerido_total', con la cantidad como valores.
+        """
+
+        catalog = readers.read_catalog(catalog)
+
+        # Archivo .json con el uso de cada campo. Lo cargamos a un dict
+        catalog_fields_path = os.path.join(self.CATALOG_FIELDS_PATH,
+                                           'fields.json')
+        with open(catalog_fields_path) as f:
+            catalog_fields = json.load(f)
+
+        # Armado recursivo del resultado
+        return self._count_recursive(catalog, catalog_fields)
+
+    def _count_recursive(self, dataset, fields):
+        """Cuenta la información de campos optativos/recomendados/requeridos
+        desde 'fields', y cuenta la ocurrencia de los mismos en 'dataset'.
+        
+        Args:
+            dataset (dict): diccionario con claves a ser verificadas.
+            fields (dict): diccionario con los campos a verificar en dataset 
+                como claves, y 'optativo', 'recomendado', o 'requerido' como 
+                valores. Puede tener objetios anidados pero no arrays.
+        
+        Returns:
+            dict: diccionario con las claves 'recomendado', 'optativo',
+                'requerido', 'recomendado_total', 'optativo_total',
+                'requerido_total', con la cantidad como valores.
+        """
+
+        key_count = {
+            'recomendado': 0,
+            'optativo': 0,
+            'requerido': 0,
+            'total_optativo': 0,
+            'total_recomendado': 0,
+            'total_requerido': 0
+        }
+
+        for k, v in fields.items():
+            # Si la clave es un diccionario se implementa recursivamente el
+            # mismo algoritmo
+            if isinstance(v, dict):
+                if k not in dataset: # Si dataset no tiene a key, pasamos
+                    continue
+
+                # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
+                # list, 'publisher' no. Si no es lista, lo metemos en una
+                elements = dataset[k]
+                if not isinstance(elements, list):
+                    elements = [dataset[k].copy()]
+                for element in elements:
+
+                    # Llamada recursiva y suma del resultado al nuestro
+                    result = self._count_recursive(element, v)
+                    for key in result:
+                        key_count[key] += result[key]
+            # Es un elemento normal (no iterable), se verifica si está en
+            # dataset o no. Se suma 1 siempre al total de su tipo
+            else:
+                # total_requerido, total_recomendado, o total_optativo
+                key_count['total_' + v] += 1
+
+                if k in dataset:
+                    key_count[v] += 1
+
+        return key_count
+
 
 def main():
     """Permite ejecutar el módulo por línea de comandos.
@@ -766,3 +1045,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
