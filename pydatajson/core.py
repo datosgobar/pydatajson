@@ -817,8 +817,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         """
         # Los porcentuales no se pueden sumar, tienen que ser recalculados
         total_pct = float(network_indicators['datasets_meta_ok_cant']) / \
-                    (network_indicators['datasets_meta_ok_cant'] +
-                     network_indicators['datasets_meta_error_cant']) * 100
+            (network_indicators['datasets_meta_ok_cant'] +
+             network_indicators['datasets_meta_error_cant']) * 100
 
         network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
 
@@ -927,8 +927,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 if not found:
                     no_federados += 1
 
-
-        if federados or no_federados:
+        if federados or no_federados:  # Evita división por 0
             federados_pct = 100 * float(federados) / (federados + no_federados)
         else:
             federados_pct = 0
@@ -1140,7 +1139,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             # Si la clave es un diccionario se implementa recursivamente el
             # mismo algoritmo
             if isinstance(v, dict):
-                if k not in dataset: # Si dataset no tiene a key, pasamos
+                if k not in dataset:  # Si dataset no tiene a key, pasamos
                     continue
 
                 # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
