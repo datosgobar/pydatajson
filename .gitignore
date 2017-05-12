@@ -76,3 +76,4 @@ TODO.md
 tests/temp/*
 .ipynb_checkpoints
 samples/archivos-generados/*
+.DS_Store

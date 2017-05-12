@@ -10,3 +10,4 @@ unicodecsv
 openpyxl==2.4.1
 # Para consultar programáticamente la API de CKAN
 ckanapi==4.0
+functools32

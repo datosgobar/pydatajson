@@ -794,10 +794,10 @@ revíselo manualmente""".format(actual_filename)
 
         self.assertTrue(comparison)
 
-    def test_generate_catalogs_indicators(self):
+    def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         # Resultados esperados haciendo cuentas manuales sobre el catálogo
         expected = {
@@ -815,7 +815,7 @@ revíselo manualmente""".format(actual_filename)
         from datetime import datetime
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
         dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
 
         expected = {
@@ -836,7 +836,7 @@ revíselo manualmente""".format(actual_filename)
     def test_format_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         expected = {
             'distribuciones_formatos_cant': {
@@ -853,7 +853,7 @@ revíselo manualmente""".format(actual_filename)
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
 
         # Se espera un único catálogo como resultado, índice 0
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         expected = {
             'campos_recomendados_pct': 0.0,
@@ -867,15 +867,75 @@ revíselo manualmente""".format(actual_filename)
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         # Se espera un único catálogo como resultado, índice 0
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0]
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         expected = {
-            'campos_recomendados_pct': 1.0,
-            'campos_optativos_pct': 1.0
+            'campos_recomendados_pct': 100,
+            'campos_optativos_pct': 100
         }
 
         for k, v in expected.items():
             self.assertEqual(indicators[k], v)
+
+    def test_federation_indicators_same_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog, catalog)[1]
+
+        # Esperado: todos los datasets están federados
+        expected = {
+            'datasets_federados_cant': 3,
+            'datasets_no_federados_cant': 0,
+            'datasets_federados_pct': 100
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_federation_indicators_no_datasets(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
+        indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
+
+        # Esperado: ningún dataset está federado
+        expected = {
+            'datasets_federados_cant': 0,
+            'datasets_no_federados_cant': 3,
+            'datasets_federados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_network_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
+            one_catalog,
+            other_catalog
+        ])
+
+        # Esperado: suma de los indicadores individuales
+        expected = {
+            'catalogos_cant': 2,
+            'datasets_cant': 4,
+            'distribuciones_cant': 7,
+            'datasets_meta_ok_cant': 3,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': 100 * float(3) / 4,
+            'distribuciones_formatos_cant': {
+                'CSV': 2,
+                'XLSX': 1,
+                'PDF': 1
+            },
+            'campos_optativos_pct': 21.95,
+            'campos_recomendados_pct': 55.56
+        }
+
+        for k,v in expected.items():
+            self.assertEqual(network_indicators[k], v)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

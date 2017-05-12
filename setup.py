@@ -2,22 +2,23 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
+import os
 
-with open('README.md') as readme_file:
+with open(os.path.abspath('README.md')) as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.md') as history_file:
+with open(os.path.abspath('HISTORY.md')) as history_file:
     history = history_file.read()
 
-with open("requirements.txt") as f:
+with open(os.path.abspath("requirements.txt")) as f:
     requirements = [req.strip() for req in f.readlines()]
 
-with open("requirements_dev.txt") as f:
+with open(os.path.abspath("requirements_dev.txt")) as f:
     test_requirements = [req.strip() for req in f.readlines()]
 
 setup(
     name='pydatajson',
-    version='0.2.5',
+    version='0.2.9',
     description="Paquete en python con herramientas para generar y validar metadatos de catálogos de datos en formato data.json.",
     long_description=readme + '\n\n' + history,
     author="Datos Argentina",

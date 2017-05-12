@@ -108,6 +108,29 @@ def string_to_list(string, sep=","):
     return [value.strip() for value in string.split(sep)]
 
 
+def add_dicts(one_dict, other_dict):
+    """Suma clave a clave los dos diccionarios. Si algún valor es un
+    diccionario, llama recursivamente a la función. Ambos diccionarios deben
+    tener exactamente las mismas claves, y los valores asociados deben ser
+    sumables, o diccionarios.
+    
+    Args:
+        one_dict (dict)
+        other_dict(dict)
+        
+    Returns:
+        dict: resultado de la suma
+    """
+    result = {}
+    for k, v in one_dict.items():
+        if isinstance(v, dict):
+            result[k] = add_dicts(v, other_dict.get(k, {}))
+        else:
+            result[k] = v + other_dict.get(k, 0)
+
+    return result
+
+
 def parse_repeating_time_interval(date_str):
     """Parsea un string con un intervalo de tiempo con repetición especificado
     por la norma ISO 8601 en una cantidad de días que representa ese intervalo.
