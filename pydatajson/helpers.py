@@ -116,17 +116,17 @@ def add_dicts(one_dict, other_dict):
     
     Args:
         one_dict (dict)
-        other_dict(dict)
+        other_dict (dict)
         
     Returns:
         dict: resultado de la suma
     """
-    result = {}
+    result = other_dict.copy()
     for k, v in one_dict.items():
         if isinstance(v, dict):
             result[k] = add_dicts(v, other_dict.get(k, {}))
         else:
-            result[k] = v + other_dict.get(k, 0)
+            result[k] = result.get(k, 0) + v
 
     return result
 
@@ -140,8 +140,8 @@ def parse_repeating_time_interval(date_str):
         'M': 30,
         'W': 7,
         'D': 1,
-        'H': 0,
-        'S': 0
+        'H': 1,
+        'S': 1
     }
 
     date_str = date_str.strip('R/P')
