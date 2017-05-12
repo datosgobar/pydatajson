@@ -819,7 +819,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         meta_ok = network_indicators['datasets_meta_ok_cant']
         meta_error = network_indicators['datasets_meta_error_cant']
         total_pct = 0
-        if meta_ok or meta_error:
+        if meta_ok or meta_error:  # Evita división por cero
             total_pct = 100 * float(meta_ok) / (meta_error + meta_ok)
 
         network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
@@ -838,7 +838,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         act = network_indicators['datasets_actualizados_cant']
         desact = network_indicators['datasets_desactualizados_cant']
         updated_pct = 0
-        if act or desact:  # Si todos son inválidos ambos dan 0
+        if act or desact:  # Evita división por cero
             updated_pct = 100 * act / float(act + desact)
 
         network_indicators['datasets_actualizados_pct'] = round(updated_pct, 2)
@@ -925,9 +925,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         # Lo busco uno por uno a ver si está en la lista de catálogos
         for catalog in catalogs:
-            for dataset in catalog['dataset']:
+            for dataset in catalog.get('dataset', []):
                 found = False
-                for central_dataset in central_catalog['dataset']:
+                for central_dataset in central_catalog.get('dataset', []):
                     if self._datasets_equal(dataset, central_dataset):
                         found = True
                         federados += 1
