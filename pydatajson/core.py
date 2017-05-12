@@ -816,9 +816,11 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             nuevos indicadores.
         """
         # Los porcentuales no se pueden sumar, tienen que ser recalculados
-        total_pct = float(network_indicators['datasets_meta_ok_cant']) / \
-            (network_indicators['datasets_meta_ok_cant'] +
-             network_indicators['datasets_meta_error_cant']) * 100
+        meta_ok = network_indicators['datasets_meta_ok_cant']
+        meta_error = network_indicators['datasets_meta_error_cant']
+        total_pct = 0
+        if meta_ok or meta_error:
+            total_pct = 100 * float(meta_ok) / (meta_error + meta_ok)
 
         network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
         if fields:  # 'fields' puede estar vacío si ningún campo es válido
@@ -894,9 +896,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 cant_ok += 1
             else:  # == "ERROR"
                 cant_error += 1
-        datasets_ok_pct = round(100 * float(cant_ok) / datasets_total, 2)
+
+        datasets_ok_pct = 0
+        if datasets_total:
+            datasets_ok_pct = round(100 * float(cant_ok) / datasets_total, 2)
         result = {
-            'datasets_cant': len(summary),
+            'datasets_cant': datasets_total,
             'distribuciones_cant': cant_distribuciones,
             'datasets_meta_ok_cant': cant_ok,
             'datasets_meta_error_cant': cant_error,
@@ -1034,7 +1039,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         desactualizados = 0
         periodicity_amount = {}
 
-        for dataset in catalog['dataset']:
+        for dataset in catalog.get('dataset', []):
             # Parseo la fecha de publicación, y la frecuencia de actualización
             periodicity = dataset.get('accrualPeriodicity')
             if not periodicity:
@@ -1063,12 +1068,14 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             prev_periodicity = periodicity_amount.get(periodicity, 0)
             periodicity_amount[periodicity] = prev_periodicity + 1
 
-        datasets_total = len(catalog['dataset'])
-        actualizados_pct = round(100 * float(actualizados) / datasets_total, 2)
+        datasets_total = len(catalog.get('dataset', []))
+        actualizados_pct = 0
+        if datasets_total:
+            actualizados_pct = float(actualizados) / datasets_total
         result.update({
             'datasets_desactualizados_cant': desactualizados,
             'datasets_actualizados_cant': actualizados,
-            'datasets_actualizados_pct': actualizados_pct,
+            'datasets_actualizados_pct': 100 * round(actualizados_pct, 2),
             'datasets_frecuencia_cant': periodicity_amount
         })
         return result
@@ -1090,7 +1097,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         # Leo catálogo
         catalog = readers.read_catalog(catalog)
         formats = {}
-        for dataset in catalog['dataset']:
+        for dataset in catalog.get('dataset', []):
             for distribution in dataset['distribution']:
                 # 'format' es recomendado, no obligatorio. Puede no estar.
                 distribution_format = distribution.get('format', None)

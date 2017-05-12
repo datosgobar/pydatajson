@@ -822,7 +822,7 @@ revíselo manualmente""".format(actual_filename)
             'catalogo_ultima_actualizacion_dias': dias_diff,
             'datasets_actualizados_cant': 1,
             'datasets_desactualizados_cant': 2,
-            'datasets_actualizados_pct': round(100 * float(1) / 3, 2),
+            'datasets_actualizados_pct': 100 * round(float(1) / 3, 2),
             'datasets_frecuencia_cant': {
                 'R/P1W': 1,
                 'R/P1M': 1,
@@ -1003,6 +1003,18 @@ revíselo manualmente""".format(actual_filename)
             'datasets_actualizados_pct': 0
         }
 
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+    def test_indicators_missing_dataset(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        expected = {
+            'datasets_cant': 0,
+            'datasets_meta_ok_cant': 0,
+            'datasets_meta_error_cant': 0
+        }
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 
