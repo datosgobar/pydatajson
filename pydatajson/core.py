@@ -740,7 +740,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return datasets_to_harvest
 
-    def generate_catalogs_indicators(self, catalogs):
+    def generate_catalogs_indicators(self, catalogs, central_catalog=None):
         """Genera una lista de diccionarios con varios indicadores sobre
         los catálogos provistos, tales como la cantidad de datasets válidos,
         días desde su última fecha actualizada, entre otros.
@@ -748,9 +748,15 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         Args:
             catalogs (str o list): uno o más catalogos sobre los que se quiera
                 obtener indicadores
+            central_catalog (str): catálogo central sobre el cual comparar los
+                datasets subidos en la lista anterior. De no pasarse no se
+                generarán indicadores de federación de datasets.
 
         Returns:
-            list: lista de diccionarios con los indicadores esperados
+            tuple: 2 elementos, el primero una lista de diccionarios con los
+                indicadores esperados, uno por catálogo pasado, y el segundo
+                un diccionario con indicadores a nivel global,
+                datos sobre la lista entera en general.
         """
 
         assert isinstance(catalogs, (str, unicode, dict, list))
@@ -758,8 +764,13 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
 
-        return_list = []
+        # Leo todos los catálogos
+        catalogs = [readers.read_catalog(catalog) for catalog in catalogs]
 
+        network_indicators = {}  # Para la red global
+        indicators_list = []
+
+        fields = {}
         for catalog in catalogs:
             # Leo catálogo
             catalog = readers.read_catalog(catalog)
@@ -788,28 +799,117 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'datasets_meta_ok_pct': datasets_ok_pct
             }
 
-
             # Genero los indicadores relacionados con fechas, y los agrego
             result.update(self._generate_date_indicators(catalog))
-            return_list.append(result)
 
             # Agrego la cuenta de los formatos de las distribuciones
             count = self._count_distribution_formats(catalog)
             result.update({
                 'distribuciones_formatos_cant': count
             })
-            return_list.append(result)
-            fields_count = self._count_required_and_optional_fields(catalog)
-            total_rec = fields_count['total_recomendado']
-            total_opt = fields_count['total_optativo']
 
-            recomendados_pct = float(fields_count['recomendado']) / total_rec
-            optativos_pct = float(fields_count['optativo']) / total_opt
+            # Agrego porcentaje de campos recomendados/optativos usados
+            fields_count = self._count_required_and_optional_fields(catalog)
+
+            # Sumo a la cuenta total de campos usados/totales
+            fields = helpers.add_dicts(fields_count, fields)
+
+            recomendados_pct = 100 * float(fields_count['recomendado']) / \
+                fields_count['total_recomendado']
+            optativos_pct = 100 * float(fields_count['optativo']) / \
+                fields_count['total_optativo']
+
             result.update({
                 'campos_recomendados_pct': round(recomendados_pct, 2),
                 'campos_optativos_pct': round(optativos_pct, 2)
             })
-        return return_list
+            indicators_list.append(result)
+
+        if central_catalog:
+            central_catalog = readers.read_catalog(central_catalog)
+            fed_indicators = self._federation_indicators(catalogs,
+                                                         central_catalog)
+            network_indicators.update(fed_indicators)
+
+        # Sumo los indicadores individuales al total
+        indicators_total = indicators_list[0].copy()
+        for i in range(1, len(indicators_list)):
+            indicators_total = helpers.add_dicts(indicators_total,
+                                                 indicators_list[i])
+
+        network_indicators.update(indicators_total)
+        # Los porcentuales no se pueden sumar, tienen que ser recalculados
+
+        total_pct = float(network_indicators['datasets_meta_ok_cant']) / \
+                    (network_indicators['datasets_meta_ok_cant'] +
+                     network_indicators['datasets_meta_error_cant']) * 100
+        network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
+
+        rec_pct = 100 * float(fields['recomendado']) / \
+            fields['total_recomendado']
+        opt_pct = 100 * float(fields['optativo']) /\
+            fields['total_optativo']
+
+        network_indicators.update({
+            'campos_recomendados_pct': round(rec_pct, 2),
+            'campos_optativos_pct': round(opt_pct, 2)
+        })
+        network_indicators['catalogos_cant'] = len(catalogs)
+        return indicators_list, network_indicators
+
+    def _federation_indicators(self, catalogs,
+                               central_catalog):
+        """Cuenta la cantidad de datasets incluídos tanto en la lista
+        'catalogs' como en el catálogo central, y genera indicadores a partir
+        de esa información.
+
+        Args:
+            catalogs (list): lista de diccionarios, de catálogos ya parseados
+            central_catalog (dict): catálogo central, ya parseado a un dict
+        """
+
+        federados = 0  # En ambos catálogos
+        no_federados = 0
+
+        # Lo busco uno por uno a ver si está en la lista de catálogos
+        for catalog in catalogs:
+            for dataset in catalog['dataset']:
+                found = False
+                for central_dataset in central_catalog['dataset']:
+                    if self._datasets_equal(dataset, central_dataset):
+                        found = True
+                        federados += 1
+                        break
+                if not found:
+                    no_federados += 1
+
+        federados_pct = 100 * float(federados) / (federados + no_federados)
+        result = {
+            'datasets_federados_cant': federados,
+            'datasets_no_federados_cant': no_federados,
+            'datasets_federados_pct': round(federados_pct, 2)
+        }
+        return result
+
+    @staticmethod
+    def _datasets_equal(dataset, other):
+        """Función de igualdad de dos datasets: se consideran iguales si
+        los valores de los campos 'title', 'publisher.name',
+        'accrualPeriodicity' e 'issued' son iguales en ambos.
+
+        Args:
+            dataset (dict): un dataset, generado por la lectura de un catálogo
+            other (dict): idem anterior
+
+        Returns:
+            bool: True si son iguales, False caso contrario
+        """
+
+        return dataset['title'] == other['title'] and \
+            dataset['publisher'].get('name') == \
+            other['publisher'].get('name') and \
+            dataset['accrualPeriodicity'] == other['accrualPeriodicity'] and \
+            dataset['issued'] == other['issued']
 
     @staticmethod
     def _parse_date_string(date_string):
@@ -1045,4 +1145,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
