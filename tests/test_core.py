@@ -930,7 +930,10 @@ revíselo manualmente""".format(actual_filename)
                 'PDF': 1
             },
             'campos_optativos_pct': 21.95,
-            'campos_recomendados_pct': 55.56
+            'campos_recomendados_pct': 55.56,
+            'datasets_actualizados_cant': 2,
+            'datasets_desactualizados_cant': 2,
+            'datasets_actualizados_pct': 50
         }
 
         for k,v in expected.items():
