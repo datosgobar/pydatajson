@@ -950,7 +950,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             other (dict): idem anterior
 
         Returns:
-            bool: True si son iguales, False caso contrario
+            bool: True si son iguales, False en caso contrario
         """
 
         # Campos a comparar. Si es un campo anidado escribirlo como lista
