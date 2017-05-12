@@ -1123,9 +1123,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             catalog_fields = json.load(f)
 
         # Armado recursivo del resultado
-        return self._count_recursive(catalog, catalog_fields)
+        return self._count_fields_recursive(catalog, catalog_fields)
 
-    def _count_recursive(self, dataset, fields):
+    def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos
         desde 'fields', y cuenta la ocurrencia de los mismos en 'dataset'.
         
@@ -1166,7 +1166,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 for element in elements:
 
                     # Llamada recursiva y suma del resultado al nuestro
-                    result = self._count_recursive(element, v)
+                    result = self._count_fields_recursive(element, v)
                     for key in result:
                         key_count[key] += result[key]
             # Es un elemento normal (no iterable), se verifica si está en

@@ -940,6 +940,7 @@ revíselo manualmente""".format(actual_filename)
             self.assertEqual(network_indicators[k], v)
 
     def test_add_dicts(self):
+        # Testea la función auxiliar para sumar campos de dicts recursivamente
         from pydatajson.helpers import add_dicts
 
         dict = {
@@ -974,6 +975,22 @@ revíselo manualmente""".format(actual_filename)
         }
         result = add_dicts(dict, other)
         self.assertDictEqual(result, expected)
+
+    def test_indicators_invalid_periodicity(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "invalid_periodicity.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        # Periodicidad inválida se considera automáticamente como
+        # catálogo desactualizado
+        expected = {
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 1,
+            'datasets_actualizados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
 
 
 if __name__ == '__main__':
