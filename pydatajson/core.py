@@ -821,17 +821,17 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
              network_indicators['datasets_meta_error_cant']) * 100
 
         network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
+        if fields:  # 'fields' puede estar vacío si ningún campo es válido
+            rec_pct = 100 * float(fields['recomendado']) / \
+                fields['total_recomendado']
 
-        rec_pct = 100 * float(fields['recomendado']) / \
-            fields['total_recomendado']
+            opt_pct = 100 * float(fields['optativo']) / \
+                fields['total_optativo']
 
-        opt_pct = 100 * float(fields['optativo']) / \
-            fields['total_optativo']
-
-        network_indicators.update({
-            'campos_recomendados_pct': round(rec_pct, 2),
-            'campos_optativos_pct': round(opt_pct, 2)
-        })
+            network_indicators.update({
+                'campos_recomendados_pct': round(rec_pct, 2),
+                'campos_optativos_pct': round(opt_pct, 2)
+            })
         updated_pct = 100 * network_indicators['datasets_actualizados_cant'] /\
             float(network_indicators['datasets_actualizados_cant'] +
                   network_indicators['datasets_desactualizados_cant'])
@@ -1033,8 +1033,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         for dataset in catalog['dataset']:
             # Parseo la fecha de publicación, y la frecuencia de actualización
-            periodicity = dataset['accrualPeriodicity']
-
+            periodicity = dataset.get('accrualPeriodicity')
+            if not periodicity:
+                continue
             # Si la periodicity es eventual, se considera como actualizado
             if periodicity == 'eventual':
                 actualizados += 1
@@ -1153,11 +1154,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             # Si la clave es un diccionario se implementa recursivamente el
             # mismo algoritmo
             if isinstance(v, dict):
-                if k not in dataset:  # Si dataset no tiene a key, pasamos
+                # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
+                # list, 'publisher' no. Si no es lista, lo metemos en una.
+                # Si no es ninguno de los dos, dataset[k] es inválido
+                if not isinstance(dataset.get(k), (dict, list)):
                     continue
 
-                # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
-                # list, 'publisher' no. Si no es lista, lo metemos en una
                 elements = dataset[k]
                 if not isinstance(elements, list):
                     elements = [dataset[k].copy()]

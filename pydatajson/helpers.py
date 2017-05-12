@@ -151,7 +151,11 @@ def parse_repeating_time_interval(date_str):
         value_end = date_str.find(interval)
         if value_end < 0:
             continue
-        days += int(float(date_str[index:value_end]) * intervals[interval])
+        try:
+            days += int(float(date_str[index:value_end]) * intervals[interval])
+        # Valor de accrualPeriodicity inválido, se toma como 0
+        except ValueError:
+            continue
         index = value_end
 
     return max(days, 1)
