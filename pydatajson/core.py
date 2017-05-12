@@ -953,11 +953,25 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             bool: True si son iguales, False caso contrario
         """
 
-        return dataset['title'] == other['title'] and \
-            dataset['publisher'].get('name') == \
-            other['publisher'].get('name') and \
-            dataset['accrualPeriodicity'] == other['accrualPeriodicity'] and \
-            dataset['issued'] == other['issued']
+        # Campos a comparar. Si es un campo anidado escribirlo como lista
+        fields = ['title',
+                  ['publisher', 'name'],
+                  'accrualPeriodicity',
+                  'issued'
+                  ]
+
+        for field in fields:
+            if isinstance(field, list):
+                value = helpers.traverse_dict(dataset, field)
+                other_value = helpers.traverse_dict(other, field)
+            else:
+                value = dataset.get(field)
+                other_value = dataset.get(field)
+
+            if value != other_value:
+                return False
+
+        return True
 
     @staticmethod
     def _parse_date_string(date_string):
