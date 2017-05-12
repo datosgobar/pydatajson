@@ -832,9 +832,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'campos_recomendados_pct': round(rec_pct, 2),
                 'campos_optativos_pct': round(opt_pct, 2)
             })
-        updated_pct = 100 * network_indicators['datasets_actualizados_cant'] /\
-            float(network_indicators['datasets_actualizados_cant'] +
-                  network_indicators['datasets_desactualizados_cant'])
+
+        act = network_indicators['datasets_actualizados_cant']
+        desact = network_indicators['datasets_desactualizados_cant']
+        updated_pct = 0
+        if act or desact:  # Si todos son inválidos ambos dan 0
+            updated_pct = 100 * act / float(act + desact)
 
         network_indicators['datasets_actualizados_pct'] = round(updated_pct, 2)
 

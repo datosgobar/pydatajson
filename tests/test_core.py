@@ -977,7 +977,8 @@ revíselo manualmente""".format(actual_filename)
         self.assertDictEqual(result, expected)
 
     def test_indicators_invalid_periodicity(self):
-        catalog = os.path.join(self.SAMPLES_DIR, "invalid_periodicity.json")
+        catalog = os.path.join(self.SAMPLES_DIR,
+                               "malformed_accrualperiodicity.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
@@ -990,8 +991,20 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            self.assertEqual(indicators[k], v, k)
 
+    def test_indicators_missing_periodicity(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "missing_periodicity.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        expected = {
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 0,
+            'datasets_actualizados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

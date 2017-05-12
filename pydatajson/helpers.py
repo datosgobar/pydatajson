@@ -134,15 +134,19 @@ def add_dicts(one_dict, other_dict):
 def parse_repeating_time_interval(date_str):
     """Parsea un string con un intervalo de tiempo con repetición especificado
     por la norma ISO 8601 en una cantidad de días que representa ese intervalo.
+    Devuelve 0 en caso de que el intervalo sea inválido.
     """
     intervals = {
         'Y': 365,
         'M': 30,
         'W': 7,
         'D': 1,
-        'H': 1,
-        'S': 1
+        'H': 0,
+        'S': 0
     }
+
+    if date_str.find('R/P') != 0:  # Periodicity mal formada
+        return 0
 
     date_str = date_str.strip('R/P')
     days = 0
@@ -158,4 +162,5 @@ def parse_repeating_time_interval(date_str):
             continue
         index = value_end
 
+    # Si el número de días es menor lo redondeamos a 1
     return max(days, 1)
