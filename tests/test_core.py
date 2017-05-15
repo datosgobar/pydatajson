@@ -930,7 +930,7 @@ revíselo manualmente""".format(actual_filename)
                 'PDF': 1
             },
             'campos_optativos_pct': 21.95,
-            'campos_recomendados_pct': 55.56,
+            'campos_recomendados_pct': 44.72,
             'datasets_actualizados_cant': 2,
             'datasets_desactualizados_cant': 2,
             'datasets_actualizados_pct': 50
@@ -996,6 +996,8 @@ revíselo manualmente""".format(actual_filename)
     def test_indicators_missing_periodicity(self):
         catalog = os.path.join(self.SAMPLES_DIR, "missing_periodicity.json")
 
+        # Dataset con periodicidad faltante no aporta valores para indicadores
+        # de tipo 'datasets_(des)actualizados'
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
         expected = {
             'datasets_actualizados_cant': 0,
@@ -1010,11 +1012,19 @@ revíselo manualmente""".format(actual_filename)
         catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        # Catálogo sin datasets no aporta indicadores significativos
         expected = {
             'datasets_cant': 0,
             'datasets_meta_ok_cant': 0,
-            'datasets_meta_error_cant': 0
+            'datasets_meta_error_cant': 0,
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 0,
+            'datasets_actualizados_pct': 0,
+            'distribuciones_formatos_cant': {},
+            'datasets_frecuencia_cant': {}
         }
+
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 

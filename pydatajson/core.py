@@ -1167,14 +1167,14 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
                 # list, 'publisher' no. Si no es lista, lo metemos en una.
                 # Si no es ninguno de los dos, dataset[k] es inválido
-                if not isinstance(dataset.get(k), (dict, list)):
-                    continue
+                # y se pasa un diccionario vacío para poder comparar
+                elements = dataset.get(k)
+                if not isinstance(elements, (list, dict)):
+                    elements = [{}]
 
-                elements = dataset[k]
-                if not isinstance(elements, list):
+                if isinstance(elements, dict):
                     elements = [dataset[k].copy()]
                 for element in elements:
-
                     # Llamada recursiva y suma del resultado al nuestro
                     result = self._count_fields_recursive(element, v)
                     for key in result:
