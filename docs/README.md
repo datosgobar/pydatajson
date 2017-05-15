@@ -67,7 +67,7 @@ from pydatajson import DataJson
 dj = DataJson()
 ```
 
-Si se desea utilizar un esquema alternativo, por favor, consulte la sección "Uso > Setup" del [manual oficial](MANUAL.md), o la documentación oficial.
+Si se desea utilizar un esquema alternativo, por favor, consulte la sección "Uso > Setup" del [manual oficial](docs/MANUAL.md), o la documentación oficial.
 
 ### Validación de metadatos de catálogos
 

@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.10 (2017-05-11)
+-------------------
+
+* Correción ortográfica del listado de frecuencias de actualización admisibles (`pydatajson/schemas/accrualPeriodicity.json`).
+
 0.2.9 (2017-05-04)
 ------------------
 

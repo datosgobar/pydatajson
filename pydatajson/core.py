@@ -758,7 +758,6 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 un diccionario con indicadores a nivel global,
                 datos sobre la lista entera en general.
         """
-
         assert isinstance(catalogs, (str, unicode, dict, list))
         # Si se pasa un único catálogo, genero una lista que lo contenga
         if isinstance(catalogs, (str, unicode, dict)):
@@ -767,65 +766,23 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         # Leo todos los catálogos
         catalogs = [readers.read_catalog(catalog) for catalog in catalogs]
 
-        network_indicators = {}  # Para la red global
         indicators_list = []
-
+        # Cuenta la cantidad de campos usados/recomendados a nivel global
         fields = {}
         for catalog in catalogs:
-            # Leo catálogo
             catalog = readers.read_catalog(catalog)
-            # Obtengo summary para los indicadores del estado de los metadatos
-            summary = self.generate_datasets_summary(catalog)
-            cant_ok = 0
-            cant_error = 0
 
-            cant_distribuciones = 0
-            datasets_total = len(summary)
-            for dataset in summary:
-                cant_distribuciones += dataset['cant_distribuciones']
-
-                if dataset['estado_metadatos'] == "OK":
-                    cant_ok += 1
-                else:  # == "ERROR"
-                    cant_error += 1
-
-            datasets_ok_pct = round(100 * float(cant_ok)/datasets_total, 2)
-
-            result = {
-                'datasets_cant': len(summary),
-                'distribuciones_cant': cant_distribuciones,
-                'datasets_meta_ok_cant': cant_ok,
-                'datasets_meta_error_cant': cant_error,
-                'datasets_meta_ok_pct': datasets_ok_pct
-            }
-
-            # Genero los indicadores relacionados con fechas, y los agrego
-            result.update(self._generate_date_indicators(catalog))
-
-            # Agrego la cuenta de los formatos de las distribuciones
-            count = self._count_distribution_formats(catalog)
-            result.update({
-                'distribuciones_formatos_cant': count
-            })
-
-            # Agrego porcentaje de campos recomendados/optativos usados
-            fields_count = self._count_required_and_optional_fields(catalog)
-
+            fields_count, result = self._generate_indicators(catalog)
+            indicators_list.append(result)
             # Sumo a la cuenta total de campos usados/totales
             fields = helpers.add_dicts(fields_count, fields)
 
-            recomendados_pct = 100 * float(fields_count['recomendado']) / \
-                fields_count['total_recomendado']
-            optativos_pct = 100 * float(fields_count['optativo']) / \
-                fields_count['total_optativo']
+        # Indicadores de la red entera
+        network_indicators = {
+            'catalogos_cant': len(catalogs)
+        }
 
-            result.update({
-                'campos_recomendados_pct': round(recomendados_pct, 2),
-                'campos_optativos_pct': round(optativos_pct, 2)
-            })
-            indicators_list.append(result)
-
-        if central_catalog:
+        if central_catalog:  # Indicadores de federación de la red de nodos
             central_catalog = readers.read_catalog(central_catalog)
             fed_indicators = self._federation_indicators(catalogs,
                                                          central_catalog)
@@ -836,26 +793,121 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         for i in range(1, len(indicators_list)):
             indicators_total = helpers.add_dicts(indicators_total,
                                                  indicators_list[i])
-
         network_indicators.update(indicators_total)
-        # Los porcentuales no se pueden sumar, tienen que ser recalculados
+        # Genero los indicadores de la red entera,
+        self._network_indicator_percentages(fields, network_indicators)
 
-        total_pct = float(network_indicators['datasets_meta_ok_cant']) / \
-                    (network_indicators['datasets_meta_ok_cant'] +
-                     network_indicators['datasets_meta_error_cant']) * 100
-        network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
-
-        rec_pct = 100 * float(fields['recomendado']) / \
-            fields['total_recomendado']
-        opt_pct = 100 * float(fields['optativo']) /\
-            fields['total_optativo']
-
-        network_indicators.update({
-            'campos_recomendados_pct': round(rec_pct, 2),
-            'campos_optativos_pct': round(opt_pct, 2)
-        })
-        network_indicators['catalogos_cant'] = len(catalogs)
         return indicators_list, network_indicators
+
+    @staticmethod
+    def _network_indicator_percentages(fields, network_indicators):
+        """Encapsula el cálculo de indicadores de porcentaje (de errores, 
+        de campos recomendados/optativos utilizados, de datasets actualizados)
+        sobre la red de nodos entera.
+        
+        Args:
+            fields (dict): Diccionario con claves 'recomendado', 'optativo',
+            'total_recomendado', 'total_optativo', cada uno con valores
+            que representan la cantidad de c/u en la red de nodos entera.
+        
+            network_indicators (dict): Diccionario de la red de nodos, con
+            las cantidades de datasets_meta_ok y datasets_(des)actualizados
+            calculados previamente. Se modificará este argumento con los
+            nuevos indicadores.
+        """
+        # Los porcentuales no se pueden sumar, tienen que ser recalculados
+        meta_ok = network_indicators['datasets_meta_ok_cant']
+        meta_error = network_indicators['datasets_meta_error_cant']
+        total_pct = 0
+        if meta_ok or meta_error:  # Evita división por cero
+            total_pct = 100 * float(meta_ok) / (meta_error + meta_ok)
+
+        network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
+        if fields:  # 'fields' puede estar vacío si ningún campo es válido
+            rec_pct = 100 * float(fields['recomendado']) / \
+                fields['total_recomendado']
+
+            opt_pct = 100 * float(fields['optativo']) / \
+                fields['total_optativo']
+
+            network_indicators.update({
+                'campos_recomendados_pct': round(rec_pct, 2),
+                'campos_optativos_pct': round(opt_pct, 2)
+            })
+
+        act = network_indicators['datasets_actualizados_cant']
+        desact = network_indicators['datasets_desactualizados_cant']
+        updated_pct = 0
+        if act or desact:  # Evita división por cero
+            updated_pct = 100 * act / float(act + desact)
+
+        network_indicators['datasets_actualizados_pct'] = round(updated_pct, 2)
+
+    def _generate_indicators(self, catalog):
+        """Genera los indicadores de un catálogo individual.
+        
+        Args:
+            catalog (dict): diccionario de un data.json parseado
+            
+        Returns:
+            dict: diccionario con los indicadores del catálogo provisto
+        """
+        result = {}
+        # Obtengo summary para los indicadores del estado de los metadatos
+        result.update(self._generate_status_indicators(catalog))
+        # Genero los indicadores relacionados con fechas, y los agrego
+        result.update(self._generate_date_indicators(catalog))
+        # Agrego la cuenta de los formatos de las distribuciones
+        count = self._count_distribution_formats(catalog)
+        result.update({
+            'distribuciones_formatos_cant': count
+        })
+        # Agrego porcentaje de campos recomendados/optativos usados
+        fields_count = self._count_required_and_optional_fields(catalog)
+        recomendados_pct = 100 * float(fields_count['recomendado']) / \
+            fields_count['total_recomendado']
+        optativos_pct = 100 * float(fields_count['optativo']) / \
+            fields_count['total_optativo']
+        result.update({
+            'campos_recomendados_pct': round(recomendados_pct, 2),
+            'campos_optativos_pct': round(optativos_pct, 2)
+        })
+        return fields_count, result
+
+    def _generate_status_indicators(self, catalog):
+        """Genera indicadores básicos sobre el estado de un catálogo
+        
+        Args:
+            catalog (dict): diccionario de un data.json parseado
+        
+        Returns:
+            dict: indicadores básicos sobre el catálogo, tal como la cantidad
+            de datasets, distribuciones y número de errores
+        """
+        summary = self.generate_datasets_summary(catalog)
+        cant_ok = 0
+        cant_error = 0
+        cant_distribuciones = 0
+        datasets_total = len(summary)
+        for dataset in summary:
+            cant_distribuciones += dataset['cant_distribuciones']
+
+            if dataset['estado_metadatos'] == "OK":
+                cant_ok += 1
+            else:  # == "ERROR"
+                cant_error += 1
+
+        datasets_ok_pct = 0
+        if datasets_total:
+            datasets_ok_pct = round(100 * float(cant_ok) / datasets_total, 2)
+        result = {
+            'datasets_cant': datasets_total,
+            'distribuciones_cant': cant_distribuciones,
+            'datasets_meta_ok_cant': cant_ok,
+            'datasets_meta_error_cant': cant_error,
+            'datasets_meta_ok_pct': datasets_ok_pct
+        }
+        return result
 
     def _federation_indicators(self, catalogs,
                                central_catalog):
@@ -873,9 +925,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         # Lo busco uno por uno a ver si está en la lista de catálogos
         for catalog in catalogs:
-            for dataset in catalog['dataset']:
+            for dataset in catalog.get('dataset', []):
                 found = False
-                for central_dataset in central_catalog['dataset']:
+                for central_dataset in central_catalog.get('dataset', []):
                     if self._datasets_equal(dataset, central_dataset):
                         found = True
                         federados += 1
@@ -883,7 +935,11 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 if not found:
                     no_federados += 1
 
-        federados_pct = 100 * float(federados) / (federados + no_federados)
+        if federados or no_federados:  # Evita división por 0
+            federados_pct = 100 * float(federados) / (federados + no_federados)
+        else:
+            federados_pct = 0
+
         result = {
             'datasets_federados_cant': federados,
             'datasets_no_federados_cant': no_federados,
@@ -902,14 +958,28 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             other (dict): idem anterior
 
         Returns:
-            bool: True si son iguales, False caso contrario
+            bool: True si son iguales, False en caso contrario
         """
 
-        return dataset['title'] == other['title'] and \
-            dataset['publisher'].get('name') == \
-            other['publisher'].get('name') and \
-            dataset['accrualPeriodicity'] == other['accrualPeriodicity'] and \
-            dataset['issued'] == other['issued']
+        # Campos a comparar. Si es un campo anidado escribirlo como lista
+        fields = ['title',
+                  ['publisher', 'name'],
+                  'accrualPeriodicity',
+                  'issued'
+                  ]
+
+        for field in fields:
+            if isinstance(field, list):
+                value = helpers.traverse_dict(dataset, field)
+                other_value = helpers.traverse_dict(other, field)
+            else:
+                value = dataset.get(field)
+                other_value = dataset.get(field)
+
+            if value != other_value:
+                return False
+
+        return True
 
     @staticmethod
     def _parse_date_string(date_string):
@@ -969,10 +1039,11 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         desactualizados = 0
         periodicity_amount = {}
 
-        for dataset in catalog['dataset']:
+        for dataset in catalog.get('dataset', []):
             # Parseo la fecha de publicación, y la frecuencia de actualización
-            periodicity = dataset['accrualPeriodicity']
-
+            periodicity = dataset.get('accrualPeriodicity')
+            if not periodicity:
+                continue
             # Si la periodicity es eventual, se considera como actualizado
             if periodicity == 'eventual':
                 actualizados += 1
@@ -997,12 +1068,14 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             prev_periodicity = periodicity_amount.get(periodicity, 0)
             periodicity_amount[periodicity] = prev_periodicity + 1
 
-        datasets_total = len(catalog['dataset'])
-        actualizados_pct = round(100 * float(actualizados) / datasets_total, 2)
+        datasets_total = len(catalog.get('dataset', []))
+        actualizados_pct = 0
+        if datasets_total:
+            actualizados_pct = float(actualizados) / datasets_total
         result.update({
             'datasets_desactualizados_cant': desactualizados,
             'datasets_actualizados_cant': actualizados,
-            'datasets_actualizados_pct': actualizados_pct,
+            'datasets_actualizados_pct': 100 * round(actualizados_pct, 2),
             'datasets_frecuencia_cant': periodicity_amount
         })
         return result
@@ -1024,7 +1097,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         # Leo catálogo
         catalog = readers.read_catalog(catalog)
         formats = {}
-        for dataset in catalog['dataset']:
+        for dataset in catalog.get('dataset', []):
             for distribution in dataset['distribution']:
                 # 'format' es recomendado, no obligatorio. Puede no estar.
                 distribution_format = distribution.get('format', None)
@@ -1060,9 +1133,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             catalog_fields = json.load(f)
 
         # Armado recursivo del resultado
-        return self._count_recursive(catalog, catalog_fields)
+        return self._count_fields_recursive(catalog, catalog_fields)
 
-    def _count_recursive(self, dataset, fields):
+    def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos
         desde 'fields', y cuenta la ocurrencia de los mismos en 'dataset'.
         
@@ -1091,18 +1164,19 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             # Si la clave es un diccionario se implementa recursivamente el
             # mismo algoritmo
             if isinstance(v, dict):
-                if k not in dataset: # Si dataset no tiene a key, pasamos
-                    continue
-
                 # dataset[k] puede ser o un dict o una lista, ej 'dataset' es
-                # list, 'publisher' no. Si no es lista, lo metemos en una
-                elements = dataset[k]
-                if not isinstance(elements, list):
+                # list, 'publisher' no. Si no es lista, lo metemos en una.
+                # Si no es ninguno de los dos, dataset[k] es inválido
+                # y se pasa un diccionario vacío para poder comparar
+                elements = dataset.get(k)
+                if not isinstance(elements, (list, dict)):
+                    elements = [{}]
+
+                if isinstance(elements, dict):
                     elements = [dataset[k].copy()]
                 for element in elements:
-
                     # Llamada recursiva y suma del resultado al nuestro
-                    result = self._count_recursive(element, v)
+                    result = self._count_fields_recursive(element, v)
                     for key in result:
                         key_count[key] += result[key]
             # Es un elemento normal (no iterable), se verifica si está en

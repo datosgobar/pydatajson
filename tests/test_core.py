@@ -822,7 +822,7 @@ revíselo manualmente""".format(actual_filename)
             'catalogo_ultima_actualizacion_dias': dias_diff,
             'datasets_actualizados_cant': 1,
             'datasets_desactualizados_cant': 2,
-            'datasets_actualizados_pct': round(100 * float(1) / 3, 2),
+            'datasets_actualizados_pct': 100 * round(float(1) / 3, 2),
             'datasets_frecuencia_cant': {
                 'R/P1W': 1,
                 'R/P1M': 1,
@@ -930,12 +930,103 @@ revíselo manualmente""".format(actual_filename)
                 'PDF': 1
             },
             'campos_optativos_pct': 21.95,
-            'campos_recomendados_pct': 55.56
+            'campos_recomendados_pct': 44.72,
+            'datasets_actualizados_cant': 2,
+            'datasets_desactualizados_cant': 2,
+            'datasets_actualizados_pct': 50
         }
 
         for k,v in expected.items():
             self.assertEqual(network_indicators[k], v)
 
+    def test_add_dicts(self):
+        # Testea la función auxiliar para sumar campos de dicts recursivamente
+        from pydatajson.helpers import add_dicts
+
+        dict = {
+            "distribuciones_formatos_cant": {
+                "SHP": 207,
+                "ZIP": 122,
+                "JPEG": 26,
+                "PDF": 235,
+                "CSV": 375,
+                "XLS": 25
+            }
+        }
+        other = {
+            "distribuciones_formatos_cant": {
+                "RDF": 1,
+                "CSV": 124,
+                "JSON": 5
+            }
+        }
+
+        expected = {
+            "distribuciones_formatos_cant": {
+                "SHP": 207,
+                "ZIP": 122,
+                "JPEG": 26,
+                "PDF": 235,
+                "CSV": 499,
+                "XLS": 25,
+                "RDF": 1,
+                "JSON": 5
+            }
+        }
+        result = add_dicts(dict, other)
+        self.assertDictEqual(result, expected)
+
+    def test_indicators_invalid_periodicity(self):
+        catalog = os.path.join(self.SAMPLES_DIR,
+                               "malformed_accrualperiodicity.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        # Periodicidad inválida se considera automáticamente como
+        # catálogo desactualizado
+        expected = {
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 1,
+            'datasets_actualizados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+    def test_indicators_missing_periodicity(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "missing_periodicity.json")
+
+        # Dataset con periodicidad faltante no aporta valores para indicadores
+        # de tipo 'datasets_(des)actualizados'
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        expected = {
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 0,
+            'datasets_actualizados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+    def test_indicators_missing_dataset(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        # Catálogo sin datasets no aporta indicadores significativos
+        expected = {
+            'datasets_cant': 0,
+            'datasets_meta_ok_cant': 0,
+            'datasets_meta_error_cant': 0,
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 0,
+            'datasets_actualizados_pct': 0,
+            'distribuciones_formatos_cant': {},
+            'datasets_frecuencia_cant': {}
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

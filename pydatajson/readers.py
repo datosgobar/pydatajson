@@ -50,7 +50,7 @@ provisto: {}.""".format(catalog)
         catalog_dict = catalog
     else:
         # catalog es una URL remota o un path local
-        suffix = catalog.split(".")[-1]
+        suffix = catalog.split(".")[-1].strip("/")
         unknown_suffix_msg = """
 {} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
         assert suffix in ["json", "xlsx"], unknown_suffix_msg
