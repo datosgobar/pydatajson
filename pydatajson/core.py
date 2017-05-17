@@ -1026,14 +1026,26 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         result = {}
 
         # Cálculo de días desde su última actualización.
-        # 'issued' no es obligatorio, ignoramos el indicador si no existe
+        # 'issued' se busca primero a nivel catálogo, luego a nivel dataset,
+        # y nos quedamos con el que sea más reciente
         date_issued = catalog.get('issued', None)
+        dias_ultima_actualizacion = None
+        # 'issued' a nivel catálogo no es obligatorio, si no está pasamos
         if isinstance(date_issued, (unicode, str)):
             date = self._parse_date_string(date_issued)
             dias_ultima_actualizacion = (datetime.now() - date).days
-            result.update({
-                'catalogo_ultima_actualizacion_dias': dias_ultima_actualizacion
-            })
+
+        for dataset in catalog.get('dataset', []):
+            date = self._parse_date_string(dataset.get('issued', ""))
+            days_diff = float((datetime.now() - date).days)
+
+            # Actualizo el indicador de días de actualización si corresponde
+            if not dias_ultima_actualizacion or \
+                    days_diff < dias_ultima_actualizacion:
+                dias_ultima_actualizacion = days_diff
+
+        result['catalogo_ultima_actualizacion_dias'] = \
+            dias_ultima_actualizacion
 
         actualizados = 0
         desactualizados = 0
@@ -1055,12 +1067,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             # Se parsea el período especificado por accrualPeriodicity,
             # cumple con el estándar ISO 8601 para tiempos con repetición
             date = self._parse_date_string(dataset['issued'])
-
+            days_diff = float((datetime.now() - date).days)
             interval = helpers.parse_repeating_time_interval(periodicity) * \
                 (1 + tolerance)
-            diff = float((datetime.now() - date).days)
+            
 
-            if diff < interval:
+            if days_diff < interval:
                 actualizados += 1
             else:
                 desactualizados += 1

@@ -1028,5 +1028,21 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 
+    def test_last_updated_indicator_missing_issued_field(self):
+        from datetime import datetime
+        catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
+
+        # Catálogo no tiene 'issued', pero su dataset sí -> uso el del dataset
+        expected = {
+            'catalogo_ultima_actualizacion_dias':  dias_diff
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
