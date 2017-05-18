@@ -773,6 +773,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             catalog = readers.read_catalog(catalog)
 
             fields_count, result = self._generate_indicators(catalog)
+            if central_catalog:
+                result.update(self._federation_indicators(catalog,
+                                                          central_catalog))
+
             indicators_list.append(result)
             # Sumo a la cuenta total de campos usados/totales
             fields = helpers.add_dicts(fields_count, fields)
@@ -781,12 +785,6 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         network_indicators = {
             'catalogos_cant': len(catalogs)
         }
-
-        if central_catalog:  # Indicadores de federación de la red de nodos
-            central_catalog = readers.read_catalog(central_catalog)
-            fed_indicators = self._federation_indicators(catalogs,
-                                                         central_catalog)
-            network_indicators.update(fed_indicators)
 
         # Sumo los indicadores individuales al total
         indicators_total = indicators_list[0].copy()
@@ -842,6 +840,14 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             updated_pct = 100 * act / float(act + desact)
 
         network_indicators['datasets_actualizados_pct'] = round(updated_pct, 2)
+
+        federados = network_indicators.get('datasets_federados_cant')
+        no_federados = network_indicators.get('datasets_no_federados_cant')
+
+        if federados or no_federados:
+            federados_pct = 100 * float(federados) / (federados + no_federados)
+            network_indicators['datasets_federados_pct'] = \
+                round(federados_pct, 2)
 
     def _generate_indicators(self, catalog):
         """Genera los indicadores de un catálogo individual.
@@ -909,31 +915,31 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         }
         return result
 
-    def _federation_indicators(self, catalogs,
+    def _federation_indicators(self, catalog,
                                central_catalog):
         """Cuenta la cantidad de datasets incluídos tanto en la lista
         'catalogs' como en el catálogo central, y genera indicadores a partir
         de esa información.
 
         Args:
-            catalogs (list): lista de diccionarios, de catálogos ya parseados
-            central_catalog (dict): catálogo central, ya parseado a un dict
+            catalog (dict): catálogo ya parseado
+            central_catalog (str o dict): ruta a catálogo central, o un dict
+                con el catálogo ya parseado
         """
-
+        central_catalog = readers.read_catalog(central_catalog)
         federados = 0  # En ambos catálogos
         no_federados = 0
 
         # Lo busco uno por uno a ver si está en la lista de catálogos
-        for catalog in catalogs:
-            for dataset in catalog.get('dataset', []):
-                found = False
-                for central_dataset in central_catalog.get('dataset', []):
-                    if self._datasets_equal(dataset, central_dataset):
-                        found = True
-                        federados += 1
-                        break
-                if not found:
-                    no_federados += 1
+        for dataset in catalog.get('dataset', []):
+            found = False
+            for central_dataset in central_catalog.get('dataset', []):
+                if self._datasets_equal(dataset, central_dataset):
+                    found = True
+                    federados += 1
+                    break
+            if not found:
+                no_federados += 1
 
         if federados or no_federados:  # Evita división por 0
             federados_pct = 100 * float(federados) / (federados + no_federados)
