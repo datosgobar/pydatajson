@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.11 (2017-05-23) 
+-------------------
+
+* Se agrega en `core` el método `DataJson.generate_catalogs_indicators`, que genera indicadores de monitoreo de catálogos, recopilando información sobre, entre otras cosas, su validez, actualidad y formato de sus contenidos.
+
 0.2.10 (2017-05-11)
 -------------------
 

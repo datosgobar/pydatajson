@@ -50,10 +50,11 @@ A partir de la versión 0.2.x (Febrero 2017), la funcionalidad del paquete se ma
 
 ## Usos
 
-La librería cuenta con funciones para tres objetivos principales:
+La librería cuenta con funciones para cuatro objetivos principales:
 - **validación de metadatos de catálogos** y los datasets,
-- **generación de reportes** sobre el contenido y la validez de los metadatos de catálogos y datasets, y
-- **transformación de archivos de metadatos** al formato estándar (JSON).
+- **generación de reportes** sobre el contenido y la validez de los metadatos de catálogos y datasets,
+- **transformación de archivos de metadatos** al formato estándar (JSON), y
+- **generación de indicadores de monitoreo de catálogos** y sus datasets.
 
 A continuación se proveen ejemplos de cada uno de estas acciones. Si desea analizar un flujo de trabajo más completo, refiérase a los Jupyter Notebook de [`samples/`](samples/)
 
@@ -188,6 +189,29 @@ catalogo_xlsx = "tests/samples/catalogo_justicia.xlsx"
 
 catalogo = read_catalog(catalogo_xlsx)
 write_json(obj=catalogo, path="tests/temp/catalogo_justicia.json")
+```
+
+### Generación de indicadores de monitoreo de catálogos
+
+`pydatajson` puede calcular indicadores sobre uno o más catálogos. Estos indicadores recopilan información de interés sobre los datasets de cada uno, tales como:
+- el estado de validez de los catálogos,
+- el número de días desde su última actualización, 
+- el formato de sus distribuciones,
+- frecuencia de actualización de los datasets,
+- estado de federación de los datasets, comparándolo con el catálogo central
+
+La función usada es `generate_catalogs_indicators`, que acepta los catálogos como parámetros. Devuelve dos valores:
+- una lista con tantos valores como catálogos, con cada elemento siendo un diccionario con los indicadores del catálogo respectivo
+- un diccionario con los indicadores de la red entera (una suma de los individuales)
+```python
+catalogs = ["tests/samples/full_data.json", "http://181.209.63.71/data.json"]
+indicators, network_indicators = dj.generate_catalogs_indicators(catalogs)
+
+# Opcionalmente podemos pasar como segundo argumento un catálogo central,
+# para poder calcular indicadores sobre la federación de los datasets en 'catalogs'
+
+central_catalog = "http://datos.gob.ar/data.json"
+indicators, network_indicators = dj.generate_catalogs_indicators(catalogs, central_catalog)
 ```
 
 ## Tests
