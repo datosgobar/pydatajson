@@ -106,3 +106,61 @@ def sheet_to_table(worksheet):
 def string_to_list(string, sep=","):
     """Transforma una string con elementos separados por `sep` en una lista."""
     return [value.strip() for value in string.split(sep)]
+
+
+def add_dicts(one_dict, other_dict):
+    """Suma clave a clave los dos diccionarios. Si algún valor es un
+    diccionario, llama recursivamente a la función. Ambos diccionarios deben
+    tener exactamente las mismas claves, y los valores asociados deben ser
+    sumables, o diccionarios.
+    
+    Args:
+        one_dict (dict)
+        other_dict (dict)
+        
+    Returns:
+        dict: resultado de la suma
+    """
+    result = other_dict.copy()
+    for k, v in one_dict.items():
+        if isinstance(v, dict):
+            result[k] = add_dicts(v, other_dict.get(k, {}))
+        else:
+            result[k] = result.get(k, 0) + v
+
+    return result
+
+
+def parse_repeating_time_interval(date_str):
+    """Parsea un string con un intervalo de tiempo con repetición especificado
+    por la norma ISO 8601 en una cantidad de días que representa ese intervalo.
+    Devuelve 0 en caso de que el intervalo sea inválido.
+    """
+    intervals = {
+        'Y': 365,
+        'M': 30,
+        'W': 7,
+        'D': 1,
+        'H': 0,
+        'S': 0
+    }
+
+    if date_str.find('R/P') != 0:  # Periodicity mal formada
+        return 0
+
+    date_str = date_str.strip('R/P')
+    days = 0
+    index = 0
+    for interval in intervals:
+        value_end = date_str.find(interval)
+        if value_end < 0:
+            continue
+        try:
+            days += int(float(date_str[index:value_end]) * intervals[interval])
+        # Valor de accrualPeriodicity inválido, se toma como 0
+        except ValueError:
+            continue
+        index = value_end
+
+    # Si el número de días es menor lo redondeamos a 1
+    return max(days, 1)

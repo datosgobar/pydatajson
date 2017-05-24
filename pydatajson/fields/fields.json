@@ -1,0 +1,59 @@
+{
+    "title": "requerido",
+    "description": "requerido",
+    "publisher": {
+      "name": "requerido",
+      "mbox": "requerido"
+    },
+    "issued": "recomendado",
+    "modified": "recomendado",
+    "language": "recomendado",
+    "superThemeTaxonomy": "requerido",
+    "themeTaxonomy": "recomendado",
+    "license": "recomendado",
+    "homepage": "recomendado",
+    "rights": "optativo",
+    "spatial": "optativo",
+    "dataset": {
+        "title": "requerido",
+        "description": "requerido",
+        "publisher": {
+          "name": "requerido",
+          "mbox": "recomendado"
+        },
+        "contactPoint": {
+          "fn": "recomendado",
+          "hasEmail": "recomendado"
+        },
+        "superTheme": "requerido",
+        "theme": "recomendado",
+        "keyword": "recomendado",
+        "accrualPeriodicity": "requerido",
+        "issued": "requerido",
+        "modified": "recomendado",
+        "identifier": "optativo",
+        "language": "optativo",
+        "spatial": "optativo",
+        "temporal": "recomendado",
+        "landingPage": "optativo",
+        "license": "recomendado",
+        "distribution": {
+            "accessURL": "requerido",
+            "description": "recomendado",
+            "format": "recomendado",
+            "mediaType": "optativo",
+            "downloadURL": "requerido",
+            "title": "requerido",
+            "license": "recomendado",
+            "byteSize": "optativo",
+            "issued": "requerido",
+            "modified": "recomendado",
+            "rights": "optativo",
+            "field": {
+                "title": "recomendado",
+                "type": "recomendado",
+                "description": "recomendado"
+            }
+        }
+    }
+}

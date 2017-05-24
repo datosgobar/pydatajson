@@ -794,5 +794,255 @@ revíselo manualmente""".format(actual_filename)
 
         self.assertTrue(comparison)
 
+    def test_generate_catalog_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        # Resultados esperados haciendo cuentas manuales sobre el catálogo
+        expected = {
+            'datasets_cant': 3,
+            'distribuciones_cant': 6,
+            'datasets_meta_ok_cant': 2,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+        }
+
+        for k, v in expected.items():
+            self.assertTrue(indicators[k], v)
+
+    def test_date_indicators(self):
+        from datetime import datetime
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
+
+        expected = {
+            'catalogo_ultima_actualizacion_dias': dias_diff,
+            'datasets_actualizados_cant': 1,
+            'datasets_desactualizados_cant': 2,
+            'datasets_actualizados_pct': 100 * round(float(1) / 3, 2),
+            'datasets_frecuencia_cant': {
+                'R/P1W': 1,
+                'R/P1M': 1,
+                'eventual': 1
+            },
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_format_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'distribuciones_formatos_cant': {
+                'CSV': 1,
+                'XLSX': 1,
+                'PDF': 1
+            }
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_field_indicators_on_min_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
+
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'campos_recomendados_pct': 0.0,
+            'campos_optativos_pct': 0.0,
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_field_indicators_on_full_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        # Se espera un único catálogo como resultado, índice 0
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'campos_recomendados_pct': 100,
+            'campos_optativos_pct': 100
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_federation_indicators_same_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog, catalog)[1]
+
+        # Esperado: todos los datasets están federados
+        expected = {
+            'datasets_federados_cant': 3,
+            'datasets_no_federados_cant': 0,
+            'datasets_federados_pct': 100
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_federation_indicators_no_datasets(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
+        indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
+
+        # Esperado: ningún dataset está federado
+        expected = {
+            'datasets_federados_cant': 0,
+            'datasets_no_federados_cant': 3,
+            'datasets_federados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+    def test_network_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
+            one_catalog,
+            other_catalog
+        ])
+
+        # Esperado: suma de los indicadores individuales
+        expected = {
+            'catalogos_cant': 2,
+            'datasets_cant': 4,
+            'distribuciones_cant': 7,
+            'datasets_meta_ok_cant': 3,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': 100 * float(3) / 4,
+            'distribuciones_formatos_cant': {
+                'CSV': 2,
+                'XLSX': 1,
+                'PDF': 1
+            },
+            'campos_optativos_pct': 21.95,
+            'campos_recomendados_pct': 44.72,
+            'datasets_actualizados_cant': 2,
+            'datasets_desactualizados_cant': 2,
+            'datasets_actualizados_pct': 50
+        }
+
+        for k,v in expected.items():
+            self.assertEqual(network_indicators[k], v)
+
+    def test_add_dicts(self):
+        # Testea la función auxiliar para sumar campos de dicts recursivamente
+        from pydatajson.helpers import add_dicts
+
+        dict = {
+            "distribuciones_formatos_cant": {
+                "SHP": 207,
+                "ZIP": 122,
+                "JPEG": 26,
+                "PDF": 235,
+                "CSV": 375,
+                "XLS": 25
+            }
+        }
+        other = {
+            "distribuciones_formatos_cant": {
+                "RDF": 1,
+                "CSV": 124,
+                "JSON": 5
+            }
+        }
+
+        expected = {
+            "distribuciones_formatos_cant": {
+                "SHP": 207,
+                "ZIP": 122,
+                "JPEG": 26,
+                "PDF": 235,
+                "CSV": 499,
+                "XLS": 25,
+                "RDF": 1,
+                "JSON": 5
+            }
+        }
+        result = add_dicts(dict, other)
+        self.assertDictEqual(result, expected)
+
+    def test_indicators_invalid_periodicity(self):
+        catalog = os.path.join(self.SAMPLES_DIR,
+                               "malformed_accrualperiodicity.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        # Periodicidad inválida se considera automáticamente como
+        # catálogo desactualizado
+        expected = {
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 1,
+            'datasets_actualizados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+    def test_indicators_missing_periodicity(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "missing_periodicity.json")
+
+        # Dataset con periodicidad faltante no aporta valores para indicadores
+        # de tipo 'datasets_(des)actualizados'
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        expected = {
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 0,
+            'datasets_actualizados_pct': 0
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+    def test_indicators_missing_dataset(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        # Catálogo sin datasets no aporta indicadores significativos
+        expected = {
+            'datasets_cant': 0,
+            'datasets_meta_ok_cant': 0,
+            'datasets_meta_error_cant': 0,
+            'datasets_actualizados_cant': 0,
+            'datasets_desactualizados_cant': 0,
+            'datasets_actualizados_pct': 0,
+            'distribuciones_formatos_cant': {},
+            'datasets_frecuencia_cant': {}
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+    def test_last_updated_indicator_missing_issued_field(self):
+        from datetime import datetime
+        catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        dias_diff = (datetime.now() - datetime(2016, 4, 14)).days
+
+        # Catálogo no tiene 'issued', pero su dataset sí -> uso el del dataset
+        expected = {
+            'catalogo_ultima_actualizacion_dias':  dias_diff
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v, k)
+
+
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
