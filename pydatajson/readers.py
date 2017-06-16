@@ -175,9 +175,9 @@ def _get_dataset_index(catalog, dataset_identifier):
     ]
 
     # Debe haber exactamente un dataset con el identificador provisto.
-    no_dsets_msg = "No hay ningún dataset con el identifier {}".format(
+    no_dsets_msg = "No hay ningun dataset con el identifier {}".format(
         dataset_identifier)
-    many_dsets_msg = "Hay más de un dataset con el identifier {}: {}".format(
+    many_dsets_msg = "Hay mas de un dataset con el identifier {}: {}".format(
         dataset_identifier, matching_datasets)
     assert len(matching_datasets) != 0, no_dsets_msg
     assert len(matching_datasets) < 2, many_dsets_msg
@@ -230,13 +230,18 @@ El archivo a leer debe tener extensión XLSX."""
 
     catalogs = helpers.sheet_to_table(workbook["Catalog"])
     # Debe haber exactamente un catálogo en la hoja 'Catalog'
-    assert (len(catalogs) != 0), "No hay ningún catálogo en la hoja 'Catalog'"
-    assert (len(catalogs) < 2), "Hay más de un catálogo en la hoja 'Catalog'"
+    assert (len(catalogs) != 0), "No hay ningun catálogo en la hoja 'Catalog'"
+    assert (len(catalogs) < 2), "Hay mas de un catálogo en la hoja 'Catalog'"
     # Genero el catálogo base
     catalog = catalogs[0]
 
     # Agrego themes y datasets al catálogo
     catalog["catalog_dataset"] = helpers.sheet_to_table(workbook["Dataset"])
+
+    # Me aseguro que los identificadores de dataset se guarden como cadenas
+    for dataset in catalog["catalog_dataset"]:
+        dataset["dataset_identifier"] = unicode(dataset["dataset_identifier"])
+
     catalog["catalog_themeTaxonomy"] = (
         helpers.sheet_to_table(workbook["Theme"]))
 
@@ -247,6 +252,9 @@ El archivo a leer debe tener extensión XLSX."""
     # Ubico cada distribución en su datasets
     distributions = helpers.sheet_to_table(workbook["Distribution"])
     for distribution in distributions:
+        # Me aseguro que los identificadores de dataset se guarden como cadenas
+        distribution["dataset_identifier"] = unicode(
+            distribution["dataset_identifier"])
         dataset_index = _get_dataset_index(
             catalog, distribution["dataset_identifier"])
         dataset = catalog["catalog_dataset"][dataset_index]
