@@ -166,24 +166,35 @@ def _make_contact_point(dataset):
     return dataset
 
 
-def _get_dataset_index(catalog, dataset_identifier):
+def _get_dataset_index(catalog, dataset_identifier, dataset_title):
     """Devuelve el índice de un dataset en el catálogo en función de su
     identificador"""
-    matching_datasets = [
-        idx for idx, dataset in enumerate(catalog["catalog_dataset"])
-        if dataset["dataset_identifier"] == dataset_identifier
-    ]
+    matching_datasets = []
 
-    # Debe haber exactamente un dataset con el identificador provisto.
+    for idx, dataset in enumerate(catalog["catalog_dataset"]):
+        if dataset["dataset_identifier"] == dataset_identifier:
+            if dataset["dataset_title"] == dataset_title:
+                matching_datasets.append(idx)
+            else:
+                mismatched_title_msg = """
+Se encontro un dataset con ID '{}', pero su titulo es '{}' en lugar del
+esperado '{}'. Este dataset NO se considerara.""".format(
+    dataset_identifier, dataset["dataset_title"], dataset_title)
+                print(mismatched_title_msg)
+
+# Debe haber exactamente un dataset con el identificador provisto.
     no_dsets_msg = "No hay ningun dataset con el identifier {}".format(
         dataset_identifier)
     many_dsets_msg = "Hay mas de un dataset con el identifier {}: {}".format(
         dataset_identifier, matching_datasets)
-    assert len(matching_datasets) != 0, no_dsets_msg
-    assert len(matching_datasets) < 2, many_dsets_msg
-
-    dataset_index = matching_datasets[0]
-    return dataset_index
+    if len(matching_datasets) == 0:
+        print(no_dsets_msg)
+        return None
+    elif len(matching_datasets) > 1:
+        print(many_dsets_msg)
+        return None
+    else:
+        return matching_datasets[0]
 
 
 def _get_distribution_indexes(catalog, dataset_identifier, distribution_title):
@@ -200,10 +211,10 @@ def _get_distribution_indexes(catalog, dataset_identifier, distribution_title):
 
     # Debe haber exactamente una distribución con los identicadores provistos
     no_dists_msg = """
-No hay ninguna distribución de título {} en el dataset con identificador {}.
+No hay ninguna distribucion de titulo '{}' en el dataset con ID '{}'.
 """.format(distribution_title, dataset_identifier)
     many_dists_msg = """
-Hay más de una distribución de título {} en el dataset con identificador {}:
+Hay mas de una distribucion de título '{}' en el dataset con ID '{}':
 {}""".format(distribution_title, dataset_identifier, matching_distributions)
     assert len(matching_distributions) != 0, no_dists_msg
     assert len(matching_distributions) < 2, many_dists_msg
@@ -249,16 +260,23 @@ El archivo a leer debe tener extensión XLSX."""
     for dataset in catalog["catalog_dataset"]:
         dataset["dataset_distribution"] = []
 
-    # Ubico cada distribución en su datasets
+    # Ubico cada distribución en su dataset
     distributions = helpers.sheet_to_table(workbook["Distribution"])
     for distribution in distributions:
         # Me aseguro que los identificadores de dataset se guarden como cadenas
         distribution["dataset_identifier"] = unicode(
             distribution["dataset_identifier"])
         dataset_index = _get_dataset_index(
-            catalog, distribution["dataset_identifier"])
-        dataset = catalog["catalog_dataset"][dataset_index]
-        dataset["dataset_distribution"].append(distribution)
+            catalog, distribution["dataset_identifier"],
+            distribution["dataset_title"])
+        if dataset_index is None:
+            print("""La distribucion con ID '{}' y titulo '{}' no se
+pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
+    distribution["distribution_identifier"],
+    distribution["distribution_title"]))
+        else:
+            dataset = catalog["catalog_dataset"][dataset_index]
+            dataset["dataset_distribution"].append(distribution)
 
     # Ubico cada campo en su distribución
     fields = helpers.sheet_to_table(workbook["Field"])
