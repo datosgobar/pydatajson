@@ -127,7 +127,8 @@
                     "issued": "2016-09-29T11:17:50.274309",
                     "format": "CSV",
                     "modified": "2016-12-19T12:38:58.700747",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/8db246a2-48dd-4f2f-b08e-ab6293747882/download/baseinfolegnormativanacional.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/8db246a2-48dd-4f2f-b08e-ab6293747882/download/baseinfolegnormativanacional.csv",
+                    "identifier": "1"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
@@ -183,7 +184,8 @@
                     "issued": "2016-10-14T16:02:49.841535",
                     "format": "CSV",
                     "modified": "2016-12-19T14:48:05.348064",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/d9fbf1d5-679e-4833-bcdc-3a8f58523d18/download/basecomplementariainfolegnormasmodificadas.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/d9fbf1d5-679e-4833-bcdc-3a8f58523d18/download/basecomplementariainfolegnormasmodificadas.csv",
+                    "identifier": "2"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
@@ -239,7 +241,8 @@
                     "issued": "2016-10-18T17:26:58.415087",
                     "format": "CSV",
                     "modified": "2016-12-19T14:47:21.330355",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/f9170086-6538-44f1-8c7e-3e193c1fea7f/download/basecomplementariainfolegnormasmodificatorias.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/f9170086-6538-44f1-8c7e-3e193c1fea7f/download/basecomplementariainfolegnormasmodificatorias.csv",
+                    "identifier": "3"
                 }
             ],
             "identifier": "d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23"
@@ -325,7 +328,8 @@
                     "issued": "2016-10-06T14:03:39.969278",
                     "format": "CSV",
                     "modified": "2016-11-14T16:24:13.596458",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/9775fcdf-99b9-47f6-87ae-6d46cfd15b40/resource/906a1daf-cb0c-4765-98d4-40b0f8caf48b/download/centros-acceso-justicia-activos.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/9775fcdf-99b9-47f6-87ae-6d46cfd15b40/resource/906a1daf-cb0c-4765-98d4-40b0f8caf48b/download/centros-acceso-justicia-activos.csv",
+                    "identifier": "4"
                 }
             ],
             "identifier": "9775fcdf-99b9-47f6-87ae-6d46cfd15b40"
@@ -417,7 +421,8 @@
                     "issued": "2016-10-06T13:36:46.495627",
                     "format": "CSV",
                     "modified": "2016-12-21T09:04:05.877238",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/e042c362-ff39-476f-9328-056a9de753f0/resource/a95d0e79-08c4-49b9-88b8-d569484bf1d7/download/rebeldias-y-capturas.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/e042c362-ff39-476f-9328-056a9de753f0/resource/a95d0e79-08c4-49b9-88b8-d569484bf1d7/download/rebeldias-y-capturas.csv",
+                    "identifier": "5"
                 }
             ],
             "identifier": "e042c362-ff39-476f-9328-056a9de753f0"
@@ -461,7 +466,8 @@
                     "issued": "2016-09-09T18:53:26.160150",
                     "format": "CSV",
                     "modified": "2016-09-29T16:52:23.970945",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/b029969c-85a7-4adb-afe1-33165e835517/download/declaraciones-juradas-2015.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/b029969c-85a7-4adb-afe1-33165e835517/download/declaraciones-juradas-2015.csv",
+                    "identifier": "6"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/declaraciones-juradas-patrimoniales-integrales/archivo/0bd85cd7-ef0a-4e62-be7b-6d58db17ebbc",
@@ -470,7 +476,8 @@
                     "issued": "2016-09-28T16:16:22.346673",
                     "format": "CSV",
                     "modified": "2016-09-29T16:53:24.126454",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/0bd85cd7-ef0a-4e62-be7b-6d58db17ebbc/download/declaraciones-juradas-2014.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/0bd85cd7-ef0a-4e62-be7b-6d58db17ebbc/download/declaraciones-juradas-2014.csv",
+                    "identifier": "7"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/declaraciones-juradas-patrimoniales-integrales/archivo/357e0886-2b15-481b-9e4b-d7f663c214bb",
@@ -479,7 +486,8 @@
                     "issued": "2016-09-28T16:17:05.354649",
                     "format": "CSV",
                     "modified": "2016-09-29T16:53:46.438911",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/357e0886-2b15-481b-9e4b-d7f663c214bb/download/declaraciones-juradas-2013.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/357e0886-2b15-481b-9e4b-d7f663c214bb/download/declaraciones-juradas-2013.csv",
+                    "identifier": "8"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/declaraciones-juradas-patrimoniales-integrales/archivo/daad6625-2610-4d7e-b4fc-45a235e48f07",
@@ -488,7 +496,8 @@
                     "issued": "2016-09-28T16:17:46.765563",
                     "format": "CSV",
                     "modified": "2016-09-29T16:54:16.402765",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/daad6625-2610-4d7e-b4fc-45a235e48f07/download/declaraciones-juradas-2012.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/4680199f-6234-4262-8a2a-8f7993bf784d/resource/daad6625-2610-4d7e-b4fc-45a235e48f07/download/declaraciones-juradas-2012.csv",
+                    "identifier": "9"
                 }
             ],
             "identifier": "4680199f-6234-4262-8a2a-8f7993bf784d"
@@ -532,7 +541,8 @@
                     "issued": "2016-09-20T11:30:50.123647",
                     "format": "CSV",
                     "modified": "2016-10-24T16:25:02.132386",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/c81a673f-50e4-4d3e-8ff5-8e623adf8161/download/igj-entidades.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/c81a673f-50e4-4d3e-8ff5-8e623adf8161/download/igj-entidades.csv",
+                    "identifier": "10"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/ed11b717-d6d1-411d-b040-bfc0987cd72c",
@@ -541,7 +551,8 @@
                     "issued": "2016-09-21T16:18:37.322477",
                     "format": "CSV",
                     "modified": "2016-10-13T17:07:09.776322",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/ed11b717-d6d1-411d-b040-bfc0987cd72c/download/igj-domicilios.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/ed11b717-d6d1-411d-b040-bfc0987cd72c/download/igj-domicilios.csv",
+                    "identifier": "11"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/079c1104-aae4-4fe1-9474-e44e99054c9d",
@@ -550,7 +561,8 @@
                     "issued": "2016-10-17T12:02:50.374963",
                     "format": "CSV",
                     "modified": "2016-10-20T10:48:32.582651",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/079c1104-aae4-4fe1-9474-e44e99054c9d/download/igj-autoridades.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/079c1104-aae4-4fe1-9474-e44e99054c9d/download/igj-autoridades.csv",
+                    "identifier": "12"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/ad6835d8-0d6b-42dc-bb8f-2641af5ddf01",
@@ -559,7 +571,8 @@
                     "issued": "2016-10-18T10:33:51.951185",
                     "format": "CSV",
                     "modified": "2016-10-20T13:17:57.625351",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/ad6835d8-0d6b-42dc-bb8f-2641af5ddf01/download/igj-balances.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/ad6835d8-0d6b-42dc-bb8f-2641af5ddf01/download/igj-balances.csv",
+                    "identifier": "13"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/75ec7f99-7088-4367-9ca4-d014d65f4a0a",
@@ -568,7 +581,8 @@
                     "issued": "2016-10-19T15:57:28.515204",
                     "format": "CSV",
                     "modified": "2016-10-19T17:47:07.824579",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/75ec7f99-7088-4367-9ca4-d014d65f4a0a/download/igj-asambleas.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/75ec7f99-7088-4367-9ca4-d014d65f4a0a/download/igj-asambleas.csv",
+                    "identifier": "14"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/69ba7f4a-b2d4-476e-9feb-9616fee79677",
@@ -577,7 +591,8 @@
                     "issued": "2016-11-17T14:50:27.628975",
                     "format": "CSV",
                     "modified": "2016-11-18T12:50:15.336412",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/69ba7f4a-b2d4-476e-9feb-9616fee79677/download/igj-autoridades.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/69ba7f4a-b2d4-476e-9feb-9616fee79677/download/igj-autoridades.csv",
+                    "identifier": "15"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/055e1b3a-c127-436c-829b-7e2cc9a4d9c8",
@@ -586,7 +601,8 @@
                     "issued": "2016-11-17T14:51:22.226538",
                     "format": "CSV",
                     "modified": "2016-11-17T14:51:22.001319",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/055e1b3a-c127-436c-829b-7e2cc9a4d9c8/download/igj-entidades.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/055e1b3a-c127-436c-829b-7e2cc9a4d9c8/download/igj-entidades.csv",
+                    "identifier": "16"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/2a8472e3-3ec6-4e6e-8baf-d53963f22643",
@@ -595,7 +611,8 @@
                     "issued": "2016-11-17T14:54:23.192485",
                     "format": "CSV",
                     "modified": "2016-11-17T14:54:22.859901",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/2a8472e3-3ec6-4e6e-8baf-d53963f22643/download/igj-balances.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/2a8472e3-3ec6-4e6e-8baf-d53963f22643/download/igj-balances.csv",
+                    "identifier": "17"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/52e983b1-e633-4e1d-94b9-3be23c0a3a8f",
@@ -604,7 +621,8 @@
                     "issued": "2016-11-17T15:16:07.545890",
                     "format": "CSV",
                     "modified": "2016-11-17T15:16:07.094117",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/52e983b1-e633-4e1d-94b9-3be23c0a3a8f/download/igj-asambleas.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/52e983b1-e633-4e1d-94b9-3be23c0a3a8f/download/igj-asambleas.csv",
+                    "identifier": "18"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/c0fdac96-66ba-4c28-9a54-d4f7f27fd5f3",
@@ -613,7 +631,8 @@
                     "issued": "2016-11-17T15:16:46.565284",
                     "format": "CSV",
                     "modified": "2016-11-17T15:16:46.319333",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/c0fdac96-66ba-4c28-9a54-d4f7f27fd5f3/download/igj-domicilios.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/c0fdac96-66ba-4c28-9a54-d4f7f27fd5f3/download/igj-domicilios.csv",
+                    "identifier": "19"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/b2df002f-c621-46e6-bb4f-e90be984f1f5",
@@ -622,7 +641,8 @@
                     "issued": "2016-12-06T11:01:40.033630",
                     "format": "CSV",
                     "modified": "2016-12-07T09:49:39.478384",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/b2df002f-c621-46e6-bb4f-e90be984f1f5/download/igj-entidades.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/b2df002f-c621-46e6-bb4f-e90be984f1f5/download/igj-entidades.csv",
+                    "identifier": "20"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/b955c68f-cc82-4e72-9b08-d348ef59529a",
@@ -631,7 +651,8 @@
                     "issued": "2016-12-06T11:06:14.182511",
                     "format": "CSV",
                     "modified": "2016-12-06T14:22:09.287806",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/b955c68f-cc82-4e72-9b08-d348ef59529a/download/igj-asambleas.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/b955c68f-cc82-4e72-9b08-d348ef59529a/download/igj-asambleas.csv",
+                    "identifier": "21"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/fafa4336-1e8e-411c-bb42-4f90300002e6",
@@ -640,7 +661,8 @@
                     "issued": "2016-12-06T11:10:42.520795",
                     "format": "CSV",
                     "modified": "2016-12-07T09:58:03.676396",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/fafa4336-1e8e-411c-bb42-4f90300002e6/download/igj-autoridades.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/fafa4336-1e8e-411c-bb42-4f90300002e6/download/igj-autoridades.csv",
+                    "identifier": "22"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/dc7d85b2-a695-4a9d-91e8-65de43b00b30",
@@ -649,7 +671,8 @@
                     "issued": "2016-12-06T11:13:58.168849",
                     "format": "CSV",
                     "modified": "2016-12-06T14:36:01.022532",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/dc7d85b2-a695-4a9d-91e8-65de43b00b30/download/igj-balances.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/dc7d85b2-a695-4a9d-91e8-65de43b00b30/download/igj-balances.csv",
+                    "identifier": "23"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/entidades-constituidas-en-la-inspeccion-general-de-justicia-igj/archivo/b7311dd0-0a40-4bcf-aead-dbc2250cef5a",
@@ -658,7 +681,8 @@
                     "issued": "2016-12-06T11:15:38.918727",
                     "format": "CSV",
                     "modified": "2016-12-06T11:15:38.575884",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/b7311dd0-0a40-4bcf-aead-dbc2250cef5a/download/igj-domicilios.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/da045e06-35cb-4bdd-9b5e-ddee6712c86c/resource/b7311dd0-0a40-4bcf-aead-dbc2250cef5a/download/igj-domicilios.csv",
+                    "identifier": "24"
                 }
             ],
             "identifier": "da045e06-35cb-4bdd-9b5e-ddee6712c86c"
@@ -703,7 +727,8 @@
                     "issued": "2016-10-05T16:22:51.223278",
                     "format": "CSV",
                     "modified": "2016-12-05T15:00:51.294963",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/de4560f4-8620-4cb5-a3a5-e3e5684c0e45/resource/2436ab65-44da-4f45-a59d-5e09136e1df2/download/estadistica-inscripciones-iniciales-autos-motos.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/de4560f4-8620-4cb5-a3a5-e3e5684c0e45/resource/2436ab65-44da-4f45-a59d-5e09136e1df2/download/estadistica-inscripciones-iniciales-autos-motos.csv",
+                    "identifier": "25"
                 }
             ],
             "identifier": "de4560f4-8620-4cb5-a3a5-e3e5684c0e45"
@@ -747,7 +772,8 @@
                     "issued": "2016-10-07T12:23:09.141350",
                     "format": "CSV",
                     "modified": "2016-11-18T11:17:16.127349",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/47e53feb-ca88-4322-a663-e511485213a0/download/internos-spf-condenados-2016-09.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/47e53feb-ca88-4322-a663-e511485213a0/download/internos-spf-condenados-2016-09.csv",
+                    "identifier": "26"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/internos-del-servicio-penitenciario-federal-spf/archivo/ecc3d11d-ea79-43e6-81dd-fe6557cdbc08",
@@ -756,7 +782,8 @@
                     "issued": "2016-10-07T12:24:50.594689",
                     "format": "CSV",
                     "modified": "2016-11-18T11:18:23.802030",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/ecc3d11d-ea79-43e6-81dd-fe6557cdbc08/download/internos-spf-inimputables-2016-09.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/ecc3d11d-ea79-43e6-81dd-fe6557cdbc08/download/internos-spf-inimputables-2016-09.csv",
+                    "identifier": "27"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/internos-del-servicio-penitenciario-federal-spf/archivo/43b72420-1934-45d8-bcf1-c030f442dd85",
@@ -765,7 +792,8 @@
                     "issued": "2016-10-07T12:25:50.033839",
                     "format": "CSV",
                     "modified": "2016-11-18T12:39:17.671667",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/43b72420-1934-45d8-bcf1-c030f442dd85/download/internos-spf-procesados-2016-09.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/43b72420-1934-45d8-bcf1-c030f442dd85/download/internos-spf-procesados-2016-09.csv",
+                    "identifier": "28"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/internos-del-servicio-penitenciario-federal-spf/archivo/9e29e518-90d2-4338-9994-fe6eae9a6c9f",
@@ -774,7 +802,8 @@
                     "issued": "2016-11-18T11:30:01.377951",
                     "format": "CSV",
                     "modified": "2016-12-13T16:38:46.623707",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/9e29e518-90d2-4338-9994-fe6eae9a6c9f/download/internos-spf-inimputables-2016-10.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/9e29e518-90d2-4338-9994-fe6eae9a6c9f/download/internos-spf-inimputables-2016-10.csv",
+                    "identifier": "29"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/internos-del-servicio-penitenciario-federal-spf/archivo/aea37ed5-9cbb-408f-a95e-86de7130b958",
@@ -783,7 +812,8 @@
                     "issued": "2016-11-18T11:34:13.926850",
                     "format": "CSV",
                     "modified": "2016-12-06T11:51:15.724249",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/aea37ed5-9cbb-408f-a95e-86de7130b958/download/internos-spf-condenados-2016-10.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/aea37ed5-9cbb-408f-a95e-86de7130b958/download/internos-spf-condenados-2016-10.csv",
+                    "identifier": "30"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/internos-del-servicio-penitenciario-federal-spf/archivo/28dd97a3-df32-442d-8f4e-2e845ce18c43",
@@ -792,7 +822,8 @@
                     "issued": "2016-11-18T12:41:42.242067",
                     "format": "CSV",
                     "modified": "2016-12-12T17:15:11.324717",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/28dd97a3-df32-442d-8f4e-2e845ce18c43/download/internos-spf-procesados-2016-10.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6d0e08b3-041c-40c1-9ea6-962db3747677/resource/28dd97a3-df32-442d-8f4e-2e845ce18c43/download/internos-spf-procesados-2016-10.csv",
+                    "identifier": "31"
                 }
             ],
             "identifier": "6d0e08b3-041c-40c1-9ea6-962db3747677"
@@ -835,7 +866,8 @@
                     "issued": "2016-09-14T12:23:11.131935",
                     "format": "CSV",
                     "modified": "2016-12-01T17:11:05.351900",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/bbdac295-c88e-4e2d-8f74-a845a2e93a61/resource/54bd9fa1-a059-4411-b146-457791e882f8/download/listado-registros-seccionales.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/bbdac295-c88e-4e2d-8f74-a845a2e93a61/resource/54bd9fa1-a059-4411-b146-457791e882f8/download/listado-registros-seccionales.csv",
+                    "identifier": "32"
                 }
             ],
             "identifier": "bbdac295-c88e-4e2d-8f74-a845a2e93a61"
@@ -884,7 +916,8 @@
                     "issued": "2016-10-14T13:45:28.954424",
                     "format": "CSV",
                     "modified": "2016-12-07T17:38:50.689433",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/3c8c1fea-c97b-4368-b31b-da244d66adb3/download/magistrados-justicia-federal-nacional.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/3c8c1fea-c97b-4368-b31b-da244d66adb3/download/magistrados-justicia-federal-nacional.csv",
+                    "identifier": "33"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/magistrados-justicia-federal-y-de-la-justicia-nacional/archivo/ac34ee63-7e86-4f15-b57b-c6a35f71ea6e",
@@ -893,7 +926,8 @@
                     "issued": "2016-10-14T16:23:54.581290",
                     "format": "CSV",
                     "modified": "2016-12-07T17:40:26.155069",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/ac34ee63-7e86-4f15-b57b-c6a35f71ea6e/download/magistrados-justicia-federal-nacional-designaciones.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/ac34ee63-7e86-4f15-b57b-c6a35f71ea6e/download/magistrados-justicia-federal-nacional-designaciones.csv",
+                    "identifier": "34"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/magistrados-justicia-federal-y-de-la-justicia-nacional/archivo/551c8132-4aef-419a-8f7b-020bb613980b",
@@ -902,7 +936,8 @@
                     "issued": "2016-10-14T16:24:29.971004",
                     "format": "CSV",
                     "modified": "2016-12-07T17:41:49.776250",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/551c8132-4aef-419a-8f7b-020bb613980b/download/magistrados-justicia-federal-nacional-renuncias.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/3c18d46e-729e-4973-8efd-f54cab18b7e3/resource/551c8132-4aef-419a-8f7b-020bb613980b/download/magistrados-justicia-federal-nacional-renuncias.csv",
+                    "identifier": "35"
                 }
             ],
             "identifier": "3c18d46e-729e-4973-8efd-f54cab18b7e3"
@@ -942,7 +977,8 @@
                     "issued": "2016-09-16T11:02:30.875312",
                     "format": "CSV",
                     "modified": "2016-12-05T17:08:12.273577",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/a9767469-d903-4158-aa76-b21dd37e8aff/resource/fee87e15-3d5b-4d30-a29f-2dd8815fc015/download/estadisticas-mediaciones-prejudiciales-y-judiciales.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/a9767469-d903-4158-aa76-b21dd37e8aff/resource/fee87e15-3d5b-4d30-a29f-2dd8815fc015/download/estadisticas-mediaciones-prejudiciales-y-judiciales.csv",
+                    "identifier": "36"
                 }
             ],
             "identifier": "a9767469-d903-4158-aa76-b21dd37e8aff"
@@ -983,7 +1019,8 @@
                     "issued": "2016-09-14T11:08:54.939192",
                     "format": "CSV",
                     "modified": "2016-10-28T15:13:12.032921",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/27bb9b2c-521b-406c-bdf9-98110ef73f34/resource/9a06c428-8552-42fe-86e1-487bca9b712c/download/registro-de-femicidios.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/27bb9b2c-521b-406c-bdf9-98110ef73f34/resource/9a06c428-8552-42fe-86e1-487bca9b712c/download/registro-de-femicidios.csv",
+                    "identifier": "37"
                 }
             ],
             "identifier": "27bb9b2c-521b-406c-bdf9-98110ef73f34"
@@ -1024,7 +1061,8 @@
                     "issued": "2016-09-30T15:44:33.163419",
                     "format": "CSV",
                     "modified": "2016-11-04T15:49:06.944450",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d43fa140-f43f-4cc2-8491-b1d8bb899de4/resource/c6b674bc-e178-41f3-81f5-0f10038e1688/download/victimas-accionar-represivo-ilegal.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d43fa140-f43f-4cc2-8491-b1d8bb899de4/resource/c6b674bc-e178-41f3-81f5-0f10038e1688/download/victimas-accionar-represivo-ilegal.csv",
+                    "identifier": "38"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/registro-unificado-de-victimas-del-terrorismo-de-estado-ruvte/archivo/4c66093d-1293-4c44-a4c4-4cc1d914127e",
@@ -1033,7 +1071,8 @@
                     "issued": "2016-09-30T15:45:48.714593",
                     "format": "CSV",
                     "modified": "2016-11-02T13:22:17.264897",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/d43fa140-f43f-4cc2-8491-b1d8bb899de4/resource/4c66093d-1293-4c44-a4c4-4cc1d914127e/download/victimas-accionar-represivo-ilegal-sin-denuncia-formal.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/d43fa140-f43f-4cc2-8491-b1d8bb899de4/resource/4c66093d-1293-4c44-a4c4-4cc1d914127e/download/victimas-accionar-represivo-ilegal-sin-denuncia-formal.csv",
+                    "identifier": "39"
                 }
             ],
             "identifier": "d43fa140-f43f-4cc2-8491-b1d8bb899de4"
@@ -1079,7 +1118,8 @@
                     "issued": "2016-10-24T15:48:25.606071",
                     "format": "CSV",
                     "modified": "2016-12-06T14:26:36.775736",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/b2c3f47c-b78d-4967-98be-0ab81dd0b415/download/sneep-2015.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/b2c3f47c-b78d-4967-98be-0ab81dd0b415/download/sneep-2015.csv",
+                    "identifier": "40"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/ae511208-8678-45ac-b088-6b2dd5964f4e",
@@ -1088,7 +1128,8 @@
                     "issued": "2016-07-14T15:05:51.461952",
                     "format": "CSV",
                     "modified": "2016-12-06T13:08:23.171421",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/ae511208-8678-45ac-b088-6b2dd5964f4e/download/sneep-2014.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/ae511208-8678-45ac-b088-6b2dd5964f4e/download/sneep-2014.csv",
+                    "identifier": "41"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/f39839a0-cd4a-47a9-bb30-dba81ae61cae",
@@ -1097,7 +1138,8 @@
                     "issued": "2016-07-14T14:49:44.071583",
                     "format": "CSV",
                     "modified": "2016-12-06T15:17:18.345712",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/f39839a0-cd4a-47a9-bb30-dba81ae61cae/download/sneep-2013.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/f39839a0-cd4a-47a9-bb30-dba81ae61cae/download/sneep-2013.csv",
+                    "identifier": "42"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/e289393f-4bfa-49af-8ba2-dbe64a9ba303",
@@ -1106,7 +1148,8 @@
                     "issued": "2016-07-14T14:28:23.684877",
                     "format": "CSV",
                     "modified": "2016-12-07T11:16:54.299344",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/e289393f-4bfa-49af-8ba2-dbe64a9ba303/download/sneep-2012.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/e289393f-4bfa-49af-8ba2-dbe64a9ba303/download/sneep-2012.csv",
+                    "identifier": "43"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/0b5cf2e0-de16-4b71-b3c1-99aeb63d8165",
@@ -1115,7 +1158,8 @@
                     "issued": "2016-07-14T14:14:43.125350",
                     "format": "CSV",
                     "modified": "2016-12-06T15:06:55.029084",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/0b5cf2e0-de16-4b71-b3c1-99aeb63d8165/download/sneep-2011.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/0b5cf2e0-de16-4b71-b3c1-99aeb63d8165/download/sneep-2011.csv",
+                    "identifier": "44"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/ed1061a5-3d28-4664-82a4-2406231cc0c8",
@@ -1124,7 +1168,8 @@
                     "issued": "2016-07-14T14:01:11.093059",
                     "format": "CSV",
                     "modified": "2016-12-06T15:09:15.457540",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/ed1061a5-3d28-4664-82a4-2406231cc0c8/download/sneep-2010.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/ed1061a5-3d28-4664-82a4-2406231cc0c8/download/sneep-2010.csv",
+                    "identifier": "45"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/e8cc11d5-0c05-4958-a791-26005adc9562",
@@ -1133,7 +1178,8 @@
                     "issued": "2016-07-14T13:47:14.516686",
                     "format": "CSV",
                     "modified": "2016-12-06T15:56:13.943542",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/e8cc11d5-0c05-4958-a791-26005adc9562/download/sneep-2009.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/e8cc11d5-0c05-4958-a791-26005adc9562/download/sneep-2009.csv",
+                    "identifier": "46"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/f627e52e-e55c-4d7f-bb0b-034a474479a9",
@@ -1142,7 +1188,8 @@
                     "issued": "2016-07-14T13:41:32.437436",
                     "format": "CSV",
                     "modified": "2016-12-07T12:20:01.481411",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/f627e52e-e55c-4d7f-bb0b-034a474479a9/download/sneep-2008.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/f627e52e-e55c-4d7f-bb0b-034a474479a9/download/sneep-2008.csv",
+                    "identifier": "47"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/d47a67c0-63d7-411d-bd32-19957776f31f",
@@ -1151,7 +1198,8 @@
                     "issued": "2016-07-14T13:37:12.544681",
                     "format": "CSV",
                     "modified": "2016-12-06T16:04:00.383514",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/d47a67c0-63d7-411d-bd32-19957776f31f/download/sneep-2007.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/d47a67c0-63d7-411d-bd32-19957776f31f/download/sneep-2007.csv",
+                    "identifier": "48"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/4315c359-3c3e-429e-bac6-4ae75dad6965",
@@ -1160,7 +1208,8 @@
                     "issued": "2016-07-14T13:28:14.284725",
                     "format": "CSV",
                     "modified": "2016-12-06T16:05:22.720987",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/4315c359-3c3e-429e-bac6-4ae75dad6965/download/sneep-2006.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/4315c359-3c3e-429e-bac6-4ae75dad6965/download/sneep-2006.csv",
+                    "identifier": "49"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/81209a1c-782e-4e65-b04c-2bcb39f9c316",
@@ -1169,7 +1218,8 @@
                     "issued": "2016-07-14T13:21:59.291459",
                     "format": "CSV",
                     "modified": "2016-12-07T11:18:22.729648",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/81209a1c-782e-4e65-b04c-2bcb39f9c316/download/sneep-2005.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/81209a1c-782e-4e65-b04c-2bcb39f9c316/download/sneep-2005.csv",
+                    "identifier": "50"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/124e804b-98c1-4460-ae6a-c392eb7b21a5",
@@ -1178,7 +1228,8 @@
                     "issued": "2016-07-14T12:53:43.445809",
                     "format": "CSV",
                     "modified": "2016-12-07T11:34:57.975814",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/124e804b-98c1-4460-ae6a-c392eb7b21a5/download/sneep-2004.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/124e804b-98c1-4460-ae6a-c392eb7b21a5/download/sneep-2004.csv",
+                    "identifier": "51"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/a1170dc3-2c57-4b80-bf7a-438cfc3beefd",
@@ -1187,7 +1238,8 @@
                     "issued": "2016-07-14T12:48:42.257399",
                     "format": "CSV",
                     "modified": "2016-12-07T12:20:32.267502",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/a1170dc3-2c57-4b80-bf7a-438cfc3beefd/download/sneep-2003.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/a1170dc3-2c57-4b80-bf7a-438cfc3beefd/download/sneep-2003.csv",
+                    "identifier": "52"
                 },
                 {
                     "accessURL": "http://datos.jus.gob.ar/dataset/sneep/archivo/0c05bf5b-e547-42bf-8518-9a80a2ea1b45",
@@ -1196,7 +1248,8 @@
                     "issued": "2016-07-14T12:30:40.201469",
                     "format": "CSV",
                     "modified": "2016-12-07T12:21:37.859378",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/0c05bf5b-e547-42bf-8518-9a80a2ea1b45/download/sneep-2002.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/6c03af36-6a1d-4306-b2a8-dd39ad73afb3/resource/0c05bf5b-e547-42bf-8518-9a80a2ea1b45/download/sneep-2002.csv",
+                    "identifier": "53"
                 }
             ],
             "identifier": "6c03af36-6a1d-4306-b2a8-dd39ad73afb3"
@@ -1238,7 +1291,8 @@
                     "issued": "2016-10-18T13:04:43.515767",
                     "format": "CSV",
                     "modified": "2016-12-16T11:47:01.707897",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/0a0c3def-3d81-4850-854c-7af25831250b/resource/0ecec60a-0723-4232-a401-6565ebb282cf/download/solicitudes-de-condicion-de-legitimo-usuario-de-armas-de-fuego.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/0a0c3def-3d81-4850-854c-7af25831250b/resource/0ecec60a-0723-4232-a401-6565ebb282cf/download/solicitudes-de-condicion-de-legitimo-usuario-de-armas-de-fuego.csv",
+                    "identifier": "54"
                 }
             ],
             "identifier": "0a0c3def-3d81-4850-854c-7af25831250b"
@@ -1279,7 +1333,8 @@
                     "issued": "2016-10-05T12:41:06.725445",
                     "format": "CSV",
                     "modified": "2016-12-16T11:48:39.776623",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/35278d98-c274-4612-9d1d-72d0d0923368/resource/2e0a4e06-0d2e-4e78-861d-1105e558e493/download/solicitudes-de-autorizacion-de-portacion-de-armas-de-fuego.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/35278d98-c274-4612-9d1d-72d0d0923368/resource/2e0a4e06-0d2e-4e78-861d-1105e558e493/download/solicitudes-de-autorizacion-de-portacion-de-armas-de-fuego.csv",
+                    "identifier": "55"
                 }
             ],
             "identifier": "35278d98-c274-4612-9d1d-72d0d0923368"
@@ -1320,7 +1375,8 @@
                     "issued": "2016-09-30T10:34:17.459968",
                     "format": "CSV",
                     "modified": "2016-09-30T16:02:40.545302",
-                    "downloadURL": "http://datos.jus.gob.ar/dataset/c64b3899-65df-4024-afe8-bdf971f30dd8/resource/56dbd545-f102-4fbd-be48-0edb9b1f846c/download/violencia-institucional.csv"
+                    "downloadURL": "http://datos.jus.gob.ar/dataset/c64b3899-65df-4024-afe8-bdf971f30dd8/resource/56dbd545-f102-4fbd-be48-0edb9b1f846c/download/violencia-institucional.csv",
+                    "identifier": "56"
                 }
             ],
             "identifier": "c64b3899-65df-4024-afe8-bdf971f30dd8"
