@@ -197,30 +197,46 @@ esperado '{}'. Este dataset NO se considerara.""".format(
         return matching_datasets[0]
 
 
-def _get_distribution_indexes(catalog, dataset_identifier, distribution_title):
+def _get_distribution_indexes(catalog, dataset_identifier, dataset_title,
+                              distribution_identifier, distribution_title):
     """Devuelve el índice de una distribución en su dataset en función de su
     título, junto con el índice de su dataset padre en el catálogo, en
     función de su identificador"""
-    dataset_index = _get_dataset_index(catalog, dataset_identifier)
-    dataset = catalog["catalog_dataset"][dataset_index]
+    dataset_index = _get_dataset_index(
+        catalog, dataset_identifier, dataset_title)
+    if dataset_index is None:
+        return None, None
+    else:
+        dataset = catalog["catalog_dataset"][dataset_index]
 
-    matching_distributions = [
-        idx for idx, distribution in enumerate(dataset["dataset_distribution"])
-        if distribution["distribution_title"] == distribution_title
-    ]
+    matching_distributions = []
+
+    for idx, distribution in enumerate(dataset["dataset_distribution"]):
+        if distribution["distribution_identifier"] == distribution_identifier:
+            if distribution["distribution_title"] == distribution_title:
+                matching_distributions.append(idx)
+            else:
+                mismatched_title_msg = """
+Se encontro una distribucion con ID '{}', pero su titulo es '{}' en lugar del
+esperado '{}'. Esta distribucion NO se considerara.""".format(
+    distribution_identifier, distribution["distribution_title"],
+    distribution_title)
+                print(mismatched_title_msg)
 
     # Debe haber exactamente una distribución con los identicadores provistos
-    no_dists_msg = """
-No hay ninguna distribucion de titulo '{}' en el dataset con ID '{}'.
-""".format(distribution_title, dataset_identifier)
-    many_dists_msg = """
-Hay mas de una distribucion de título '{}' en el dataset con ID '{}':
-{}""".format(distribution_title, dataset_identifier, matching_distributions)
-    assert len(matching_distributions) != 0, no_dists_msg
-    assert len(matching_distributions) < 2, many_dists_msg
-
-    distribution_index = matching_distributions[0]
-    return dataset_index, distribution_index
+    no_dists_msg = """No hay ninguna distribucion de titulo '{}' en el dataset con ID '{}'.""".format(
+        distribution_title, dataset_identifier)
+    many_dists_msg = """Hay mas de una distribucion de título '{}' en el dataset con ID '{}': {}""".format(
+        distribution_title, dataset_identifier, matching_distributions)
+    if len(matching_distributions) == 0:
+        print(no_dists_msg)
+        return dataset_index, None
+    elif len(matching_distributions) > 1:
+        print(many_dists_msg)
+        return dataset_index, None
+    else:
+        distribution_index = matching_distributions[0]
+        return dataset_index, distribution_index
 
 
 def read_local_xlsx_catalog(xlsx_path):
@@ -263,9 +279,12 @@ El archivo a leer debe tener extensión XLSX."""
     # Ubico cada distribución en su dataset
     distributions = helpers.sheet_to_table(workbook["Distribution"])
     for distribution in distributions:
-        # Me aseguro que los identificadores de dataset se guarden como cadenas
+        # Me aseguro que los identificadores se guarden como cadenas
         distribution["dataset_identifier"] = unicode(
             distribution["dataset_identifier"])
+        distribution["distribution_identifier"] = unicode(
+            distribution["distribution_identifier"])
+
         dataset_index = _get_dataset_index(
             catalog, distribution["dataset_identifier"],
             distribution["dataset_title"])
@@ -280,16 +299,34 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
 
     # Ubico cada campo en su distribución
     fields = helpers.sheet_to_table(workbook["Field"])
-    for field in fields:
-        dataset_index, distribution_index = _get_distribution_indexes(
-            catalog, field["dataset_identifier"], field["distribution_title"])
-        dataset = catalog["catalog_dataset"][dataset_index]
-        distribution = dataset["dataset_distribution"][distribution_index]
+    for idx, field in enumerate(fields):
+        # Me aseguro que los identificadores se guarden como cadenas
+        field["dataset_identifier"] = unicode(field["dataset_identifier"])
+        field["distribution_identifier"] = unicode(
+            field["distribution_identifier"])
 
-        if "distribution_field" in distribution:
-            distribution["distribution_field"].append(field)
+        dataset_index, distribution_index = _get_distribution_indexes(
+            catalog, field["dataset_identifier"], field["dataset_title"],
+            field["distribution_identifier"], field["distribution_title"])
+
+        if dataset_index is None:
+            print("""No se encontro el dataset '{}' especificado para el campo
+'{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
+    field["dataset_title"], field["field_title"], idx+2))
+
+        elif distribution_index is None:
+            print("""No se encontro la distribucion '{}' especificada para el campo
+'{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
+    field["distribution_title"], field["field_title"], idx+2))
+
         else:
-            distribution["distribution_field"] = [field]
+            dataset = catalog["catalog_dataset"][dataset_index]
+            distribution = dataset["dataset_distribution"][distribution_index]
+
+            if "distribution_field" in distribution:
+                distribution["distribution_field"].append(field)
+            else:
+                distribution["distribution_field"] = [field]
 
     # Transformo campos de texto separado por comas en listas
     if "catalog_language" in catalog:
