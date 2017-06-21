@@ -929,6 +929,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         central_catalog = readers.read_catalog(central_catalog)
         federados = 0  # En ambos catálogos
         no_federados = 0
+        datasets_no_federados = []
 
         # Lo busco uno por uno a ver si está en la lista de catálogos
         for dataset in catalog.get('dataset', []):
@@ -940,6 +941,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                     break
             if not found:
                 no_federados += 1
+                datasets_no_federados.append((dataset.get('title'),
+                                              dataset.get('landingPage')))
 
         if federados or no_federados:  # Evita división por 0
             federados_pct = 100 * float(federados) / (federados + no_federados)
@@ -949,6 +952,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         result = {
             'datasets_federados_cant': federados,
             'datasets_no_federados_cant': no_federados,
+            'datasets_no_federados': datasets_no_federados,
             'datasets_federados_pct': round(federados_pct, 2)
         }
         return result
