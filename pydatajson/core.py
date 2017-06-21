@@ -683,7 +683,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
 - **Cantidad de Datasets Federados**: {federated_datasets}
 - **Cantidad de Datasets NO Federados**: {not_federated_datasets}
-- **Porcentaje de Datasets NO Federados"": {not_federated_datasets_pct}%
+- **Porcentaje de Datasets NO Federados**: {not_federated_datasets_pct}%
 
 ## Datasets no federados:
 
