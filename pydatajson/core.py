@@ -799,15 +799,15 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
     @staticmethod
     def _network_indicator_percentages(fields, network_indicators):
-        """Encapsula el cálculo de indicadores de porcentaje (de errores, 
+        """Encapsula el cálculo de indicadores de porcentaje (de errores,
         de campos recomendados/optativos utilizados, de datasets actualizados)
         sobre la red de nodos entera.
-        
+
         Args:
             fields (dict): Diccionario con claves 'recomendado', 'optativo',
             'total_recomendado', 'total_optativo', cada uno con valores
             que representan la cantidad de c/u en la red de nodos entera.
-        
+
             network_indicators (dict): Diccionario de la red de nodos, con
             las cantidades de datasets_meta_ok y datasets_(des)actualizados
             calculados previamente. Se modificará este argumento con los
@@ -851,10 +851,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
     def _generate_indicators(self, catalog):
         """Genera los indicadores de un catálogo individual.
-        
+
         Args:
             catalog (dict): diccionario de un data.json parseado
-            
+
         Returns:
             dict: diccionario con los indicadores del catálogo provisto
         """
@@ -882,10 +882,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
     def _generate_status_indicators(self, catalog):
         """Genera indicadores básicos sobre el estado de un catálogo
-        
+
         Args:
             catalog (dict): diccionario de un data.json parseado
-        
+
         Returns:
             dict: indicadores básicos sobre el catálogo, tal como la cantidad
             de datasets, distribuciones y número de errores
@@ -990,13 +990,13 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
     @staticmethod
     def _parse_date_string(date_string):
         """Parsea un string de una fecha con el formato de la norma
-        ISO 8601 (es decir, las fechas utilizadas en los catálogos) en un 
+        ISO 8601 (es decir, las fechas utilizadas en los catálogos) en un
         objeto datetime de la librería estándar de python. Se tiene en cuenta
         únicamente la fecha y se ignora completamente la hora.
-        
+
         Args:
             date_string (str): fecha con formato ISO 8601.
-        
+
         Returns:
             datetime: objeto fecha especificada por date_string.
         """
@@ -1013,19 +1013,19 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         """Genera indicadores relacionados a las fechas de publicación
         y actualización del catálogo pasado por parámetro. La evaluación de si
         un catálogo se encuentra actualizado o no tiene un porcentaje de
-        tolerancia hasta que se lo considere como tal, dado por el parámetro 
+        tolerancia hasta que se lo considere como tal, dado por el parámetro
         tolerance.
-        
+
         Args:
             catalog (dict o str): path de un catálogo en formatos aceptados,
                 o un diccionario de python
-            
-            tolerance (float): porcentaje de tolerancia hasta que se considere 
-                un catálogo como desactualizado, por ejemplo un catálogo con 
-                período de actualización de 10 días se lo considera como 
+
+            tolerance (float): porcentaje de tolerancia hasta que se considere
+                un catálogo como desactualizado, por ejemplo un catálogo con
+                período de actualización de 10 días se lo considera como
                 desactualizado a partir de los 12 con una tolerancia del 20%.
                 También acepta valores negativos.
-                
+
         Returns:
             dict: diccionario con indicadores
         """
@@ -1076,7 +1076,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             days_diff = float((datetime.now() - date).days)
             interval = helpers.parse_repeating_time_interval(periodicity) * \
                 (1 + tolerance)
-            
+
 
             if days_diff < interval:
                 actualizados += 1
@@ -1101,12 +1101,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
     @staticmethod
     def _count_distribution_formats(catalog):
         """Cuenta los formatos especificados por el campo 'format' de cada
-        distribución de un catálogo. 
-        
+        distribución de un catálogo.
+
         Args:
             catalog (str o dict): path a un catálogo, o un dict de python que
             contenga a un catálogo ya leído.
-        
+
         Returns:
             dict: diccionario con los formatos de las distribuciones
             encontradas como claves, con la cantidad de ellos en sus valores.
@@ -1131,11 +1131,11 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
     def _count_required_and_optional_fields(self, catalog):
         """Cuenta los campos obligatorios/recomendados/requeridos usados en
         'catalog', junto con la cantidad máxima de dichos campos.
-        
+
         Args:
             catalog (str o dict): path a un catálogo, o un dict de python que
-                contenga a un catálogo ya leído   
-        
+                contenga a un catálogo ya leído
+
         Returns:
             dict: diccionario con las claves 'recomendado', 'optativo',
                 'requerido', 'recomendado_total', 'optativo_total',
@@ -1156,13 +1156,13 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos
         desde 'fields', y cuenta la ocurrencia de los mismos en 'dataset'.
-        
+
         Args:
             dataset (dict): diccionario con claves a ser verificadas.
-            fields (dict): diccionario con los campos a verificar en dataset 
-                como claves, y 'optativo', 'recomendado', o 'requerido' como 
+            fields (dict): diccionario con los campos a verificar en dataset
+                como claves, y 'optativo', 'recomendado', o 'requerido' como
                 valores. Puede tener objetios anidados pero no arrays.
-        
+
         Returns:
             dict: diccionario con las claves 'recomendado', 'optativo',
                 'requerido', 'recomendado_total', 'optativo_total',
