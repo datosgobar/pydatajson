@@ -5,6 +5,7 @@
 
 - **Autor**: Ministerio de Modernización
 - **Correo Electrónico**: datos@modernizacion.gob.ar
+- **Ruta del catálogo**: tests/samples/several_datasets_for_harvest.json
 - **Nombre del catálogo**: Cosechando Datos Argentina
 - **Descripción**:
 
@@ -12,9 +13,20 @@
 
 ## Estado de los metadatos y cantidad de recursos
 
-Estado metadatos globales | Estado metadatos catálogo | # de Datasets | # de Distribuciones
---------------------------|---------------------------|---------------|--------------------
-ERROR | OK | 3 | 6
+- **Estado metadatos globales**: ERROR
+- **Estado metadatos catálogo**: OK
+- **Cantidad Total de Datasets**: 3
+- **Cantidad Total de Distribuciones**: 6
+
+- **Cantidad de Datasets Federados**: 0
+- **Cantidad de Datasets NO Federados**: 3
+- **Porcentaje de Datasets NO Federados**: 100.0%
+
+## Datasets no federados:
+
+- [Sistema de contrataciones electrónicas UNO](None)
+- [Sistema de contrataciones electrónicas DOS](None)
+- [Sistema de contrataciones electrónicas TRES](None)
 
 ## Datasets incluidos
 
