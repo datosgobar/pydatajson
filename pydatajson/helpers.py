@@ -8,6 +8,13 @@ from __future__ import print_function
 from __future__ import with_statement
 
 import datetime
+import os
+
+
+def ensure_dir_exists(directory):
+    """Se asegura de que un directorio exista."""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 
 def traverse_dict(dicc, keys, default_value=None):

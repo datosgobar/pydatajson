@@ -23,7 +23,7 @@ from . import helpers
 from .ckan_reader import read_ckan_catalog
 
 
-def read_catalog(catalog):
+def read_catalog(catalog, default_values=None):
     """Toma una representación cualquiera de un catálogo, y devuelve su
     representación interna (un diccionario de Python con su metadata.)
 
@@ -61,9 +61,86 @@ provisto: {}.""".format(catalog)
             # El archivo está en formato XLSX
             catalog_dict = read_xlsx_catalog(catalog)
 
-    # Es 'pitonica' esta forma de retornar un valor? O debería ir retornando
-    # los valores intermedios?
+    # si se pasaron valores default, los aplica al catálogo leído
+    if default_values:
+        apply_default_values(catalog_dict, default_values)
+
     return catalog_dict
+
+
+def apply_default_values(catalog, default_values):
+    """Aplica valores default a los campos de un catálogo.
+
+    Si el campo está vacío, aplica el default. Si tiene un valor, deja el valor
+    que estaba. Sólo soporta defaults para las siguientes clases:
+        catalog
+        dataset
+        distribution
+        field
+
+    Args:
+        catalog (dict): Un catálogo.
+        default_values (dict): Valores default para algunos de los campos del
+            catálogo.
+            {
+                "dataset_issued": "2017-06-22",
+                "distribution_issued": "2017-06-22"
+            }
+    """
+
+    for field, default_value in default_values.iteritems():
+        class_metadata = field.split("_")[0]
+        field_json_path = field.split("_")[1:]
+
+        # valores default de catálogo
+        if class_metadata == "catalog":
+            _set_default_value(catalog, field_json_path, default_value)
+
+        # valores default de dataset
+        elif class_metadata == "dataset":
+            for dataset in catalog["dataset"]:
+                _set_default_value(dataset, field_json_path, default_value)
+
+        # valores default de distribución
+        elif class_metadata == "distribution":
+            for dataset in catalog["dataset"]:
+                for distribution in dataset["distribution"]:
+                    _set_default_value(
+                        distribution, field_json_path, default_value)
+
+        # valores default de field
+        elif class_metadata == "field":
+            for dataset in catalog["dataset"]:
+                for distribution in dataset["distribution"]:
+
+                    # campo "field" en una "distribution" no es obligatorio
+                    if distribution.get("field"):
+                        for field in distribution["field"]:
+                            _set_default_value(
+                                field, field_json_path, default_value)
+
+
+def _set_default_value(dict_obj, keys, value):
+    """Setea valor en diccionario anidado, siguiendo lista de keys.
+
+    Args:
+        dict_obj (dict): Un diccionario anidado.
+        keys (list): Una lista de keys para navegar el diccionario.
+        value (any): Un valor para reemplazar.
+    """
+    variable = dict_obj
+
+    if len(keys) == 1:
+        if not variable.get(keys[0]):
+            variable[keys[0]] = value
+
+    else:
+        for idx, field in enumerate(keys):
+            if idx < len(keys) - 1:
+                variable = variable[field]
+
+        if not variable.get(keys[-1]):
+            variable[keys[-1]] = value
 
 
 def read_json(json_path_or_url):

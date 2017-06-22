@@ -16,6 +16,7 @@ import mock
 from collections import OrderedDict
 import filecmp
 from .context import pydatajson
+from pydatajson.helpers import ensure_dir_exists
 from . import xl_methods
 import openpyxl as pyxl
 
@@ -36,6 +37,9 @@ class ReadersAndWritersTestCase(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
+        ensure_dir_exists(cls.SAMPLES_DIR)
+        ensure_dir_exists(cls.RESULTS_DIR)
+        ensure_dir_exists(cls.TEMP_DIR)
         cls.dj = pydatajson.DataJson()
         cls.maxDiff = None
         cls.longMessage = True
@@ -185,6 +189,24 @@ revíselo manualmente""".format(temp_filename)
             os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json"))
         actual_catalog = pydatajson.readers.read_catalog(
             os.path.join(self.SAMPLES_DIR, "catalogo_justicia.xlsx"))
+
+        self.assertDictEqual(actual_catalog, expected_catalog)
+
+    def test_read_local_xlsx_catalog_with_defaults(self):
+        """read_catalog puede leer con valores default."""
+        expected_catalog = pydatajson.readers.read_catalog(
+            os.path.join(self.SAMPLES_DIR,
+                         "catalogo_justicia_with_defaults.json"))
+        actual_catalog = pydatajson.readers.read_catalog(
+            os.path.join(self.SAMPLES_DIR,
+                         "catalogo_justicia_with_defaults.xlsx"),
+            default_values={
+                "dataset_issued": "2017-06-22",
+                "distribution_issued": "2017-06-22",
+                "catalog_publisher_mbox": "a@b.com",
+                "field_description": "Una descripcion default"
+            }
+        )
 
         self.assertDictEqual(actual_catalog, expected_catalog)
 
