@@ -944,43 +944,6 @@ revíselo manualmente""".format(actual_filename)
         for k,v in expected.items():
             self.assertEqual(network_indicators[k], v)
 
-    def test_add_dicts(self):
-        # Testea la función auxiliar para sumar campos de dicts recursivamente
-        from pydatajson.helpers import add_dicts
-
-        dict = {
-            "distribuciones_formatos_cant": {
-                "SHP": 207,
-                "ZIP": 122,
-                "JPEG": 26,
-                "PDF": 235,
-                "CSV": 375,
-                "XLS": 25
-            }
-        }
-        other = {
-            "distribuciones_formatos_cant": {
-                "RDF": 1,
-                "CSV": 124,
-                "JSON": 5
-            }
-        }
-
-        expected = {
-            "distribuciones_formatos_cant": {
-                "SHP": 207,
-                "ZIP": 122,
-                "JPEG": 26,
-                "PDF": 235,
-                "CSV": 499,
-                "XLS": 25,
-                "RDF": 1,
-                "JSON": 5
-            }
-        }
-        result = add_dicts(dict, other)
-        self.assertDictEqual(result, expected)
-
     def test_indicators_invalid_periodicity(self):
         catalog = os.path.join(self.SAMPLES_DIR,
                                "malformed_accrualperiodicity.json")
