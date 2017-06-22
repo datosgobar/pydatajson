@@ -1017,7 +1017,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 other_value = helpers.traverse_dict(other, field)
             else:
                 value = dataset.get(field)
-                other_value = dataset.get(field)
+                other_value = other.get(field)
 
             if value != other_value:
                 return False
