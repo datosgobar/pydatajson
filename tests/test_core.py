@@ -886,6 +886,7 @@ revíselo manualmente""".format(actual_filename)
         expected = {
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 0,
+            'datasets_no_federados': [],
             'datasets_federados_pct': 100
         }
 
@@ -901,6 +902,10 @@ revíselo manualmente""".format(actual_filename)
         expected = {
             'datasets_federados_cant': 0,
             'datasets_no_federados_cant': 3,
+            'datasets_no_federados': [
+                ('Sistema de contrataciones electrónicas UNO', None),
+                ('Sistema de contrataciones electrónicas DOS', None),
+                ('Sistema de contrataciones electrónicas TRES', None)],
             'datasets_federados_pct': 0
         }
 
