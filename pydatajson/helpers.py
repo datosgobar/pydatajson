@@ -7,6 +7,8 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
+import datetime
+
 
 def traverse_dict(dicc, keys, default_value=None):
     """Recorre un diccionario siguiendo una lista de claves, y devuelve
@@ -68,6 +70,21 @@ solo por diccionarios.""".format(list_of_dicts)
     return all(elements)
 
 
+def parse_value(cell):
+    """Extrae el valor de una celda de Excel como texto."""
+    value = cell.value
+
+    # stripea espacios en strings
+    if isinstance(value, (str, unicode)):
+        value = value.strip()
+
+    # convierte a texto ISO 8601 las fechas
+    if isinstance(value, (datetime.datetime)):
+        value = value.isoformat()
+
+    return value
+
+
 def sheet_to_table(worksheet):
     """Transforma una hoja de libro de Excel en una lista de diccionarios.
 
@@ -80,19 +97,13 @@ def sheet_to_table(worksheet):
         registros incluya la hoja, y con tantas claves por diccionario como
         campos tenga la hoja.
     """
-    def value(cell):
-        """Extrae el valor de una celda de Excel."""
-        value = cell.value
-        if isinstance(value, (str, unicode)):
-            value = value.strip()
-        return value
 
     worksheet_rows = list(worksheet.rows)
-    headers = [value(cell) for cell in worksheet_rows[0]]
+    headers = [parse_value(cell) for cell in worksheet_rows[0]]
     value_rows = [
-        [value(cell) for cell in row] for row in worksheet_rows[1:]
+        [parse_value(cell) for cell in row] for row in worksheet_rows[1:]
         # Únicamente considero filas con al menos un campo no-nulo
-        if any([value(cell) for cell in row])
+        if any([parse_value(cell) for cell in row])
     ]
     table = [
         # Ignoro los campos con valores nulos (None)
@@ -113,11 +124,11 @@ def add_dicts(one_dict, other_dict):
     diccionario, llama recursivamente a la función. Ambos diccionarios deben
     tener exactamente las mismas claves, y los valores asociados deben ser
     sumables, o diccionarios.
-    
+
     Args:
         one_dict (dict)
         other_dict (dict)
-        
+
     Returns:
         dict: resultado de la suma
     """
