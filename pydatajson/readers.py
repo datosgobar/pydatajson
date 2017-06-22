@@ -179,7 +179,7 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title):
                 mismatched_title_msg = """
 Se encontro un dataset con ID '{}', pero su titulo es '{}' en lugar del
 esperado '{}'. Este dataset NO se considerara.""".format(
-    dataset_identifier, dataset["dataset_title"], dataset_title)
+                    dataset_identifier, dataset["dataset_title"], dataset_title)
                 print(mismatched_title_msg)
 
 # Debe haber exactamente un dataset con el identificador provisto.
@@ -219,8 +219,9 @@ def _get_distribution_indexes(catalog, dataset_identifier, dataset_title,
                 mismatched_title_msg = """
 Se encontro una distribucion con ID '{}', pero su titulo es '{}' en lugar del
 esperado '{}'. Esta distribucion NO se considerara.""".format(
-    distribution_identifier, distribution["distribution_title"],
-    distribution_title)
+                    distribution_identifier, distribution[
+                        "distribution_title"],
+                    distribution_title)
                 print(mismatched_title_msg)
 
     # Debe haber exactamente una distribución con los identicadores provistos
@@ -253,9 +254,16 @@ def read_local_xlsx_catalog(xlsx_path):
     assert xlsx_path.endswith(".xlsx"), """
 El archivo a leer debe tener extensión XLSX."""
 
-    workbook = pyxl.load_workbook(xlsx_path)
+    wb = pyxl.load_workbook(xlsx_path, data_only=True, read_only=True)
 
-    catalogs = helpers.sheet_to_table(workbook["Catalog"])
+    # Toma las hojas del modelo, resistente a mayúsuculas/minúsculas
+    ws_catalog = _get_ws_case_insensitive(wb, "catalog")
+    ws_dataset = _get_ws_case_insensitive(wb, "dataset")
+    ws_distribution = _get_ws_case_insensitive(wb, "distribution")
+    ws_theme = _get_ws_case_insensitive(wb, "theme")
+    ws_field = _get_ws_case_insensitive(wb, "field")
+
+    catalogs = helpers.sheet_to_table(ws_catalog)
     # Debe haber exactamente un catálogo en la hoja 'Catalog'
     assert (len(catalogs) != 0), "No hay ningun catálogo en la hoja 'Catalog'"
     assert (len(catalogs) < 2), "Hay mas de un catálogo en la hoja 'Catalog'"
@@ -263,21 +271,21 @@ El archivo a leer debe tener extensión XLSX."""
     catalog = catalogs[0]
 
     # Agrego themes y datasets al catálogo
-    catalog["catalog_dataset"] = helpers.sheet_to_table(workbook["Dataset"])
+    catalog["catalog_dataset"] = helpers.sheet_to_table(ws_dataset)
 
     # Me aseguro que los identificadores de dataset se guarden como cadenas
     for dataset in catalog["catalog_dataset"]:
         dataset["dataset_identifier"] = unicode(dataset["dataset_identifier"])
 
     catalog["catalog_themeTaxonomy"] = (
-        helpers.sheet_to_table(workbook["Theme"]))
+        helpers.sheet_to_table(ws_theme))
 
     # Agrego lista de distribuciones vacía a cada dataset
     for dataset in catalog["catalog_dataset"]:
         dataset["dataset_distribution"] = []
 
     # Ubico cada distribución en su dataset
-    distributions = helpers.sheet_to_table(workbook["Distribution"])
+    distributions = helpers.sheet_to_table(ws_distribution)
     for distribution in distributions:
         # Me aseguro que los identificadores se guarden como cadenas
         distribution["dataset_identifier"] = unicode(
@@ -291,14 +299,14 @@ El archivo a leer debe tener extensión XLSX."""
         if dataset_index is None:
             print("""La distribucion con ID '{}' y titulo '{}' no se
 pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
-    distribution["distribution_identifier"],
-    distribution["distribution_title"]))
+                distribution["distribution_identifier"],
+                distribution["distribution_title"]))
         else:
             dataset = catalog["catalog_dataset"][dataset_index]
             dataset["dataset_distribution"].append(distribution)
 
     # Ubico cada campo en su distribución
-    fields = helpers.sheet_to_table(workbook["Field"])
+    fields = helpers.sheet_to_table(ws_field)
     for idx, field in enumerate(fields):
         # Me aseguro que los identificadores se guarden como cadenas
         field["dataset_identifier"] = unicode(field["dataset_identifier"])
@@ -312,12 +320,12 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
         if dataset_index is None:
             print("""No se encontro el dataset '{}' especificado para el campo
 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-    field["dataset_title"], field["field_title"], idx+2))
+                field["dataset_title"], field["field_title"], idx + 2))
 
         elif distribution_index is None:
             print("""No se encontro la distribucion '{}' especificada para el campo
 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-    field["distribution_title"], field["field_title"], idx+2))
+                field["distribution_title"], field["field_title"], idx + 2))
 
         else:
             dataset = catalog["catalog_dataset"][dataset_index]
@@ -436,6 +444,19 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     else:
         raise ValueError("""
 {} no es un sufijo reconocido. Pruebe con .csv o .xlsx""".format(suffix))
+
+
+def _get_ws_case_insensitive(wb, title):
+    """Busca una hoja en un workbook sin importar mayúsculas/minúsculas."""
+
+    for modified_title in [title, title.upper(), title.lower(), title.title()]:
+        try:
+            return wb[modified_title]
+
+        except Exception as e:
+            continue
+
+    raise e
 
 
 def _read_csv_table(path):
