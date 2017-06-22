@@ -146,6 +146,55 @@ class HelpersTestCase(unittest.TestCase):
 
         self.assertFalse(result)
 
+    def test_add_dicts(self):
+        # Testea la función auxiliar para sumar campos de dicts recursivamente
+        from pydatajson.helpers import add_dicts
+
+        one_dict = {
+            "distribuciones_formatos_cant": {
+                "SHP": 207,
+                "ZIP": 122,
+                "JPEG": 26,
+                "PDF": 235,
+                "CSV": 375,
+                "XLS": 25
+            },
+            "una_lista": ["a", 1, True],
+            "dict_anidado": {
+                "valor": 12
+            }
+        }
+        other_dict = {
+            "distribuciones_formatos_cant": {
+                "RDF": 1,
+                "CSV": 124,
+                "JSON": 5
+            },
+            "una_lista": ["b", 2, False],
+            "dict_anidado": {
+                "valor": 24
+            }
+        }
+
+        expected = {
+            "distribuciones_formatos_cant": {
+                "SHP": 207,
+                "ZIP": 122,
+                "JPEG": 26,
+                "PDF": 235,
+                "CSV": 499,
+                "XLS": 25,
+                "RDF": 1,
+                "JSON": 5
+            },
+            "una_lista": ["b", 2, False, "a", 1, True],
+            "dict_anidado": {
+                "valor": 36
+            }
+        }
+        result = pydatajson.helpers.add_dicts(one_dict, other_dict)
+        self.assertDictEqual(result, expected)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

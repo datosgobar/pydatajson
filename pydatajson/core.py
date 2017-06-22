@@ -26,6 +26,7 @@ from . import helpers
 from . import writers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 
 
 class DataJson(object):
@@ -630,7 +631,9 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         metadatos generales de un catálogo (título, editor, fecha de
         publicación, et cetera), junto con:
             - estado de los metadatos a nivel catálogo,
-            - estado global de los metadatos, y
+            - estado global de los metadatos,
+            - cantidad de datasets federados y no federados,
+            - detalles de los datasets no federados
             - cantidad de datasets y distribuciones incluidas
 
         Es utilizada por la rutina diaria de `libreria-catalogos` para generar
@@ -646,8 +649,17 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         Returns:
             str: Texto de la descripción generada.
         """
+        # Si se paso una ruta, guardarla
+        if isinstance(catalog, (str, unicode)):
+            catalog_path_or_url = catalog
+        else:
+            catalog_path_or_url = None
+
         catalog = readers.read_catalog(catalog)
         validation = self.validate_catalog(catalog)
+        # Solo necesito indicadores para un catalogo
+        indicators = self.generate_catalogs_indicators(
+            catalog, CENTRAL_CATALOG)[0][0]
 
         readme_template = """
 # Catálogo: {title}
@@ -656,6 +668,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
 - **Autor**: {publisher_name}
 - **Correo Electrónico**: {publisher_mbox}
+- **Ruta del catálogo**: {catalog_path_or_url}
 - **Nombre del catálogo**: {title}
 - **Descripción**:
 
@@ -663,14 +676,28 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
 ## Estado de los metadatos y cantidad de recursos
 
-Estado metadatos globales | Estado metadatos catálogo | # de Datasets | # de Distribuciones
---------------------------|---------------------------|---------------|--------------------
-{global_status} | {catalog_status} | {no_of_datasets} | {no_of_distributions}
+- **Estado metadatos globales**: {global_status}
+- **Estado metadatos catálogo**: {catalog_status}
+- **Cantidad Total de Datasets**: {no_of_datasets}
+- **Cantidad Total de Distribuciones**: {no_of_distributions}
+
+- **Cantidad de Datasets Federados**: {federated_datasets}
+- **Cantidad de Datasets NO Federados**: {not_federated_datasets}
+- **Porcentaje de Datasets NO Federados**: {not_federated_datasets_pct}%
+
+## Datasets no federados:
+
+{not_federated_datasets_list}
 
 ## Datasets incluidos
 
 Por favor, consulte el informe [`datasets.csv`](datasets.csv).
 """
+
+        not_federated_datasets_list = "\n".join([
+            "- [{}]({})".format(dataset[0], dataset[1])
+            for dataset in indicators["datasets_no_federados"]
+        ])
 
         content = {
             "title": catalog.get("title"),
@@ -678,12 +705,18 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
                 catalog, ["publisher", "name"]),
             "publisher_mbox": helpers.traverse_dict(
                 catalog, ["publisher", "mbox"]),
+            "catalog_path_or_url": catalog_path_or_url,
             "description": catalog.get("description"),
             "global_status": validation["status"],
             "catalog_status": validation["error"]["catalog"]["status"],
             "no_of_datasets": len(catalog["dataset"]),
             "no_of_distributions": sum([len(dataset["distribution"]) for
-                                        dataset in catalog["dataset"]])
+                                        dataset in catalog["dataset"]]),
+            "federated_datasets": indicators["datasets_federados_cant"],
+            "not_federated_datasets": indicators["datasets_no_federados_cant"],
+            "not_federated_datasets_pct": (
+                100.0 - indicators["datasets_federados_pct"]),
+            "not_federated_datasets_list": not_federated_datasets_list
         }
 
         catalog_readme = readme_template.format(**content)
@@ -929,6 +962,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         central_catalog = readers.read_catalog(central_catalog)
         federados = 0  # En ambos catálogos
         no_federados = 0
+        datasets_no_federados = []
 
         # Lo busco uno por uno a ver si está en la lista de catálogos
         for dataset in catalog.get('dataset', []):
@@ -940,6 +974,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                     break
             if not found:
                 no_federados += 1
+                datasets_no_federados.append((dataset.get('title'),
+                                              dataset.get('landingPage')))
 
         if federados or no_federados:  # Evita división por 0
             federados_pct = 100 * float(federados) / (federados + no_federados)
@@ -949,6 +985,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         result = {
             'datasets_federados_cant': federados,
             'datasets_no_federados_cant': no_federados,
+            'datasets_no_federados': datasets_no_federados,
             'datasets_federados_pct': round(federados_pct, 2)
         }
         return result
@@ -980,7 +1017,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 other_value = helpers.traverse_dict(other, field)
             else:
                 value = dataset.get(field)
-                other_value = dataset.get(field)
+                other_value = other.get(field)
 
             if value != other_value:
                 return False
@@ -1076,7 +1113,6 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             days_diff = float((datetime.now() - date).days)
             interval = helpers.parse_repeating_time_interval(periodicity) * \
                 (1 + tolerance)
-
 
             if days_diff < interval:
                 actualizados += 1
