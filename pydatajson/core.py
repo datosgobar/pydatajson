@@ -1244,6 +1244,28 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         return key_count
 
+    def dataset_is_updated(self, catalog, dataset):
+        catalog = readers.read_catalog(catalog)
+
+        for catalog_dataset in catalog.get('dataset', []):
+            if catalog_dataset.get('title') == dataset:
+                periodicity = catalog_dataset.get('accrualPeriodicity')
+                if not periodicity:
+                    return False
+
+                if periodicity == 'eventual':
+                    return True
+
+                date = self._parse_date_string(catalog_dataset['issued'])
+                days_diff = float((datetime.now() - date).days)
+                interval = helpers.parse_repeating_time_interval(periodicity)
+
+                if days_diff < interval:
+                    return True
+                return False
+
+        return False
+
 
 def main():
     """Permite ejecutar el módulo por línea de comandos.
