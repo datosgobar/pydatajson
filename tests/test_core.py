@@ -1011,6 +1011,16 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 
+    def test_dataset_is_updated(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
+
+        # Datasset con periodicity mensual vencida
+        dataset = "Base de datos legislativos Infoleg"
+        self.assertFalse(self.dj.dataset_is_updated(catalog, dataset))
+
+        # Dataset con periodicity eventual, siempre True
+        dataset = "Declaración Jurada Patrimonial Integral de carácter público"
+        self.assertTrue(self.dj.dataset_is_updated(catalog, dataset))
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
