@@ -1,6 +1,22 @@
 History
 =======
 
+0.2.13 (2017-06-22)
+-------------------
+
+* Agrega método para verificar si un dataset individual está actualizado
+
+0.2.12 (2017-06-22)
+-------------------
+
+* Se modifica el template de CATALOG README
+* Se agrega el indicador "datasets_no_federados" a generate_catalogs_indicators
+
+0.2.11 (2017-05-23)
+-------------------
+
+* Se agrega en `core` el método `DataJson.generate_catalogs_indicators`, que genera indicadores de monitoreo de catálogos, recopilando información sobre, entre otras cosas, su validez, actualidad y formato de sus contenidos.
+
 0.2.10 (2017-05-11)
 -------------------
 

@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.13 (2017-06-22)
+-------------------
+
+* Agrega método para verificar si un dataset individual está actualizado
+
 0.2.12 (2017-06-22)
 -------------------
 
