@@ -922,6 +922,8 @@ revíselo manualmente""".format(actual_filename)
         ])
 
         # Esperado: suma de los indicadores individuales
+        # No se testean los indicadores de actualización porque las fechas no
+        # se mantienen actualizadas
         expected = {
             'catalogos_cant': 2,
             'datasets_cant': 4,
@@ -936,9 +938,6 @@ revíselo manualmente""".format(actual_filename)
             },
             'campos_optativos_pct': 21.95,
             'campos_recomendados_pct': 44.72,
-            'datasets_actualizados_cant': 2,
-            'datasets_desactualizados_cant': 2,
-            'datasets_actualizados_pct': 50
         }
 
         for k,v in expected.items():
