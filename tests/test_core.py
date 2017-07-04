@@ -922,6 +922,8 @@ revíselo manualmente""".format(actual_filename)
         ])
 
         # Esperado: suma de los indicadores individuales
+        # No se testean los indicadores de actualización porque las fechas no
+        # se mantienen actualizadas
         expected = {
             'catalogos_cant': 2,
             'datasets_cant': 4,
@@ -936,9 +938,6 @@ revíselo manualmente""".format(actual_filename)
             },
             'campos_optativos_pct': 21.95,
             'campos_recomendados_pct': 44.72,
-            'datasets_actualizados_cant': 2,
-            'datasets_desactualizados_cant': 2,
-            'datasets_actualizados_pct': 50
         }
 
         for k,v in expected.items():
@@ -1011,6 +1010,16 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 
+    def test_dataset_is_updated(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
+
+        # Datasset con periodicity mensual vencida
+        dataset = "Base de datos legislativos Infoleg"
+        self.assertFalse(self.dj.dataset_is_updated(catalog, dataset))
+
+        # Dataset con periodicity eventual, siempre True
+        dataset = "Declaración Jurada Patrimonial Integral de carácter público"
+        self.assertTrue(self.dj.dataset_is_updated(catalog, dataset))
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
