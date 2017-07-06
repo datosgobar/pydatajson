@@ -52,10 +52,10 @@ A partir de la versión 0.2.x (Febrero 2017), la funcionalidad del paquete se ma
 ## Usos
 
 La librería cuenta con funciones para cuatro objetivos principales:
-- **validación de metadatos de catálogos** y los datasets,
-- **generación de reportes** sobre el contenido y la validez de los metadatos de catálogos y datasets,
+- **validación de metadatos de catálogos** y los _datasets_,
+- **generación de reportes** sobre el contenido y la validez de los metadatos de catálogos y _datasets_,
 - **transformación de archivos de metadatos** al formato estándar (JSON), y
-- **generación de indicadores de monitoreo de catálogos** y sus datasets.
+- **generación de indicadores de monitoreo de catálogos** y sus _datasets_.
 
 A continuación se proveen ejemplos de cada uno de estas acciones. Si desea analizar un flujo de trabajo más completo, refiérase a los Jupyter Notebook de [`samples/`](samples/)
 
@@ -76,7 +76,7 @@ Si se desea utilizar un esquema alternativo, por favor, consulte la sección "Us
 - Si se desea un **resultado sencillo (V o F)** sobre la validez de la estructura del catálogo, se utilizará **`is_valid_catalog(catalog)`**.
 - Si se desea un **mensaje de error detallado**, se utilizará **`validate_catalog(catalog)`**.
 
-Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json`s bien y mal formados con distintos tipos de errores.
+Por conveniencia, la carpeta [`tests/samples/`](tests/samples/) contiene varios ejemplos de `data.json` bien y mal formados con distintos tipos de errores.
 
 #### Archivo data.json local
 
@@ -113,7 +113,7 @@ print validation_report
 
 #### Otros formatos
 
-`pydatajson` puede interpretar catálogos tanto en formato JSON como en formato XLSX (siempre y cuando se hayan creado utilizando la [plantilla](samples/plantilla_data.xlsx), estén estos almacenados localmente, o remotamente a través de URLs de descarga directa. También es capaz de interpretar diccionarios de Python con metadatos de catálogos.
+`pydatajson` puede interpretar catálogos tanto en formato JSON como en formato XLSX (siempre y cuando se hayan creado utilizando la [plantilla](samples/plantilla_data.xlsx), estén estos almacenados localmente o remotamente a través de URLs de descarga directa. También es capaz de interpretar diccionarios de Python con metadatos de catálogos.
 
 ```python
 from pydatajson import DataJson
@@ -139,7 +139,7 @@ for catalog in catalogs:
 
 ### Generación de reportes y configuraciones del Harvester
 
-Si ya se sabe que se desean cosechar todos los datasets [válidos] de uno o varios catálogos, se pueden utilizar directamente el método `generate_harvester_config()`, proveyendo `harvest='all'` o `harvest='valid'` respectivamente. Si se desea revisar manualmente la lista de datasets contenidos, se puede invocar primero `generate_datasets_report()`, editar el reporte generado y luego proveérselo a `generate_harvester_config()`, junto con la opción `harvest='report'`.
+Si ya se sabe que se desean cosechar todos los _datasets_ [válidos] de uno o varios catálogos, se pueden utilizar directamente el método `generate_harvester_config()`, proveyendo `harvest='all'` o `harvest='valid'` respectivamente. Si se desea revisar manualmente la lista de _datasets_ contenidos, se puede invocar primero `generate_datasets_report()`, editar el reporte generado y luego proveérselo a `generate_harvester_config()`, junto con la opción `harvest='report'`.
 
 #### Crear un archivo de configuración eligiendo manualmente los datasets a federar
 
@@ -162,9 +162,9 @@ dj.generate_harvester_config(
     export_path=config_path
 )
 ```
-El archivo `config_path` puede ser provisto a Harvester para federar los datasets elegidos al editar el reporte intermedio `report_path`.
+El archivo `config_path` puede ser provisto a Harvester para federar los _datasets_ elegidos al editar el reporte intermedio `report_path`.
 
-Por omisión, en la salida de `generate_harvester_config` la frecuencia de actualización deseada para cadad dataset será "R/P1D", para intentar cosecharlos diariamente. De preferir otra frecuencia (siempre y cuando sea válida según ISO 8601), se la puede especificar a través del parámetro opcional `frequency`. Si especifica expĺicitamente `frequency=None`, se conservarán las frecuencias de actualización indicadas en el campo `accrualPeriodicity` de cada dataset.
+Por omisión, en la salida de `generate_harvester_config` la frecuencia de actualización deseada para cada _dataset_ será "R/P1D", para intentar cosecharlos diariamente. De preferir otra frecuencia (siempre y cuando sea válida según ISO 8601), se la puede especificar a través del parámetro opcional `frequency`. Si especifica expĺicitamente `frequency=None`, se conservarán las frecuencias de actualización indicadas en el campo `accrualPeriodicity` de cada _dataset_.
 
 #### Crear un archivo de configuración que incluya únicamente los datasets con metadata válida
 
@@ -194,16 +194,17 @@ write_json(obj=catalogo, path="tests/temp/catalogo_justicia.json")
 
 ### Generación de indicadores de monitoreo de catálogos
 
-`pydatajson` puede calcular indicadores sobre uno o más catálogos. Estos indicadores recopilan información de interés sobre los datasets de cada uno, tales como:
-- el estado de validez de los catálogos,
-- el número de días desde su última actualización, 
-- el formato de sus distribuciones,
-- frecuencia de actualización de los datasets,
-- estado de federación de los datasets, comparándolo con el catálogo central
+`pydatajson` puede calcular indicadores sobre uno o más catálogos. Estos indicadores recopilan información de interés sobre los _datasets_ de cada uno, tales como:
+- el estado de validez de los catálogos;
+- el número de días desde su última actualización;
+- el formato de sus distribuciones;
+- frecuencia de actualización de los _datasets_;
+- estado de federación de los _datasets_, comparándolo con el catálogo central
 
 La función usada es `generate_catalogs_indicators`, que acepta los catálogos como parámetros. Devuelve dos valores:
-- una lista con tantos valores como catálogos, con cada elemento siendo un diccionario con los indicadores del catálogo respectivo
+- una lista con tantos valores como catálogos, con cada elemento siendo un diccionario con los indicadores del catálogo respectivo;
 - un diccionario con los indicadores de la red entera (una suma de los individuales)
+
 ```python
 catalogs = ["tests/samples/full_data.json", "http://181.209.63.71/data.json"]
 indicators, network_indicators = dj.generate_catalogs_indicators(catalogs)
