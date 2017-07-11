@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.15 (2017-07-11)
+-------------------
+
+* Modifica la definición de dataset actualizado usando el campo "modified" del perfil de metadatos. Si este campo no está presente en la metadata de un dataset, se lo considera desactualizado.
+
 0.2.14 (2017-07-10)
 -------------------
 
