@@ -838,22 +838,26 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         Args:
             fields (dict): Diccionario con claves 'recomendado', 'optativo',
-            'total_recomendado', 'total_optativo', cada uno con valores
-            que representan la cantidad de c/u en la red de nodos entera.
+                'total_recomendado', 'total_optativo', cada uno con valores
+                que representan la cantidad de c/u en la red de nodos entera.
 
             network_indicators (dict): Diccionario de la red de nodos, con
-            las cantidades de datasets_meta_ok y datasets_(des)actualizados
-            calculados previamente. Se modificará este argumento con los
-            nuevos indicadores.
+                las cantidades de datasets_meta_ok y datasets_(des)actualizados
+                calculados previamente. Se modificará este argumento con los
+                nuevos indicadores.
         """
+
         # Los porcentuales no se pueden sumar, tienen que ser recalculados
+
+        # % de datasets cuya metadata está ok
         meta_ok = network_indicators['datasets_meta_ok_cant']
         meta_error = network_indicators['datasets_meta_error_cant']
-        total_pct = 0
+        total_pct = 0.0
         if meta_ok or meta_error:  # Evita división por cero
             total_pct = 100 * float(meta_ok) / (meta_error + meta_ok)
-
         network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
+
+        # % de campos recomendados y optativos utilizados en todo el catálogo
         if fields:  # 'fields' puede estar vacío si ningún campo es válido
             rec_pct = 100 * float(fields['recomendado']) / \
                 fields['total_recomendado']
@@ -866,14 +870,15 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 'campos_optativos_pct': round(opt_pct, 2)
             })
 
+        # % de datasets actualizados
         act = network_indicators['datasets_actualizados_cant']
         desact = network_indicators['datasets_desactualizados_cant']
         updated_pct = 0
         if act or desact:  # Evita división por cero
             updated_pct = 100 * act / float(act + desact)
-
         network_indicators['datasets_actualizados_pct'] = round(updated_pct, 2)
 
+        # % de datasets federados
         federados = network_indicators.get('datasets_federados_cant')
         no_federados = network_indicators.get('datasets_no_federados_cant')
 
@@ -1081,7 +1086,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                     (days_diff and days_diff < dias_ultima_actualizacion):
                 dias_ultima_actualizacion = days_diff
 
-        return dias_ultima_actualizacion
+        if dias_ultima_actualizacion:
+            return int(dias_ultima_actualizacion)
+        else:
+            return None
 
     def _generate_date_indicators(self, catalog, tolerance=0.2):
         """Genera indicadores relacionados a las fechas de publicación
