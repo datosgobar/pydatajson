@@ -1005,11 +1005,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         """
 
         # Campos a comparar. Si es un campo anidado escribirlo como lista
-        fields = ['title',
-                  ['publisher', 'name'],
-                  'accrualPeriodicity',
-                  'issued'
-                  ]
+        fields = [
+            'title',
+            ['publisher', 'name']
+        ]
 
         for field in fields:
             if isinstance(field, list):
