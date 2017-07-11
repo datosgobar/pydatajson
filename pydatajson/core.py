@@ -1037,6 +1037,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             datetime: objeto fecha especificada por date_string.
         """
 
+        if not date_string:
+            return None
+
         # La fecha cumple con la norma ISO 8601: YYYY-mm-ddThh-MM-ss.
         # Nos interesa solo la parte de fecha, y no la hora. Se hace un
         # split por la letra 'T' y nos quedamos con el primer elemento.
@@ -1044,6 +1047,41 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         # Crea un objeto datetime a partir del formato especificado
         return datetime.strptime(date_string, "%Y-%m-%d")
+
+    @classmethod
+    def _days_from_last_update(cls, catalog, date_field="modified"):
+        """Calcula días desde la última actualización del catálogo.
+
+        Args:
+            catalog (dict): Un catálogo.
+            date_field (str): Campo de metadatos a utilizar para considerar
+                los días desde la última actualización del catálogo.
+
+        Returns:
+            int or None: Cantidad de días desde la última actualización del
+                catálogo o None, si no pudo ser calculada.
+        """
+
+        # el "date_field" se busca primero a nivel catálogo, luego a nivel
+        # de cada dataset, y nos quedamos con el que sea más reciente
+        date_modified = catalog.get(date_field, None)
+        dias_ultima_actualizacion = None
+        # "date_field" a nivel de catálogo puede no ser obligatorio,
+        # si no está pasamos
+        if isinstance(date_modified, (unicode, str)):
+            date = cls._parse_date_string(date_modified)
+            dias_ultima_actualizacion = (datetime.now() - date).days
+
+        for dataset in catalog.get('dataset', []):
+            date = cls._parse_date_string(dataset.get(date_field, ""))
+            days_diff = float((datetime.now() - date).days) if date else None
+
+            # Actualizo el indicador de días de actualización si corresponde
+            if not dias_ultima_actualizacion or \
+                    (days_diff and days_diff < dias_ultima_actualizacion):
+                dias_ultima_actualizacion = days_diff
+
+        return dias_ultima_actualizacion
 
     def _generate_date_indicators(self, catalog, tolerance=0.2):
         """Genera indicadores relacionados a las fechas de publicación
@@ -1067,24 +1105,11 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         """
         result = {}
 
-        # Cálculo de días desde su última actualización.
-        # 'issued' se busca primero a nivel catálogo, luego a nivel dataset,
-        # y nos quedamos con el que sea más reciente
-        date_issued = catalog.get('issued', None)
-        dias_ultima_actualizacion = None
-        # 'issued' a nivel catálogo no es obligatorio, si no está pasamos
-        if isinstance(date_issued, (unicode, str)):
-            date = self._parse_date_string(date_issued)
-            dias_ultima_actualizacion = (datetime.now() - date).days
-
-        for dataset in catalog.get('dataset', []):
-            date = self._parse_date_string(dataset.get('issued', ""))
-            days_diff = float((datetime.now() - date).days)
-
-            # Actualizo el indicador de días de actualización si corresponde
-            if not dias_ultima_actualizacion or \
-                    days_diff < dias_ultima_actualizacion:
-                dias_ultima_actualizacion = days_diff
+        dias_ultima_actualizacion = self._days_from_last_update(
+            catalog, "modified")
+        if not dias_ultima_actualizacion:
+            dias_ultima_actualizacion = self._days_from_last_update(
+                catalog, "issued")
 
         result['catalogo_ultima_actualizacion_dias'] = \
             dias_ultima_actualizacion
@@ -1260,7 +1285,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 if periodicity == 'eventual':
                     return True
 
-                date = self._parse_date_string(catalog_dataset['issued'])
+                if "modified" not in catalog_dataset:
+                    return False
+
+                date = self._parse_date_string(catalog_dataset['modified'])
                 days_diff = float((datetime.now() - date).days)
                 interval = helpers.parse_repeating_time_interval(periodicity)
 

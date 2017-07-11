@@ -1021,5 +1021,9 @@ revíselo manualmente""".format(actual_filename)
         dataset = "Declaración Jurada Patrimonial Integral de carácter público"
         self.assertTrue(self.dj.dataset_is_updated(catalog, dataset))
 
+    def test_parse_date_string(self):
+        self.assertEqual(self.dj._parse_date_string(""), None)
+
+
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
