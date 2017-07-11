@@ -937,10 +937,10 @@ revíselo manualmente""".format(actual_filename)
                 'PDF': 1
             },
             'campos_optativos_pct': 21.95,
-            'campos_recomendados_pct': 44.72,
+            'campos_recomendados_pct': 47.15,
         }
 
-        for k,v in expected.items():
+        for k, v in expected.items():
             self.assertEqual(network_indicators[k], v)
 
     def test_indicators_invalid_periodicity(self):

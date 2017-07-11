@@ -18,6 +18,7 @@
             ],
             "accrualPeriodicity": "R/P1W",
             "issued": "2016-04-14T19:48:05.433640-03:00",
+            "modified": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {
                     "accessURL": "http://datos.gob.ar/dataset1.csv",
@@ -56,6 +57,7 @@
             ],
             "accrualPeriodicity": "eventual",
             "issued": "2016-04-14T19:48:05.433640-03:00",
+            "modified": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {
                     "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
@@ -77,6 +79,7 @@
             ],
             "accrualPeriodicity": "R/P1M",
             "issued": "2016-04-14T19:48:05.433640-03:00",
+            "modified": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {
                     "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",

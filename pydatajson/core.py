@@ -1105,18 +1105,23 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 periodicity_amount[periodicity] = prev_periodicity + 1
                 continue
 
-            # Calculo el período de días que puede pasar sin actualizarse
-            # Se parsea el período especificado por accrualPeriodicity,
-            # cumple con el estándar ISO 8601 para tiempos con repetición
-            date = self._parse_date_string(dataset['issued'])
-            days_diff = float((datetime.now() - date).days)
-            interval = helpers.parse_repeating_time_interval(periodicity) * \
-                (1 + tolerance)
-
-            if days_diff < interval:
-                actualizados += 1
-            else:
+            # dataset sin fecha de última actualización es desactualizado
+            if "modified" not in dataset:
                 desactualizados += 1
+            else:
+                # Calculo el período de días que puede pasar sin actualizarse
+                # Se parsea el período especificado por accrualPeriodicity,
+                # cumple con el estándar ISO 8601 para tiempos con repetición
+                date = self._parse_date_string(dataset['modified'])
+                days_diff = float((datetime.now() - date).days)
+                interval = helpers.parse_repeating_time_interval(
+                    periodicity) * \
+                    (1 + tolerance)
+
+                if days_diff < interval:
+                    actualizados += 1
+                else:
+                    desactualizados += 1
 
             prev_periodicity = periodicity_amount.get(periodicity, 0)
             periodicity_amount[periodicity] = prev_periodicity + 1
