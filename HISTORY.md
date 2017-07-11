@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.14 (2017-07-10)
+-------------------
+
+* Modifica la definición de dataset usada para comparar limitándola a la comparación por "title" y "publisher_name".
+
 0.2.13 (2017-06-22)
 -------------------
 
