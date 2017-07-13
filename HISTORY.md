@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.16 (2017-07-13)
+-------------------
+
+* Bug fix: convierte a unicode antes de escribir un objeto a JSON.
+
 0.2.15 (2017-07-11)
 -------------------
 
