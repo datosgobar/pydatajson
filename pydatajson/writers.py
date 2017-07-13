@@ -72,8 +72,8 @@ def _write_xlsx_table(table, path):
 
 def write_json(obj, path):
     """Escribo un objeto a un archivo JSON con codificación UTF-8."""
-    obj_str = json.dumps(obj, indent=4, separators=(",", ": "),
-                         ensure_ascii=False)
+    obj_str = unicode(json.dumps(obj, indent=4, separators=(",", ": "),
+                                 ensure_ascii=False))
     with io.open(path, "w", encoding='utf-8') as target:
         target.write(obj_str)
 
