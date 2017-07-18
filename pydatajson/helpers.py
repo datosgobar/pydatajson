@@ -9,6 +9,10 @@ from __future__ import with_statement
 
 import datetime
 import os
+import json
+
+ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 
 
 def ensure_dir_exists(directory):
@@ -149,11 +153,25 @@ def add_dicts(one_dict, other_dict):
     return result
 
 
-def parse_repeating_time_interval(date_str):
+def parse_repeating_time_interval(date_str, to="days"):
+    if to == "days":
+        return parse_repeating_time_interval_to_days(date_str)
+
+    elif to == "string":
+        return parse_repeating_time_interval_to_str(date_str)
+
+    else:
+        raise NotImplementedError(
+            "Falta implementar parsing a {}".format(to)
+        )
+
+
+def parse_repeating_time_interval_to_days(date_str):
     """Parsea un string con un intervalo de tiempo con repetición especificado
     por la norma ISO 8601 en una cantidad de días que representa ese intervalo.
     Devuelve 0 en caso de que el intervalo sea inválido.
     """
+
     intervals = {
         'Y': 365,
         'M': 30,
@@ -182,3 +200,18 @@ def parse_repeating_time_interval(date_str):
 
     # Si el número de días es menor lo redondeamos a 1
     return max(days, 1)
+
+
+def parse_repeating_time_interval_to_str(date_str):
+    """Devuelve descripción humana de un intervalo de repetición.
+
+    TODO: Por ahora sólo interpreta una lista fija de intervalos. Debería poder
+    parsear cualquier caso.
+    """
+
+    with open(os.path.join(ABSOLUTE_SCHEMA_DIR,
+                           "accrualPeriodicity.json"), "r") as f:
+        freqs_map = {freq["id"]: freq["description"]
+                     for freq in json.load(f)}
+
+    return freqs_map[date_str]
