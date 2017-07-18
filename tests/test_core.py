@@ -912,6 +912,49 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v)
 
+    def test_federation_indicators_removed_datasets(self):
+
+        # CASO 1
+        # se buscan los datasets federados en el central que fueron eliminados
+        # en el específico pero no se encuentran porque el publisher.name no
+        # tiene publicado ningún otro dataset en el catálogo específico
+        catalog = os.path.join(
+            self.SAMPLES_DIR, "catalogo_justicia_removed.json"
+        )
+        central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
+        indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
+
+        # Esperado: no se encuentra el dataset removido, porque el
+        # publisher.name no existe en ningún otro dataset
+        expected = {
+            "datasets_federados_eliminados_cant": 0,
+            "datasets_federados_eliminados": []
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
+        # CASO 2
+        # se buscan los datasets federados en el central que fueron eliminados
+        # en el específico y se encuentran porque el publisher.name tiene
+        # publicado otro dataset en el catálogo específico
+        catalog = os.path.join(
+            self.SAMPLES_DIR, "catalogo_justicia_removed_publisher.json"
+        )
+        indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
+        # Esperado: no se encuentra el dataset removido, porque el
+        # publisher.name no existe en ningún otro dataset
+        expected = {
+            "datasets_federados_eliminados_cant": 1,
+            "datasets_federados_eliminados": [(
+                'Base de datos legislativos Infoleg',
+                "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg"
+            )]
+        }
+
+        for k, v in expected.items():
+            self.assertEqual(indicators[k], v)
+
     def test_network_indicators(self):
         one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")

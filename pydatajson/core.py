@@ -953,8 +953,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         }
         return result
 
-    def _federation_indicators(self, catalog,
-                               central_catalog):
+    def _federation_indicators(self, catalog, central_catalog):
         """Cuenta la cantidad de datasets incluídos tanto en la lista
         'catalogs' como en el catálogo central, y genera indicadores a partir
         de esa información.
@@ -967,9 +966,11 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         central_catalog = readers.read_catalog(central_catalog)
         federados = 0  # En ambos catálogos
         no_federados = 0
+        datasets_federados_eliminados_cant = 0
         datasets_no_federados = []
+        datasets_federados_eliminados = []
 
-        # Lo busco uno por uno a ver si está en la lista de catálogos
+        # busca c/dataset del catálogo específico a ver si está en el central
         for dataset in catalog.get('dataset', []):
             found = False
             for central_dataset in central_catalog.get('dataset', []):
@@ -982,6 +983,26 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 datasets_no_federados.append((dataset.get('title'),
                                               dataset.get('landingPage')))
 
+        # busca c/dataset del central cuyo publisher podría pertenecer al
+        # catálogo específico, a ver si está en el catálogo específico
+        # si no está, probablemente signifique que fue eliminado
+        filtered_central = self._filter_by_likely_publisher(
+            central_catalog.get('dataset', []),
+            catalog.get('dataset', [])
+        )
+        for central_dataset in filtered_central:
+            found = False
+            for dataset in catalog.get('dataset', []):
+                if self._datasets_equal(dataset, central_dataset):
+                    found = True
+                    break
+            if not found:
+                datasets_federados_eliminados_cant += 1
+                datasets_federados_eliminados.append(
+                    (central_dataset.get('title'),
+                     central_dataset.get('landingPage'))
+                )
+
         if federados or no_federados:  # Evita división por 0
             federados_pct = 100 * float(federados) / (federados + no_federados)
         else:
@@ -990,10 +1011,28 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         result = {
             'datasets_federados_cant': federados,
             'datasets_no_federados_cant': no_federados,
+            'datasets_federados_eliminados_cant': datasets_federados_eliminados_cant,
+            'datasets_federados_eliminados': datasets_federados_eliminados,
             'datasets_no_federados': datasets_no_federados,
             'datasets_federados_pct': round(federados_pct, 2)
         }
         return result
+
+    @staticmethod
+    def _filter_by_likely_publisher(central_datasets, catalog_datasets):
+        publisher_names = [
+            catalog_dataset["publisher"]["name"]
+            for catalog_dataset in catalog_datasets
+            if "name" in catalog_dataset["publisher"]
+        ]
+
+        filtered_central_datasets = []
+        for central_dataset in central_datasets:
+            if "name" in central_dataset["publisher"] and \
+                    central_dataset["publisher"]["name"] in publisher_names:
+                filtered_central_datasets.append(central_dataset)
+
+        return filtered_central_datasets
 
     @staticmethod
     def _datasets_equal(dataset, other):
