@@ -15,12 +15,16 @@ import io
 import os.path
 from urlparse import urlparse
 import warnings
+import logging
 import json
 import requests
 import unicodecsv as csv
 import openpyxl as pyxl
 from . import helpers
 from .ckan_reader import read_ckan_catalog
+import custom_exceptions as ce
+
+logger = logging.getLogger()
 
 
 def read_catalog(catalog, default_values=None):
@@ -253,11 +257,13 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title):
             if dataset["dataset_title"] == dataset_title:
                 matching_datasets.append(idx)
             else:
-                mismatched_title_msg = """
-Se encontro un dataset con ID '{}', pero su titulo es '{}' en lugar del
-esperado '{}'. Este dataset NO se considerara.""".format(
-                    dataset_identifier, dataset["dataset_title"], dataset_title)
-                print(mismatched_title_msg)
+                logger.warning(
+                    ce.DatasetUnexpectedTitle(
+                        dataset_identifier,
+                        dataset["dataset_title"],
+                        dataset_title
+                    )
+                )
 
 # Debe haber exactamente un dataset con el identificador provisto.
     no_dsets_msg = "No hay ningun dataset con el identifier {}".format(
@@ -293,24 +299,27 @@ def _get_distribution_indexes(catalog, dataset_identifier, dataset_title,
             if distribution["distribution_title"] == distribution_title:
                 matching_distributions.append(idx)
             else:
-                mismatched_title_msg = """
-Se encontro una distribucion con ID '{}', pero su titulo es '{}' en lugar del
-esperado '{}'. Esta distribucion NO se considerara.""".format(
-                    distribution_identifier, distribution[
-                        "distribution_title"],
-                    distribution_title)
-                print(mismatched_title_msg)
+                logger.warning(
+                    ce.DistributionUnexpectedTitle(
+                        distribution_identifier,
+                        distribution["distribution_title"],
+                        distribution_title
+                    )
+                )
 
     # Debe haber exactamente una distribución con los identicadores provistos
-    no_dists_msg = """No hay ninguna distribucion de titulo '{}' en el dataset con ID '{}'.""".format(
-        distribution_title, dataset_identifier)
-    many_dists_msg = """Hay mas de una distribucion de título '{}' en el dataset con ID '{}': {}""".format(
-        distribution_title, dataset_identifier, matching_distributions)
     if len(matching_distributions) == 0:
-        print(no_dists_msg)
+        logger.warning(
+            ce.DistributionTitleNonExistentError(
+                distribution_title, dataset_identifier
+            )
+        )
         return dataset_index, None
     elif len(matching_distributions) > 1:
-        print(many_dists_msg)
+        logger.warning(
+            ce.DistributionTitleRepetitionError(
+                distribution_title, dataset_identifier, matching_distributions)
+        )
         return dataset_index, None
     else:
         distribution_index = matching_distributions[0]
