@@ -146,6 +146,22 @@ class HelpersTestCase(unittest.TestCase):
 
         self.assertFalse(result)
 
+    def test_parse_repeating_time_interval_to_days(self):
+        # Testea función auxiliar para interpretar intervalos repetidos en días
+        from pydatajson.helpers import parse_repeating_time_interval_to_days
+
+        self.assertEqual(
+            parse_repeating_time_interval_to_days("R/P6M"), 180
+        )
+
+    def test_parse_repeating_time_interval_to_str(self):
+        # Testea función auxiliar para interpretar intervalos repetidos en días
+        from pydatajson.helpers import parse_repeating_time_interval_to_str
+
+        self.assertEqual(
+            parse_repeating_time_interval_to_str("R/P6M"), "Cada medio año"
+        )
+
     def test_add_dicts(self):
         # Testea la función auxiliar para sumar campos de dicts recursivamente
         from pydatajson.helpers import add_dicts
