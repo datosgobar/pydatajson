@@ -1,6 +1,12 @@
 History
 =======
 
+0.2.17 (2017-07-18)
+-------------------
+
+* Agrega un método para convertir un intervalo repetido (Ej.: R/P1Y) en su representación en prosa ("Anualmente").
+* Agrego método que estima los datasets federados que fueron borrados de un catálogo específico. Se consideran datasets federados y borrados de un catálogo específico aquellos cuyo publisher.name existe dentro de algún otro dataset todavía presente en el catálogo específico.
+
 0.2.16 (2017-07-13)
 -------------------
 

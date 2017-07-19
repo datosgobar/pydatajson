@@ -343,11 +343,11 @@ El archivo a leer debe tener extensión XLSX."""
     wb = pyxl.load_workbook(xlsx_path, data_only=True, read_only=True)
 
     # Toma las hojas del modelo, resistente a mayúsuculas/minúsculas
-    ws_catalog = _get_ws_case_insensitive(wb, "catalog")
-    ws_dataset = _get_ws_case_insensitive(wb, "dataset")
-    ws_distribution = _get_ws_case_insensitive(wb, "distribution")
-    ws_theme = _get_ws_case_insensitive(wb, "theme")
-    ws_field = _get_ws_case_insensitive(wb, "field")
+    ws_catalog = helpers.get_ws_case_insensitive(wb, "catalog")
+    ws_dataset = helpers.get_ws_case_insensitive(wb, "dataset")
+    ws_distribution = helpers.get_ws_case_insensitive(wb, "distribution")
+    ws_theme = helpers.get_ws_case_insensitive(wb, "theme")
+    ws_field = helpers.get_ws_case_insensitive(wb, "field")
 
     catalogs = helpers.sheet_to_table(ws_catalog)
     # Debe haber exactamente un catálogo en la hoja 'Catalog'
@@ -530,19 +530,6 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     else:
         raise ValueError("""
 {} no es un sufijo reconocido. Pruebe con .csv o .xlsx""".format(suffix))
-
-
-def _get_ws_case_insensitive(wb, title):
-    """Busca una hoja en un workbook sin importar mayúsculas/minúsculas."""
-
-    for modified_title in [title, title.upper(), title.lower(), title.title()]:
-        try:
-            return wb[modified_title]
-
-        except Exception as e:
-            continue
-
-    raise e
 
 
 def _read_csv_table(path):

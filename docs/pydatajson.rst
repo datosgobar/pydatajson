@@ -20,6 +20,14 @@ pydatajson.core module
     :undoc-members:
     :show-inheritance:
 
+pydatajson.custom_exceptions module
+-----------------------------------
+
+.. automodule:: pydatajson.custom_exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pydatajson.helpers module
 -------------------------
 

@@ -105,17 +105,35 @@ def sheet_to_table(worksheet):
 
     Returns:
         list_of_dicts: Lista de diccionarios, con tantos elementos como
-        registros incluya la hoja, y con tantas claves por diccionario como
-        campos tenga la hoja.
+            registros incluya la hoja, y con tantas claves por diccionario como
+            campos tenga la hoja.
     """
 
-    worksheet_rows = list(worksheet.rows)
-    headers = [parse_value(cell) for cell in worksheet_rows[0]]
-    value_rows = [
-        [parse_value(cell) for cell in row] for row in worksheet_rows[1:]
-        # Únicamente considero filas con al menos un campo no-nulo
-        if any([parse_value(cell) for cell in row])
-    ]
+    headers = []
+    value_rows = []
+    for row_i, row in enumerate(worksheet.iter_rows()):
+
+        # lee los headers y el tamaño máximo de la hoja en columnas en fila 1
+        if row_i == 0:
+            for header_cell in row:
+                if header_cell.value:
+                    headers.append(parse_value(header_cell))
+                else:
+                    break
+            continue
+
+        # limita la cantidad de celdas a considerar, por la cantidad de headers
+        row_cells = [parse_value(cell) for index, cell in enumerate(row)
+                     if index < len(headers)]
+
+        # agrega las filas siguientes que tengan al menos un campo no nulo
+        if any(row_cells):
+            value_rows.append(row_cells)
+        # no se admiten filas vacías, eso determina el fin de la hoja
+        else:
+            break
+
+    # convierte las filas en diccionarios con los headers como keys
     table = [
         # Ignoro los campos con valores nulos (None)
         {k: v for (k, v) in zip(headers, row) if v is not None}
@@ -215,3 +233,20 @@ def parse_repeating_time_interval_to_str(date_str):
                      for freq in json.load(f)}
 
     return freqs_map[date_str]
+
+
+def get_ws_case_insensitive(wb, title):
+    """Devuelve una hoja en un workbook sin importar mayúsculas/minúsculas."""
+    return wb[find_ws_name(wb, title)]
+
+
+def find_ws_name(wb, name):
+    """Busca una hoja en un workbook sin importar mayúsculas/minúsculas."""
+    if type(wb) == str or type(wb) == unicode:
+        wb = load_workbook(wb, read_only=True, data_only=True)
+
+    for sheetname in wb.sheetnames:
+        if sheetname.lower() == name.lower():
+            return sheetname
+
+    raise Exception("No existe la hoja {}".format(name))
