@@ -1,0 +1,42 @@
+{
+    "status": "ERROR",
+    "error": {
+        "catalog": {
+            "status": "OK",
+            "errors": [],
+            "title": "Datos Argentina"
+        },
+        "dataset": [
+            {
+                "status": "ERROR",
+                "errors": [
+                    {
+                        "instance": "2015-01-1/2015-12-31",
+                        "validator": "anyOf",
+                        "path": [
+                            "dataset",
+                            0,
+                            "temporal"
+                        ],
+                        "message": "u'2015-01-1/2015-12-31' is not valid under any of the given schemas",
+                        "error_code": 2,
+                        "validator_value": [
+                            {
+                                "pattern": "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)\\/(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    }
+                ],
+                "title": "Sistema de contrataciones electrónicas"
+            }
+        ]
+    }
+}

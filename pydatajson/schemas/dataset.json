@@ -71,7 +71,7 @@
                 { "type": "null" }
             ]
         },
-        "temporal": { "$ref": "mixed-types.json#stringOrNull" },
+        "temporal": { "$ref": "mixed-types.json#temporalOrNull" },
         "landingPage": {
                     "anyOf": [
                         {

@@ -63,6 +63,10 @@ class DataJsonTestCase(unittest.TestCase):
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
+        print(unicode(json.dumps(
+            response_dict, indent=4, separators=(",", ": "),
+            ensure_ascii=False
+        )))
         self.assertEqual(expected_dict, response_dict)
 
     def load_case_filename():
@@ -200,6 +204,21 @@ class DataJsonTestCase(unittest.TestCase):
     @load_case_filename()
     def test_validity_of_malformed_datetime(self, case_filename):
         """catalog["issued"] no es una fecha y hora ISO 8601 válida."""
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_datetime2(self, case_filename):
+        """catalog["issued"] no es una fecha y hora ISO 8601 válida."""
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_temporal(self, case_filename):
+        """dataset["temporal"] no es un rango de fechas ISO 8601 válido."""
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_malformed_temporal2(self, case_filename):
+        """dataset["temporal"] no es un rango de fechas ISO 8601 válido."""
         self.run_case(case_filename)
 
     @load_case_filename()
