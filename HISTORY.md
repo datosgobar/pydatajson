@@ -1,6 +1,14 @@
 History
 =======
 
+0.2.18 (2017-07-25)
+-------------------
+
+* Mejora la validación del campo `temporal`
+* Agrega formas de reporte de errores para el método `DataJson.validate_catalog()`:
+    - Devuelve sólo errores con  `only_errors=True`
+    - Devuelve una lista de errores lista para ser convertida en tabla con `fmt="list"`
+
 0.2.17 (2017-07-18)
 -------------------
 

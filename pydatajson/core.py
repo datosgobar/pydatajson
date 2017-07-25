@@ -150,7 +150,7 @@ class DataJson(object):
 
         return new_response
 
-    def validate_catalog(self, catalog):
+    def validate_catalog(self, catalog, only_errors=False, fmt="dict"):
         """Analiza un data.json registrando los errores que encuentra.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -218,12 +218,43 @@ class DataJson(object):
         # Genero la lista de errores en la instancia a validar
         errors_iterator = self.validator.iter_errors(catalog)
 
-        final_response = default_response.copy()
+        response = default_response.copy()
         for error in errors_iterator:
-            final_response = self._update_validation_response(error,
-                                                              final_response)
+            response = self._update_validation_response(
+                error, response)
 
-        return final_response
+        # filtra los resultados que están ok, para hacerlo más compacto
+        if only_errors:
+            response["error"]["dataset"] = filter(
+                lambda dataset: dataset["status"] == "ERROR",
+                response["error"]["dataset"]
+            )
+
+        # elige el formato del resultado
+        if fmt == "dict":
+            return response
+
+        elif fmt == "list":
+            # crea una lista de dicts para volcarse en una tabla
+            rows = []
+            for dataset in response["error"]["dataset"]:
+                validation_result = {
+                    "dataset_title": dataset["title"],
+                    "dataset_status": dataset["status"]
+                }
+                for error in dataset["errors"]:
+                    validation_result[
+                        "dataset_error_message"] = error["message"]
+                    validation_result[
+                        "dataset_error_location"] = error["path"][-1]
+                    rows.append(validation_result)
+
+                if len(dataset["errors"]) == 0:
+                    validation_result["dataset_error_message"] = None
+                    validation_result["dataset_error_location"] = None
+                    rows.append(validation_result)
+
+            return rows
 
     @classmethod
     def _dataset_report_helper(cls, dataset):
