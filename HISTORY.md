@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.19 (2017-08-01)
+-------------------
+
+* Elimina la verificación de SSL en las requests.
+
 0.2.18 (2017-07-25)
 -------------------
 

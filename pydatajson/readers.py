@@ -165,7 +165,7 @@ def read_json(json_path_or_url):
 
     parsed_url = urlparse(json_path_or_url)
     if parsed_url.scheme in ["http", "https"]:
-        res = requests.get(json_path_or_url)
+        res = requests.get(json_path_or_url, verify=False)
         json_dict = json.loads(res.content, encoding='utf-8')
 
     else:
@@ -202,7 +202,7 @@ def read_xlsx_catalog(xlsx_path_or_url):
 
     parsed_url = urlparse(xlsx_path_or_url)
     if parsed_url.scheme in ["http", "https"]:
-        res = requests.get(xlsx_path_or_url)
+        res = requests.get(xlsx_path_or_url, verify=False)
         tmpfilename = ".tmpfile.xlsx"
         with io.open(tmpfilename, 'wb') as tmpfile:
             tmpfile.write(res.content)
