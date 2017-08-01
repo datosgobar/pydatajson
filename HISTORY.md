@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.20 (2017-08-01)
+-------------------
+
+* Elimina la verificación de SSL en las requests de ckan_reader.
+
 0.2.19 (2017-08-01)
 -------------------
 

@@ -43,20 +43,28 @@ def read_ckan_catalog(portal_url):
     catalog = {}
 
     try:
-        status = portal.call_action('status_show')
-        packages_list = portal.call_action('package_list')
-        groups_list = portal.call_action('group_list')
+        status = portal.call_action(
+            'status_show', requests_kwargs={"verify": False})
+        packages_list = portal.call_action(
+            'package_list', requests_kwargs={"verify": False})
+        groups_list = portal.call_action(
+            'group_list', requests_kwargs={"verify": False})
 
-        packages = [portal.call_action('package_show', {'name_or_id': pkg})
-                    for pkg in packages_list]
+        packages = [portal.call_action(
+            'package_show', {'name_or_id': pkg},
+            requests_kwargs={"verify": False})
+            for pkg in packages_list]
 
-        groups = [portal.call_action('group_show', {'id': grp})
-                  for grp in groups_list]
+        groups = [portal.call_action(
+            'group_show', {'id': grp},
+            requests_kwargs={"verify": False})
+            for grp in groups_list]
 
         catalog = map_status_to_catalog(status)
         catalog["dataset"] = map_packages_to_datasets(
             packages, portal_url)
         catalog["themeTaxonomy"] = map_groups_to_themes(groups)
+
     except:
         logging.error(
             'Error al procesar el portal %s', portal_url, exc_info=True)
