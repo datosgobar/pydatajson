@@ -166,10 +166,16 @@ def add_dicts(one_dict, other_dict):
     """
     result = other_dict.copy()
     for k, v in one_dict.items():
+        if v is None:
+            v = 0
+
         if isinstance(v, dict):
             result[k] = add_dicts(v, other_dict.get(k, {}))
         else:
-            result[k] = result.get(k, 0) + v
+            other_value = result.get(k, 0)
+            if other_value is None:
+                other_value = 0
+            result[k] = other_value + v
 
     return result
 
