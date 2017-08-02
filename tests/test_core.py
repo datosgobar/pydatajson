@@ -1100,6 +1100,15 @@ revíselo manualmente""".format(actual_filename)
     def test_parse_date_string(self):
         self.assertEqual(self.dj._parse_date_string(""), None)
 
+    def test_date_network_indicators_empty_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "invalid_catalog_empty.json")
+        indics, network_indics = self.dj.generate_catalogs_indicators(
+            [catalog,
+             catalog]
+        )
+
+        for k, v in network_indics.items():
+            self.assertTrue(v is not None)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

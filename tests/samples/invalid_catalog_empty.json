@@ -1,0 +1,11 @@
+{
+    "publisher": {
+        "mbox": "",
+        "name": ""
+    },
+    "description": "Describí el portal. Explicá de qué se trata tu catálogo de datos. Por favor, hacelo en no más de tres líneas.",
+    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
+    "title": "Ministerio de Desarrollos Social",
+    "dataset": [],
+    "themeTaxonomy": []
+}
