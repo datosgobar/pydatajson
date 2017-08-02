@@ -13,6 +13,10 @@ import json
 from urlparse import urljoin
 from ckanapi import RemoteCKAN
 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(ABSOLUTE_PROJECT_DIR, "schemas",
                        "accrualPeriodicity.json")) as frequencies:
