@@ -11,3 +11,4 @@ openpyxl>=2.4,<2.5
 # Para consultar programáticamente la API de CKAN
 ckanapi==4.0
 functools32
+urllib3
