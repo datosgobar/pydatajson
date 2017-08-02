@@ -21,6 +21,8 @@ import json
 from collections import OrderedDict
 from datetime import datetime
 import jsonschema
+from openpyxl.styles import Alignment, Font
+
 from . import readers
 from . import helpers
 from . import writers
@@ -296,7 +298,7 @@ class DataJson(object):
             distributions_strings = [
                 _stringify_distribution(d) for d in distributions
             ]
-            distributions_list = "\n".join(distributions_strings)
+            distributions_list = "\n\n".join(distributions_strings)
 
         fields = OrderedDict()
         fields["dataset_title"] = dataset.get("title")
@@ -443,7 +445,33 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             full_report.extend(report)
 
         if export_path:
-            writers.write_table(table=full_report, path=export_path)
+            # config styles para reportes en excel
+            alignment = Alignment(
+                wrap_text=True,
+                shrink_to_fit=True,
+                vertical="center"
+            )
+            column_styles = {
+                "O": {"width": 90},
+                "H": {"width": 35},
+                "K": {"width": 35},
+                "M": {"width": 35},
+                "J": {"width": 35}
+            }
+            cell_styles = [
+                {"alignment": Alignment(vertical="center")},
+                {"col": "O", "alignment": alignment},
+                {"col": "H", "alignment": alignment},
+                {"col": "K", "alignment": alignment},
+                {"col": "M", "alignment": alignment},
+                {"col": "J", "alignment": alignment},
+                {"row": 1, "font": Font(bold=True)}
+            ]
+
+            # crea tabla
+            writers.write_table(table=full_report, path=export_path,
+                                column_styles=column_styles,
+                                cell_styles=cell_styles)
         else:
             return full_report
 

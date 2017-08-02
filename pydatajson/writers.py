@@ -16,11 +16,12 @@ import io
 import json
 import unicodecsv as csv
 import openpyxl as pyxl
+from openpyxl.utils import column_index_from_string
 import logging
 from . import helpers
 
 
-def write_table(table, path):
+def write_table(table, path, column_styles=None, cell_styles=None):
     """ Exporta una tabla en el formato deseado (CSV o XLSX).
 
     La extensión del archivo debe ser ".csv" o ".xlsx", y en función de
@@ -48,7 +49,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
     if suffix == "csv":
         return _write_csv_table(table, path)
     elif suffix == "xlsx":
-        return _write_xlsx_table(table, path)
+        return _write_xlsx_table(table, path, column_styles, cell_styles)
     else:
         raise ValueError("""
 {} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
@@ -65,13 +66,51 @@ def _write_csv_table(table, path):
             writer.writerow(row)
 
 
-def _write_xlsx_table(table, path):
-    headers = table[0].keys()
+def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
+
+    # aplica estilos de columnas
+    if column_styles:
+        for col, properties in column_styles.iteritems():
+            for prop_name, prop_value in properties.iteritems():
+                setattr(ws.column_dimensions[col], prop_name, prop_value)
+
+    # aplica estilos de celdas
+    if cell_styles:
+        for i in xrange(1, ws.max_row + 1):
+            for j in xrange(1, ws.max_column + 1):
+                cell = ws.cell(row=i, column=j)
+
+                for cell_style in cell_styles:
+                    match_all = (
+                        "col" not in cell_style and
+                        "row" not in cell_style
+                    )
+                    match_row = (
+                        "row" in cell_style and
+                        cell_style["row"] == i
+                    )
+                    match_col = (
+                        "col" in cell_style and
+                        column_index_from_string(cell_style["col"]) == j
+                    )
+                    if match_all or match_row or match_col:
+                        for prop_name, prop_value in cell_style.iteritems():
+                            if prop_name != "col" and prop_name != "row":
+                                setattr(cell, prop_name, prop_value)
+
+
+def _write_xlsx_table(table, path, column_styles=None, cell_styles=None):
+
     workbook = pyxl.Workbook()
     worksheet = workbook.active
+
+    headers = table[0].keys()
     worksheet.append(headers)
-    for row in table:
+
+    for index, row in enumerate(table):
         worksheet.append(row.values())
+
+    _apply_styles_to_ws(worksheet, column_styles, cell_styles)
 
     workbook.save(path)
 
