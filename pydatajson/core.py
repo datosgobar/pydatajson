@@ -549,11 +549,15 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             "catalog_federation_id", "catalog_metadata_url", "dataset_title",
             "dataset_accrualPeriodicity"
         ]
+        config_translator = {
+            "catalog_federation_id": "job_name"
+        }
 
         harvester_config = [
             OrderedDict(
                 # Retengo únicamente los campos que necesita el harvester
-                [(k, v) for (k, v) in dataset.items() if k in config_keys]
+                [(config_translator.get(k, k), v)
+                 for (k, v) in dataset.items() if k in config_keys]
             )
             # Para aquellost datasets marcados con 'harvest'==1
             for dataset in datasets_report if bool(int(dataset["harvest"]))
