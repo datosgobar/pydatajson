@@ -16,6 +16,7 @@ import io
 import json
 import unicodecsv as csv
 import openpyxl as pyxl
+import logging
 from . import helpers
 
 
@@ -31,6 +32,11 @@ def write_table(table, path):
     """
     assert isinstance(path, (str, unicode)), "`path` debe ser un string"
     assert isinstance(table, list), "`table` debe ser una lista de dicts"
+
+    # si la tabla está vacía, no escribe nada
+    if len(table) == 0:
+        logging.warning("Tabla vacia: no se genera ninguna archivo.")
+        return
 
     # Sólo sabe escribir listas de diccionarios con información tabular
     if not helpers.is_list_of_matching_dicts(table):

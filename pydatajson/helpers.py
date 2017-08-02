@@ -64,6 +64,9 @@ def is_list_of_matching_dicts(list_of_dicts, expected_keys=None):
         bool: True si todos los diccionarios comparten sus claves.
     """
 
+    if isinstance(list_of_dicts, list) and len(list_of_dicts) == 0:
+        return False
+
     is_not_list_msg = """
 {} no es una lista. Debe ingresar una lista""".format(list_of_dicts)
     assert isinstance(list_of_dicts, list), is_not_list_msg

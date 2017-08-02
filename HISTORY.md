@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.21 (2017-08-02)
+-------------------
+
+* Tolera el caso de intentar escribir un reporte de datasets sobre un catálogo que no tiene datasets. Loggea un warning en lugar de levantar una excepción.
+
 0.2.20 (2017-08-01)
 -------------------
 
