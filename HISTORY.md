@@ -1,6 +1,13 @@
 History
 =======
 
+0.2.22 (2017-08-02)
+-------------------
+
+* Agrega estilo y formato al reporte de datasets
+* Agrega nuevos campos al reporte de datasets
+* Agrega un campo identificador del catálogo en el archivo de configuración de federación
+
 0.2.21 (2017-08-02)
 -------------------
 
