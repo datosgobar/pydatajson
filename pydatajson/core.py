@@ -327,7 +327,7 @@ class DataJson(object):
         return fields
 
     @staticmethod
-    def _catalog_report_helper(catalog, catalog_validation, url):
+    def _catalog_report_helper(catalog, catalog_validation, url, catalog_id):
         """Toma un dict con la metadata de un catálogo, y devuelve un dict con
         los valores que catalog_report() usa para reportar sobre él.
 
@@ -338,10 +338,11 @@ class DataJson(object):
 
         Returns:
             dict: Diccionario con los campos a nivel catálogo que requiere
-            catalog_report().
+                catalog_report().
         """
         fields = OrderedDict()
         fields["catalog_metadata_url"] = url
+        fields["catalog_federation_id"] = catalog_id
         fields["catalog_title"] = catalog.get("title")
         fields["catalog_description"] = catalog.get("description")
         fields["valid_catalog_metadata"] = (
@@ -386,7 +387,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         return dataset_report.copy()
 
-    def catalog_report(self, catalog, harvest='none', report=None):
+    def catalog_report(self, catalog, harvest='none', report=None,
+                       catalog_id=None):
         """Genera un reporte sobre los datasets de un único catálogo.
 
         Args:
@@ -408,7 +410,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         datasets_validations = validation["error"]["dataset"]
 
         catalog_fields = self._catalog_report_helper(
-            catalog, catalog_validation, url)
+            catalog, catalog_validation, url, catalog_id)
 
         if "dataset" in catalog and isinstance(catalog["dataset"], list):
             datasets = [d if isinstance(d, dict) else {} for d in
@@ -426,7 +428,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         return catalog_report
 
     def generate_datasets_report(self, catalogs, harvest='valid',
-                                 report=None, export_path=None):
+                                 report=None, export_path=None,
+                                 catalog_id=None):
         """Genera un reporte sobre las condiciones de la metadata de los
         datasets contenidos en uno o varios catálogos.
 
@@ -451,8 +454,11 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
 
-        catalogs_reports = [self.catalog_report(catalog, harvest, report)
-                            for catalog in catalogs]
+        catalogs_reports = [
+            self.catalog_report(
+                catalog, harvest, report, catalog_id=catalog_id)
+            for catalog in catalogs]
+
         full_report = []
         for report in catalogs_reports:
             full_report.extend(report)
@@ -465,22 +471,22 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 vertical="center"
             )
             column_styles = {
-                "I": {"width": 35},
-                "K": {"width": 35},
+                "J": {"width": 35},
                 "L": {"width": 35},
-                "P": {"width": 20},
+                "M": {"width": 35},
                 "Q": {"width": 20},
-                "R": {"width": 15},
-                "S": {"width": 90},
+                "R": {"width": 20},
+                "S": {"width": 15},
+                "T": {"width": 90},
             }
             cell_styles = [
                 {"alignment": Alignment(vertical="center")},
                 {"row": 1, "font": Font(bold=True)},
-                {"col": "I", "alignment": alignment},
-                {"col": "k", "alignment": alignment},
+                {"col": "J", "alignment": alignment},
                 {"col": "L", "alignment": alignment},
-                {"col": "R", "alignment": alignment},
+                {"col": "M", "alignment": alignment},
                 {"col": "S", "alignment": alignment},
+                {"col": "T", "alignment": alignment},
             ]
 
             # crea tabla
@@ -539,8 +545,10 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 {} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
 'report'.""".format(harvest))
 
-        config_keys = ["catalog_metadata_url", "dataset_title",
-                       "dataset_accrualPeriodicity"]
+        config_keys = [
+            "catalog_federation_id", "catalog_metadata_url", "dataset_title",
+            "dataset_accrualPeriodicity"
+        ]
 
         harvester_config = [
             OrderedDict(

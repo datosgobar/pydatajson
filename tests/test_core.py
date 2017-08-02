@@ -385,6 +385,7 @@ class DataJsonTestCase(unittest.TestCase):
     LOCAL_URL = os.path.join(SAMPLES_DIR, "full_data.json")
     EXPECTED_REPORT = [OrderedDict([
         (u'catalog_metadata_url', u'tests/samples/full_data.json'),
+        (u'catalog_federation_id', u'modernizacion'),
         (u'catalog_title', u'Datos Argentina'),
         (u'catalog_description',
          u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
@@ -398,15 +399,13 @@ class DataJsonTestCase(unittest.TestCase):
         (u'dataset_description',
          u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
         (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
-        (u'dataset_superTheme',
-         u'ECON'),
+        (u'dataset_superTheme', u'ECON'),
         (u'dataset_theme', u'contrataciones, compras, convocatorias'),
         (u'dataset_landingPage',
          u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
         (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
         (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
-        (u'distributions_formats',
-         '{"CSV": 1}'),
+        (u'distributions_formats', '{"CSV": 1}'),
         (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
         (u'dataset_license', u'Open Data Commons Open Database License 1.0'),
         (u'dataset_language', [u'spa']),
@@ -419,7 +418,8 @@ class DataJsonTestCase(unittest.TestCase):
         válida si harvest='valid'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        actual = self.dj.catalog_report(catalog, harvest='valid')
+        actual = self.dj.catalog_report(
+            catalog, harvest='valid', catalog_id="modernizacion")
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 1
@@ -434,7 +434,8 @@ class DataJsonTestCase(unittest.TestCase):
         harvest='none'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        actual = self.dj.catalog_report(catalog, harvest='none')
+        actual = self.dj.catalog_report(
+            catalog, harvest='none', catalog_id="modernizacion")
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 0
@@ -449,7 +450,8 @@ class DataJsonTestCase(unittest.TestCase):
         harvest='all'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        actual = self.dj.catalog_report(catalog, harvest='all')
+        actual = self.dj.catalog_report(
+            catalog, harvest='all', catalog_id="modernizacion")
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 1
@@ -467,8 +469,10 @@ class DataJsonTestCase(unittest.TestCase):
         # Compruebo que no se harvestee nada si el reporte no incluye el
         # dataset del catálogo
         report = [("data.json", "Un dataset que no es")]
-        actual = self.dj.catalog_report(catalog, harvest='report',
-                                        report=report)
+        actual = self.dj.catalog_report(
+            catalog, harvest='report', report=report,
+            catalog_id="modernizacion"
+        )
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 0
@@ -482,8 +486,9 @@ class DataJsonTestCase(unittest.TestCase):
         # catálogo
         report = [(os.path.join(self.SAMPLES_DIR, "full_data.json"),
                    "Sistema de contrataciones electrónicas")]
-        actual = self.dj.catalog_report(catalog, harvest='report',
-                                        report=report)
+        actual = self.dj.catalog_report(
+            catalog, harvest='report',
+            report=report, catalog_id="modernizacion")
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 1
