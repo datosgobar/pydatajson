@@ -293,12 +293,17 @@ class DataJson(object):
         distributions = [d for d in dataset["distribution"]
                          if isinstance(d, dict)]
 
+        # crea lista de distribuciones
         distributions_list = None
         if isinstance(distributions, list):
             distributions_strings = [
                 _stringify_distribution(d) for d in distributions
             ]
             distributions_list = "\n\n".join(distributions_strings)
+
+        # crea lista de formatos
+        distributions_formats = json.dumps(
+            cls._count_distribution_formats_dataset(dataset))
 
         fields = OrderedDict()
         fields["dataset_identifier"] = dataset.get("identifier")
@@ -312,6 +317,7 @@ class DataJson(object):
         fields["dataset_landingPage"] = dataset.get("landingPage")
         fields["dataset_issued"] = dataset.get("issued")
         fields["dataset_modified"] = dataset.get("modified")
+        fields["distributions_formats"] = distributions_formats
         fields["distributions_list"] = distributions_list
         fields["dataset_license"] = dataset.get("license")
         fields["dataset_language"] = dataset.get("language")
@@ -464,7 +470,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 "L": {"width": 35},
                 "P": {"width": 20},
                 "Q": {"width": 20},
-                "R": {"width": 90},
+                "R": {"width": 15},
+                "S": {"width": 90},
             }
             cell_styles = [
                 {"alignment": Alignment(vertical="center")},
@@ -472,7 +479,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 {"col": "I", "alignment": alignment},
                 {"col": "k", "alignment": alignment},
                 {"col": "L", "alignment": alignment},
-                {"col": "R", "alignment": alignment}
+                {"col": "R", "alignment": alignment},
+                {"col": "S", "alignment": alignment},
             ]
 
             # crea tabla

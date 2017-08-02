@@ -393,22 +393,25 @@ class DataJsonTestCase(unittest.TestCase):
         (u'dataset_index', 0),
         (u'harvest', 1),
         (u'dataset_identifier', u'99db6631-d1c9-470b-a73e-c62daa32c420'),
-        (u'dataset_title',
-         u'Sistema de contrataciones electr\xf3nicas'),
+        (u'dataset_title', u'Sistema de contrataciones electr\xf3nicas'),
         (u'dataset_accrualPeriodicity', u'R/P1Y'),
         (u'dataset_description',
          u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
         (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
-        (u'dataset_superTheme', u'ECON'),
+        (u'dataset_superTheme',
+         u'ECON'),
         (u'dataset_theme', u'contrataciones, compras, convocatorias'),
         (u'dataset_landingPage',
          u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
         (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
         (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
+        (u'distributions_formats',
+         '{"CSV": 1}'),
         (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
         (u'dataset_license', u'Open Data Commons Open Database License 1.0'),
-        (u'dataset_language', [u'spa']), (u'dataset_spatial',
-                                          u'ARG'), (u'dataset_temporal', u'2015-01-01/2015-12-31')
+        (u'dataset_language', [u'spa']),
+        (u'dataset_spatial', u'ARG'),
+        (u'dataset_temporal', u'2015-01-01/2015-12-31')
     ])]
 
     def test_catalog_report_harvest_valid(self):
