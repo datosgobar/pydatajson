@@ -301,6 +301,7 @@ class DataJson(object):
             distributions_list = "\n\n".join(distributions_strings)
 
         fields = OrderedDict()
+        fields["dataset_identifier"] = dataset.get("identifier")
         fields["dataset_title"] = dataset.get("title")
         fields["dataset_accrualPeriodicity"] = dataset.get(
             "accrualPeriodicity")
@@ -309,7 +310,13 @@ class DataJson(object):
         fields["dataset_superTheme"] = super_themes
         fields["dataset_theme"] = themes
         fields["dataset_landingPage"] = dataset.get("landingPage")
+        fields["dataset_issued"] = dataset.get("issued")
+        fields["dataset_modified"] = dataset.get("modified")
         fields["distributions_list"] = distributions_list
+        fields["dataset_license"] = dataset.get("license")
+        fields["dataset_language"] = dataset.get("language")
+        fields["dataset_spatial"] = dataset.get("spatial")
+        fields["dataset_temporal"] = dataset.get("temporal")
 
         return fields
 
@@ -452,20 +459,20 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 vertical="center"
             )
             column_styles = {
-                "O": {"width": 90},
-                "H": {"width": 35},
+                "I": {"width": 35},
                 "K": {"width": 35},
-                "M": {"width": 35},
-                "J": {"width": 35}
+                "L": {"width": 35},
+                "P": {"width": 20},
+                "Q": {"width": 20},
+                "R": {"width": 90},
             }
             cell_styles = [
                 {"alignment": Alignment(vertical="center")},
-                {"col": "O", "alignment": alignment},
-                {"col": "H", "alignment": alignment},
-                {"col": "K", "alignment": alignment},
-                {"col": "M", "alignment": alignment},
-                {"col": "J", "alignment": alignment},
-                {"row": 1, "font": Font(bold=True)}
+                {"row": 1, "font": Font(bold=True)},
+                {"col": "I", "alignment": alignment},
+                {"col": "k", "alignment": alignment},
+                {"col": "L", "alignment": alignment},
+                {"col": "R", "alignment": alignment}
             ]
 
             # crea tabla
@@ -1269,14 +1276,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         })
         return result
 
-    @staticmethod
-    def _count_distribution_formats(catalog):
+    def _count_distribution_formats(self, catalog):
         """Cuenta los formatos especificados por el campo 'format' de cada
-        distribución de un catálogo.
+        distribución de un catálogo o de un dataset.
 
         Args:
             catalog (str o dict): path a un catálogo, o un dict de python que
-            contenga a un catálogo ya leído.
 
         Returns:
             dict: diccionario con los formatos de las distribuciones
@@ -1285,17 +1290,32 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         # Leo catálogo
         catalog = readers.read_catalog(catalog)
-        formats = {}
+        catalog_formats = {}
+
         for dataset in catalog.get('dataset', []):
-            for distribution in dataset['distribution']:
-                # 'format' es recomendado, no obligatorio. Puede no estar.
-                distribution_format = distribution.get('format', None)
+            dataset_formats = self._count_distribution_formats_dataset(dataset)
 
-                if distribution_format:
-                    # Si no está en el diccionario, devuelvo 0
-                    count = formats.get(distribution_format, 0)
+            for distribution_format in dataset_formats:
+                count_catalog = catalog_formats.get(distribution_format, 0)
+                count_dataset = dataset_formats.get(distribution_format, 0)
+                catalog_formats[
+                    distribution_format] = count_catalog + count_dataset
 
-                    formats[distribution_format] = count + 1
+        return catalog_formats
+
+    @staticmethod
+    def _count_distribution_formats_dataset(dataset):
+
+        formats = {}
+        for distribution in dataset['distribution']:
+            # 'format' es recomendado, no obligatorio. Puede no estar.
+            distribution_format = distribution.get('format', None)
+
+            if distribution_format:
+                # Si no está en el diccionario, devuelvo 0
+                count = formats.get(distribution_format, 0)
+
+                formats[distribution_format] = count + 1
 
         return formats
 
