@@ -16,8 +16,10 @@ import io
 import json
 import unicodecsv as csv
 import openpyxl as pyxl
+from openpyxl.styles import Font
 from openpyxl.utils import column_index_from_string
 import logging
+
 from . import helpers
 
 
@@ -68,9 +70,15 @@ def _write_csv_table(table, path):
 
 def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
 
+    # dict de las columnas que corresponden a cada campo
+    header_row = ws.rows.next()
+    headers_cols = {cell.value: cell.column for cell in header_row}
+
     # aplica estilos de columnas
     if column_styles:
         for col, properties in column_styles.iteritems():
+            # la col puede ser "A" o "nombre_campo"
+            col = headers_cols.get(col, col)
             for prop_name, prop_value in properties.iteritems():
                 setattr(ws.column_dimensions[col], prop_name, prop_value)
 
@@ -79,6 +87,11 @@ def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
         for i in xrange(1, ws.max_row + 1):
             for j in xrange(1, ws.max_column + 1):
                 cell = ws.cell(row=i, column=j)
+
+                # si el valor es una URL válida, la celda es un hyperlink
+                if helpers.validate_url(cell.value):
+                    cell.hyperlink = cell.value
+                    cell.font = Font(underline='single', color='0563C1')
 
                 for cell_style in cell_styles:
                     match_all = (
@@ -91,7 +104,9 @@ def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
                     )
                     match_col = (
                         "col" in cell_style and
-                        column_index_from_string(cell_style["col"]) == j
+                        column_index_from_string(
+                            headers_cols.get(cell_style["col"],
+                                             cell_style["col"])) == j
                     )
                     if match_all or match_row or match_col:
                         for prop_name, prop_value in cell_style.iteritems():

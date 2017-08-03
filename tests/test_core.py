@@ -403,6 +403,8 @@ class DataJsonTestCase(unittest.TestCase):
         (u'dataset_theme', u'contrataciones, compras, convocatorias'),
         (u'dataset_landingPage',
          u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
+        (u'dataset_landingPage_generated',
+         u'dataset/99db6631-d1c9-470b-a73e-c62daa32c420'),
         (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
         (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
         (u'distributions_formats', '{"CSV": 1}'),

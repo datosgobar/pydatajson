@@ -22,6 +22,7 @@ from collections import OrderedDict
 from datetime import datetime
 import jsonschema
 from openpyxl.styles import Alignment, Font
+from urlparse import urljoin
 
 from . import readers
 from . import helpers
@@ -275,7 +276,7 @@ class DataJson(object):
         return stringified_list
 
     @classmethod
-    def _dataset_report_helper(cls, dataset):
+    def _dataset_report_helper(cls, dataset, catalog_homepage=None):
         """Toma un dict con la metadata de un dataset, y devuelve un dict coni
         los valores que dataset_report() usa para reportar sobre él.
 
@@ -323,6 +324,9 @@ class DataJson(object):
         fields["dataset_superTheme"] = super_themes
         fields["dataset_theme"] = themes
         fields["dataset_landingPage"] = dataset.get("landingPage")
+        fields["dataset_landingPage_generated"] = cls._generate_landingPage(
+            catalog_homepage, dataset.get("identifier")
+        )
         fields["dataset_issued"] = dataset.get("issued")
         fields["dataset_modified"] = dataset.get("modified")
         fields["distributions_formats"] = distributions_formats
@@ -333,6 +337,11 @@ class DataJson(object):
         fields["dataset_temporal"] = dataset.get("temporal")
 
         return fields
+
+    @classmethod
+    def _generate_landingPage(cls, catalog_homepage, dataset_identifier):
+        return urljoin(catalog_homepage,
+                       "dataset/{}".format(dataset_identifier))
 
     @staticmethod
     def _catalog_report_helper(catalog, catalog_validation, url, catalog_id):
@@ -358,8 +367,10 @@ class DataJson(object):
 
         return fields
 
-    def _dataset_report(self, dataset, dataset_validation, dataset_index,
-                        catalog_fields, harvest='none', report=None):
+    def _dataset_report(
+        self, dataset, dataset_validation, dataset_index,
+        catalog_fields, harvest='none', report=None, catalog_homepage=None
+    ):
         """ Genera una línea del `catalog_report`, correspondiente a un dataset
         de los que conforman el catálogo analizado."""
 
@@ -391,12 +402,15 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 {} no es un criterio de harvest reconocido. Pruebe con 'all', 'none', 'valid' o
 'report'.""".format(harvest))
 
-        dataset_report.update(self._dataset_report_helper(dataset))
+        dataset_report.update(
+            self._dataset_report_helper(
+                dataset, catalog_homepage=catalog_homepage)
+        )
 
         return dataset_report.copy()
 
     def catalog_report(self, catalog, harvest='none', report=None,
-                       catalog_id=None):
+                       catalog_id=None, catalog_homepage=None):
         """Genera un reporte sobre los datasets de un único catálogo.
 
         Args:
@@ -418,7 +432,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         datasets_validations = validation["error"]["dataset"]
 
         catalog_fields = self._catalog_report_helper(
-            catalog, catalog_validation, url, catalog_id)
+            catalog, catalog_validation, url, catalog_id
+        )
 
         if "dataset" in catalog and isinstance(catalog["dataset"], list):
             datasets = [d if isinstance(d, dict) else {} for d in
@@ -429,15 +444,18 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         catalog_report = [
             self._dataset_report(
                 dataset, datasets_validations[index], index,
-                catalog_fields, harvest, report=report
-            ) for index, dataset in enumerate(datasets)
+                catalog_fields, harvest, report=report,
+                catalog_homepage=catalog_homepage
+            )
+            for index, dataset in enumerate(datasets)
         ]
 
         return catalog_report
 
-    def generate_datasets_report(self, catalogs, harvest='valid',
-                                 report=None, export_path=None,
-                                 catalog_id=None):
+    def generate_datasets_report(
+            self, catalogs, harvest='valid', report=None,
+            export_path=None, catalog_id=None, catalog_homepage=None
+    ):
         """Genera un reporte sobre las condiciones de la metadata de los
         datasets contenidos en uno o varios catálogos.
 
@@ -452,6 +470,11 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             export_path (str): Path donde exportar el reporte generado (en
                 formato XLSX o CSV). Si se especifica, el método no devolverá
                 nada.
+            catalog_id (str): Nombre identificador del catálogo para federación
+            catalog_homepage (str): URL del portal de datos donde está
+                implementado el catálogo. Sólo se pasa si el portal es un CKAN
+                o respeta la estructura:
+                    https://datos.{organismo}.gob.ar/dataset/{dataset_identifier}
 
         Returns:
             list: Contiene tantos dicts como datasets estén presentes en
@@ -464,8 +487,11 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         catalogs_reports = [
             self.catalog_report(
-                catalog, harvest, report, catalog_id=catalog_id)
-            for catalog in catalogs]
+                catalog, harvest, report, catalog_id=catalog_id,
+                catalog_homepage=catalog_homepage
+            )
+            for catalog in catalogs
+        ]
 
         full_report = []
         for report in catalogs_reports:
@@ -479,22 +505,22 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 vertical="center"
             )
             column_styles = {
-                "J": {"width": 35},
-                "L": {"width": 35},
-                "M": {"width": 35},
-                "Q": {"width": 20},
-                "R": {"width": 20},
-                "S": {"width": 15},
-                "T": {"width": 90},
+                "dataset_title": {"width": 35},
+                "dataset_description": {"width": 35},
+                "dataset_publisher_name": {"width": 35},
+                "dataset_issued": {"width": 20},
+                "dataset_modified": {"width": 20},
+                "distributions_formats": {"width": 15},
+                "distributions_list": {"width": 90},
             }
             cell_styles = [
                 {"alignment": Alignment(vertical="center")},
                 {"row": 1, "font": Font(bold=True)},
-                {"col": "J", "alignment": alignment},
-                {"col": "L", "alignment": alignment},
-                {"col": "M", "alignment": alignment},
-                {"col": "S", "alignment": alignment},
-                {"col": "T", "alignment": alignment},
+                {"col": "dataset_title", "alignment": alignment},
+                {"col": "dataset_description", "alignment": alignment},
+                {"col": "dataset_publisher_name", "alignment": alignment},
+                {"col": "distributions_formats", "alignment": alignment},
+                {"col": "distributions_list", "alignment": alignment},
             ]
 
             # crea tabla

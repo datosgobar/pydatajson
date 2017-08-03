@@ -10,9 +10,22 @@ from __future__ import with_statement
 import datetime
 import os
 import json
+from urlparse import urlparse
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
+
+
+def validate_url(uri_string):
+    """Valida si un string es una URI válida."""
+    try:
+        result = urlparse(uri_string)
+        has_elements = all([result.scheme, result.netloc, result.path])
+        is_http = result.scheme == "http" or result.scheme == "https"
+        return True if has_elements and is_http else False
+
+    except Exception:
+        return False
 
 
 def ensure_dir_exists(directory):
