@@ -408,7 +408,7 @@ class DataJsonTestCase(unittest.TestCase):
         (u'distributions_formats', '{"CSV": 1}'),
         (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
         (u'dataset_license', u'Open Data Commons Open Database License 1.0'),
-        (u'dataset_language', [u'spa']),
+        (u'dataset_language', u'spa'),
         (u'dataset_spatial', u'ARG'),
         (u'dataset_temporal', u'2015-01-01/2015-12-31')
     ])]
