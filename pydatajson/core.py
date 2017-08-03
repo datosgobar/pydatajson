@@ -258,6 +258,22 @@ class DataJson(object):
 
             return rows
 
+    @staticmethod
+    def _stringify_list(str_or_list):
+
+        if isinstance(str_or_list, list):
+            strings = [s for s in str_or_list
+                       if isinstance(s, (str, unicode))]
+            stringified_list = ", ".join(strings)
+
+        elif isinstance(str_or_list, unicode) or isinstance(str_or_list, str):
+            stringified_list = str_or_list
+
+        else:
+            stringified_list = None
+
+        return stringified_list
+
     @classmethod
     def _dataset_report_helper(cls, dataset):
         """Toma un dict con la metadata de un dataset, y devuelve un dict coni
@@ -272,17 +288,9 @@ class DataJson(object):
         """
         publisher_name = helpers.traverse_dict(dataset, ["publisher", "name"])
 
-        super_themes = None
-        if isinstance(dataset.get("superTheme"), list):
-            strings = [s for s in dataset.get("superTheme")
-                       if isinstance(s, (str, unicode))]
-            super_themes = ", ".join(strings)
-
-        themes = None
-        if isinstance(dataset.get("theme"), list):
-            strings = [s for s in dataset.get("theme")
-                       if isinstance(s, (str, unicode))]
-            themes = ", ".join(strings)
+        languages = cls._stringify_list(dataset.get("language"))
+        super_themes = cls._stringify_list(dataset.get("superTheme"))
+        themes = cls._stringify_list(dataset.get("theme"))
 
         def _stringify_distribution(distribution):
             title = distribution.get("title")
@@ -320,7 +328,7 @@ class DataJson(object):
         fields["distributions_formats"] = distributions_formats
         fields["distributions_list"] = distributions_list
         fields["dataset_license"] = dataset.get("license")
-        fields["dataset_language"] = dataset.get("language")
+        fields["dataset_language"] = languages
         fields["dataset_spatial"] = dataset.get("spatial")
         fields["dataset_temporal"] = dataset.get("temporal")
 
@@ -447,7 +455,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         Returns:
             list: Contiene tantos dicts como datasets estén presentes en
-            `catalogs`, con la data del reporte generado.
+                `catalogs`, con la data del reporte generado.
         """
         assert isinstance(catalogs, (str, unicode, dict, list))
         # Si se pasa un único catálogo, genero una lista que lo contenga
