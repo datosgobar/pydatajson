@@ -153,7 +153,8 @@ class DataJson(object):
 
         return new_response
 
-    def validate_catalog(self, catalog, only_errors=False, fmt="dict"):
+    def validate_catalog(self, catalog, only_errors=False, fmt="dict",
+                         export_path=None):
         """Analiza un data.json registrando los errores que encuentra.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -162,6 +163,15 @@ class DataJson(object):
 
         Args:
             catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
+            only_errors (bool): Si es True sólo se reportan los errores.
+            fmt (str): Indica el formato en el que se desea el reporte.
+                "dict" es el reporte más verborrágico respetando la
+                    estructura del data.json.
+                "list" devuelve un dict con listas de errores formateados para
+                    generar tablas.
+            export_path (str): Path donde exportar el reporte generado (en
+                formato XLSX o CSV). Si se especifica, el método no devolverá
+                nada, a pesar de que se pase algún argumento en `fmt`.
 
         Returns:
             dict: Diccionario resumen de los errores encontrados::
@@ -211,8 +221,10 @@ class DataJson(object):
                     {
                         "status": "OK",
                         "title": dataset.get("title"),
+                        "identifier": dataset.get("identifier"),
+                        "list_index": index,
                         "errors": []
-                    } for dataset in catalog["dataset"]
+                    } for index, dataset in enumerate(catalog["dataset"])
                 ] if ("dataset" in catalog and
                       isinstance(catalog["dataset"], list)) else None
             }
@@ -234,30 +246,112 @@ class DataJson(object):
             )
 
         # elige el formato del resultado
-        if fmt == "dict":
+        if export_path:
+            validation_lists = self._catalog_validation_to_list(response)
+
+            # config styles para reportes en excel
+            alignment = Alignment(
+                wrap_text=True,
+                shrink_to_fit=True,
+                vertical="center"
+            )
+            column_styles = {
+                "catalog": {
+                    "catalog_status": {"width": 20},
+                    "catalog_error_location": {"width": 40},
+                    "catalog_error_message": {"width": 40},
+                    "catalog_title": {"width": 20},
+                },
+                "dataset": {
+                    "dataset_error_location": {"width": 20},
+                    "dataset_identifier": {"width": 40},
+                    "dataset_status": {"width": 20},
+                    "dataset_title": {"width": 40},
+                    "dataset_list_index": {"width": 20},
+                    "dataset_error_message": {"width": 40},
+                }
+            }
+            cell_styles = {
+                "catalog": [
+                    {"alignment": Alignment(vertical="center")},
+                    {"row": 1, "font": Font(bold=True)},
+                ],
+                "dataset": [
+                    {"alignment": Alignment(vertical="center")},
+                    {"row": 1, "font": Font(bold=True)},
+                ]
+            }
+
+            # crea tablas en un sólo excel o varios CSVs
+            writers.write_tables(
+                tables=validation_lists, path=export_path,
+                column_styles=column_styles, cell_styles=cell_styles
+            )
+
+        elif fmt == "dict":
             return response
 
         elif fmt == "list":
-            # crea una lista de dicts para volcarse en una tabla
-            rows = []
-            for dataset in response["error"]["dataset"]:
-                validation_result = {
-                    "dataset_title": dataset["title"],
-                    "dataset_status": dataset["status"]
-                }
-                for error in dataset["errors"]:
-                    validation_result[
-                        "dataset_error_message"] = error["message"]
-                    validation_result[
-                        "dataset_error_location"] = error["path"][-1]
-                    rows.append(validation_result)
+            return self._catalog_validation_to_list(response)
 
-                if len(dataset["errors"]) == 0:
-                    validation_result["dataset_error_message"] = None
-                    validation_result["dataset_error_location"] = None
-                    rows.append(validation_result)
+        # Comentado porque requiere una extensión pesada nueva para pydatajson
+        # elif fmt == "df":
+        #     validation_lists = self._catalog_validation_to_list(response)
+        #     return {
+        #         "catalog": pd.DataFrame(validation_lists["catalog"]),
+        #         "dataset": pd.DataFrame(validation_lists["dataset"])
+        #     }
 
-            return rows
+        else:
+            raise Exception("No se reconoce el formato {}".format(fmt))
+
+    @staticmethod
+    def _catalog_validation_to_list(response):
+        """Formatea la validación de un catálogo a dos listas de errores.
+
+        Una lista de errores para "catalog" y otra para "dataset".
+        """
+
+        # crea una lista de dicts para volcarse en una tabla  (catalog)
+        rows_catalog = []
+        validation_result = {
+            "catalog_title": response["error"]["catalog"]["title"],
+            "catalog_status": response["error"]["catalog"]["status"]
+        }
+        for error in response["error"]["catalog"]["errors"]:
+            validation_result[
+                "catalog_error_message"] = error["message"]
+            validation_result[
+                "catalog_error_location"] = ", ".join(error["path"])
+            rows_catalog.append(validation_result)
+
+        if len(response["error"]["catalog"]["errors"]) == 0:
+            validation_result["catalog_error_message"] = None
+            validation_result["catalog_error_location"] = None
+            rows_catalog.append(validation_result)
+
+        # crea una lista de dicts para volcarse en una tabla (dataset)
+        rows_dataset = []
+        for dataset in response["error"]["dataset"]:
+            validation_result = {
+                "dataset_title": dataset["title"],
+                "dataset_identifier": dataset["identifier"],
+                "dataset_list_index": dataset["list_index"],
+                "dataset_status": dataset["status"]
+            }
+            for error in dataset["errors"]:
+                validation_result[
+                    "dataset_error_message"] = error["message"]
+                validation_result[
+                    "dataset_error_location"] = error["path"][-1]
+                rows_dataset.append(validation_result)
+
+            if len(dataset["errors"]) == 0:
+                validation_result["dataset_error_message"] = None
+                validation_result["dataset_error_location"] = None
+                rows_dataset.append(validation_result)
+
+        return {"catalog": rows_catalog, "dataset": rows_dataset}
 
     @staticmethod
     def _stringify_list(str_or_list):

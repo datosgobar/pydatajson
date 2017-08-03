@@ -1,6 +1,11 @@
 History
 =======
 
+0.2.24 (2017-08-03)
+-------------------
+* Mejoras en los reportes de errores y análisis de datasets para federación
+* Métodos `DataJson.validate_catalog()` y `DataJson.generate_datasets_report()` tienen nuevas opciones para mejorar los reportes, especialmente en excel.
+
 0.2.23 (2017-08-02)
 -------------------
 

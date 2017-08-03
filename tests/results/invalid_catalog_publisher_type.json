@@ -23,6 +23,8 @@
         "dataset": [
             {
                 "status": "OK",
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                "list_index": 0,
                 "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
             }

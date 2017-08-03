@@ -23,6 +23,43 @@ import logging
 from . import helpers
 
 
+def write_tables(tables, path, column_styles=None, cell_styles=None):
+    """ Exporta un reporte con varias tablas en CSV o XLSX.
+
+    Si la extensión es ".csv" se crean varias tablas agregando el nombre de la
+    tabla al final del "path". Si la extensión es ".xlsx" todas las tablas se
+    escriben en el mismo excel.
+
+    Args:
+        table (dict of (list of dicts)): Conjunto de tablas a ser exportadas
+            donde {
+                "table_name": [{
+                    "field_name1": "field_value1",
+                    "field_name2": "field_value2",
+                    "field_name3": "field_value3"
+                }]
+            }
+        path (str): Path al archivo CSV o XLSX de exportación.
+    """
+    assert isinstance(path, (str, unicode)), "`path` debe ser un string"
+    assert isinstance(tables, dict), "`table` es dict de listas de dicts"
+
+    # Deduzco el formato de archivo de `path` y redirijo según corresponda.
+    suffix = path.split(".")[-1]
+    if suffix == "csv":
+        for table_name, table in tables:
+            root_path = "".join(path.split(".")[:-1])
+            table_path = "{}_{}.csv".format(root_path, table_name)
+            _write_csv_table(table, table_path)
+
+    elif suffix == "xlsx":
+        return _write_xlsx_table(tables, path, column_styles, cell_styles)
+
+    else:
+        raise ValueError("""
+{} no es un sufijo reconocido. Pruebe con .csv o.xlsx""".format(suffix))
+
+
 def write_table(table, path, column_styles=None, cell_styles=None):
     """ Exporta una tabla en el formato deseado (CSV o XLSX).
 
@@ -114,20 +151,40 @@ def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
                                 setattr(cell, prop_name, prop_value)
 
 
-def _write_xlsx_table(table, path, column_styles=None, cell_styles=None):
+def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None):
+    wb = pyxl.Workbook()
 
-    workbook = pyxl.Workbook()
-    worksheet = workbook.active
+    if isinstance(tables, dict):
+        wb.remove(wb.active)
+
+        for table_name, table in tables.iteritems():
+            column_styles_sheet = column_styles.get(table_name)
+            cell_styles_sheet = cell_styles.get(table_name)
+
+            _list_table_to_ws(wb, table, table_name, column_styles_sheet,
+                              cell_styles_sheet)
+
+    else:
+        _list_table_to_ws(wb, tables, column_styles=column_styles,
+                          cell_styles=cell_styles)
+
+    wb.save(path)
+
+
+def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
+                      cell_styles=None):
+    if table_name:
+        ws = wb.create_sheet(title=table_name)
+    else:
+        ws = wb.active
 
     headers = table[0].keys()
-    worksheet.append(headers)
+    ws.append(headers)
 
     for index, row in enumerate(table):
-        worksheet.append(row.values())
+        ws.append(row.values())
 
-    _apply_styles_to_ws(worksheet, column_styles, cell_styles)
-
-    workbook.save(path)
+    _apply_styles_to_ws(ws, column_styles, cell_styles)
 
 
 def write_json(obj, path):

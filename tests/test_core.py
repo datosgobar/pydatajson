@@ -99,10 +99,11 @@ class DataJsonTestCase(unittest.TestCase):
                 "dataset": [
                     {
                         "status": "OK",
+                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                        "list_index": 0,
                         "errors": [],
                         "title": "Sistema de contrataciones electrónicas"
                     }
-
                 ]
             }
         }
@@ -292,7 +293,9 @@ class DataJsonTestCase(unittest.TestCase):
                     {
                         "status": "OK",
                         "errors": [],
-                        "title": "Dataset Demo"
+                        "title": "Dataset Demo",
+                        'identifier': u'289b6835-c5fb-4e8a-9013-1d4705c31840',
+                        u'list_index': 0
                     }
                 ]
             }
@@ -343,7 +346,9 @@ class DataJsonTestCase(unittest.TestCase):
                     {
                         "status": "OK",
                         "errors": [],
-                        "title": "Dataset Demo"
+                        "title": "Dataset Demo",
+                        'identifier': '6897d435-8084-4685-b8ce-304b190755e4',
+                        'list_index': 0
                     }
                 ]
             }
