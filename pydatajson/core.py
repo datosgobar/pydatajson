@@ -539,7 +539,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 dataset, catalog_homepage=catalog_homepage)
         )
 
-        dataset_report["notas"] = ". ".join(notes)
+        dataset_report["notas"] = "\n\n".join(notes)
 
         return dataset_report.copy()
 
@@ -683,6 +683,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 "dataset_modified": {"width": 20},
                 "distributions_formats": {"width": 15},
                 "distributions_list": {"width": 90},
+                "notes": {"width": 50},
             }
             cell_styles = [
                 {"alignment": Alignment(vertical="center")},
@@ -692,6 +693,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 {"col": "dataset_publisher_name", "alignment": alignment},
                 {"col": "distributions_formats", "alignment": alignment},
                 {"col": "distributions_list", "alignment": alignment},
+                {"col": "notes", "alignment": alignment},
             ]
 
             # crea tabla
