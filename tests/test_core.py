@@ -104,6 +104,13 @@ class DataJsonTestCase(unittest.TestCase):
                         "list_index": 0,
                         "errors": [],
                         "title": "Sistema de contrataciones electrónicas"
+                    },
+                    {
+                        "status": "OK",
+                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                        "list_index": 1,
+                        "errors": [],
+                        "title": "Sistema de contrataciones electrónicas (sin datos)"
                     }
                 ]
             }
@@ -393,41 +400,91 @@ class DataJsonTestCase(unittest.TestCase):
     # TESTS DE catalog_report
     # Reporte esperado para "full_data.json", con harvest = 0
     LOCAL_URL = os.path.join(SAMPLES_DIR, "full_data.json")
-    EXPECTED_REPORT = [OrderedDict([
-        (u'catalog_metadata_url', u'tests/samples/full_data.json'),
-        (u'catalog_federation_id', u'modernizacion'),
-        (u'catalog_federation_org', None),
-        (u'catalog_title', u'Datos Argentina'),
-        (u'catalog_description',
-         u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
-        (u'valid_catalog_metadata', 1),
-        (u'valid_dataset_metadata', 1),
-        (u'dataset_index', 0),
-        (u'harvest', 1),
-        (u'dataset_identifier', u'99db6631-d1c9-470b-a73e-c62daa32c420'),
-        (u'dataset_title', u'Sistema de contrataciones electr\xf3nicas'),
-        (u'dataset_accrualPeriodicity', u'R/P1Y'),
-        (u'dataset_description',
-         u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
-        (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
-        (u'dataset_superTheme',
-         u'ECON'),
-        (u'dataset_theme', u'contrataciones, compras, convocatorias'),
-        (u'dataset_landingPage',
-         u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
-        (
-            u'dataset_landingPage_generated', u'dataset/99db6631-d1c9-470b-a73e-c62daa32c420'),
-        (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
-        (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
-        (u'distributions_formats',
-         '{"CSV": 1}'),
-        (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
-        (u'dataset_license',
-         u'Open Data Commons Open Database License 1.0'),
-        (u'dataset_language', u'spa'),
-        (u'dataset_spatial', u'ARG'),
-        (u'dataset_temporal', u'2015-01-01/2015-12-31')
-    ])]
+    EXPECTED_REPORT = [
+        OrderedDict([
+            (u'catalog_metadata_url', u'tests/samples/full_data.json'),
+            (u'catalog_federation_id', u'modernizacion'),
+            (u'catalog_federation_org', None),
+            (u'catalog_title', u'Datos Argentina'),
+            (u'catalog_description',
+             u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
+            (u'valid_catalog_metadata', 1),
+            (u'valid_dataset_metadata', 1),
+            (u'dataset_index', 0),
+            (u'harvest', 1),
+            (u'dataset_identifier', u'99db6631-d1c9-470b-a73e-c62daa32c420'),
+            (u'dataset_title', u'Sistema de contrataciones electr\xf3nicas'),
+            (u'dataset_accrualPeriodicity', u'R/P1Y'),
+            (u'dataset_description',
+             u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
+            (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
+            (u'dataset_superTheme', u'ECON'),
+            (u'dataset_theme', u'contrataciones, compras, convocatorias'),
+            (u'dataset_landingPage',
+             u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
+            (u'dataset_landingPage_generated',
+             u'dataset/99db6631-d1c9-470b-a73e-c62daa32c420'),
+            (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
+            (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
+            (u'distributions_formats', '{"CSV": 1}'),
+            (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
+            (u'dataset_license', u'Open Data Commons Open Database License 1.0'),
+            (u'dataset_language', u'spa'),
+            (u'dataset_spatial', u'ARG'),
+            (u'dataset_temporal', u'2015-01-01/2015-12-31'),
+            (u'notas', u'')]),
+        OrderedDict([
+            (u'catalog_metadata_url', u'tests/samples/full_data.json'),
+            (u'catalog_federation_id', u'modernizacion'),
+            (u'catalog_federation_org', None),
+            (u'catalog_title', u'Datos Argentina'),
+            (u'catalog_description',
+             u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
+            (u'valid_catalog_metadata', 1),
+            (u'valid_dataset_metadata', 1),
+            (u'dataset_index', 1),
+            (u'harvest', 1),
+            (u'dataset_identifier', u'99db6631-d1c9-470b-a73e-c62daa32c420'),
+            (u'dataset_title',
+             u'Sistema de contrataciones electr\xf3nicas (sin datos)'),
+            (u'dataset_accrualPeriodicity', u'R/P1Y'),
+            (u'dataset_description',
+             u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
+            (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
+            (u'dataset_superTheme', u'ECON'),
+            (u'dataset_theme', u'contrataciones, compras, convocatorias'),
+            (u'dataset_landingPage',
+             u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
+            (u'dataset_landingPage_generated',
+             u'dataset/99db6631-d1c9-470b-a73e-c62daa32c420'),
+            (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
+            (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
+            (u'distributions_formats', '{"PDF": 1}'),
+            (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf'),
+            (u'dataset_license', u'Open Data Commons Open Database License 1.0'),
+            (u'dataset_language', u'spa'),
+            (u'dataset_spatial', u'ARG'),
+            (u'dataset_temporal', u'2015-01-01/2015-12-31'),
+            (u'notas', u'No tiene distribuciones con datos.')
+        ])]
+
+    def test_catalog_report_harvest_good(self):
+        """catalog_report() marcará para cosecha los datasets con metadata
+        válida si harvest='valid'."""
+        catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        actual = self.dj.catalog_report(
+            catalog, harvest='good', catalog_id="modernizacion")
+
+        expected = list(self.EXPECTED_REPORT)
+        expected[0]["harvest"] = 1
+        expected[1]["harvest"] = 0
+
+        # Compruebo explícitamente que el valor de 'harvest' sea el esperado
+        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        self.assertEqual(actual[1]["harvest"], expected[1]["harvest"])
+        # Compruebo que toda la lista sea la esperada
+        self.assertListEqual(actual, expected)
 
     def test_catalog_report_harvest_valid(self):
         """catalog_report() marcará para cosecha los datasets con metadata
@@ -439,6 +496,7 @@ class DataJsonTestCase(unittest.TestCase):
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 1
+        expected[1]["harvest"] = 1
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
         self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
@@ -455,6 +513,7 @@ class DataJsonTestCase(unittest.TestCase):
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 0
+        expected[1]["harvest"] = 0
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
         self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
@@ -471,6 +530,7 @@ class DataJsonTestCase(unittest.TestCase):
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 1
+        expected[1]["harvest"] = 1
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
         self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
@@ -492,6 +552,7 @@ class DataJsonTestCase(unittest.TestCase):
 
         expected = list(self.EXPECTED_REPORT)
         expected[0]["harvest"] = 0
+        expected[1]["harvest"] = 0
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
         self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
@@ -919,7 +980,7 @@ revíselo manualmente""".format(actual_filename)
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         expected = {
-            'campos_recomendados_pct': 100,
+            'campos_recomendados_pct': 95.45,
             'campos_optativos_pct': 100
         }
 
@@ -1018,18 +1079,18 @@ revíselo manualmente""".format(actual_filename)
         # se mantienen actualizadas
         expected = {
             'catalogos_cant': 2,
-            'datasets_cant': 4,
-            'distribuciones_cant': 7,
-            'datasets_meta_ok_cant': 3,
+            'datasets_cant': 5,
+            'distribuciones_cant': 8,
+            'datasets_meta_ok_cant': 4,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(3) / 4,
+            'datasets_meta_ok_pct': 100 * float(4) / 5,
             'distribuciones_formatos_cant': {
                 'CSV': 2,
                 'XLSX': 1,
-                'PDF': 1
+                'PDF': 2
             },
-            'campos_optativos_pct': 21.95,
-            'campos_recomendados_pct': 47.15,
+            'campos_optativos_pct': 33.33,
+            'campos_recomendados_pct': 50.72,
         }
 
         for k, v in expected.items():

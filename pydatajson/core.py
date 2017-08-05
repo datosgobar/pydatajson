@@ -32,6 +32,14 @@ from . import writers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
+DATA_FORMATS = [
+    "csv", "xls", "xlsx", "ods", "dta"
+    "shp",
+    "json", "xml",
+    "zip"
+]
+MIN_DATASET_TITLE = 15
+MIN_DATASET_DESCRIPTION = 30
 
 
 class DataJson(object):
@@ -491,6 +499,9 @@ class DataJson(object):
         """ Genera una línea del `catalog_report`, correspondiente a un dataset
         de los que conforman el catálogo analizado."""
 
+        # hace un breve análisis de qa al dataset
+        good_qa, notes = self._dataset_qa(dataset)
+
         dataset_report = OrderedDict(catalog_fields)
         dataset_report["valid_dataset_metadata"] = (
             1 if dataset_validation["status"] == "OK" else 0)
@@ -503,6 +514,10 @@ class DataJson(object):
         elif harvest == 'valid':
             dataset_report["harvest"] = (
                 int(dataset_report["valid_dataset_metadata"]))
+        elif harvest == 'good':
+            valid_metadata = int(dataset_report["valid_dataset_metadata"]) == 1
+            dataset_report["harvest"] = 1 if valid_metadata and good_qa else 0
+
         elif harvest == 'report':
             if not report:
                 raise ValueError("""
@@ -524,7 +539,44 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 dataset, catalog_homepage=catalog_homepage)
         )
 
+        dataset_report["notas"] = ". ".join(notes)
+
         return dataset_report.copy()
+
+    def _dataset_qa(self, dataset):
+        """Chequea si el dataset tiene una calidad mínima para cosechar."""
+
+        # VALIDACIONES
+        # chequea que haya por lo menos algún formato de datos reconocido
+        has_data_format = False
+        formats = self._count_distribution_formats_dataset(dataset).keys()
+        for distrib_format in formats:
+            for data_format in DATA_FORMATS:
+                if distrib_format.lower() in data_format.lower():
+                    has_data_format = True
+                    break
+            if has_data_format:
+                break
+
+        # chequea que algunos campos tengan longitudes mínimas
+        has_min_title = len(dataset["title"]) >= MIN_DATASET_TITLE
+        has_min_desc = len(dataset["description"]) >= MIN_DATASET_DESCRIPTION
+
+        # EVALUACION DE COSECHA: evalua si se cosecha o no el dataset
+        harvest = has_data_format and has_min_title and has_min_desc
+
+        # NOTAS: genera notas de validación
+        notes = []
+        if not has_data_format:
+            notes.append("No tiene distribuciones con datos.")
+        if not has_min_title:
+            notes.append("Titulo tiene menos de {} caracteres".format(
+                MIN_DATASET_TITLE))
+        if not has_min_desc:
+            notes.append("Descripcion tiene menos de {} caracteres".format(
+                MIN_DATASET_DESCRIPTION))
+
+        return harvest, notes
 
     def catalog_report(self, catalog, harvest='none', report=None,
                        catalog_id=None, catalog_homepage=None,
@@ -535,7 +587,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             catalog (dict, str o unicode): Representación externa (path/URL) o
                 interna (dict) de un catálogo.
             harvest (str): Criterio de cosecha ('all', 'none',
-                'valid' o 'report').
+                'valid', 'report' o 'good').
 
         Returns:
             list: Lista de diccionarios, con un elemento por cada dataset
@@ -583,7 +635,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 strs y/o dicts) catálogos.
             harvest (str): Criterio a utilizar para determinar el valor del
                 campo "harvest" en el reporte generado ('all', 'none',
-                'valid' o 'report').
+                'valid', 'report' o 'good').
             report (str): Path a un reporte/config especificando qué
                 datasets marcar con harvest=1 (sólo si harvest=='report').
             export_path (str): Path donde exportar el reporte generado (en
@@ -661,7 +713,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 strs y/o dicts) catálogos.
             harvest (str): Criterio para determinar qué datasets incluir en el
                 archivo de configuración generado  ('all', 'none',
-                'valid' o 'report').
+                'valid', 'report' o 'good').
             report (list o str): Tabla de reporte generada por
                 generate_datasets_report() como lista de diccionarios o archivo
                 en formato XLSX o CSV. Sólo se usa cuando `harvest=='report'`,
