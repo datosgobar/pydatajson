@@ -95,6 +95,10 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
 
 def _write_csv_table(table, path):
+    if len(table) == 0:
+        print("No se puede crear un CSV con una tabla vacía.")
+        return
+
     headers = table[0].keys()
 
     with open(path, 'w') as target_file:
@@ -173,6 +177,10 @@ def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None):
 
 def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
                       cell_styles=None):
+    if len(table) == 0:
+        print("No se puede crear una hoja Excel con una tabla vacía.")
+        return
+
     if table_name:
         ws = wb.create_sheet(title=table_name)
     else:

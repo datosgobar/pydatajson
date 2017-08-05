@@ -438,7 +438,8 @@ class DataJson(object):
                        "dataset/{}".format(dataset_identifier))
 
     @staticmethod
-    def _catalog_report_helper(catalog, catalog_validation, url, catalog_id):
+    def _catalog_report_helper(catalog, catalog_validation, url, catalog_id,
+                               catalog_org):
         """Toma un dict con la metadata de un catálogo, y devuelve un dict con
         los valores que catalog_report() usa para reportar sobre él.
 
@@ -454,6 +455,7 @@ class DataJson(object):
         fields = OrderedDict()
         fields["catalog_metadata_url"] = url
         fields["catalog_federation_id"] = catalog_id
+        fields["catalog_federation_org"] = catalog_org
         fields["catalog_title"] = catalog.get("title")
         fields["catalog_description"] = catalog.get("description")
         fields["valid_catalog_metadata"] = (
@@ -504,7 +506,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         return dataset_report.copy()
 
     def catalog_report(self, catalog, harvest='none', report=None,
-                       catalog_id=None, catalog_homepage=None):
+                       catalog_id=None, catalog_homepage=None,
+                       catalog_org=None):
         """Genera un reporte sobre los datasets de un único catálogo.
 
         Args:
@@ -526,7 +529,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         datasets_validations = validation["error"]["dataset"]
 
         catalog_fields = self._catalog_report_helper(
-            catalog, catalog_validation, url, catalog_id
+            catalog, catalog_validation, url, catalog_id, catalog_org
         )
 
         if "dataset" in catalog and isinstance(catalog["dataset"], list):
@@ -548,7 +551,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
     def generate_datasets_report(
             self, catalogs, harvest='valid', report=None,
-            export_path=None, catalog_id=None, catalog_homepage=None
+            export_path=None, catalog_id=None, catalog_homepage=None,
+            catalog_org=None
     ):
         """Genera un reporte sobre las condiciones de la metadata de los
         datasets contenidos en uno o varios catálogos.
@@ -582,7 +586,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         catalogs_reports = [
             self.catalog_report(
                 catalog, harvest, report, catalog_id=catalog_id,
-                catalog_homepage=catalog_homepage
+                catalog_homepage=catalog_homepage, catalog_org=catalog_org
             )
             for catalog in catalogs
         ]
@@ -674,11 +678,13 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 'report'.""".format(harvest))
 
         config_keys = [
-            "catalog_federation_id", "catalog_metadata_url", "dataset_title",
+            "catalog_federation_id", "catalog_federation_org",
+            "catalog_metadata_url", "dataset_title",
             "dataset_accrualPeriodicity"
         ]
         config_translator = {
-            "catalog_federation_id": "job_name"
+            "catalog_federation_id": "job_name",
+            "catalog_federation_org": "dataset_owner_org"
         }
 
         harvester_config = [
