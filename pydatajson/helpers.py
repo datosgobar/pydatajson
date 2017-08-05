@@ -16,6 +16,14 @@ ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 
 
+def clean_str(s):
+    replacements = {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u",
+                    ":": "", ".": ""}
+    for old, new in replacements.iteritems():
+        s = s.replace(old, new)
+    return s.lower().strip()
+
+
 def validate_url(uri_string):
     """Valida si un string es una URI válida."""
     try:

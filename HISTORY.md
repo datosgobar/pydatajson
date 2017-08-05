@@ -1,6 +1,12 @@
 History
 =======
 
+0.2.26 (2017-08-04)
+-------------------
+
+* Agrega validación de que no haya ids repetidos en la lista de temas de `themeTaxonomy`.
+* Agrega traducción de ckan del campo extra `Cobertura temporal` a `temporal`.
+
 0.2.24 (2017-08-03)
 -------------------
 * Mejoras en los reportes de errores y análisis de datasets para federación

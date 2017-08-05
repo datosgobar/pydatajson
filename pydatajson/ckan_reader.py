@@ -13,6 +13,8 @@ import json
 from urlparse import urljoin
 from ckanapi import RemoteCKAN
 
+from helpers import clean_str
+
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -188,82 +190,9 @@ se puede completar dataset['contactPoint']['%s'].""",
     # "Frecuencia de actualización" y "Temática global" para completar los
     # campos "accrualPeriodicity" y "superTheme" del dataset, respectivamente.
     if "extras" in package:
-        # "Frecuencia de actualización" => "accrualPeriodicity"
-        accrual = [extra["value"] for extra in package["extras"] if
-                   extra["key"] == "Frecuencia de actualización"]
-
-        if len(accrual) == 0:
-            logging.info("""
-No se encontraron valores de frecuencia de actualización en 'extras' para el
-'package' '%s'. No se puede completar dataset['accrualPeriodicity'].""",
-                         package['name'])
-        elif len(accrual) > 1:
-            logging.info("""
-Se encontro mas de un valor de frecuencia de actualización en 'extras' para el
-'package' '%s'. No se puede completar dataset['accrualPeriodicity'].\n %s""",
-                         package['name'], accrual)
-        else:
-            try:
-                dataset["accrualPeriodicity"] = FREQUENCIES[accrual[0]]
-            except KeyError:
-                logging.warn("""
-Se encontró '%s' como frecuencia de actualización, pero no es mapeable a una
-'accrualPeriodicity' conocida. La clave no se pudo completar.""", accrual[0])
-
-        # Busco claves que son casi "Frecuencia de actualización" para lanzar
-        # advertencias si las hay.
-        def clean_str(s):
-            replacements = {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u",
-                            ":": "", ".": ""}
-            for old, new in replacements.iteritems():
-                s = s.replace(old, new)
-            return s.lower().strip()
-
-        almost_accrual = [
-            extra for extra in package["extras"] if
-            clean_str(extra["key"]) == "frecuencia de actualizacion" and
-            extra["key"] != "Frecuencia de actualización"]
-
-        if almost_accrual:
-            logging.warn("""
-Se encontraron claves con nombres similares pero no idénticos a "Frecuencia de
-actualización" en 'extras' para el 'package' '%s'. Por favor, considere
-corregirlas:\n%s""", package['name'], almost_accrual)
-
-        # "Temática global" => "superTheme"
-        super_theme = [extra["value"] for extra in package["extras"] if
-                       extra["key"] == "Temática global"]
-
-        if len(super_theme) == 0:
-            logging.info("""
-No se encontraron valores de temática global en 'extras' para el
-'package' '%s'. No se puede completar dataset['superTheme'].""",
-                         package['name'])
-        elif len(super_theme) > 1:
-            logging.info("""
-Se encontro mas de un valor de temática global en 'extras' para el
-'package' '%s'. No se puede completar dataset['superTheme'].\n %s""",
-                         package['name'], super_theme)
-        else:
-            try:
-                dataset["superTheme"] = [SUPER_THEMES[super_theme[0]]]
-            except KeyError:
-                logging.warn("""
-Se encontró '%s' como temática global, pero no es mapeable a un
-'superTheme' conocido. La clave no se pudo completar.""", super_theme[0])
-
-        # Busco claves que son casi "Temática global" para lanzar
-        # advertencias si las hay.
-        almost_super_theme = [
-            extra for extra in package["extras"] if
-            clean_str(extra["key"]) == "tematica global" and
-            extra["key"] != "Temática global"]
-
-        if almost_super_theme:
-            logging.warn("""
-Se encontraron claves con nombres similares pero no idénticos a "Temática
-global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
-\n%s""", package['name'], almost_accrual)
+        add_accrualPeriodicity(dataset, package)
+        add_superTheme(dataset, package)
+        add_temporal(dataset, package)
 
     dataset["distribution"] = map_resources_to_distributions(resources,
                                                              portal_url)
@@ -271,6 +200,113 @@ global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
     dataset['keyword'] = [tag['name'] for tag in tags]
 
     return dataset
+
+
+def add_temporal(dataset, package):
+    # "Cobertura temporal" => "temporal"
+    temporal = [extra["value"] for extra in package["extras"] if
+                extra["key"] == "Cobertura temporal"]
+
+    if len(temporal) > 1:
+        logging.info("""
+Se encontro mas de un valor de cobertura temporal en 'extras' para el
+'package' '%s'. No se puede completar dataset['temporal'].\n %s""",
+                     package['name'], temporal)
+    elif len(temporal) == 1:
+        try:
+            dataset["temporal"] = [temporal[0]]
+        except KeyError:
+            logging.warn("""
+Se encontró '%s' como cobertura temporal, pero no es mapeable a un
+'temporal' conocido. La clave no se pudo completar.""", temporal[0])
+
+    # Busco claves que son casi "Cobertura temporal" para lanzar
+    # advertencias si las hay.
+    almost_temporal = [
+        extra for extra in package["extras"] if
+        clean_str(extra["key"]) == "cobertura temporal" and
+        extra["key"] != "Cobertura temporal"]
+
+    if almost_temporal:
+        logging.warn("""
+Se encontraron claves con nombres similares pero no idénticos a
+"Cobertura temporal" en 'extras' para el 'package' '%s'. Por favor, considere
+corregirlas:
+\n%s""", package['name'], almost_temporal)
+
+
+def add_superTheme(dataset, package):
+    # "Temática global" => "superTheme"
+    super_theme = [extra["value"] for extra in package["extras"] if
+                   extra["key"] == "Temática global"]
+
+    if len(super_theme) == 0:
+        logging.info("""
+No se encontraron valores de temática global en 'extras' para el
+'package' '%s'. No se puede completar dataset['superTheme'].""",
+                     package['name'])
+    elif len(super_theme) > 1:
+        logging.info("""
+Se encontro mas de un valor de temática global en 'extras' para el
+'package' '%s'. No se puede completar dataset['superTheme'].\n %s""",
+                     package['name'], super_theme)
+    else:
+        try:
+            dataset["superTheme"] = [SUPER_THEMES[super_theme[0]]]
+        except KeyError:
+            logging.warn("""
+Se encontró '%s' como temática global, pero no es mapeable a un
+'superTheme' conocido. La clave no se pudo completar.""", super_theme[0])
+
+    # Busco claves que son casi "Temática global" para lanzar
+    # advertencias si las hay.
+    almost_super_theme = [
+        extra for extra in package["extras"] if
+        clean_str(extra["key"]) == "tematica global" and
+        extra["key"] != "Temática global"]
+
+    if almost_super_theme:
+        logging.warn("""
+Se encontraron claves con nombres similares pero no idénticos a "Temática
+global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
+\n%s""", package['name'], almost_accrual)
+
+
+def add_accrualPeriodicity(dataset, package):
+    # "Frecuencia de actualización" => "accrualPeriodicity"
+    accrual = [extra["value"] for extra in package["extras"] if
+               extra["key"] == "Frecuencia de actualización"]
+
+    if len(accrual) == 0:
+        logging.info("""
+No se encontraron valores de frecuencia de actualización en 'extras' para el
+'package' '%s'. No se puede completar dataset['accrualPeriodicity'].""",
+                     package['name'])
+    elif len(accrual) > 1:
+        logging.info("""
+Se encontro mas de un valor de frecuencia de actualización en 'extras' para el
+'package' '%s'. No se puede completar dataset['accrualPeriodicity'].\n %s""",
+                     package['name'], accrual)
+    else:
+        try:
+            dataset["accrualPeriodicity"] = FREQUENCIES[accrual[0]]
+        except KeyError:
+            logging.warn("""
+Se encontró '%s' como frecuencia de actualización, pero no es mapeable a una
+'accrualPeriodicity' conocida. La clave no se pudo completar.""", accrual[0])
+
+    # Busco claves que son casi "Frecuencia de actualización" para lanzar
+    # advertencias si las hay.
+    almost_accrual = [
+        extra for extra in package["extras"] if
+        clean_str(extra["key"]) == "frecuencia de actualizacion" and
+        extra["key"] != "Frecuencia de actualización"]
+
+    if almost_accrual:
+        logging.warn("""
+Se encontraron claves con nombres similares pero no idénticos a "Frecuencia de
+actualización" en 'extras' para el 'package' '%s'. Por favor, considere
+corregirlas:\n%s""", package['name'], almost_accrual)
 
 
 def map_resources_to_distributions(resources, portal_url):
