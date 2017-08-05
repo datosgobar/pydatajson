@@ -55,6 +55,11 @@ class DataJsonTestCase(unittest.TestCase):
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
 
+        print(unicode(json.dumps(
+            response_dict, indent=4, separators=(",", ": "),
+            ensure_ascii=False
+        )))
+
         if expected_dict["status"] == "OK":
             self.assertTrue(response_bool)
         elif expected_dict["status"] == "ERROR":
@@ -63,10 +68,6 @@ class DataJsonTestCase(unittest.TestCase):
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
-        print(unicode(json.dumps(
-            response_dict, indent=4, separators=(",", ": "),
-            ensure_ascii=False
-        )))
         self.assertEqual(expected_dict, response_dict)
 
     def load_case_filename():
@@ -234,6 +235,10 @@ class DataJsonTestCase(unittest.TestCase):
 
     @load_case_filename()
     def test_validity_of_invalid_dataset_type(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
+    def test_validity_of_invalid_themeTaxonomy(self, case_filename):
         self.run_case(case_filename)
 
     @load_case_filename()

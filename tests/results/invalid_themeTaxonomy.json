@@ -1,0 +1,31 @@
+{
+    "status": "ERROR",
+    "error": {
+        "catalog": {
+            "status": "ERROR",
+            "errors": [
+                {
+                    "instance": null,
+                    "validator": "repeatedValue",
+                    "path": [
+                        "catalog",
+                        "themeTaxonomy"
+                    ],
+                    "message": "Los ids [u'convocatorias'] estan repetidos en mas de un `theme`",
+                    "error_code": 2,
+                    "validator_value": "Chequea ids duplicados en themeTaxonomy"
+                }
+            ],
+            "title": "Datos Argentina"
+        },
+        "dataset": [
+            {
+                "status": "OK",
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                "list_index": 0,
+                "errors": [],
+                "title": "Sistema de contrataciones electrónicas"
+            }
+        ]
+    }
+}

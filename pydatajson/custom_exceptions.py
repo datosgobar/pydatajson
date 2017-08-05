@@ -9,6 +9,43 @@ from __future__ import with_statement
 import os
 
 
+class BaseValidationError(object):
+    """Estructura para errores de validación personalizados."""
+
+    def __init__(self, validator, message, validator_value, path,
+                 instance=None):
+        super(BaseValidationError, self).__init__()
+
+        # es el tipo de validación que se realiza
+        self.validator = validator
+
+        # es el mensaje de error que explica la validación que falla
+        self.message = message
+
+        # son los parámetros aplicados a ese tipo de validación
+        self.validator_value = validator_value
+
+        # es el camino que permite reconstruir el punto de falla en el JSON
+        self.path = path
+
+        self.instance = instance
+
+
+class ThemeIdRepeated(BaseValidationError):
+
+    def __init__(self, repeated_ids):
+
+        # TODO: construcción del error
+        validator = "repeatedValue"
+        message = "Los ids {} estan repetidos en mas de un `theme`".format(
+            repeated_ids)
+        validator_value = "Chequea ids duplicados en themeTaxonomy"
+        path = ["catalog", "themeTaxonomy"]
+
+        super(ThemeIdRepeated, self).__init__(
+            validator, message, validator_value, path)
+
+
 class BaseUnexpectedValue(ValueError):
 
     """El id de una entidad está repetido en el catálogo."""

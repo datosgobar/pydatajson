@@ -23,7 +23,9 @@ from datetime import datetime
 import jsonschema
 from openpyxl.styles import Alignment, Font
 from urlparse import urljoin
+import collections
 
+import custom_exceptions as ce
 from . import readers
 from . import helpers
 from . import writers
@@ -113,8 +115,9 @@ class DataJson(object):
             bool: True si el data.json cumple con el schema, sino False.
         """
         catalog = readers.read_catalog(catalog)
-        res = self.validator.is_valid(catalog)
-        return res
+        jsonschema_res = self.validator.is_valid(catalog)
+        custom_errors = self.iter_custom_errors(catalog)
+        return jsonschema_res and len(list(custom_errors)) == 0
 
     @staticmethod
     def _update_validation_response(error, response):
@@ -231,10 +234,13 @@ class DataJson(object):
         }
 
         # Genero la lista de errores en la instancia a validar
-        errors_iterator = self.validator.iter_errors(catalog)
+        jsonschema_errors = list(self.validator.iter_errors(catalog))
+        custom_errors = list(self.iter_custom_errors(catalog))
+
+        errors = jsonschema_errors + custom_errors
 
         response = default_response.copy()
-        for error in errors_iterator:
+        for error in errors:
             response = self._update_validation_response(
                 error, response)
 
@@ -304,6 +310,21 @@ class DataJson(object):
 
         else:
             raise Exception("No se reconoce el formato {}".format(fmt))
+
+    @classmethod
+    def iter_custom_errors(cls, catalog):
+
+        # chequea que no se repiten los ids de la taxonomía específica
+        if "themeTaxonomy" in catalog:
+            theme_ids = [theme["id"] for theme in catalog["themeTaxonomy"]]
+            dups = cls._find_dups(theme_ids)
+            if len(dups) > 0:
+                yield ce.ThemeIdRepeated(dups)
+
+    @staticmethod
+    def _find_dups(elements):
+        return [item for item, count in collections.Counter(elements).items()
+                if count > 1]
 
     @staticmethod
     def _catalog_validation_to_list(response):

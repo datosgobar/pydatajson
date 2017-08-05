@@ -22,7 +22,8 @@
         },
         "dataset": {
             "type": "array",
-            "items": { "$ref": "dataset.json" }
+            "items": { "$ref": "dataset.json" },
+            "uniqueItems": true
         },
         "title": { "$ref": "mixed-types.json#nonEmptyString" },
         "description": { "$ref": "mixed-types.json#nonEmptyString" },
