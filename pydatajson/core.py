@@ -624,8 +624,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
     def generate_datasets_report(
             self, catalogs, harvest='valid', report=None,
-            export_path=None, catalog_id=None, catalog_homepage=None,
-            catalog_org=None
+            export_path=None, catalog_ids=None, catalog_homepages=None,
+            catalog_orgs=None
     ):
         """Genera un reporte sobre las condiciones de la metadata de los
         datasets contenidos en uno o varios catálogos.
@@ -652,20 +652,41 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 `catalogs`, con la data del reporte generado.
         """
         assert isinstance(catalogs, (str, unicode, dict, list))
+        if isinstance(catalogs, list):
+            assert not catalog_ids or len(catalogs) == len(catalog_ids)
+            assert not catalog_orgs or len(catalogs) == len(catalog_orgs)
+            assert not catalog_homepages or len(
+                catalogs) == len(catalog_homepages)
+
         # Si se pasa un único catálogo, genero una lista que lo contenga
         if isinstance(catalogs, (str, unicode, dict)):
             catalogs = [catalogs]
+        if not catalog_ids or isinstance(catalog_ids, (str, unicode, dict)):
+            catalog_ids = [catalog_ids] * len(catalogs)
+        if not catalog_orgs or isinstance(catalog_orgs, (str, unicode, dict)):
+            catalog_orgs = [catalog_orgs] * len(catalogs)
+        if not catalog_homepages or isinstance(catalog_homepages,
+                                               (str, unicode, dict)):
+            catalog_homepages = [catalog_homepages] * len(catalogs)
 
         catalogs_reports = [
             self.catalog_report(
                 catalog, harvest, report, catalog_id=catalog_id,
                 catalog_homepage=catalog_homepage, catalog_org=catalog_org
             )
-            for catalog in catalogs
+            for catalog, catalog_id, catalog_org, catalog_homepage in
+            zip(catalogs, catalog_ids, catalog_orgs, catalog_homepages)
         ]
 
         full_report = []
         for report in catalogs_reports:
+            print("\n")
+            print("\n")
+            print(full_report)
+            print("\n")
+            print(report)
+            print("\n")
+            print("\n")
             full_report.extend(report)
 
         if export_path:
@@ -683,7 +704,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 "dataset_modified": {"width": 20},
                 "distributions_formats": {"width": 15},
                 "distributions_list": {"width": 90},
-                "notes": {"width": 50},
+                "notas": {"width": 50},
             }
             cell_styles = [
                 {"alignment": Alignment(vertical="center")},
@@ -693,7 +714,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 {"col": "dataset_publisher_name", "alignment": alignment},
                 {"col": "distributions_formats", "alignment": alignment},
                 {"col": "distributions_list", "alignment": alignment},
-                {"col": "notes", "alignment": alignment},
+                {"col": "notas", "alignment": alignment},
             ]
 
             # crea tabla
