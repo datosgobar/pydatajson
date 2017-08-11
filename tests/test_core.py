@@ -253,6 +253,10 @@ class DataJsonTestCase(unittest.TestCase):
         self.run_case(case_filename)
 
     @load_case_filename()
+    def test_validity_of_too_long_field_title(self, case_filename):
+        self.run_case(case_filename)
+
+    @load_case_filename()
     def test_validity_of_several_assorted_errors(self, case_filename):
         """Prueba que las listas con info de errores se generen correctamente
         en presencia de 7 errores de distinto tipo y jerarquía."""
@@ -643,6 +647,8 @@ class DataJsonTestCase(unittest.TestCase):
                 "dataset_title": 1,
                 "dataset_accrualPeriodicity": 1,
                 "otra key": 1,
+                "catalog_federation_org": "organizacion-en-ckan",
+                "catalog_federation_id": "organismo",
                 "harvest": 0
             },
             {
@@ -650,6 +656,9 @@ class DataJsonTestCase(unittest.TestCase):
                 "dataset_title": 2,
                 "dataset_accrualPeriodicity": 2,
                 "otra key": 2,
+                "catalog_federation_org": "organizacion-en-ckan",
+                "catalog_federation_id": "organismo",
+
                 "harvest": 1
             },
             {
@@ -657,6 +666,9 @@ class DataJsonTestCase(unittest.TestCase):
                 "dataset_title": 3,
                 "dataset_accrualPeriodicity": 3,
                 "otra key": 3,
+                "catalog_federation_org": "organizacion-en-ckan",
+                "catalog_federation_id": "organismo",
+
                 "harvest": 1
             }
         ]
@@ -666,11 +678,15 @@ class DataJsonTestCase(unittest.TestCase):
                 "catalog_metadata_url": 2,
                 "dataset_title": 2,
                 "dataset_accrualPeriodicity": 2,
+                "dataset_owner_org": "organizacion-en-ckan",
+                "job_name": "organismo",
             },
             {
                 "catalog_metadata_url": 3,
                 "dataset_title": 3,
                 "dataset_accrualPeriodicity": 3,
+                "dataset_owner_org": "organizacion-en-ckan",
+                "job_name": "organismo",
             }
         ]
 
@@ -692,6 +708,8 @@ class DataJsonTestCase(unittest.TestCase):
                 "catalog_metadata_url": 1,
                 "dataset_title": 1,
                 "dataset_accrualPeriodicity": 1,
+                "catalog_federation_org": "organizacion-en-ckan",
+                "catalog_federation_id": "organismo",
                 "otra key": 1,
                 "harvest": 0
             },
@@ -699,6 +717,8 @@ class DataJsonTestCase(unittest.TestCase):
                 "catalog_metadata_url": 2,
                 "dataset_title": 2,
                 "dataset_accrualPeriodicity": 2,
+                "catalog_federation_org": "organizacion-en-ckan",
+                "catalog_federation_id": "organismo",
                 "otra key": 2,
                 "harvest": 1
             },
@@ -706,6 +726,8 @@ class DataJsonTestCase(unittest.TestCase):
                 "catalog_metadata_url": 3,
                 "dataset_title": 3,
                 "dataset_accrualPeriodicity": 3,
+                "catalog_federation_org": "organizacion-en-ckan",
+                "catalog_federation_id": "organismo",
                 "otra key": 3,
                 "harvest": 1
             }
@@ -716,11 +738,15 @@ class DataJsonTestCase(unittest.TestCase):
                 "catalog_metadata_url": 2,
                 "dataset_title": 2,
                 "dataset_accrualPeriodicity": "R/P1D",
+                "dataset_owner_org": "organizacion-en-ckan",
+                "job_name": "organismo",
             },
             {
                 "catalog_metadata_url": 3,
                 "dataset_title": 3,
                 "dataset_accrualPeriodicity": "R/P1D",
+                "dataset_owner_org": "organizacion-en-ckan",
+                "job_name": "organismo",
             }
         ]
 

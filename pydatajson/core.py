@@ -507,7 +507,9 @@ class DataJson(object):
             1 if dataset_validation["status"] == "OK" else 0)
         dataset_report["dataset_index"] = dataset_index
 
-        if harvest == 'all':
+        if isinstance(harvest, list):
+            dataset_report["harvest"] = 1 if dataset["title"] in harvest else 0
+        elif harvest == 'all':
             dataset_report["harvest"] = 1
         elif harvest == 'none':
             dataset_report["harvest"] = 0
@@ -680,13 +682,6 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         full_report = []
         for report in catalogs_reports:
-            print("\n")
-            print("\n")
-            print(full_report)
-            print("\n")
-            print(report)
-            print("\n")
-            print("\n")
             full_report.extend(report)
 
         if export_path:
@@ -782,6 +777,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             "catalog_federation_id": "job_name",
             "catalog_federation_org": "dataset_owner_org"
         }
+        translated_keys = [config_translator.get(k, k) for k in config_keys]
 
         harvester_config = [
             OrderedDict(
@@ -792,6 +788,14 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             # Para aquellost datasets marcados con 'harvest'==1
             for dataset in datasets_report if bool(int(dataset["harvest"]))
         ]
+
+        # chequea que el archivo de configuración tiene todos los campos
+        required_keys = set(translated_keys)
+        for row in harvester_config:
+            row_keys = set(row.keys())
+            msg = "Hay una fila con claves {} y debe tener claves {}".format(
+                row_keys, required_keys)
+            assert row_keys == required_keys, msg
 
         if frequency:
             valid_patterns = [
@@ -1107,6 +1111,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 un diccionario con indicadores a nivel global,
                 datos sobre la lista entera en general.
         """
+        central_catalog = central_catalog or CENTRAL_CATALOG
         assert isinstance(catalogs, (str, unicode, dict, list))
         # Si se pasa un único catálogo, genero una lista que lo contenga
         if isinstance(catalogs, (str, unicode, dict)):
@@ -1283,6 +1288,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         federados = 0  # En ambos catálogos
         no_federados = 0
         datasets_federados_eliminados_cant = 0
+        datasets_federados = []
         datasets_no_federados = []
         datasets_federados_eliminados = []
 
@@ -1293,6 +1299,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 if self._datasets_equal(dataset, central_dataset):
                     found = True
                     federados += 1
+                    datasets_federados.append((dataset.get('title'),
+                                               dataset.get('landingPage')))
                     break
             if not found:
                 no_federados += 1
@@ -1330,6 +1338,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             'datasets_federados_eliminados_cant': datasets_federados_eliminados_cant,
             'datasets_federados_eliminados': datasets_federados_eliminados,
             'datasets_no_federados': datasets_no_federados,
+            'datasets_federados': datasets_federados,
             'datasets_federados_pct': round(federados_pct, 2)
         }
         return result

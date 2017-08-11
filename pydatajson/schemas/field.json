@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
-        "title": { "$ref": "mixed-types.json#stringOrNull" },
+        "title": { "$ref": "mixed-types.json#fieldTitle"},
         "type": { "$ref": "mixed-types.json#stringOrNull" },
         "description": { "$ref": "mixed-types.json#stringOrNull" }
     }

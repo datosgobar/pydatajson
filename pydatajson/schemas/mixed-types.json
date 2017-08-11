@@ -32,6 +32,12 @@
             { "type": "null" }
         ]
     },
+    "fieldTitle": {
+        "anyOf": [
+            { "type": "string", "maxLength": 60 },
+            { "type": "null" }
+        ]
+    },
     "temporalOrNull": {
         "anyOf": [
             { "type": "string", "pattern": "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)\\/(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$" },

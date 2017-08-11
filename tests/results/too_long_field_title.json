@@ -1,0 +1,51 @@
+{
+    "status": "ERROR",
+    "error": {
+        "catalog": {
+            "status": "OK",
+            "errors": [],
+            "title": "Datos Argentina"
+        },
+        "dataset": [
+            {
+                "status": "ERROR",
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                "list_index": 0,
+                "errors": [
+                    {
+                        "instance": "organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc",
+                        "validator": "anyOf",
+                        "path": [
+                            "dataset",
+                            0,
+                            "distribution",
+                            0,
+                            "field",
+                            3,
+                            "title"
+                        ],
+                        "message": "u'organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc' is not valid under any of the given schemas",
+                        "error_code": 2,
+                        "validator_value": [
+                            {
+                                "type": "string",
+                                "maxLength": 60
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                ],
+                "title": "Sistema de contrataciones electrónicas"
+            },
+            {
+                "status": "OK",
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                "list_index": 1,
+                "errors": [],
+                "title": "Sistema de contrataciones electrónicas (sin datos)"
+            }
+        ]
+    }
+}
