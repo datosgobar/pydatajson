@@ -60,7 +60,7 @@
                 "hasEmail": "onc-compraselectronicas@modernizacion.gob.ar"
             },
             "superTheme": [
-                "ECON"
+                "econ"
             ],
             "theme": [
                 "contrataciones",

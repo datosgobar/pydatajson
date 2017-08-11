@@ -1,6 +1,13 @@
 History
 =======
 
+0.2.27 (2017-08-11)
+-------------------
+
+* Agrega validacion de que el campo `superTheme` sólo contenga ids en mayúsculas o minúsculas de alguno de los 13 temas de la taxonomía temática de datos.gob.ar.
+* Agrega validación limitando a 60 caracteres los nombres de los campos `field_title`.
+* Mejoras al reporte de asistencia a la federación.
+
 0.2.26 (2017-08-04)
 -------------------
 

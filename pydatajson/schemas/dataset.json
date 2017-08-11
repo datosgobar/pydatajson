@@ -29,13 +29,16 @@
             }
         },
         "distribution": {
-               "type": "array",
-               "items": { "$ref": "distribution.json" }
+           "type": "array",
+           "items": { "$ref": "distribution.json" }
         },
         "title": { "$ref": "mixed-types.json#nonEmptyString" },
         "description": { "$ref": "mixed-types.json#nonEmptyString" },
         "issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
-        "superTheme": { "type": "array" },
+        "superTheme": {
+            "type": "array",
+            "items": { "$ref": "mixed-types.json#superTheme" }
+        },
         "accrualPeriodicity": {
             "anyOf" : [
                 {"type": "string", "pattern": "^R/P\\d+(\\.\\d+)?[Y|M|W|D]$"},

@@ -422,7 +422,7 @@ class DataJsonTestCase(unittest.TestCase):
             (u'dataset_description',
              u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
             (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
-            (u'dataset_superTheme', u'ECON'),
+            (u'dataset_superTheme', u'econ'),
             (u'dataset_theme', u'contrataciones, compras, convocatorias'),
             (u'dataset_landingPage',
              u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),

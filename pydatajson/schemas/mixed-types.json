@@ -1,4 +1,34 @@
 {
+    "superTheme": {
+        "anyOf": [
+            {"type": "string", "pattern": "^AGRI$"},
+            {"type": "string", "pattern": "^ECON$"},
+            {"type": "string", "pattern": "^EDUC$"},
+            {"type": "string", "pattern": "^ENER$"},
+            {"type": "string", "pattern": "^ENVI$"},
+            {"type": "string", "pattern": "^GOVE$"},
+            {"type": "string", "pattern": "^HEAL$"},
+            {"type": "string", "pattern": "^INTR$"},
+            {"type": "string", "pattern": "^JUST$"},
+            {"type": "string", "pattern": "^REGI$"},
+            {"type": "string", "pattern": "^SOCI$"},
+            {"type": "string", "pattern": "^TECH$"},
+            {"type": "string", "pattern": "^TRAN$"},
+            {"type": "string", "pattern": "^agri$"},
+            {"type": "string", "pattern": "^econ$"},
+            {"type": "string", "pattern": "^educ$"},
+            {"type": "string", "pattern": "^ener$"},
+            {"type": "string", "pattern": "^envi$"},
+            {"type": "string", "pattern": "^gove$"},
+            {"type": "string", "pattern": "^heal$"},
+            {"type": "string", "pattern": "^intr$"},
+            {"type": "string", "pattern": "^just$"},
+            {"type": "string", "pattern": "^regi$"},
+            {"type": "string", "pattern": "^soci$"},
+            {"type": "string", "pattern": "^tech$"},
+            {"type": "string", "pattern": "^tran$"}
+        ]
+    },
     "nonEmptyStringOrNull": {
         "anyOf": [
             { "type": "string", "minLength": 1 },
