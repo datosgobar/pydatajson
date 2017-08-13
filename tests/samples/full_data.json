@@ -96,11 +96,13 @@
                     "issued": "2016-04-14T19:48:05.433640-03:00",
                     "modified": "2016-04-19T19:48:05.433640-03:00",
                     "rights": "Derechos especificados en la licencia.",
+                    "identifier": "1.1",
                     "field": [
                         {
                             "title": "procedimiento_id",
                             "type": "integer",
-                            "description": "Identificador único del procedimiento de contratación"
+                            "description": "Identificador único del procedimiento de contratación",
+                            "id": "proc12"
                         },
                         {
                             "title": "organismo_unidad_operativa_contrataciones_id",

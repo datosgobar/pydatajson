@@ -1,4 +1,5 @@
 {
+    "id": "proc12",
     "type": "integer",
     "description": "Identificador único del procedimiento de contratación",
     "title": "procedimiento_id"
