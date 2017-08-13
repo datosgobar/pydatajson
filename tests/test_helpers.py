@@ -211,6 +211,9 @@ class HelpersTestCase(unittest.TestCase):
         result = pydatajson.helpers.add_dicts(one_dict, other_dict)
         self.assertDictEqual(result, expected)
 
+    def test_parse_date_string(self):
+        self.assertEqual(pydatajson.helpers.parse_date_string(""), None)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

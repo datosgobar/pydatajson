@@ -100,7 +100,7 @@ class DataJsonTestCase(unittest.TestCase):
                 "dataset": [
                     {
                         "status": "OK",
-                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
                         "list_index": 0,
                         "errors": [],
                         "title": "Sistema de contrataciones electrónicas"
@@ -405,72 +405,87 @@ class DataJsonTestCase(unittest.TestCase):
     # Reporte esperado para "full_data.json", con harvest = 0
     LOCAL_URL = os.path.join(SAMPLES_DIR, "full_data.json")
     EXPECTED_REPORT = [
-        OrderedDict([
-            (u'catalog_metadata_url', u'tests/samples/full_data.json'),
-            (u'catalog_federation_id', u'modernizacion'),
-            (u'catalog_federation_org', None),
-            (u'catalog_title', u'Datos Argentina'),
-            (u'catalog_description',
-             u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
-            (u'valid_catalog_metadata', 1),
-            (u'valid_dataset_metadata', 1),
-            (u'dataset_index', 0),
-            (u'harvest', 1),
-            (u'dataset_identifier', u'99db6631-d1c9-470b-a73e-c62daa32c420'),
-            (u'dataset_title', u'Sistema de contrataciones electr\xf3nicas'),
-            (u'dataset_accrualPeriodicity', u'R/P1Y'),
-            (u'dataset_description',
-             u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
-            (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
-            (u'dataset_superTheme', u'econ'),
-            (u'dataset_theme', u'contrataciones, compras, convocatorias'),
-            (u'dataset_landingPage',
-             u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
-            (u'dataset_landingPage_generated',
-             u'dataset/99db6631-d1c9-470b-a73e-c62daa32c420'),
-            (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
-            (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
-            (u'distributions_formats', '{"CSV": 1}'),
-            (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
-            (u'dataset_license', u'Open Data Commons Open Database License 1.0'),
-            (u'dataset_language', u'spa'),
-            (u'dataset_spatial', u'ARG'),
-            (u'dataset_temporal', u'2015-01-01/2015-12-31'),
-            (u'notas', u'')]),
-        OrderedDict([
-            (u'catalog_metadata_url', u'tests/samples/full_data.json'),
-            (u'catalog_federation_id', u'modernizacion'),
-            (u'catalog_federation_org', None),
-            (u'catalog_title', u'Datos Argentina'),
-            (u'catalog_description',
-             u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
-            (u'valid_catalog_metadata', 1),
-            (u'valid_dataset_metadata', 1),
-            (u'dataset_index', 1),
-            (u'harvest', 1),
-            (u'dataset_identifier', u'99db6631-d1c9-470b-a73e-c62daa32c420'),
-            (u'dataset_title',
-             u'Sistema de contrataciones electr\xf3nicas (sin datos)'),
-            (u'dataset_accrualPeriodicity', u'R/P1Y'),
-            (u'dataset_description',
-             u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
-            (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
-            (u'dataset_superTheme', u'ECON'),
-            (u'dataset_theme', u'contrataciones, compras, convocatorias'),
-            (u'dataset_landingPage',
-             u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
-            (u'dataset_landingPage_generated',
-             u'dataset/99db6631-d1c9-470b-a73e-c62daa32c420'),
-            (u'dataset_issued', u'2016-04-14T19:48:05.433640-03:00'),
-            (u'dataset_modified', u'2016-04-19T19:48:05.433640-03:00'),
-            (u'distributions_formats', '{"PDF": 1}'),
-            (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf'),
-            (u'dataset_license', u'Open Data Commons Open Database License 1.0'),
-            (u'dataset_language', u'spa'),
-            (u'dataset_spatial', u'ARG'),
-            (u'dataset_temporal', u'2015-01-01/2015-12-31'),
-            (u'notas', u'No tiene distribuciones con datos.')
-        ])]
+        OrderedDict([(u'catalog_metadata_url', u'tests/samples/full_data.json'),
+                     (u'catalog_federation_id', u'modernizacion'),
+                     (u'catalog_federation_org', None),
+                     (u'catalog_title', u'Datos Argentina'),
+                     (u'catalog_description',
+                      u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
+                     (u'valid_catalog_metadata', 1),
+                     (u'valid_dataset_metadata', 1),
+                     (u'dataset_index', 0),
+                     (u'harvest', 1),
+                     (u'dataset_identifier',
+                      u'99db6631-d1c9-470b-a73e-c62daa32c777'),
+                     (u'dataset_title',
+                      u'Sistema de contrataciones electr\xf3nicas'),
+                     (u'dataset_accrualPeriodicity', u'R/P1Y'),
+                     (u'dataset_description',
+                      u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
+                     (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
+                     (u'dataset_superTheme', u'econ'),
+                     (u'dataset_theme',
+                      u'contrataciones, compras, convocatorias'),
+                     (u'dataset_landingPage',
+                      u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
+                     (u'dataset_landingPage_generated',
+                      u'dataset/99db6631-d1c9-470b-a73e-c62daa32c777'),
+                     (u'dataset_issued',
+                      u'2016-04-14T19:48:05.433640-03:00'),
+                     (u'dataset_modified',
+                      u'2016-04-19T19:48:05.433640-03:00'),
+                     (u'distributions_formats', '{"CSV": 1}'),
+                     (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
+                     (u'dataset_license',
+                      u'Open Data Commons Open Database License 1.0'),
+                     (u'dataset_language', u'spa'),
+                     (u'dataset_spatial', u'ARG'),
+                     (u'dataset_temporal', u'2015-01-01/2015-12-31'),
+                     (u'notas', u'')]),
+        OrderedDict([(u'catalog_metadata_url', u'tests/samples/full_data.json'),
+                     (u'catalog_federation_id',
+                      u'modernizacion'),
+                     (u'catalog_federation_org', None),
+                     (u'catalog_title',
+                      u'Datos Argentina'),
+                     (u'catalog_description',
+                      u'Portal de Datos Abiertos del Gobierno de la Rep\xfablica Argentina'),
+                     (u'valid_catalog_metadata', 1),
+                     (u'valid_dataset_metadata', 1),
+                     (u'dataset_index', 1),
+                     (u'harvest', 1),
+                     (u'dataset_identifier',
+                      u'99db6631-d1c9-470b-a73e-c62daa32c420'),
+                     (u'dataset_title',
+                      u'Sistema de contrataciones electr\xf3nicas (sin datos)'),
+                     (u'dataset_accrualPeriodicity',
+                      u'R/P1Y'),
+                     (u'dataset_description', u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra) (sin datos)'),
+                     (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
+                     (u'dataset_superTheme',
+                      u'ECON'),
+                     (u'dataset_theme',
+                      u'contrataciones, compras, convocatorias'),
+                     (u'dataset_landingPage',
+                      u'http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra'),
+                     (u'dataset_landingPage_generated',
+                      u'dataset/99db6631-d1c9-470b-a73e-c62daa32c420'),
+                     (u'dataset_issued',
+                      u'2016-04-14T19:48:05.433640-03:00'),
+                     (u'dataset_modified',
+                      u'2016-04-19T19:48:05.433640-03:00'),
+                     (u'distributions_formats',
+                      '{"PDF": 1}'),
+                     (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf'),
+                     (u'dataset_license',
+                      u'Open Data Commons Open Database License 1.0'),
+                     (u'dataset_language',
+                      u'spa'),
+                     (u'dataset_spatial',
+                      u'ARG'),
+                     (u'dataset_temporal',
+                      u'2015-01-01/2015-12-31'),
+                     (u'notas', u'No tiene distribuciones con datos.')])]
 
     def test_catalog_report_harvest_good(self):
         """catalog_report() marcará para cosecha los datasets con metadata
@@ -505,6 +520,7 @@ class DataJsonTestCase(unittest.TestCase):
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
         self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
         # Compruebo que toda la lista sea la esperada
+        print(actual)
         self.assertListEqual(actual, expected)
 
     def test_catalog_report_harvest_none(self):
@@ -910,6 +926,7 @@ class DataJsonTestCase(unittest.TestCase):
 
         self.assertListEqual(actual, expected)
 
+    @my_vcr.use_cassette()
     def test_generate_catalog_readme(self):
         """Genera README para presentar un catálogo."""
         catalog = os.path.join(self.SAMPLES_DIR,
@@ -930,6 +947,7 @@ revíselo manualmente""".format(actual_filename)
 
         self.assertTrue(comparison)
 
+    @my_vcr.use_cassette()
     def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
@@ -947,6 +965,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertTrue(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_date_indicators(self):
         from datetime import datetime
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
@@ -969,6 +988,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_format_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
@@ -1091,6 +1111,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_network_indicators(self):
         one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
@@ -1122,6 +1143,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(network_indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_indicators_invalid_periodicity(self):
         catalog = os.path.join(self.SAMPLES_DIR,
                                "malformed_accrualperiodicity.json")
@@ -1139,6 +1161,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 
+    @my_vcr.use_cassette()
     def test_indicators_missing_periodicity(self):
         catalog = os.path.join(self.SAMPLES_DIR, "missing_periodicity.json")
 
@@ -1154,6 +1177,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 
+    @my_vcr.use_cassette()
     def test_indicators_missing_dataset(self):
         catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
 
@@ -1174,6 +1198,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             self.assertEqual(indicators[k], v, k)
 
+    @my_vcr.use_cassette()
     def test_last_updated_indicator_missing_issued_field(self):
         from datetime import datetime
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
@@ -1199,9 +1224,6 @@ revíselo manualmente""".format(actual_filename)
         # Dataset con periodicity eventual, siempre True
         dataset = "Declaración Jurada Patrimonial Integral de carácter público"
         self.assertTrue(self.dj.dataset_is_updated(catalog, dataset))
-
-    def test_parse_date_string(self):
-        self.assertEqual(self.dj._parse_date_string(""), None)
 
     def test_date_network_indicators_empty_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "invalid_catalog_empty.json")

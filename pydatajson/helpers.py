@@ -7,13 +7,38 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
-import datetime
+from datetime import datetime
 import os
 import json
 from urlparse import urlparse
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
+
+
+def parse_date_string(date_string):
+    """Parsea un string de una fecha con el formato de la norma
+    ISO 8601 (es decir, las fechas utilizadas en los catálogos) en un
+    objeto datetime de la librería estándar de python. Se tiene en cuenta
+    únicamente la fecha y se ignora completamente la hora.
+
+    Args:
+        date_string (str): fecha con formato ISO 8601.
+
+    Returns:
+        datetime: objeto fecha especificada por date_string.
+    """
+
+    if not date_string:
+        return None
+
+    # La fecha cumple con la norma ISO 8601: YYYY-mm-ddThh-MM-ss.
+    # Nos interesa solo la parte de fecha, y no la hora. Se hace un
+    # split por la letra 'T' y nos quedamos con el primer elemento.
+    date_string = date_string.split('T')[0]
+
+    # Crea un objeto datetime a partir del formato especificado
+    return datetime.strptime(date_string, "%Y-%m-%d")
 
 
 def clean_str(s):
@@ -114,7 +139,7 @@ def parse_value(cell):
         value = value.strip()
 
     # convierte a texto ISO 8601 las fechas
-    if isinstance(value, (datetime.datetime)):
+    if isinstance(value, (datetime)):
         value = value.isoformat()
 
     return value
