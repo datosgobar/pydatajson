@@ -9,6 +9,7 @@ from __future__ import with_statement
 
 from functools import wraps
 import os.path
+from pprint import pprint
 import unittest
 import json
 import nose
@@ -23,6 +24,8 @@ my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='once')
 
+RESULTS_DIR = os.path.join("tests", "results")
+
 
 class DataJsonTestCase(unittest.TestCase):
 
@@ -36,7 +39,9 @@ class DataJsonTestCase(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
-        cls.dj = pydatajson.DataJson()
+        cls.dj = pydatajson.DataJson(cls.get_sample("full_data.json"))
+        cls.catalog = pydatajson.readers.read_catalog(
+            cls.get_sample("full_data.json"))
         cls.maxDiff = None
         cls.longMessage = True
 
@@ -69,6 +74,26 @@ class DataJsonTestCase(unittest.TestCase):
                 case_filename))
 
         self.assertEqual(expected_dict, response_dict)
+
+    def load_expected_result():
+
+        def case_decorator(test):
+            case_filename = test.__name__.split("test_")[-1]
+
+            @wraps(test)
+            def decorated_test(*args, **kwargs):
+                result_path = os.path.join(
+                    RESULTS_DIR, case_filename + ".json")
+
+                with io.open(result_path, encoding='utf8') as result_file:
+                    expected_result = json.load(result_file)
+
+                kwargs["expected_result"] = expected_result
+                test(*args, **kwargs)
+
+            return decorated_test
+
+        return case_decorator
 
     def load_case_filename():
 
@@ -1234,6 +1259,107 @@ revíselo manualmente""".format(actual_filename)
 
         for k, v in network_indics.items():
             self.assertTrue(v is not None)
+
+    def test_DataJson_constructor(self):
+        for key, value in self.catalog.iteritems():
+            self.assertEqual(self.dj[key], value)
+
+    def test_datasets_property(self):
+        """La propiedad datasets equivale a clave 'dataset' de un catalog."""
+        self.assertEqual(self.dj.datasets, self.catalog["dataset"])
+        self.assertEqual(self.dj.datasets, self.dj["dataset"])
+
+    @load_expected_result()
+    def test_datasets(self, expected_result):
+        datasets = self.dj.get_datasets()
+        pprint(datasets)
+        self.assertEqual(expected_result, datasets)
+
+        datasets = self.dj.datasets
+        pprint(datasets)
+        self.assertEqual(expected_result, datasets)
+
+    def test_datasets_without_catalog(self):
+        with self.assertRaises(KeyError):
+            dj = pydatajson.DataJson()
+            datasets = dj.get_datasets()
+
+        with self.assertRaises(KeyError):
+            dj = pydatajson.DataJson()
+            datasets = dj.datasets
+
+    def test_distributions_property(self):
+        """La propiedad distributions equivale a clave 'distribution' de un catalog."""
+        distributions = [
+            distribution
+            for dataset in self.catalog["dataset"]
+            for distribution in dataset["distribution"]
+        ]
+        self.assertEqual(self.dj.distributions, distributions)
+        distributions = [
+            distribution
+            for dataset in self.dj["dataset"]
+            for distribution in dataset["distribution"]
+        ]
+        self.assertEqual(self.dj.distributions, distributions)
+
+    @load_expected_result()
+    def test_distributions(self, expected_result):
+        distributions = self.dj.get_distributions()
+        pprint(distributions)
+        self.assertEqual(expected_result, distributions)
+
+        distributions = self.dj.distributions
+        pprint(distributions)
+        self.assertEqual(expected_result, distributions)
+
+    def test_distributions_without_catalog(self):
+        with self.assertRaises(KeyError):
+            dj = pydatajson.DataJson()
+            distributions = dj.get_distributions()
+
+        with self.assertRaises(KeyError):
+            dj = pydatajson.DataJson()
+            distributions = dj.distributions
+
+    def test_fields_property(self):
+        """La propiedad fields equivale a clave 'field' de un catalog."""
+        fields = [
+            field
+            for dataset in self.catalog["dataset"]
+            for distribution in dataset["distribution"]
+            if "field" in distribution
+            for field in distribution["field"]
+        ]
+        self.assertEqual(self.dj.fields, fields)
+        fields = [
+            field
+            for dataset in self.dj["dataset"]
+            for distribution in dataset["distribution"]
+            if "field" in distribution
+            for field in distribution["field"]
+        ]
+        self.assertEqual(self.dj.fields, fields)
+
+    @load_expected_result()
+    def test_fields(self, expected_result):
+        fields = self.dj.get_fields()
+        pprint(fields)
+        self.assertEqual(expected_result, fields)
+
+        fields = self.dj.fields
+        pprint(fields)
+        self.assertEqual(expected_result, fields)
+
+    def test_fields_without_catalog(self):
+        with self.assertRaises(KeyError):
+            dj = pydatajson.DataJson()
+            fields = dj.get_fields()
+
+        with self.assertRaises(KeyError):
+            dj = pydatajson.DataJson()
+            fields = dj.fields
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

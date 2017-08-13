@@ -60,25 +60,25 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_datasets(self, expected_result):
-        datasets = pydatajson.search.datasets(self.catalog)
+        datasets = pydatajson.search.get_datasets(self.catalog)
         pprint(datasets)
         self.assertEqual(expected_result, datasets)
 
     @load_expected_result()
     def test_distributions(self, expected_result):
-        distributions = pydatajson.search.distributions(self.catalog)
+        distributions = pydatajson.search.get_distributions(self.catalog)
         pprint(distributions)
         self.assertEqual(expected_result, distributions)
 
     @load_expected_result()
     def test_fields(self, expected_result):
-        fields = pydatajson.search.fields(self.catalog)
+        fields = pydatajson.search.get_fields(self.catalog)
         pprint(fields)
         self.assertEqual(expected_result, fields)
 
     @load_expected_result()
     def test_datasets_filter_in(self, expected_result):
-        datasets = pydatajson.search.datasets(
+        datasets = pydatajson.search.get_datasets(
             self.catalog,
             {"dataset": {
                 "description":
@@ -90,7 +90,7 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_distributions_filter_in(self, expected_result):
-        distributions = pydatajson.search.distributions(
+        distributions = pydatajson.search.get_distributions(
             self.catalog,
             {"distribution": {"byteSize": 5120}}
         )
@@ -99,14 +99,14 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_fields_filter_in(self, expected_result):
-        fields = pydatajson.search.fields(
+        fields = pydatajson.search.get_fields(
             self.catalog, {"field": {"title": "procedimiento_id"}})
         pprint(fields)
         self.assertEqual(expected_result, fields)
 
     @load_expected_result()
     def test_datasets_filter_out(self, expected_result):
-        datasets = pydatajson.search.datasets(
+        datasets = pydatajson.search.get_datasets(
             self.catalog,
             filter_out={"dataset": {
                 "description":
@@ -118,7 +118,7 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_distributions_filter_out(self, expected_result):
-        distributions = pydatajson.search.distributions(
+        distributions = pydatajson.search.get_distributions(
             self.catalog,
             filter_out={"dataset": {
                 "description":
@@ -130,7 +130,7 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_fields_filter_out(self, expected_result):
-        fields = pydatajson.search.fields(
+        fields = pydatajson.search.get_fields(
             self.catalog,
             filter_out={"dataset": {
                 "description":
@@ -142,7 +142,7 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_datasets_meta_field(self, expected_result):
-        datasets = pydatajson.search.datasets(
+        datasets = pydatajson.search.get_datasets(
             self.catalog, meta_field="title"
         )
         pprint(datasets)
@@ -150,7 +150,7 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_distributions_meta_field(self, expected_result):
-        distributions = pydatajson.search.distributions(
+        distributions = pydatajson.search.get_distributions(
             self.catalog, meta_field="accessURL"
         )
         pprint(distributions)
@@ -158,7 +158,7 @@ class SearchTestCase(unittest.TestCase):
 
     @load_expected_result()
     def test_fields_meta_field(self, expected_result):
-        fields = pydatajson.search.fields(
+        fields = pydatajson.search.get_fields(
             self.catalog, meta_field="type"
         )
         pprint(fields)

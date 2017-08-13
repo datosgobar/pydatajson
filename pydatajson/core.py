@@ -30,6 +30,7 @@ from indicators import generate_catalogs_indicators
 from . import readers
 from . import helpers
 from . import writers
+from . import search
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -43,7 +44,7 @@ MIN_DATASET_TITLE = 15
 MIN_DATASET_DESCRIPTION = 30
 
 
-class DataJson(object):
+class DataJson(dict):
     """Métodos para trabajar con archivos data.json."""
 
     # Variables por default
@@ -51,7 +52,7 @@ class DataJson(object):
     DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
     CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
-    def __init__(self,
+    def __init__(self, catalog=None,
                  schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
                  schema_dir=ABSOLUTE_SCHEMA_DIR):
         """Crea un manipulador de `data.json`s.
@@ -65,6 +66,15 @@ class DataJson(object):
             schema_dir (str): Directorio (absoluto) donde se encuentra el
                 esquema validador (y sus referencias, de tenerlas).
         """
+        # se construye el objeto DataJson con la interfaz de un dicconario
+        if catalog:
+            catalog = readers.read_catalog(catalog)
+            for key, value in catalog.iteritems():
+                self[key] = value
+            self.has_catalog = True
+        else:
+            self.has_catalog = False
+
         self.validator = self._create_validator(schema_filename, schema_dir)
 
         # asigno docstrings de los métodos modularizados
@@ -112,6 +122,14 @@ class DataJson(object):
             schema=schema, resolver=resolver, format_checker=format_checker)
 
         return validator
+
+    # metodos para buscar entidades cuando DataJson tiene catalogo cargado
+    get_datasets = search.get_datasets
+    datasets = property(get_datasets)
+    get_distributions = search.get_distributions
+    distributions = property(get_distributions)
+    get_fields = search.get_fields
+    fields = property(get_fields)
 
     def is_valid_catalog(self, catalog):
         """Valida que un archivo `data.json` cumpla con el schema definido.

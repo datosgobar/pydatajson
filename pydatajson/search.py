@@ -16,7 +16,7 @@ import custom_exceptions as ce
 from functools import partial
 
 
-def datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
+def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -35,13 +35,14 @@ def datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
         return filtered_datasets
 
 
-def distributions(catalog, filter_in=None, filter_out=None, meta_field=None):
+def get_distributions(catalog, filter_in=None, filter_out=None, meta_field=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
 
     distributions_generator = (
-        distribution for dataset in datasets(catalog, filter_in, filter_out)
+        distribution for dataset in get_datasets(
+            catalog, filter_in, filter_out)
         for distribution in dataset["distribution"]
     )
 
@@ -59,13 +60,14 @@ def distributions(catalog, filter_in=None, filter_out=None, meta_field=None):
         return filtered_distributions
 
 
-def fields(catalog, filter_in=None, filter_out=None, meta_field=None):
+def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
 
     fields_generator = (
-        field for distribution in distributions(catalog, filter_in, filter_out)
+        field for distribution in get_distributions(
+            catalog, filter_in, filter_out)
         if "field" in distribution
         for field in distribution["field"]
     )
@@ -88,10 +90,10 @@ def get_dataset(catalog, identifier=None, title=None):
     assert identifier or title, msg
 
     if identifier:
-        filtered_datasets = datasets(
+        filtered_datasets = get_datasets(
             catalog, {"dataset": {"identifier": identifier}})
     elif title:
-        filtered_datasets = datasets(
+        filtered_datasets = get_datasets(
             catalog, {"dataset": {"title": title}})
 
     if len(filtered_datasets) > 1:
@@ -115,11 +117,11 @@ def get_distribution(catalog, identifier=None, title=None,
     # 1. BUSCA las distribuciones en el catálogo
     # toma la distribution que tenga el id único
     if identifier:
-        filtered_distributions = distributions(
+        filtered_distributions = get_distributions(
             catalog, {"distribution": {"identifier": identifier}})
     # toma la distribution que tenga el título único, dentro de un dataset
     elif title and dataset_identifier:
-        filtered_distributions = distributions(
+        filtered_distributions = get_distributions(
             catalog, {
                 "dataset": {"identifier": dataset_identifier},
                 "distribution": {"title": title}
@@ -127,7 +129,7 @@ def get_distribution(catalog, identifier=None, title=None,
         )
     # toma las distribution que tengan el título (puede haber más de una)
     elif title:
-        filtered_distributions = distributions(
+        filtered_distributions = get_distributions(
             catalog, {"distribution": {"title": title}})
 
     # 2. CHEQUEA que la cantidad de distribuciones es consistente
@@ -155,17 +157,17 @@ def get_field(catalog, identifier=None, title=None,
 
     # 1. BUSCA los fields en el catálogo
     if identifier:
-        filtered_fields = fields(
+        filtered_fields = get_fields(
             catalog, {"field": {"id": identifier}})
     elif title and distribution_identifier:
-        filtered_fields = fields(
+        filtered_fields = get_fields(
             catalog, {
                 "distribution": {"identifier": distribution_identifier},
                 "field": {"title": title}
             }
         )
     elif title:
-        filtered_fields = fields(
+        filtered_fields = get_fields(
             catalog, {"field": {"title": title}})
 
     # 2. CHEQUEA que la cantidad de fields es consistente
