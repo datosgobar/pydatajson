@@ -15,19 +15,26 @@ from readers import read_catalog
 from functools import partial
 
 
-def datasets(catalog, filter_in=None, filter_out=None):
+def datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
 
-    return filter(
+    filtered_datasets = filter(
         lambda x: _filter_dictionary(
             x, filter_in.get("dataset"), filter_out.get("dataset")),
         catalog["dataset"]
     )
+    print(filtered_datasets)
+
+    if meta_field:
+        return [dataset[meta_field] for dataset in filtered_datasets
+                if meta_field in dataset]
+    else:
+        return filtered_datasets
 
 
-def distributions(catalog, filter_in=None, filter_out=None):
+def distributions(catalog, filter_in=None, filter_out=None, meta_field=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -37,14 +44,21 @@ def distributions(catalog, filter_in=None, filter_out=None):
         for distribution in dataset["distribution"]
     )
 
-    return filter(
+    filtered_distributions = filter(
         lambda x: _filter_dictionary(
             x, filter_in.get("distribution"), filter_out.get("distribution")),
         distributions_generator
     )
 
+    if meta_field:
+        return [distribution[meta_field]
+                for distribution in filtered_distributions
+                if meta_field in distribution]
+    else:
+        return filtered_distributions
 
-def fields(catalog, filter_in=None, filter_out=None):
+
+def fields(catalog, filter_in=None, filter_out=None, meta_field=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -55,11 +69,17 @@ def fields(catalog, filter_in=None, filter_out=None):
         for field in distribution["field"]
     )
 
-    return filter(
+    filtered_fields = filter(
         lambda x: _filter_dictionary(
             x, filter_in.get("field"), filter_out.get("field")),
         fields_generator
     )
+
+    if meta_field:
+        return [field[meta_field] for field in filtered_fields
+                if meta_field in field]
+    else:
+        return filtered_fields
 
 
 def get_dataset(catalog, dataset_identifier):
@@ -75,17 +95,17 @@ def get_dataset(catalog, dataset_identifier):
 
 
 def _filter_dictionary(dictionary, filter_in=None, filter_out=None):
-    filter_in = filter_in or {}
-    filter_out = filter_out or {}
 
-    # chequea que el objeto tenga las propiedades de filtro positivo
-    for key, value in filter_in.iteritems():
-        if dictionary.get(key) != value:
-            return False
+    if filter_in:
+        # chequea que el objeto tenga las propiedades de filtro positivo
+        for key, value in filter_in.iteritems():
+            if dictionary.get(key) != value:
+                return False
 
-    # chequea que el objeto NO tenga las propiedades de filtro negativo
-    for key, value in filter_out.iteritems():
-        if dictionary.get(key) == value:
-            return False
+    if filter_out:
+        # chequea que el objeto NO tenga las propiedades de filtro negativo
+        for key, value in filter_out.iteritems():
+            if dictionary.get(key) == value:
+                return False
 
     return True

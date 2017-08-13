@@ -140,6 +140,30 @@ class SearchTestCase(unittest.TestCase):
         pprint(fields)
         self.assertEqual(expected_result, fields)
 
+    @load_expected_result()
+    def test_datasets_meta_field(self, expected_result):
+        datasets = pydatajson.search.datasets(
+            self.catalog, meta_field="title"
+        )
+        pprint(datasets)
+        self.assertEqual(expected_result, datasets)
+
+    @load_expected_result()
+    def test_distributions_meta_field(self, expected_result):
+        distributions = pydatajson.search.distributions(
+            self.catalog, meta_field="accessURL"
+        )
+        pprint(distributions)
+        self.assertEqual(expected_result, distributions)
+
+    @load_expected_result()
+    def test_fields_meta_field(self, expected_result):
+        fields = pydatajson.search.fields(
+            self.catalog, meta_field="type"
+        )
+        pprint(fields)
+        self.assertEqual(expected_result, fields)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
