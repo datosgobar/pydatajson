@@ -59,21 +59,84 @@ class SearchTestCase(unittest.TestCase):
         cls.catalog = cls.get_sample("full_data.json")
 
     @load_expected_result()
-    def test_iter_datasets(self, expected_result):
-        datasets = list(pydatajson.search.iter_datasets(self.catalog))
+    def test_datasets(self, expected_result):
+        datasets = pydatajson.search.datasets(self.catalog)
         pprint(datasets)
         self.assertEqual(expected_result, datasets)
 
     @load_expected_result()
-    def test_iter_distributions(self, expected_result):
-        distributions = list(
-            pydatajson.search.iter_distributions(self.catalog))
+    def test_distributions(self, expected_result):
+        distributions = pydatajson.search.distributions(self.catalog)
         pprint(distributions)
         self.assertEqual(expected_result, distributions)
 
     @load_expected_result()
-    def test_iter_fields(self, expected_result):
-        fields = list(pydatajson.search.iter_fields(self.catalog))
+    def test_fields(self, expected_result):
+        fields = pydatajson.search.fields(self.catalog)
+        pprint(fields)
+        self.assertEqual(expected_result, fields)
+
+    @load_expected_result()
+    def test_datasets_filter_in(self, expected_result):
+        datasets = pydatajson.search.datasets(
+            self.catalog,
+            {"dataset": {
+                "description":
+                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+            }}
+        )
+        pprint(datasets)
+        self.assertEqual(expected_result, datasets)
+
+    @load_expected_result()
+    def test_distributions_filter_in(self, expected_result):
+        distributions = pydatajson.search.distributions(
+            self.catalog,
+            {"distribution": {"byteSize": 5120}}
+        )
+        pprint(distributions)
+        self.assertEqual(expected_result, distributions)
+
+    @load_expected_result()
+    def test_fields_filter_in(self, expected_result):
+        fields = pydatajson.search.fields(
+            self.catalog, {"field": {"title": "procedimiento_id"}})
+        pprint(fields)
+        self.assertEqual(expected_result, fields)
+
+    @load_expected_result()
+    def test_datasets_filter_out(self, expected_result):
+        datasets = pydatajson.search.datasets(
+            self.catalog,
+            filter_out={"dataset": {
+                "description":
+                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+            }}
+        )
+        pprint(datasets)
+        self.assertEqual(expected_result, datasets)
+
+    @load_expected_result()
+    def test_distributions_filter_out(self, expected_result):
+        distributions = pydatajson.search.distributions(
+            self.catalog,
+            filter_out={"dataset": {
+                "description":
+                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+            }}
+        )
+        pprint(distributions)
+        self.assertEqual(expected_result, distributions)
+
+    @load_expected_result()
+    def test_fields_filter_out(self, expected_result):
+        fields = pydatajson.search.fields(
+            self.catalog,
+            filter_out={"dataset": {
+                "description":
+                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+            }}
+        )
         pprint(fields)
         self.assertEqual(expected_result, fields)
 
