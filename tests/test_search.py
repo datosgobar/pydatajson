@@ -164,6 +164,14 @@ class SearchTestCase(unittest.TestCase):
         pprint(fields)
         self.assertEqual(expected_result, fields)
 
+    @load_expected_result()
+    def test_get_dataset(self, expected_result):
+        dataset = pydatajson.search.get_dataset(
+            self.catalog, "99db6631-d1c9-470b-a73e-c62daa32c777"
+        )
+        pprint(dataset)
+        self.assertEqual(expected_result, dataset)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

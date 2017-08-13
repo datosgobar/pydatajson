@@ -12,6 +12,7 @@ from __future__ import print_function
 from __future__ import with_statement
 
 from readers import read_catalog
+import custom_exceptions as ce
 from functools import partial
 
 
@@ -82,16 +83,28 @@ def fields(catalog, filter_in=None, filter_out=None, meta_field=None):
         return filtered_fields
 
 
-def get_dataset(catalog, dataset_identifier):
-    datasets = filter(lambda x: x.get("identifier") == dataset_identifier,
-                      catalog["dataset"])
+def get_dataset(catalog, dataset_identifier=None, dataset_title=None):
+    msg = "Se requiere un 'identifier' o 'title' para buscar el dataset."
+    assert dataset_identifier or dataset_title, msg
 
-    if len(datasets) > 1:
-        raise ce.DatasetIdRepetitionError(dataset_identifier, datasets)
-    elif len(datasets) == 0:
+    if dataset_identifier:
+        filtered_datasets = datasets(
+            catalog, {"dataset": {"identifier": dataset_identifier}})
+    elif dataset_title:
+        filtered_datasets = datasets(
+            catalog, {"dataset": {"title": dataset_title}})
+
+    if len(filtered_datasets) > 1:
+        if dataset_identifier:
+            raise ce.DatasetIdRepetitionError(
+                dataset_identifier, filtered_datasets)
+        elif dataset_title:
+            raise ce.DatasetTitleRepetitionError(
+                dataset_title, filtered_datasets)
+    elif len(filtered_datasets) == 0:
         return None
     else:
-        return datasets[0]
+        return filtered_datasets[0]
 
 
 def _filter_dictionary(dictionary, filter_in=None, filter_out=None):
