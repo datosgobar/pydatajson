@@ -172,6 +172,24 @@ class SearchTestCase(unittest.TestCase):
         pprint(dataset)
         self.assertEqual(expected_result, dataset)
 
+    @load_expected_result()
+    def test_get_distribution(self, expected_result):
+        distribution = pydatajson.search.get_distribution(
+            self.catalog,
+            title="Convocatorias abiertas durante el año 2015"
+        )
+        pprint(distribution)
+        self.assertEqual(expected_result, distribution)
+
+    @load_expected_result()
+    def test_get_field(self, expected_result):
+        field = pydatajson.search.get_field(
+            self.catalog,
+            title="procedimiento_id"
+        )
+        pprint(field)
+        self.assertEqual(expected_result, field)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

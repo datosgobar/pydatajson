@@ -83,28 +83,76 @@ def fields(catalog, filter_in=None, filter_out=None, meta_field=None):
         return filtered_fields
 
 
-def get_dataset(catalog, dataset_identifier=None, dataset_title=None):
+def get_dataset(catalog, identifier=None, title=None):
     msg = "Se requiere un 'identifier' o 'title' para buscar el dataset."
-    assert dataset_identifier or dataset_title, msg
+    assert identifier or title, msg
 
-    if dataset_identifier:
+    if identifier:
         filtered_datasets = datasets(
-            catalog, {"dataset": {"identifier": dataset_identifier}})
-    elif dataset_title:
+            catalog, {"dataset": {"identifier": identifier}})
+    elif title:
         filtered_datasets = datasets(
-            catalog, {"dataset": {"title": dataset_title}})
+            catalog, {"dataset": {"title": title}})
 
     if len(filtered_datasets) > 1:
-        if dataset_identifier:
+        if identifier:
             raise ce.DatasetIdRepetitionError(
-                dataset_identifier, filtered_datasets)
-        elif dataset_title:
+                identifier, filtered_datasets)
+        elif title:
             raise ce.DatasetTitleRepetitionError(
-                dataset_title, filtered_datasets)
+                title, filtered_datasets)
     elif len(filtered_datasets) == 0:
         return None
     else:
         return filtered_datasets[0]
+
+
+def get_distribution(catalog, identifier=None, title=None):
+    msg = "Se requiere un 'identifier' o 'title' para buscar el distribution."
+    assert identifier or title, msg
+
+    if identifier:
+        filtered_distributions = distributions(
+            catalog, {"distribution": {"identifier": identifier}})
+    elif title:
+        filtered_distributions = distributions(
+            catalog, {"distribution": {"title": title}})
+
+    if len(filtered_distributions) > 1:
+        if identifier:
+            raise ce.DistributionIdRepetitionError(
+                identifier, filtered_distributions)
+        elif title:
+            # el título de una distribution puede repetirse
+            return filtered_distributions
+    elif len(filtered_distributions) == 0:
+        return None
+    else:
+        return filtered_distributions[0]
+
+
+def get_field(catalog, identifier=None, title=None):
+    msg = "Se requiere un 'id' o 'title' para buscar el field."
+    assert identifier or title, msg
+
+    if identifier:
+        filtered_fields = fields(
+            catalog, {"field": {"id": identifier}})
+    elif title:
+        filtered_fields = fields(
+            catalog, {"field": {"title": title}})
+
+    if len(filtered_fields) > 1:
+        if identifier:
+            raise ce.fieldIdRepetitionError(
+                identifier, filtered_fields)
+        elif title:
+            # el título de un field puede repetirse
+            return filtered_fields
+    elif len(filtered_fields) == 0:
+        return None
+    else:
+        return filtered_fields[0]
 
 
 def _filter_dictionary(dictionary, filter_in=None, filter_out=None):
