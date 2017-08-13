@@ -25,8 +25,7 @@ ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 
 
-def create_validator(schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
-                     schema_dir=ABSOLUTE_SCHEMA_DIR):
+def create_validator(schema_filename=None, schema_dir=None):
     """Crea el validador necesario para inicializar un objeto DataJson.
 
     Para poder resolver referencias inter-esquemas, un Validador requiere
@@ -49,6 +48,8 @@ def create_validator(schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
             se crea con un RefResolver que resuelve referencias de
             `schema_filename` dentro de `schema_dir`.
     """
+    schema_filename = schema_filename or DEFAULT_CATALOG_SCHEMA_FILENAME
+    schema_dir = schema_dir or ABSOLUTE_SCHEMA_DIR
     schema_path = os.path.join(schema_dir, schema_filename)
     schema = readers.read_json(schema_path)
 
@@ -66,6 +67,32 @@ def create_validator(schema_filename=DEFAULT_CATALOG_SCHEMA_FILENAME,
         schema=schema, resolver=resolver, format_checker=format_checker)
 
     return validator
+
+
+def is_valid_catalog(catalog, validator=None):
+    """Valida que un archivo `data.json` cumpla con el schema definido.
+
+    Chequea que el data.json tiene todos los campos obligatorios y que
+    tanto los campos obligatorios como los opcionales siguen la estructura
+    definida en el schema.
+
+    Args:
+        catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
+
+    Returns:
+        bool: True si el data.json cumple con el schema, sino False.
+    """
+    if not validator:
+        if hasattr(catalog, "validator"):
+            validator = catalog.validator
+        else:
+            validator = create_validator()
+
+    catalog = readers.read_catalog(catalog)
+    jsonschema_res = validator.is_valid(catalog)
+    custom_errors = iter_custom_errors(catalog)
+
+    return jsonschema_res and len(list(custom_errors)) == 0
 
 
 def validate_catalog(catalog, only_errors=False, fmt="dict",
