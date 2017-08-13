@@ -89,6 +89,9 @@ class DataJson(dict):
     distributions = property(get_distributions)
     get_fields = search.get_fields
     fields = property(get_fields)
+    get_dataset = search.get_dataset
+    get_distribution = search.get_distribution
+    get_field = search.get_field
 
     def is_valid_catalog(self, catalog=None):
         catalog = catalog or self
