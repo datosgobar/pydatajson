@@ -26,7 +26,6 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
             x, filter_in.get("dataset"), filter_out.get("dataset")),
         catalog["dataset"]
     )
-    print(filtered_datasets)
 
     if meta_field:
         return [dataset[meta_field] for dataset in filtered_datasets
