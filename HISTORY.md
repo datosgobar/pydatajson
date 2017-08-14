@@ -1,6 +1,11 @@
 History
 =======
 
+0.3.0 (2017-08-14)
+-------------------
+
+* Agrega métodos para navegar un catálogo desde el objeto DataJson.
+
 0.2.27 (2017-08-11)
 -------------------
 
