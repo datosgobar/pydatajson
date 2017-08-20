@@ -11,9 +11,33 @@ from datetime import datetime
 import os
 import json
 from urlparse import urlparse
+from unidecode import unidecode
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
+STOP_WORDS = [
+    "el", "los", "la", "las",
+    "de", "del", "en", "y", "a"
+]
+
+
+def title_to_name(title):
+    """Convierte un título en un nombre normalizado para generar urls."""
+
+    # decodifica y pasa a minúsculas
+    decoded_title = unidecode(title).lower()
+
+    # remueve caracteres no permitidos
+    allowed_characters = "abcdefghijklmnopqrstuvwxyz-0123456789 "
+    filtered_title = "".join((char for char in decoded_title
+                              if char in allowed_characters))
+
+    # remueve stop words y une palabras sólo con un "-"
+    normalized_title = "-".join(
+        [word for word in filtered_title.split()
+         if word not in STOP_WORDS]
+    )
+    return normalized_title
 
 
 def parse_date_string(date_string):

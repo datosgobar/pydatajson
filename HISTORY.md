@@ -1,6 +1,11 @@
 History
 =======
 
+0.3.1 (2017-08-20)
+-------------------
+
+* Agrega método para convertir el título de un dataset o distribución en un nombre normalizado para la creación de URLs.
+
 0.3.0 (2017-08-14)
 -------------------
 

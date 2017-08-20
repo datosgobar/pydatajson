@@ -214,6 +214,13 @@ class HelpersTestCase(unittest.TestCase):
     def test_parse_date_string(self):
         self.assertEqual(pydatajson.helpers.parse_date_string(""), None)
 
+    def test_title_to_name(self):
+        self.assertEqual(
+            pydatajson.helpers.title_to_name(
+                "Exportación en $   de tomates  año 2017 (*)"),
+            "exportacion-tomates-ano-2017"
+        )
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

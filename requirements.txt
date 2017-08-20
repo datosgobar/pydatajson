@@ -12,3 +12,4 @@ openpyxl>=2.4,<2.5
 ckanapi==4.0
 functools32
 urllib3
+unidecode
