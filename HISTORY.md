@@ -1,10 +1,15 @@
 History
 =======
 
-0.3.1 (2017-08-20)
+0.3.3 (2017-08-20)
 -------------------
 
 * Agrega método para convertir el título de un dataset o distribución en un nombre normalizado para la creación de URLs.
+
+0.3.2 (2017-08-16)
+-------------------
+
+* Amplía reporte de federación en markdown.
 
 0.3.0 (2017-08-14)
 -------------------

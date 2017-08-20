@@ -22,12 +22,20 @@
 - **Cantidad de Datasets NO Federados**: 3
 - **Porcentaje de Datasets NO Federados**: 100.0%
 
-## Datasets no federados:
+## Datasets federados que fueron eliminados en el nodo original
+
+
+
+## Datasets no federados
 
 - [Sistema de contrataciones electrónicas UNO](None)
 - [Sistema de contrataciones electrónicas DOS](None)
 - [Sistema de contrataciones electrónicas TRES](None)
 
-## Datasets incluidos
+## Datasets federados
+
+
+
+## Reporte
 
 Por favor, consulte el informe [`datasets.csv`](datasets.csv).

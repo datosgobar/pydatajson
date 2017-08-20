@@ -763,11 +763,19 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 - **Cantidad de Datasets NO Federados**: {not_federated_datasets}
 - **Porcentaje de Datasets NO Federados**: {not_federated_datasets_pct}%
 
-## Datasets no federados:
+## Datasets federados que fueron eliminados en el nodo original
+
+{federated_removed_datasets_list}
+
+## Datasets no federados
 
 {not_federated_datasets_list}
 
-## Datasets incluidos
+## Datasets federados
+
+{federated_datasets_list}
+
+## Reporte
 
 Por favor, consulte el informe [`datasets.csv`](datasets.csv).
 """
@@ -775,6 +783,14 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
         not_federated_datasets_list = "\n".join([
             "- [{}]({})".format(dataset[0], dataset[1])
             for dataset in indicators["datasets_no_federados"]
+        ])
+        federated_removed_datasets_list = "\n".join([
+            "- [{}]({})".format(dataset[0], dataset[1])
+            for dataset in indicators["datasets_federados_eliminados"]
+        ])
+        federated_datasets_list = "\n".join([
+            "- [{}]({})".format(dataset[0], dataset[1])
+            for dataset in indicators["datasets_federados"]
         ])
 
         content = {
@@ -794,7 +810,9 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
             "not_federated_datasets": indicators["datasets_no_federados_cant"],
             "not_federated_datasets_pct": (
                 100.0 - indicators["datasets_federados_pct"]),
-            "not_federated_datasets_list": not_federated_datasets_list
+            "not_federated_datasets_list": not_federated_datasets_list,
+            "federated_removed_datasets_list": federated_removed_datasets_list,
+            "federated_datasets_list": federated_datasets_list,
         }
 
         catalog_readme = readme_template.format(**content)
