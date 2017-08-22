@@ -190,7 +190,13 @@ def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
     ws.append(headers)
 
     for index, row in enumerate(table):
-        ws.append(row.values())
+        values = []
+        for value in row.values():
+            if isinstance(value, list):
+                values.append(repr(value))
+            else:
+                values.append(value)
+        ws.append(values)
 
     _apply_styles_to_ws(ws, column_styles, cell_styles)
 
