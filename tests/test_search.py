@@ -209,6 +209,19 @@ class SearchTestCase(unittest.TestCase):
         pprint(field)
         self.assertEqual(None, field)
 
+    def test_get_field_location(self):
+        field_location = pydatajson.search.get_field_location(
+            self.catalog, identifier="proc12"
+        )
+        pprint(field_location)
+        self.assertEqual(field_location["dataset_identifier"],
+                         "99db6631-d1c9-470b-a73e-c62daa32c777")
+        self.assertEqual(field_location["dataset_title"],
+                         "Sistema de contrataciones electrónicas")
+        self.assertEqual(field_location["distribution_identifier"], "1.1")
+        self.assertEqual(field_location["distribution_title"],
+                         "Convocatorias abiertas durante el año 2015")
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

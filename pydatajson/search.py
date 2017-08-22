@@ -34,7 +34,8 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
         return filtered_datasets
 
 
-def get_distributions(catalog, filter_in=None, filter_out=None, meta_field=None):
+def get_distributions(catalog, filter_in=None, filter_out=None,
+                      meta_field=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -87,6 +88,7 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None):
 def get_dataset(catalog, identifier=None, title=None):
     msg = "Se requiere un 'identifier' o 'title' para buscar el dataset."
     assert identifier or title, msg
+    catalog = read_catalog(catalog)
 
     if identifier:
         filtered_datasets = get_datasets(
@@ -112,6 +114,7 @@ def get_distribution(catalog, identifier=None, title=None,
                      dataset_identifier=None):
     msg = "Se requiere un 'identifier' o 'title' para buscar el distribution."
     assert identifier or title, msg
+    catalog = read_catalog(catalog)
 
     # 1. BUSCA las distribuciones en el catálogo
     # toma la distribution que tenga el id único
@@ -147,6 +150,42 @@ def get_distribution(catalog, identifier=None, title=None,
         return None
     else:
         return filtered_distributions[0]
+
+
+def get_field_location(catalog, identifier=None, title=None,
+                       distribution_identifier=None):
+    catalog = read_catalog(catalog)
+
+    field_location = {
+        "dataset_identifier": None,
+        "dataset_title": None,
+        "distribution_identifier": None,
+        "distribution_title": None,
+        "field_id": None,
+        "field_title": None
+    }
+
+    for dataset in catalog["dataset"]:
+        field_location["dataset_identifier"] = dataset["identifier"]
+        field_location["dataset_title"] = dataset["title"]
+
+        for distribution in dataset["distribution"]:
+            if (not distribution_identifier or
+                    distribution_identifier == distribution["identifier"]):
+                field_location["distribution_identifier"] = distribution[
+                    "identifier"]
+                field_location["distribution_title"] = distribution["title"]
+
+                if "field" in distribution:
+                    for field in distribution["field"]:
+                        if (identifier and field["id"] == identifier
+                                or title and field["title"] == title):
+                            field_location["field_id"] = field["id"]
+                            field_location["field_title"] = field["title"]
+
+                            return field_location
+
+    return field_location
 
 
 def get_field(catalog, identifier=None, title=None,
