@@ -214,7 +214,7 @@ Se encontro mas de un valor de cobertura temporal en 'extras' para el
                      package['name'], temporal)
     elif len(temporal) == 1:
         try:
-            dataset["temporal"] = [temporal[0]]
+            dataset["temporal"] = temporal[0]
         except KeyError:
             logging.warn("""
 Se encontró '%s' como cobertura temporal, pero no es mapeable a un
