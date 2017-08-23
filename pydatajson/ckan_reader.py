@@ -13,7 +13,7 @@ import json
 from urlparse import urljoin
 from ckanapi import RemoteCKAN
 
-from helpers import clean_str
+from helpers import clean_str, title_to_name
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -204,8 +204,10 @@ se puede completar dataset['contactPoint']['%s'].""",
 
 def add_temporal(dataset, package):
     # "Cobertura temporal" => "temporal"
-    temporal = [extra["value"] for extra in package["extras"] if
-                extra["key"] == "Cobertura temporal"]
+    temporal = [
+        extra["value"] for extra in package["extras"] if
+        title_to_name(extra["key"]) == title_to_name("Cobertura temporal")
+    ]
 
     if len(temporal) > 1:
         logging.info("""
@@ -237,8 +239,10 @@ corregirlas:
 
 def add_superTheme(dataset, package):
     # "Temática global" => "superTheme"
-    super_theme = [extra["value"] for extra in package["extras"] if
-                   extra["key"] == "Temática global"]
+    super_theme = [
+        extra["value"] for extra in package["extras"] if
+        title_to_name(extra["key"]) == title_to_name("Temática global")
+    ]
 
     if len(super_theme) == 0:
         logging.info("""
@@ -274,8 +278,11 @@ global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
 
 def add_accrualPeriodicity(dataset, package):
     # "Frecuencia de actualización" => "accrualPeriodicity"
-    accrual = [extra["value"] for extra in package["extras"] if
-               extra["key"] == "Frecuencia de actualización"]
+    accrual = [
+        extra["value"] for extra in package["extras"] if
+        title_to_name(extra["key"]) == title_to_name(
+            "Frecuencia de actualización")
+    ]
 
     if len(accrual) == 0:
         logging.info("""
