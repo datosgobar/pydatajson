@@ -226,6 +226,13 @@ def get_field(catalog, identifier=None, title=None,
         return filtered_fields[0]
 
 
+def get_catalog_metadata(catalog):
+    """Devuelve sólo la metadata de nivel catálogo."""
+    catalog_dict_copy = catalog.copy()
+    del catalog_dict_copy["dataset"]
+    return catalog_dict_copy
+
+
 def _filter_dictionary(dictionary, filter_in=None, filter_out=None):
     # print(filter_in, filter_out)
     if filter_in:
