@@ -16,8 +16,10 @@ from unidecode import unidecode
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 STOP_WORDS = [
-    "el", "los", "la", "las",
-    "de", "del", "en", "y", "a"
+    "el", "la", "los", "las",
+    "de", "del",
+    "y", "a",
+    "un", "una", "en"
 ]
 
 
