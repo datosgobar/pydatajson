@@ -1,6 +1,14 @@
 History
 =======
 
+0.3.9 (2017-09-05)
+-------------------
+
+* Flexibiliza lectura de extras en ckan to datajson.
+* Flexibiliza longitud mínima de campos para recomendar su federación o no.
+* Agrega método para devolver los metadatos a nivel de catálogo.
+* Resuelve la escritura de objetos python como texto en excel.
+
 0.3.8 (2017-08-25)
 -------------------
 
