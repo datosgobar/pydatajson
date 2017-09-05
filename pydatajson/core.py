@@ -37,12 +37,12 @@ ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 DATA_FORMATS = [
     "csv", "xls", "xlsx", "ods", "dta"
-    "shp",
+    "shp", "kml",
     "json", "xml",
     "zip"
 ]
-MIN_DATASET_TITLE = 15
-MIN_DATASET_DESCRIPTION = 30
+MIN_DATASET_TITLE = 10
+MIN_DATASET_DESCRIPTION = 20
 
 
 class DataJson(dict):
@@ -93,6 +93,7 @@ class DataJson(dict):
     get_distribution = search.get_distribution
     get_field = search.get_field
     get_field_location = search.get_field_location
+    get_catalog_metadata = search.get_catalog_metadata
 
     def is_valid_catalog(self, catalog=None):
         catalog = catalog or self
@@ -313,7 +314,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         formats = self._count_distribution_formats_dataset(dataset).keys()
         for distrib_format in formats:
             for data_format in DATA_FORMATS:
-                if distrib_format.lower() in data_format.lower():
+                if data_format.lower() in distrib_format.lower():
                     has_data_format = True
                     break
             if has_data_format:
