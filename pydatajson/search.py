@@ -156,32 +156,26 @@ def get_field_location(catalog, identifier=None, title=None,
                        distribution_identifier=None):
     catalog = read_catalog(catalog)
 
-    field_location = {
-        "dataset_identifier": None,
-        "dataset_title": None,
-        "distribution_identifier": None,
-        "distribution_title": None,
-        "field_id": None,
-        "field_title": None
-    }
+    field_location = None
 
     for dataset in catalog["dataset"]:
-        field_location["dataset_identifier"] = dataset["identifier"]
-        field_location["dataset_title"] = dataset["title"]
-
         for distribution in dataset["distribution"]:
             if (not distribution_identifier or
                     distribution_identifier == distribution["identifier"]):
-                field_location["distribution_identifier"] = distribution[
-                    "identifier"]
-                field_location["distribution_title"] = distribution["title"]
-
                 if "field" in distribution:
                     for field in distribution["field"]:
                         if (identifier and field["id"] == identifier
                                 or title and field["title"] == title):
-                            field_location["field_id"] = field["id"]
-                            field_location["field_title"] = field["title"]
+
+                            field_location = {
+                                "dataset_identifier": dataset["identifier"],
+                                "dataset_title": dataset["title"],
+                                "distribution_identifier": distribution[
+                                    "identifier"],
+                                "distribution_title": distribution["title"],
+                                "field_id": field["id"],
+                                "field_title": field["title"]
+                            }
 
                             return field_location
 

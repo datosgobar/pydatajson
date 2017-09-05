@@ -92,6 +92,7 @@ class DataJson(dict):
     get_dataset = search.get_dataset
     get_distribution = search.get_distribution
     get_field = search.get_field
+    get_field_location = search.get_field_location
 
     def is_valid_catalog(self, catalog=None):
         catalog = catalog or self
