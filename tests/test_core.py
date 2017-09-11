@@ -1290,17 +1290,18 @@ revíselo manualmente""".format(actual_filename)
 
     def test_distributions_property(self):
         """La propiedad distributions equivale a clave 'distribution' de un catalog."""
-        distributions = [
-            distribution
-            for dataset in self.catalog["dataset"]
-            for distribution in dataset["distribution"]
-        ]
+        distributions = []
+        for dataset in self.catalog["dataset"]:
+            for distribution in dataset["distribution"]:
+                distribution["dataset_identifier"] = dataset["identifier"]
+                distributions.append(distribution)
         self.assertEqual(self.dj.distributions, distributions)
-        distributions = [
-            distribution
-            for dataset in self.dj["dataset"]
-            for distribution in dataset["distribution"]
-        ]
+
+        distributions = []
+        for dataset in self.dj["dataset"]:
+            for distribution in dataset["distribution"]:
+                distribution["dataset_identifier"] = dataset["identifier"]
+                distributions.append(distribution)
         self.assertEqual(self.dj.distributions, distributions)
 
     @load_expected_result()
@@ -1324,21 +1325,26 @@ revíselo manualmente""".format(actual_filename)
 
     def test_fields_property(self):
         """La propiedad fields equivale a clave 'field' de un catalog."""
-        fields = [
-            field
-            for dataset in self.catalog["dataset"]
-            for distribution in dataset["distribution"]
-            if "field" in distribution
-            for field in distribution["field"]
-        ]
+        fields = []
+        for dataset in self.catalog["dataset"]:
+            for distribution in dataset["distribution"]:
+                if "field" in distribution:
+                    for field in distribution["field"]:
+                        field["dataset_identifier"] = dataset["identifier"]
+                        field["distribution_identifier"] = distribution[
+                            "identifier"]
+                        fields.append(field)
         self.assertEqual(self.dj.fields, fields)
-        fields = [
-            field
-            for dataset in self.dj["dataset"]
-            for distribution in dataset["distribution"]
-            if "field" in distribution
-            for field in distribution["field"]
-        ]
+
+        fields = []
+        for dataset in self.dj["dataset"]:
+            for distribution in dataset["distribution"]:
+                if "field" in distribution:
+                    for field in distribution["field"]:
+                        field["dataset_identifier"] = dataset["identifier"]
+                        field["distribution_identifier"] = distribution[
+                            "identifier"]
+                        fields.append(field)
         self.assertEqual(self.dj.fields, fields)
 
     @load_expected_result()

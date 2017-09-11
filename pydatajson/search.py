@@ -40,16 +40,17 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
 
-    distributions_generator = (
-        distribution for dataset in get_datasets(
-            catalog, filter_in, filter_out)
-        for distribution in dataset["distribution"]
-    )
+    distributions = []
+    for dataset in get_datasets(catalog, filter_in, filter_out):
+        for distribution in dataset["distribution"]:
+            # agrega el id del dataset
+            distribution["dataset_identifier"] = dataset["identifier"]
+            distributions.append(distribution)
 
     filtered_distributions = filter(
         lambda x: _filter_dictionary(
             x, filter_in.get("distribution"), filter_out.get("distribution")),
-        distributions_generator
+        distributions
     )
 
     if meta_field:
@@ -65,17 +66,21 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None):
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
 
-    fields_generator = (
-        field for distribution in get_distributions(
-            catalog, filter_in, filter_out)
-        if "field" in distribution
-        for field in distribution["field"]
-    )
+    fields = []
+    for distribution in get_distributions(catalog, filter_in, filter_out):
+        if "field" in distribution:
+            for field in distribution["field"]:
+                # agrega el id del dataset
+                field["dataset_identifier"] = distribution[
+                    "dataset_identifier"]
+                # agrega el id de la distribución
+                field["distribution_identifier"] = distribution["identifier"]
+                fields.append(field)
 
     filtered_fields = filter(
         lambda x: _filter_dictionary(
             x, filter_in.get("field"), filter_out.get("field")),
-        fields_generator
+        fields
     )
 
     if meta_field:
@@ -164,7 +169,8 @@ def get_field_location(catalog, identifier=None, title=None,
                     distribution_identifier == distribution["identifier"]):
                 if "field" in distribution:
                     for field in distribution["field"]:
-                        if (identifier and field["id"] == identifier
+                        if (identifier and "id" in field and
+                            field["id"] == identifier
                                 or title and field["title"] == title):
 
                             field_location = {

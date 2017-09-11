@@ -1,4 +1,6 @@
 {
+	"distribution_identifier": "1.1",
+	"dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
     "id": "proc12",
     "type": "integer",
     "description": "Identificador único del procedimiento de contratación",
