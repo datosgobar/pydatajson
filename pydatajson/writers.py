@@ -157,6 +157,8 @@ def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
 
 
 def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None):
+    column_styles = column_styles or {}
+    cell_styles = cell_styles or {}
     wb = pyxl.Workbook()
 
     if isinstance(tables, dict):

@@ -16,7 +16,8 @@ import custom_exceptions as ce
 from functools import partial
 
 
-def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
+def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
+                 exclude_meta_fields=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -30,12 +31,23 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None):
     if meta_field:
         return [dataset[meta_field] for dataset in filtered_datasets
                 if meta_field in dataset]
+
+    if exclude_meta_fields:
+        meta_filtered_datasets = []
+        for dataset in filtered_datasets:
+            dataset_meta_filtered = dataset.copy()
+            for excluded_meta_field in exclude_meta_fields:
+                dataset_meta_filtered.pop(excluded_meta_field, None)
+            meta_filtered_datasets.append(dataset_meta_filtered)
+
+        return meta_filtered_datasets
+
     else:
         return filtered_datasets
 
 
 def get_distributions(catalog, filter_in=None, filter_out=None,
-                      meta_field=None):
+                      meta_field=None, exclude_meta_fields=None):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -57,6 +69,17 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
         return [distribution[meta_field]
                 for distribution in filtered_distributions
                 if meta_field in distribution]
+
+    if exclude_meta_fields:
+        meta_filtered_distributions = []
+        for distribution in filtered_distributions:
+            distribution_meta_filtered = distribution.copy()
+            for excluded_meta_field in exclude_meta_fields:
+                distribution_meta_filtered.pop(excluded_meta_field, None)
+            meta_filtered_distributions.append(distribution_meta_filtered)
+
+        return meta_filtered_distributions
+
     else:
         return filtered_distributions
 
@@ -68,7 +91,7 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None):
 
     fields = []
     for distribution in get_distributions(catalog, filter_in, filter_out):
-        if "field" in distribution:
+        if "field" in distribution and isinstance(distribution["field"], list):
             for field in distribution["field"]:
                 # agrega el id del dataset
                 field["dataset_identifier"] = distribution[
@@ -167,7 +190,7 @@ def get_field_location(catalog, identifier=None, title=None,
         for distribution in dataset["distribution"]:
             if (not distribution_identifier or
                     distribution_identifier == distribution["identifier"]):
-                if "field" in distribution:
+                if "field" in distribution and isinstance(distribution["field"], list):
                     for field in distribution["field"]:
                         if (identifier and "id" in field and
                             field["id"] == identifier

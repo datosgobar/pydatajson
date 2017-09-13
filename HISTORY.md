@@ -1,8 +1,15 @@
 History
 =======
 
-0.3.10 (2017-09-05)
+0.3.11 (2017-09-13)
 -------------------
+
+* Incorpora parámetro para excluir campos de metadatos en la devolución de la búsqueda de datasets y distribuciones.
+
+0.3.10 (2017-09-11)
+-------------------
+
+* Agregar referencia interna a los ids de las entidades padre de otras (distribuciones y fields.)
 
 0.3.9 (2017-09-05)
 -------------------
