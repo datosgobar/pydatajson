@@ -249,10 +249,15 @@ def get_field(catalog, identifier=None, title=None,
         return filtered_fields[0]
 
 
-def get_catalog_metadata(catalog):
+def get_catalog_metadata(catalog, exclude_meta_fields=None):
     """Devuelve sólo la metadata de nivel catálogo."""
+    exclude_meta_fields = exclude_meta_fields or []
     catalog_dict_copy = catalog.copy()
     del catalog_dict_copy["dataset"]
+
+    for excluded_meta_field in exclude_meta_fields:
+        catalog_dict_copy.pop(excluded_meta_field, None)
+
     return catalog_dict_copy
 
 
