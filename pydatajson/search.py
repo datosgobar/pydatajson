@@ -16,6 +16,10 @@ import custom_exceptions as ce
 from functools import partial
 
 
+def get_themes(catalog):
+    return catalog.get("themeTaxonomy")
+
+
 def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
                  exclude_meta_fields=None):
     filter_in = filter_in or {}

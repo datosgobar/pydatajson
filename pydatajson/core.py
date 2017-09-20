@@ -83,6 +83,8 @@ class DataJson(dict):
         self.is_valid_catalog.__func__.__doc__ = fn_doc
 
     # metodos para buscar entidades cuando DataJson tiene catalogo cargado
+    get_themes = search.get_themes
+    themes = property(get_themes)
     get_datasets = search.get_datasets
     datasets = property(get_datasets)
     get_distributions = search.get_distributions
