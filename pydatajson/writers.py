@@ -167,26 +167,28 @@ def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None,
 
     if isinstance(tables, dict):
         ws_names = []
+
         # primero se usa `tables_names`, y después las extra que pueda haber
         if tables_names:
             ws_names.extend(tables_names)
             for key in tables.keys():
                 if key not in ws_names:
                     ws_names.append(key)
+
         # se agregan los nombres de las tablas que falten
         else:
             ws_names = tables.keys()
 
-            wb.remove(wb.active)
+        wb.remove(wb.active)
 
-            for table_name in ws_names:
-                table = tables.get(table_name)
-                column_styles_sheet = column_styles.get(table_name)
-                cell_styles_sheet = cell_styles.get(table_name)
+        for table_name in ws_names:
+            table = tables.get(table_name)
+            column_styles_sheet = column_styles.get(table_name)
+            cell_styles_sheet = cell_styles.get(table_name)
 
-                _list_table_to_ws(wb, table, table_name, column_styles_sheet,
-                                  cell_styles_sheet,
-                                  fields=tables_fields[table_name])
+            _list_table_to_ws(wb, table, table_name, column_styles_sheet,
+                              cell_styles_sheet,
+                              fields=tables_fields[table_name])
 
     else:
         _list_table_to_ws(wb, tables, column_styles=column_styles,
@@ -197,9 +199,12 @@ def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None,
 
 def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
                       cell_styles=None, fields=None):
-    if len(table) == 0:
+    if len(table) == 0 and not fields:
         print("No se puede crear una hoja Excel con una tabla vacía.")
         return
+    elif len(table) == 0 and fields:
+        # la primer fila de la tabla está vacía
+        table.append({field: None for field in fields})
 
     if table_name:
         ws = wb.create_sheet(title=table_name)
@@ -311,6 +316,11 @@ XLSX_FIELDS = {
         "field_title",
         "field_type",
         "field_description"
+    ],
+    "theme": [
+        "theme_id",
+        "theme_label",
+        "theme_description"
     ]
 }
 
@@ -419,8 +429,32 @@ def _generate_field_table(catalog):
     return fields
 
 
+def _generate_theme_table(catalog):
+    headers = []
+    themes = []
+
+    # tabula diccionarios con estructura, como listas planas de diccionarios
+    for theme in catalog.get_themes():
+        tab_theme = _tabulate_nested_dict(theme, "theme")
+        themes.append(tab_theme)
+
+        # agrega todas las keys nuevas que no estén trackeadas
+        for key in tab_theme:
+            if key not in headers:
+                headers.append(key)
+
+    # agrega "nones" para todos aquellos datasets que no tengan alguna key
+    for theme in themes:
+        for header in headers:
+            if header not in theme:
+                theme[header] = None
+
+    return themes
+
+
 def write_xlsx_catalog(catalog, path, xlsx_fields=None):
     """Función de compatibilidad con releases anteriores."""
+
     xlsx_fields = xlsx_fields or XLSX_FIELDS
     catalog_dict = {}
 
@@ -432,6 +466,11 @@ def write_xlsx_catalog(catalog, path, xlsx_fields=None):
     catalog_dict["dataset"] = _generate_dataset_table(catalog)
     catalog_dict["distribution"] = _generate_distribution_table(catalog)
     catalog_dict["field"] = _generate_field_table(catalog)
+    catalog_dict["theme"] = _generate_theme_table(catalog)
 
-    write_tables(catalog_dict, path, tables_fields=xlsx_fields,
-                 tables_names=["catalog", "dataset", "distribution", "field"])
+    write_tables(
+        catalog_dict, path, tables_fields=xlsx_fields,
+        tables_names=["catalog", "dataset", "distribution", "field", "theme"]
+    )
+
+    return catalog_dict

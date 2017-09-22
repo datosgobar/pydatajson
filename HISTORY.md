@@ -1,6 +1,12 @@
 History
 =======
 
+0.3.12 (2017-09-21)
+-------------------
+
+* Agrega función para escribir un catálogo en Excel.
+* Agrega funciones para remover datasets o distribuciones de un catálogo.
+
 0.3.11 (2017-09-13)
 -------------------
 

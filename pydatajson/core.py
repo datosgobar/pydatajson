@@ -97,6 +97,29 @@ class DataJson(dict):
     get_field_location = search.get_field_location
     get_catalog_metadata = search.get_catalog_metadata
 
+    def remove_dataset(self, identifier):
+        for index, dataset in enumerate(self["dataset"]):
+            if dataset["identifier"] == identifier:
+                self["dataset"].pop(index)
+                print("Dataset {} en posicion {} fue eliminado.".format(
+                    identifier, index))
+                return
+
+        print("No se encontro el dataset {}.".format(identifier))
+
+    def remove_distribution(self, identifier, dataset_identifier=None):
+        for dataset in self["dataset"]:
+            for index, distribution in enumerate(dataset["distribution"]):
+                if (distribution["identifier"] == identifier and
+                        (not dataset_identifier or
+                            dataset["identifier"] == dataset_identifier)):
+                    dataset["distribution"].pop(index)
+                    print("Distribution {} del dataset {} en posicion {} fue eliminada.".format(
+                        identifier, dataset["identifier"], index))
+                    return
+
+            print("No se encontro la distribucion {}.".format(identifier))
+
     def is_valid_catalog(self, catalog=None):
         catalog = catalog or self
         return validation.is_valid_catalog(catalog, validator=self.validator)
@@ -974,6 +997,13 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 return False
 
         return False
+
+    def make_catalogs_backup(self, catalogs=None, catalog_ids=None,
+                             local_dir="catalog", with_data=False):
+        """Realiza copia de los datos y metadatos de uno o más catálogos."""
+
+        # TODO: implementar función
+        pass
 
 
 def main():
