@@ -89,7 +89,7 @@ def validate_url(uri_string):
 
 def ensure_dir_exists(directory):
     """Se asegura de que un directorio exista."""
-    if not os.path.exists(directory):
+    if directory and not os.path.exists(directory):
         os.makedirs(directory)
 
 
