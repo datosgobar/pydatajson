@@ -118,7 +118,7 @@ class DataJson(dict):
                         identifier, dataset["identifier"], index))
                     return
 
-            print("No se encontro la distribucion {}.".format(identifier))
+        print("No se encontro la distribucion {}.".format(identifier))
 
     def is_valid_catalog(self, catalog=None):
         catalog = catalog or self
