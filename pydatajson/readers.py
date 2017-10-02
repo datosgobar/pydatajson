@@ -18,6 +18,7 @@ import warnings
 import logging
 import json
 import requests
+from unidecode import unidecode
 import unicodecsv as csv
 import openpyxl as pyxl
 from . import helpers
@@ -406,12 +407,16 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
         if dataset_index is None:
             print("""No se encontro el dataset '{}' especificado para el campo
 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-                field["dataset_title"], field["field_title"], idx + 2))
+                unidecode(field["dataset_title"]),
+                unidecode(field["field_title"]),
+                idx + 2))
 
         elif distribution_index is None:
             print("""No se encontro la distribucion '{}' especificada para el campo
 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-                field["distribution_title"], field["field_title"], idx + 2))
+                unidecode(field["distribution_title"]),
+                unidecode(field["field_title"]),
+                idx + 2))
 
         else:
             dataset = catalog["catalog_dataset"][dataset_index]
