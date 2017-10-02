@@ -21,6 +21,40 @@ from . import readers
 from . import helpers
 
 
+def dataset_to_markdown(dataset):
+    """Genera texto en markdown a partir de los metadatos de una `dataset`.
+
+    Args:
+        dataset (dict): Diccionario con metadatos de una `dataset`.
+
+    Returns:
+        str: Texto que describe una `dataset`.
+    """
+    text_template = """
+# {title}
+
+{description}
+
+## Recursos del dataset
+
+{distributions}
+"""
+
+    if "distribution" in dataset:
+        distributions = "".join(
+            map(distribution_to_markdown, dataset["distribution"]))
+    else:
+        distributions = ""
+
+    text = text_template.format(
+        title=dataset["title"],
+        description=dataset.get("description", ""),
+        distributions=distributions
+    )
+
+    return text
+
+
 def distribution_to_markdown(distribution):
     """Genera texto en markdown a partir de los metadatos de una `distribution`.
 
