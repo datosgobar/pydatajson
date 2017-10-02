@@ -12,6 +12,7 @@ import unittest
 import nose
 from .context import pydatajson
 from pydatajson.documentation import field_to_markdown
+from pydatajson.documentation import distribution_to_markdown
 
 
 class DocumentationTestCase(unittest.TestCase):
@@ -30,15 +31,63 @@ class DocumentationTestCase(unittest.TestCase):
         expected = "**procedimiento_id** (integer): Identificador único del procedimiento"
         self.assertEqual(result, expected)
 
-        # elimino campos
+        # elimino campo de type
         field.pop("type")
         result = field_to_markdown(field)
         expected = "**procedimiento_id**: Identificador único del procedimiento"
         self.assertEqual(result, expected)
 
+        # elimino campo de description
         field.pop("description")
         result = field_to_markdown(field)
         expected = "**procedimiento_id**"
+        self.assertEqual(result, expected)
+
+    def test_distribution_to_markdown(self):
+        distribution = {
+            "title": "Convocatorias abiertas durante el año 2015",
+            "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+            "field": [
+                {
+                    "title": "procedimiento_id",
+                    "type": "integer",
+                    "description": "Identificador único del procedimiento"
+                },
+                {
+                    "title": "unidad_operativa_contrataciones_id",
+                    "type": "integer",
+                    "description": "Identificador único de la unidad operativa de contrataciones"
+                }
+            ]
+        }
+
+        result = distribution_to_markdown(distribution)
+        expected = """
+### Convocatorias abiertas durante el año 2015
+
+Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas
+
+#### Campos del recurso
+
+- **procedimiento_id** (integer): Identificador único del procedimiento
+- **unidad_operativa_contrataciones_id** (integer): Identificador único de la unidad operativa de contrataciones
+"""
+        self.assertEqual(result, expected)
+
+        # elimino campos no obligatiorios
+        distribution.pop("field")
+        distribution.pop("description")
+        result = distribution_to_markdown(distribution)
+        expected = """
+### Convocatorias abiertas durante el año 2015
+
+
+
+#### Campos del recurso
+
+
+"""
+        print(result)
         self.assertEqual(result, expected)
 
 

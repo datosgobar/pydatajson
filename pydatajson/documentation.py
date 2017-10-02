@@ -22,33 +22,44 @@ from . import helpers
 
 
 def distribution_to_markdown(distribution):
-    """Genera texto en markdown a partir de los metadatos de un `field`.
+    """Genera texto en markdown a partir de los metadatos de una `distribution`.
 
     Args:
-        catalog (dict): Diccionario con metadatos de un `field`.
+        distribution (dict): Diccionario con metadatos de una `distribution`.
 
     Returns:
-        str: Texto que describe un `field`.
+        str: Texto que describe una `distribution`.
     """
     text_template = """
-    ### {title}
+### {title}
 
-    #### Campos del recurso
+{description}
 
-    {fields}
-    """
+#### Campos del recurso
 
-    # TODO: generar texto de fields
-    # fields =
+{fields}
+"""
 
-    return text_template(title=distribution["title"], fields=fields)
+    if "field" in distribution:
+        fields = "- " + \
+            "\n- ".join(map(field_to_markdown, distribution["field"]))
+    else:
+        fields = ""
+
+    text = text_template.format(
+        title=distribution["title"],
+        description=distribution.get("description", ""),
+        fields=fields
+    )
+
+    return text
 
 
 def field_to_markdown(field):
     """Genera texto en markdown a partir de los metadatos de un `field`.
 
     Args:
-        catalog (dict): Diccionario con metadatos de un `field`.
+        field (dict): Diccionario con metadatos de un `field`.
 
     Returns:
         str: Texto que describe un `field`.
@@ -62,10 +73,8 @@ def field_to_markdown(field):
     field_desc = ": {}".format(
         field["description"]) if "description" in field else ""
 
-    text = "{title}{type}{description}".format(
-        title=field_title,
-        type=field_type,
-        description=field_desc
-    )
+    text_template = "{title}{type}{description}"
+    text = text_template.format(title=field_title, type=field_type,
+                                description=field_desc)
 
     return text
