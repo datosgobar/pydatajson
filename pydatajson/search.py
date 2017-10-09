@@ -11,9 +11,11 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
+from functools import partial
+
+from time_series import distribution_has_time_index, dataset_has_time_series
 from readers import read_catalog
 import custom_exceptions as ce
-from functools import partial
 
 
 def get_themes(catalog):
@@ -21,7 +23,7 @@ def get_themes(catalog):
 
 
 def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
-                 exclude_meta_fields=None):
+                 exclude_meta_fields=None, only_time_series=False):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -31,6 +33,11 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
             x, filter_in.get("dataset"), filter_out.get("dataset")),
         catalog["dataset"]
     )
+
+    # realiza filtros especiales
+    if only_time_series:
+        filtered_datasets = filter(
+            dataset_has_time_series, filtered_datasets)
 
     if meta_field:
         return [dataset[meta_field] for dataset in filtered_datasets
@@ -51,7 +58,8 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
 
 
 def get_distributions(catalog, filter_in=None, filter_out=None,
-                      meta_field=None, exclude_meta_fields=None):
+                      meta_field=None, exclude_meta_fields=None,
+                      only_time_series=False):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
@@ -63,11 +71,19 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
             distribution["dataset_identifier"] = dataset["identifier"]
             distributions.append(distribution)
 
+    print(len(distributions))
     filtered_distributions = filter(
         lambda x: _filter_dictionary(
             x, filter_in.get("distribution"), filter_out.get("distribution")),
         distributions
     )
+
+    # realiza filtros especiales
+    print(len(filtered_distributions))
+    if only_time_series:
+        filtered_distributions = filter(
+            distribution_has_time_index, filtered_distributions)
+    print(len(filtered_distributions))
 
     if meta_field:
         return [distribution[meta_field]

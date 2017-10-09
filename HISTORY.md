@@ -1,6 +1,11 @@
 History
 =======
 
+0.3.15 (2017-10-09)
+-------------------
+
+* Agrega filtro por series de tiempo en `get_datasets()` y `get_distributions()`. Tienen un parámetro `only_time_series` que devuelve sólo aquellos que tengan o sean distribuciones con series de tiempo.
+
 0.3.12 (2017-09-21)
 -------------------
 

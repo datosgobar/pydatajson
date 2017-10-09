@@ -32,6 +32,7 @@ from . import writers
 from . import search
 from . import validation
 from . import indicators
+from . import documentation
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -51,7 +52,8 @@ class DataJson(dict):
     # Variables por default
     CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
-    def __init__(self, catalog=None, schema_filename=None, schema_dir=None):
+    def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
+                 default_values=None):
         """Crea un manipulador de `data.json`s.
 
         Salvo que se indique lo contrario, el validador de esquemas asociado
@@ -65,7 +67,8 @@ class DataJson(dict):
         """
         # se construye el objeto DataJson con la interfaz de un dicconario
         if catalog:
-            catalog = readers.read_catalog(catalog)
+            catalog = readers.read_catalog(catalog,
+                                           default_values=default_values)
             for key, value in catalog.iteritems():
                 self[key] = value
             self.has_catalog = True
@@ -997,6 +1000,32 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
                 return False
 
         return False
+
+    def generate_dataset_documentation(self, dataset_identifier,
+                                       export_path=None, catalog=None):
+        """Genera texto en markdown a partir de los metadatos de una `dataset`.
+
+        Args:
+            dataset_identifier (str): Identificador único de un dataset.
+            export_path (str): Path donde exportar el texto generado. Si se
+                especifica, el método no devolverá nada.
+            catalog (dict, str o unicode): Representación externa (path/URL) o
+                interna (dict) de un catálogo. Si no se especifica se usa el
+                catálogo cargado en `self` (el propio objeto DataJson).
+
+        Returns:
+            str: Texto que describe una `dataset`.
+        """
+
+        catalog = DataJson(catalog) or self
+        dataset = catalog.get_dataset(dataset_identifier)
+        text = documentation.dataset_to_markdown(dataset)
+
+        if export_path:
+            with open(export_path, "wb") as f:
+                f.write(text.encode("utf-8"))
+        else:
+            return text
 
     def make_catalogs_backup(self, catalogs=None, catalog_ids=None,
                              local_dir="catalog", with_data=False):

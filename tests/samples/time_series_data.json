@@ -1,0 +1,866 @@
+{
+    "publisher": {
+        "mbox": "ausolari@mecon.gob.ar",
+        "name": "Ministerio de Hacienda. Secretaría de Política Económica. Subsecretaría de Programación Macroeconómica."
+    },
+    "description": "Catálogo de datos abiertos de la Subsecretaría de Programación Macroeconómica.",
+    "license": "Open Database License (ODbL) v1.0",
+    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
+    "issued": "2017-09-28T00:00:00",
+    "themeTaxonomy": [
+        {
+            "id": "oferta_demanda",
+            "description": "Datos sobre oferta y demanda",
+            "label": "Oferta y demanda"
+        },
+        {
+            "id": "pib",
+            "description": "Datos sobre pbi",
+            "label": "PBI"
+        },
+        {
+            "id": "pib_usd",
+            "description": "Datos sobre pib en usd",
+            "label": "PIB en usd"
+        },
+        {
+            "id": "nivel_actividad",
+            "description": "Datos sobre nivel actividad",
+            "label": "Nivel actividad"
+        },
+        {
+            "id": "encuesta_industrial",
+            "description": "Datos sobre encuesta industrial",
+            "label": "Encuesta industrial"
+        },
+        {
+            "id": "Índice_precios_implicitos",
+            "description": "Datos sobre Índice precios implicitos",
+            "label": "Índice precios implicitos"
+        },
+        {
+            "id": "ingreso_nacional",
+            "description": "Datos sobre ingreso nacional",
+            "label": "Ingreso nacional"
+        },
+        {
+            "id": "datos_servicios_publicos",
+            "description": "Datos sobre datos servicios publicos",
+            "label": "Datos servicios publicos"
+        },
+        {
+            "id": "datos_consumo",
+            "description": "Datos sobre datos consumo",
+            "label": "Datos consumo"
+        },
+        {
+            "id": "datos_actividad_primaria",
+            "description": "Datos sobre datos actividad primaria",
+            "label": "Datos actividad primaria"
+        },
+        {
+            "id": "actividad_industrial",
+            "description": "Datos sobre actividad industrial",
+            "label": "Actividad industrial"
+        },
+        {
+            "id": "actividad_construccion",
+            "description": "Datos sobre actividad construccion",
+            "label": "Actividad construccion"
+        },
+        {
+            "id": "empleo_ingresos",
+            "description": "Datos sobre empleo e ingresos",
+            "label": "Empleo e ingresos"
+        },
+        {
+            "id": "empleo",
+            "description": "Datos sobre nivel de empleo",
+            "label": "Nivel de empleo"
+        },
+        {
+            "id": "pea",
+            "description": "Datos sobre población economicamente activa",
+            "label": "Población Economicamente Activa"
+        },
+        {
+            "id": "empleo_sectorial",
+            "description": "Datos sobre empleo por sector",
+            "label": "Empleo por sector"
+        },
+        {
+            "id": "empleo_aglomerado",
+            "description": "Datos sobre emplo por aglomerado",
+            "label": "Emplo por Aglomerado"
+        },
+        {
+            "id": "tasa_asalariado",
+            "description": "Datos sobre tasa asalariado",
+            "label": "Tasa asalariado"
+        },
+        {
+            "id": "distribucion_ingreso",
+            "description": "Datos sobre distribución del ingreso",
+            "label": "Distribución del Ingreso"
+        },
+        {
+            "id": "obreros_ocupados",
+            "description": "Datos sobre obreros ocupados",
+            "label": "Obreros ocupados"
+        },
+        {
+            "id": "Índice_salarios",
+            "description": "Datos sobre Índice de salario",
+            "label": "Índice de salario"
+        },
+        {
+            "id": "smvm",
+            "description": "Datos sobre salario mínimo vital y movil",
+            "label": "Salario mínimo vital y movil"
+        },
+        {
+            "id": "haber_jubilatorio",
+            "description": "Datos sobre haber jubilatorio",
+            "label": "Haber jubilatorio"
+        },
+        {
+            "id": "canasta_basica_alimentaria",
+            "description": "Datos sobre canasta básica alimentaria",
+            "label": "Canasta básica alimentaria"
+        },
+        {
+            "id": "linea_pobreza",
+            "description": "Datos sobre línea de pobreza",
+            "label": "Línea de pobreza"
+        },
+        {
+            "id": "linea_indigencia",
+            "description": "Datos sobre línea de indigencia",
+            "label": "Línea de indigencia"
+        },
+        {
+            "id": "puestos_trabajo",
+            "description": "Datos sobre puestos de trabajo",
+            "label": "Puestos de trabajo"
+        },
+        {
+            "id": "remuneracion_sector",
+            "description": "Datos sobre remuneración por sector",
+            "label": "Remuneración por Sector"
+        },
+        {
+            "id": "costo_salarial",
+            "description": "Datos sobre costos salarial",
+            "label": "Costos Salarial"
+        },
+        {
+            "id": "trabajo_provincia",
+            "description": "Datos sobre nivel de empleo por provincia",
+            "label": "Nivel de empleo por provincia"
+        },
+        {
+            "id": "remuneracion_provincia",
+            "description": "Datos sobre remuneración por provincia",
+            "label": "Remuneración por Provincia"
+        },
+        {
+            "id": "costo_salarial_provincia",
+            "description": "Datos sobre costos salarial por provincia",
+            "label": "Costos salarial por provincia"
+        },
+        {
+            "id": "variacion_de_precios_al_consumidor",
+            "description": "Datos sobre variación de precios al consumidor",
+            "label": "Variación de precios al consumidor"
+        },
+        {
+            "id": "variacion_de_precios_al_por_mayor",
+            "description": "Datos sobre variación de precios al por mayor",
+            "label": "Variación de precios al por mayor"
+        },
+        {
+            "id": "variacion_de_precios_al_productor",
+            "description": "Datos sobre variación de precios al productor",
+            "label": "Variación de precios al productor"
+        },
+        {
+            "id": "costos_de_construccion",
+            "description": "Datos sobre costos de construcción",
+            "label": "Costos de construcción"
+        },
+        {
+            "id": "precios_implicitos",
+            "description": "Datos sobre precios implícitos",
+            "label": "Precios implícitos"
+        },
+        {
+            "id": "cotizacion_divisas",
+            "description": "Datos sobre cotización divisas",
+            "label": "Cotización Divisas"
+        },
+        {
+            "id": "tipo_de_cambio",
+            "description": "Datos sobre tipo de cambio",
+            "label": "Tipo de Cambio"
+        },
+        {
+            "id": "Índice_expotaciones",
+            "description": "Datos sobre Índice expotaciones",
+            "label": "Índice expotaciones"
+        },
+        {
+            "id": "Índice_importaciones",
+            "description": "Datos sobre Índice importaciones",
+            "label": "Índice importaciones"
+        },
+        {
+            "id": "términos_de_intercambio",
+            "description": "Datos sobre términos de intercambio",
+            "label": "Términos de Intercambio"
+        },
+        {
+            "id": "poder_de_compra",
+            "description": "Datos sobre poder de compra",
+            "label": "Poder de compra"
+        },
+        {
+            "id": "precios_internacionales",
+            "description": "Datos sobre precios internacionales",
+            "label": "Precios internacionales"
+        },
+        {
+            "id": "Índice_de_precio_bga",
+            "description": "Datos sobre Índice de precio bga",
+            "label": "Índice de Precio BGA"
+        },
+        {
+            "id": "Índice_de_precio_urbano",
+            "description": "Datos sobre Índice de precio urbano",
+            "label": "Índice de Precio Urbano"
+        },
+        {
+            "id": "Índice_de_precios_interno_al_por_mayor",
+            "description": "Datos sobre Índice de precios interno al por mayor",
+            "label": "Índice de Precios Interno al por mayor"
+        },
+        {
+            "id": "intercambio_comercial",
+            "description": "Datos sobre intercambio comercial",
+            "label": "Intercambio Comercial"
+        },
+        {
+            "id": "exportaciones_por_rubro",
+            "description": "Datos sobre exportaciones por rubro",
+            "label": "Exportaciones por Rubro"
+        },
+        {
+            "id": "importaciones_por_uso_economico",
+            "description": "Datos sobre importaciones por uso económico",
+            "label": "Importaciones por uso económico"
+        },
+        {
+            "id": "exportaciones_por_paises_regiones",
+            "description": "Datos sobre exportaciones por países y regiones",
+            "label": "Exportaciones por países y regiones"
+        },
+        {
+            "id": "importaciones_por_regiones_paises",
+            "description": "Datos sobre importaciones por regiones y paises",
+            "label": "Importaciones por regiones y paises"
+        },
+        {
+            "id": "saldo_comercial_por_paises_regiones",
+            "description": "Datos sobre saldo comercial por países y regiones",
+            "label": "Saldo comercial por países y regiones"
+        },
+        {
+            "id": "Índices_valor_precios_cantidad_exportaciones_bienes",
+            "description": "Datos sobre Índices de valor, precios y cantidad de las exportaciones de bienes",
+            "label": "Índices de valor, precios y cantidad de las exportaciones de bienes"
+        },
+        {
+            "id": "Índices_valor_precios_cantidad_importaciones_bienes",
+            "description": "Datos sobre Índices de valor, precios y cantidad de las importaciones de bienes",
+            "label": "Índices de valor, precios y cantidad de las importaciones de bienes"
+        },
+        {
+            "id": "Índice_terminos_intercambio",
+            "description": "Datos sobre índice de términos del intercambio",
+            "label": "Índice de términos del intercambio"
+        },
+        {
+            "id": "poder_compra_exportaciones_bienes",
+            "description": "Datos sobre poder de compra de las exportaciones de bienes",
+            "label": "Poder de compra de las exportaciones de bienes"
+        },
+        {
+            "id": "estimaciones_balances_pagos",
+            "description": "Datos sobre estimaciones balances de pagos",
+            "label": "Estimaciones balances de pagos"
+        },
+        {
+            "id": "deuda_externa",
+            "description": "Datos sobre deuda externa",
+            "label": "Deuda externa"
+        },
+        {
+            "id": "posicion_inversion_nacional",
+            "description": "Datos sobre posición de inversión nacional",
+            "label": "Posición de inversión nacional"
+        },
+        {
+            "id": "precios_internacionales_Índices_materias_primas",
+            "description": "Datos sobre precios internacionales e índices materias primas",
+            "label": "Precios internacionales e índices materias primas"
+        },
+        {
+            "id": "Índices_precios_materias_primas",
+            "description": "Datos sobre Índices de precios materias primas",
+            "label": "Índices de precios materias primas"
+        },
+        {
+            "id": "crecimiento_de_la_economia_mundial",
+            "description": "Datos sobre crecimiento de la economía mundial",
+            "label": "Crecimiento de la Economía Mundial"
+        },
+        {
+            "id": "crecimiento_de_la_economia_mundial",
+            "description": "Datos sobre crecimiento de la economía mundial",
+            "label": "Crecimiento de la Economía Mundial"
+        },
+        {
+            "id": "desempleo_principales_economias",
+            "description": "Datos sobre desempleo principales economías",
+            "label": "Desempleo Principales Economías"
+        },
+        {
+            "id": "cuenta_corriente_principales_economias",
+            "description": "Datos sobre cuenta corriente principales economías",
+            "label": "Cuenta Corriente Principales Economías"
+        },
+        {
+            "id": "tasa_de_interés_de_referencia",
+            "description": "Datos sobre tasa de interés de referencia",
+            "label": "Tasa de interés de referencia"
+        },
+        {
+            "id": "bonos_de_estados_unidos",
+            "description": "Datos sobre bonos de estados unidos",
+            "label": "Bonos de Estados Unidos"
+        },
+        {
+            "id": "divisas_internacionales",
+            "description": "Datos sobre divisas internacionales",
+            "label": "Divisas Internacionales"
+        },
+        {
+            "id": "emerging_markets_index",
+            "description": "Datos sobre emerging markets index",
+            "label": "Emerging Markets Index"
+        },
+        {
+            "id": "bolsas__mundiales",
+            "description": "Datos sobre bolsas  mundiales",
+            "label": "Bolsas  Mundiales"
+        },
+        {
+            "id": "Índices_morgan_stanley",
+            "description": "Datos sobre Índices morgan stanley",
+            "label": "Índices Morgan Stanley"
+        },
+        {
+            "id": "inflacion_de_la_economia_mundial",
+            "description": "Datos sobre inflación de la economía mundial",
+            "label": "Inflación de la Economía Mundial"
+        },
+        {
+            "id": "tipo_de_cambio_nominal",
+            "description": "Datos sobre tipo de cambio nominal",
+            "label": "Tipo de cambio nominal"
+        },
+        {
+            "id": "Índices_de_precios_al_consumidor_por_pais",
+            "description": "Datos sobre índices de precios al consumidor por pais",
+            "label": "Índices de precios al consumidor por pais"
+        },
+        {
+            "id": "comercio_internacional",
+            "description": "Datos sobre comercio internacional",
+            "label": "Comercio Internacional"
+        },
+        {
+            "id": "precios_de_materias_primas",
+            "description": "Datos sobre precios de materias primas",
+            "label": "Precios de Materias Primas"
+        },
+        {
+            "id": "principales_tasas_interes",
+            "description": "Datos sobre principales tasas de interés",
+            "label": "Principales tasas de interés"
+        },
+        {
+            "id": "agregados_monetarios",
+            "description": "Datos sobre agregados monetarios",
+            "label": "Agregados Monetarios"
+        },
+        {
+            "id": "prestamos_entindades_financieras",
+            "description": "Datos sobre prestamos entindades financieras",
+            "label": "Prestamos entindades financieras"
+        },
+        {
+            "id": "reservas_internacionales",
+            "description": "Datos sobre reservas internacionales",
+            "label": "Reservas Internacionales"
+        },
+        {
+            "id": "encaje_liquidez",
+            "description": "Datos sobre encaje y liquidez",
+            "label": "Encaje y liquidez"
+        },
+        {
+            "id": "cer_uva_uvi",
+            "description": "Datos sobre cer, uva, uvi",
+            "label": "cer, uva, uvi"
+        },
+        {
+            "id": "finanzas_publicas",
+            "label": "Finanzas públicas"
+        },
+        {
+            "id": "finanzas"
+        }
+    ],
+    "title": "Datos Programación Macroeconómica",
+    "modified": "2017-09-28T00:00:00",
+    "dataset": [
+        {
+            "issued": "2017-09-28T00:00:00",
+            "accessLevel": "ABIERTO",
+            "superTheme": [
+                "ECON"
+            ],
+            "title": "Oferta y Demanda Globales. Datos desestacionalizados. Base 1993",
+            "temporal": "1993-01-01/2013-09-01",
+            "source": "Instituto Nacional de Estadística y Censos (INDEC)",
+            "theme": [
+                "oferta_demanda"
+            ],
+            "spatial": "ARG",
+            "description": "Componentes desestacionalizados de la oferta y demanda globales a precios de 1993.",
+            "contactPoint": {
+                "fn": "Ministerio de Hacienda. Secretaría de Política Económica. Subsecretaría de Programación Macroeconómica. Dirección de Información y Coyuntura"
+            },
+            "landingPage": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
+            "publisher": {
+                "mbox": "ausolari@mecon.gob.ar",
+                "name": "Ministerio de Hacienda. Secretaría de Política Económica. Subsecretaría de Programación Macroeconómica."
+            },
+            "keyword": [
+                "Información económica al día",
+                "actividad"
+            ],
+            "language": [
+                "SPA"
+            ],
+            "modified": "2017-09-28T00:00:00",
+            "accrualPeriodicity": "R/P3M",
+            "distribution": [
+                {
+                    "scrapingFileSheet": "1.2 OyD real s.e.",
+                    "description": "Oferta y Demanda Globales por componente, a precios de comprador, en millones de pesos de 1993 y valores anuales desestacionalizados.",
+                    "format": "CSV",
+                    "dataset_identifier": "1",
+                    "issued": "2017-09-28T00:00:00",
+                    "fileName": "oferta-demanda-globales-datos-desestacionalizados-valores-anuales-base-1993.csv",
+                    "scrapingFileURL": "https://www.economia.gob.ar/download/infoeco/actividad_ied.xlsx",
+                    "accessURL": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
+                    "title": "Oferta y Demanda Global. Precios constantes desestacionalizados. Base 1993. Valores anuales.",
+                    "modified": "2017-09-28T00:00:00",
+                    "field": [
+                        {
+                            "type": "date",
+                            "scrapingIdentifierCell": "A8",
+                            "title": "indice_tiempo",
+                            "scrapingDataStartCell": "A9",
+                            "id": "1.1_IT_D_1993_A_13"
+                        },
+                        {
+                            "description": "PIB desestacionalizado, en millones de pesos de 1993 y valores trimestrales",
+                            "title": "oferta_global_pib",
+                            "type": "number",
+                            "scrapingIdentifierCell": "B8",
+                            "scrapingDataStartCell": "B9",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.1_OGP_D_1993_A_17"
+                        },
+                        {
+                            "description": "Importaciones desestacionalizadas, en millones de pesos de 1993 y valores trimestrales",
+                            "title": "oferta_global_importacion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "C8",
+                            "scrapingDataStartCell": "C9",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.1_OGI_D_1993_A_25"
+                        },
+                        {
+                            "description": "Exportaciones desestacionalizadas, en millones de pesos de 1993 y valores trimestrales",
+                            "title": "demanda_global_exportacion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "D8",
+                            "scrapingDataStartCell": "D9",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.1_DGE_D_1993_A_26"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija desestacionalizada, en millones de pesos de 1993 y valores trimestrales",
+                            "title": "demanda_global_ibif",
+                            "type": "number",
+                            "scrapingIdentifierCell": "E8",
+                            "scrapingDataStartCell": "E9",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.1_DGI_D_1993_A_19"
+                        },
+                        {
+                            "description": "Consumo privado desestacionalizado, en millones de pesos de 1993 y valores trimestrales",
+                            "title": "demanda_global_consumo_priv",
+                            "type": "number",
+                            "scrapingIdentifierCell": "F8",
+                            "scrapingDataStartCell": "F9",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.1_DGCP_D_1993_A_27"
+                        },
+                        {
+                            "description": "Consumo publico desestacionalizado, en millones de pesos de 1993 y valores trimestrales",
+                            "title": "demanda_global_consumo_publico",
+                            "type": "number",
+                            "scrapingIdentifierCell": "G8",
+                            "scrapingDataStartCell": "G9",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.1_DGCP_D_1993_A_30"
+                        }
+                    ],
+                    "draft": false,
+                    "units": "Millones de pesos, a precios de 1993",
+                    "identifier": "1.1"
+                },
+                {
+                    "scrapingFileSheet": "1.2 OyD real s.e.",
+                    "description": "Oferta y Demanda Globales por componente, a precios de comprador, en millones de pesos de 1993 y valores anuales desestacionalizados.",
+                    "format": "CSV",
+                    "dataset_identifier": "1",
+                    "issued": "2017-09-28T00:00:00",
+                    "fileName": "oferta-demanda-globales-datos-desestacionalizados-valores-trimestrales-base-1993.csv",
+                    "scrapingFileURL": "https://www.economia.gob.ar/download/infoeco/actividad_ied.xlsx",
+                    "accessURL": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
+                    "title": "Oferta y Demanda Global. Precios constantes desestacionalizados. Base 1993. Valores trimestrales.",
+                    "modified": "2017-09-28T00:00:00",
+                    "field": [
+                        {
+                            "specialTypeDetail": "R/P3M",
+                            "type": "date",
+                            "scrapingIdentifierCell": "A46",
+                            "title": "indice_tiempo",
+                            "scrapingDataStartCell": "A47",
+                            "id": "1.2_IT_D_1993_T_13",
+                            "specialType": "time_index"
+                        },
+                        {
+                            "description": "PIB a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                            "title": "oferta_global_pib",
+                            "type": "number",
+                            "scrapingIdentifierCell": "B46",
+                            "scrapingDataStartCell": "B47",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.2_OGP_D_1993_T_17"
+                        },
+                        {
+                            "description": "Importación a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                            "title": "oferta_global_importacion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "C46",
+                            "scrapingDataStartCell": "C47",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.2_OGI_D_1993_T_25"
+                        },
+                        {
+                            "description": "Oferta global total a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_exportacion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "D46",
+                            "scrapingDataStartCell": "D47",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.2_DGE_D_1993_T_26"
+                        },
+                        {
+                            "description": "Consumo privado, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_ibif",
+                            "type": "number",
+                            "scrapingIdentifierCell": "E46",
+                            "scrapingDataStartCell": "E47",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.2_DGI_D_1993_T_19"
+                        },
+                        {
+                            "description": "Consumo publico, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_consumo_priv",
+                            "type": "number",
+                            "scrapingIdentifierCell": "F46",
+                            "scrapingDataStartCell": "F47",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.2_DGCP_D_1993_T_27"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_consumo_publico",
+                            "type": "number",
+                            "scrapingIdentifierCell": "G46",
+                            "scrapingDataStartCell": "G47",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "1.2_DGCP_D_1993_T_30"
+                        }
+                    ],
+                    "draft": false,
+                    "units": "Millones de pesos, a precios de 1993",
+                    "identifier": "1.2"
+                }
+            ],
+            "identifier": "1"
+        },
+        {
+            "issued": "2017-09-28T00:00:00",
+            "accessLevel": "ABIERTO",
+            "superTheme": [
+                "ECON"
+            ],
+            "title": "Oferta y Demanda Globales. Base 1993",
+            "temporal": "1993-01-01/2013-09-01",
+            "source": "Instituto Nacional de Estadística y Censos (INDEC)",
+            "theme": [
+                "oferta_demanda"
+            ],
+            "spatial": "ARG",
+            "description": "Componentes de la oferta y demanda globales, según la base 1993.",
+            "contactPoint": {
+                "fn": "Ministerio de Hacienda. Secretaría de Política Económica. Subsecretaría de Programación Macroeconómica. Dirección de Información y Coyuntura"
+            },
+            "landingPage": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
+            "publisher": {
+                "mbox": "ausolari@mecon.gob.ar",
+                "name": "Ministerio de Hacienda. Secretaría de Política Económica. Subsecretaría de Programación Macroeconómica."
+            },
+            "keyword": [
+                "Información económica al día",
+                "actividad"
+            ],
+            "language": [
+                "SPA"
+            ],
+            "modified": "2017-09-28T00:00:00",
+            "accrualPeriodicity": "R/P3M",
+            "distribution": [
+                {
+                    "scrapingFileSheet": "1.1 OyD real",
+                    "description": "Oferta y Demanda Globales por componente, a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                    "format": "CSV",
+                    "dataset_identifier": "2",
+                    "issued": "2017-09-28T00:00:00",
+                    "fileName": "oferta-demanda-globales-valores-anuales-base-1993.csv",
+                    "scrapingFileURL": "https://www.economia.gob.ar/download/infoeco/actividad_ied.xlsx",
+                    "accessURL": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
+                    "title": "Oferta y Demanda Global. Precios constantes. Base 1993. Valores anuales.",
+                    "modified": "2017-09-28T00:00:00",
+                    "field": [
+                        {
+                            "type": "date",
+                            "scrapingIdentifierCell": "A11",
+                            "title": "indice_tiempo",
+                            "scrapingDataStartCell": "B12",
+                            "id": "2.1_IT_1993_A_13"
+                        },
+                        {
+                            "description": "PIB a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                            "title": "oferta_global_pib",
+                            "type": "number",
+                            "scrapingIdentifierCell": "B11",
+                            "scrapingDataStartCell": "B12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_OGP_1993_A_17"
+                        },
+                        {
+                            "description": "Importación a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                            "title": "oferta_global_importacion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "C11",
+                            "scrapingDataStartCell": "C12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_OGI_1993_A_25"
+                        },
+                        {
+                            "description": "Oferta global total a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                            "title": "oferta_global_total",
+                            "type": "number",
+                            "scrapingIdentifierCell": "D11",
+                            "scrapingDataStartCell": "D12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_OGT_1993_A_19"
+                        },
+                        {
+                            "description": "Consumo privado, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_consumo_priv",
+                            "type": "number",
+                            "scrapingIdentifierCell": "E11",
+                            "scrapingDataStartCell": "E12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGCP_1993_A_27"
+                        },
+                        {
+                            "description": "Consumo publico, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_consumo_publico",
+                            "type": "number",
+                            "scrapingIdentifierCell": "F11",
+                            "scrapingDataStartCell": "F12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGCP_1993_A_30"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_ibif",
+                            "type": "number",
+                            "scrapingIdentifierCell": "G11",
+                            "scrapingDataStartCell": "G12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGI_1993_A_19"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de equipo durable de produccion, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_ibif_equipo_durable_produccion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "H11",
+                            "scrapingDataStartCell": "H12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDP_1993_A_45"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de equipo durable de produccion nacional, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_ibif_equipo_durable_produccion_nacional",
+                            "type": "number",
+                            "scrapingIdentifierCell": "I11",
+                            "scrapingDataStartCell": "I12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPN_1993_A_54"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de equipo durable de produccion importado, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_ibif_equipo_durable_produccion_importado",
+                            "type": "number",
+                            "scrapingIdentifierCell": "J11",
+                            "scrapingDataStartCell": "J12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPI_1993_A_55"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de maquinaria y equipo total, en millones de pesos de 1993 y valores anuales.",
+                            "title": "dg_ibif_equipo_durable_prod_maquinaria_equipo_total",
+                            "type": "number",
+                            "scrapingIdentifierCell": "K11",
+                            "scrapingDataStartCell": "K12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPMET_1993_A_51"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de maquinaria y equipo nacional, en millones de pesos de 1993 y valores anuales.",
+                            "title": "dg_ibif_equipo_durable_prod_maquinaria_equipo_nacional",
+                            "type": "number",
+                            "scrapingIdentifierCell": "L11",
+                            "scrapingDataStartCell": "L12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPMEN_1993_A_54"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de maquinaria y equipo importado, en millones de pesos de 1993 y valores anuales.",
+                            "title": "dg_ibif_equipo_durable_prod_maquinaria_equipo_importado",
+                            "type": "number",
+                            "scrapingIdentifierCell": "M11",
+                            "scrapingDataStartCell": "M12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPMEI_1993_A_55"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de material de transporte total, en millones de pesos de 1993 y valores anuales.",
+                            "title": "dg_ibif_equipo_durable_prod_material_transporte_total",
+                            "type": "number",
+                            "scrapingIdentifierCell": "N11",
+                            "scrapingDataStartCell": "N12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPMTT_1993_A_53"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de material de transporte nacional, en millones de pesos de 1993 y valores anuales.",
+                            "title": "dg_ibif_equipo_durable_prod_material_transporte_nacional",
+                            "type": "number",
+                            "scrapingIdentifierCell": "O11",
+                            "scrapingDataStartCell": "O12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPMTN_1993_A_56"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija de material de transporte importado, en millones de pesos de 1993 y valores anuales.",
+                            "title": "dg_ibif_equipo_durable_prod_material_transporte_importado",
+                            "type": "number",
+                            "scrapingIdentifierCell": "P11",
+                            "scrapingDataStartCell": "P12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIEDPMTI_1993_A_57"
+                        },
+                        {
+                            "description": "Inversion bruta interna fija en construccion, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_ibif_construccion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "Q11",
+                            "scrapingDataStartCell": "Q12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGIC_1993_A_32"
+                        },
+                        {
+                            "description": "Exportaciones, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_exportacion",
+                            "type": "number",
+                            "scrapingIdentifierCell": "R11",
+                            "scrapingDataStartCell": "R12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGE_1993_A_26"
+                        },
+                        {
+                            "description": "Demanda global total, en millones de pesos de 1993 y valores anuales",
+                            "title": "demanda_global_total",
+                            "type": "number",
+                            "scrapingIdentifierCell": "S11",
+                            "scrapingDataStartCell": "S12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DGT_1993_A_20"
+                        },
+                        {
+                            "description": "Discrepancia estadistica y variacion de existencia, en millones de pesos de 1993 y valores anuales.",
+                            "title": "discrepancia_estadistica_variacion_existencias",
+                            "type": "number",
+                            "scrapingIdentifierCell": "T11",
+                            "scrapingDataStartCell": "T12",
+                            "units": "Millones de pesos a precios de 1993",
+                            "id": "2.1_DEVE_1993_A_46"
+                        }
+                    ],
+                    "draft": false,
+                    "units": "Millones de pesos, a precios de 1993",
+                    "identifier": "2.1"
+                }
+            ],
+            "identifier": "2"
+        }
+    ],
+    "language": [
+        "SPA"
+    ],
+    "spatial": "ARG",
+    "identifier": "sspm"
+}

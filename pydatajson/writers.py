@@ -412,7 +412,8 @@ def _generate_field_table(catalog):
 
     # tabula diccionarios con estructura, como listas planas de diccionarios
     for field in catalog.get_fields():
-        tab_field = _tabulate_nested_dict(field, ["dataset", "distribution"])
+        tab_field = _tabulate_nested_dict(
+            field, "field", ["dataset", "distribution"])
         tab_field["dataset_title"] = catalog.get_dataset(
             tab_field["dataset_identifier"]).get("title")
         fields.append(tab_field)

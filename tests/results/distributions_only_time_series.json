@@ -1,0 +1,82 @@
+[
+    {
+        "accessURL": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
+        "scrapingFileSheet": "1.2 OyD real s.e.",
+        "description": "Oferta y Demanda Globales por componente, a precios de comprador, en millones de pesos de 1993 y valores anuales desestacionalizados.",
+        "format": "CSV",
+        "dataset_identifier": "1",
+        "issued": "2017-09-28T00:00:00",
+        "title": "Oferta y Demanda Global. Precios constantes desestacionalizados. Base 1993. Valores trimestrales.",
+        "modified": "2017-09-28T00:00:00",
+        "fileName": "oferta-demanda-globales-datos-desestacionalizados-valores-trimestrales-base-1993.csv",
+        "field": [
+            {
+                "title": "indice_tiempo",
+                "scrapingIdentifierCell": "A46",
+                "specialTypeDetail": "R/P3M",
+                "specialType": "time_index",
+                "type": "date",
+                "id": "1.2_IT_D_1993_T_13",
+                "scrapingDataStartCell": "A47"
+            },
+            {
+                "description": "PIB a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                "title": "oferta_global_pib",
+                "scrapingIdentifierCell": "B46",
+                "units": "Millones de pesos a precios de 1993",
+                "type": "number",
+                "id": "1.2_OGP_D_1993_T_17",
+                "scrapingDataStartCell": "B47"
+            },
+            {
+                "description": "Importación a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                "title": "oferta_global_importacion",
+                "scrapingIdentifierCell": "C46",
+                "units": "Millones de pesos a precios de 1993",
+                "type": "number",
+                "id": "1.2_OGI_D_1993_T_25",
+                "scrapingDataStartCell": "C47"
+            },
+            {
+                "description": "Oferta global total a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+                "title": "demanda_global_exportacion",
+                "scrapingIdentifierCell": "D46",
+                "units": "Millones de pesos a precios de 1993",
+                "type": "number",
+                "id": "1.2_DGE_D_1993_T_26",
+                "scrapingDataStartCell": "D47"
+            },
+            {
+                "description": "Consumo privado, en millones de pesos de 1993 y valores anuales.",
+                "title": "demanda_global_ibif",
+                "scrapingIdentifierCell": "E46",
+                "units": "Millones de pesos a precios de 1993",
+                "type": "number",
+                "id": "1.2_DGI_D_1993_T_19",
+                "scrapingDataStartCell": "E47"
+            },
+            {
+                "description": "Consumo publico, en millones de pesos de 1993 y valores anuales.",
+                "title": "demanda_global_consumo_priv",
+                "scrapingIdentifierCell": "F46",
+                "units": "Millones de pesos a precios de 1993",
+                "type": "number",
+                "id": "1.2_DGCP_D_1993_T_27",
+                "scrapingDataStartCell": "F47"
+            },
+            {
+                "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
+                "title": "demanda_global_consumo_publico",
+                "scrapingIdentifierCell": "G46",
+                "units": "Millones de pesos a precios de 1993",
+                "type": "number",
+                "id": "1.2_DGCP_D_1993_T_30",
+                "scrapingDataStartCell": "G47"
+            }
+        ],
+        "draft": false,
+        "units": "Millones de pesos, a precios de 1993",
+        "identifier": "1.2",
+        "scrapingFileURL": "https://www.economia.gob.ar/download/infoeco/actividad_ied.xlsx"
+    }
+]

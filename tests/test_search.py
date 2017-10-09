@@ -57,6 +57,7 @@ class SearchTestCase(unittest.TestCase):
     @classmethod
     def setUp(cls):
         cls.catalog = cls.get_sample("full_data.json")
+        cls.catalog_ts = cls.get_sample("time_series_data.json")
 
     @load_expected_result()
     def test_datasets(self, expected_result):
@@ -124,6 +125,20 @@ class SearchTestCase(unittest.TestCase):
                 "description":
                 "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
             }}
+        )
+        pprint(distributions)
+        self.assertEqual(expected_result, distributions)
+
+    @load_expected_result()
+    def test_distributions_only_time_series(self, expected_result):
+        distributions = pydatajson.search.get_distributions(
+            self.catalog, only_time_series=True
+        )
+        pprint(distributions)
+        self.assertEqual([], distributions)
+
+        distributions = pydatajson.search.get_distributions(
+            self.catalog_ts, only_time_series=True
         )
         pprint(distributions)
         self.assertEqual(expected_result, distributions)
