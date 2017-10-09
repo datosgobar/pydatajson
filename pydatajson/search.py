@@ -71,7 +71,6 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
             distribution["dataset_identifier"] = dataset["identifier"]
             distributions.append(distribution)
 
-    print(len(distributions))
     filtered_distributions = filter(
         lambda x: _filter_dictionary(
             x, filter_in.get("distribution"), filter_out.get("distribution")),
@@ -79,11 +78,9 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
     )
 
     # realiza filtros especiales
-    print(len(filtered_distributions))
     if only_time_series:
         filtered_distributions = filter(
             distribution_has_time_index, filtered_distributions)
-    print(len(filtered_distributions))
 
     if meta_field:
         return [distribution[meta_field]
