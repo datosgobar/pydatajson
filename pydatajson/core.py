@@ -349,22 +349,38 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 break
 
         # chequea que algunos campos tengan longitudes mínimas
-        has_min_title = len(dataset["title"]) >= MIN_DATASET_TITLE
-        has_min_desc = len(dataset["description"]) >= MIN_DATASET_DESCRIPTION
+        has_title = "title" in dataset
+        has_description = "description" in dataset
+        if has_title:
+            has_min_title = len(dataset["title"]) >= MIN_DATASET_TITLE
+        else:
+            has_min_title = False
+        if has_description:
+            has_min_desc = len(
+                dataset["description"]) >= MIN_DATASET_DESCRIPTION
+        else:
+            has_min_desc = False
 
         # EVALUACION DE COSECHA: evalua si se cosecha o no el dataset
-        harvest = has_data_format and has_min_title and has_min_desc
+        harvest = (has_title and has_description and
+                   has_data_format and has_min_title and has_min_desc)
 
         # NOTAS: genera notas de validación
         notes = []
         if not has_data_format:
             notes.append("No tiene distribuciones con datos.")
-        if not has_min_title:
-            notes.append("Titulo tiene menos de {} caracteres".format(
-                MIN_DATASET_TITLE))
-        if not has_min_desc:
-            notes.append("Descripcion tiene menos de {} caracteres".format(
-                MIN_DATASET_DESCRIPTION))
+        if not has_title:
+            notes.append("Dataset sin titulo {}".format(dataset))
+        else:
+            if not has_min_title:
+                notes.append("Titulo tiene menos de {} caracteres".format(
+                    MIN_DATASET_TITLE))
+        if not has_description:
+            notes.append("Dataset sin descripcion {}".format(dataset))
+        else:
+            if not has_min_desc:
+                notes.append("Descripcion tiene menos de {} caracteres".format(
+                    MIN_DATASET_DESCRIPTION))
 
         return harvest, notes
 

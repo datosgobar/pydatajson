@@ -186,9 +186,11 @@ def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None,
             column_styles_sheet = column_styles.get(table_name)
             cell_styles_sheet = cell_styles.get(table_name)
 
-            _list_table_to_ws(wb, table, table_name, column_styles_sheet,
-                              cell_styles_sheet,
-                              fields=tables_fields[table_name])
+            _list_table_to_ws(
+                wb, table, table_name, column_styles_sheet,
+                cell_styles_sheet,
+                fields=tables_fields.get(table_name) if tables_fields else None
+            )
 
     else:
         _list_table_to_ws(wb, tables, column_styles=column_styles,
