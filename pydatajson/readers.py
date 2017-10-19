@@ -25,7 +25,7 @@ from . import helpers
 from .ckan_reader import read_ckan_catalog
 import custom_exceptions as ce
 
-logger = logging.getLogger()
+global_logger = logging.getLogger()
 
 
 def read_catalog(catalog, default_values=None):
@@ -184,7 +184,7 @@ quiso decir 'http://{}'?""".format(json_path_or_url).encode("utf-8"))
     return json_dict
 
 
-def read_xlsx_catalog(xlsx_path_or_url):
+def read_xlsx_catalog(xlsx_path_or_url, logger=None):
     """Toma el path a un catálogo en formato XLSX y devuelve el diccionario
     que representa.
 
@@ -199,6 +199,7 @@ def read_xlsx_catalog(xlsx_path_or_url):
         dict: El diccionario que resulta de procesar xlsx_path_or_url.
 
     """
+    logger = logger or global_logger
     assert isinstance(xlsx_path_or_url, (str, unicode))
 
     parsed_url = urlparse(xlsx_path_or_url)
@@ -207,7 +208,7 @@ def read_xlsx_catalog(xlsx_path_or_url):
         tmpfilename = ".tmpfile.xlsx"
         with io.open(tmpfilename, 'wb') as tmpfile:
             tmpfile.write(res.content)
-        catalog_dict = read_local_xlsx_catalog(tmpfilename)
+        catalog_dict = read_local_xlsx_catalog(tmpfilename, logger)
         os.remove(tmpfilename)
     else:
         # Si xlsx_path_or_url parece ser una URL remota, lo advierto.
@@ -248,9 +249,11 @@ def _make_contact_point(dataset):
     return dataset
 
 
-def _get_dataset_index(catalog, dataset_identifier, dataset_title):
+def _get_dataset_index(catalog, dataset_identifier, dataset_title,
+                       logger=None):
     """Devuelve el índice de un dataset en el catálogo en función de su
     identificador"""
+    logger = logger or global_logger
     matching_datasets = []
 
     for idx, dataset in enumerate(catalog["catalog_dataset"]):
@@ -282,10 +285,12 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title):
 
 
 def _get_distribution_indexes(catalog, dataset_identifier, dataset_title,
-                              distribution_identifier, distribution_title):
+                              distribution_identifier, distribution_title,
+                              logger=None):
     """Devuelve el índice de una distribución en su dataset en función de su
     título, junto con el índice de su dataset padre en el catálogo, en
     función de su identificador"""
+    logger = logger or global_logger
     dataset_index = _get_dataset_index(
         catalog, dataset_identifier, dataset_title)
     if dataset_index is None:
@@ -327,7 +332,7 @@ def _get_distribution_indexes(catalog, dataset_identifier, dataset_title,
         return dataset_index, distribution_index
 
 
-def read_local_xlsx_catalog(xlsx_path):
+def read_local_xlsx_catalog(xlsx_path, logger=None):
     """Genera un diccionario de metadatos de catálogo a partir de un XLSX bien
     formado.
 
@@ -338,6 +343,7 @@ def read_local_xlsx_catalog(xlsx_path):
     Returns:
         dict: Diccionario con los metadatos de un catálogo.
     """
+    logger = logger or global_logger
     assert xlsx_path.endswith(".xlsx"), """
 El archivo a leer debe tener extensión XLSX."""
 
@@ -382,7 +388,7 @@ El archivo a leer debe tener extensión XLSX."""
 
         dataset_index = _get_dataset_index(
             catalog, distribution["dataset_identifier"],
-            distribution["dataset_title"])
+            distribution["dataset_title"], logger)
         if dataset_index is None:
             print("""La distribucion con ID '{}' y titulo '{}' no se
 pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
@@ -402,7 +408,8 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
 
         dataset_index, distribution_index = _get_distribution_indexes(
             catalog, field["dataset_identifier"], field["dataset_title"],
-            field["distribution_identifier"], field["distribution_title"])
+            field["distribution_identifier"], field["distribution_title"],
+            logger)
 
         if dataset_index is None:
             print("""No se encontro el dataset '{}' especificado para el campo

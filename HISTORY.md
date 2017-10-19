@@ -1,6 +1,11 @@
 History
 =======
 
+0.3.18 (2017-10-19)
+-------------------
+
+* Agrego posibilidad de pasar un logger desde afuera a la función de lectura de catálogos en Excel.
+
 0.3.15 (2017-10-09)
 -------------------
 
