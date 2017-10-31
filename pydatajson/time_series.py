@@ -13,6 +13,22 @@ from __future__ import with_statement
 import os
 
 
+def field_is_time_series(field, distribution=None):
+    field_may_be_ts = (
+        not field.get("specialType") and
+        not field.get("specialTypeDetail") and
+        (
+            field.get("type", "").lower() == "number" or
+            field.get("type", "").lower() == "integer"
+        ) and
+        field.get("id")
+    )
+    distribution_may_has_ts = (
+        not distribution or distribution_has_time_index(distribution)
+    )
+    return field_may_be_ts and distribution_may_has_ts
+
+
 def distribution_has_time_index(distribution):
     for field in distribution.get('field', []):
         if field.get('specialType') == 'time_index':

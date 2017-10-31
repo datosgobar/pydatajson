@@ -78,6 +78,12 @@ class SearchTestCase(unittest.TestCase):
         self.assertEqual(expected_result, fields)
 
     @load_expected_result()
+    def test_time_series(self, expected_result):
+        time_series = pydatajson.search.get_time_series(self.catalog_ts)
+        pprint(time_series)
+        self.assertEqual(expected_result, time_series)
+
+    @load_expected_result()
     def test_datasets_filter_in(self, expected_result):
         datasets = pydatajson.search.get_datasets(
             self.catalog,

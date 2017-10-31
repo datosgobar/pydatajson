@@ -1,6 +1,11 @@
 History
 =======
 
+0.3.19 (2017-10-31)
+-------------------
+
+* Agrego métodos de búsqueda de series de tiempo en un catálogo (`get_time_series()`) y un parámetro `only_time_series=True or False` para filtrar datasets y distribuciones en sus métodos de búsqueda (`get_datasets(only_time_series=True)` devuelve sólo aquellos datasets que tengan alguna serie de tiempo).
+
 0.3.18 (2017-10-19)
 -------------------
 

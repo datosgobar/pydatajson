@@ -94,6 +94,8 @@ class DataJson(dict):
     distributions = property(get_distributions)
     get_fields = search.get_fields
     fields = property(get_fields)
+    get_time_series = search.get_time_series
+    time_series = property(get_time_series)
     get_dataset = search.get_dataset
     get_distribution = search.get_distribution
     get_field = search.get_field

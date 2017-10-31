@@ -1,0 +1,46 @@
+[
+    {
+        "distribution_identifier": "1.2",
+        "description": "PIB a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+        "title": "oferta_global_pib",
+        "dataset_identifier": "1",
+        "scrapingIdentifierCell": "B46",
+        "units": "Millones de pesos a precios de 1993",
+        "type": "number",
+        "id": "1.2_OGP_D_1993_T_17",
+        "scrapingDataStartCell": "B47"
+    },
+    {
+        "distribution_identifier": "1.2",
+        "description": "Importación a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+        "title": "oferta_global_importacion",
+        "dataset_identifier": "1",
+        "scrapingIdentifierCell": "C46",
+        "units": "Millones de pesos a precios de 1993",
+        "type": "number",
+        "id": "1.2_OGI_D_1993_T_25",
+        "scrapingDataStartCell": "C47"
+    },
+    {
+        "distribution_identifier": "1.2",
+        "description": "Oferta global total a precios de comprador, en millones de pesos de 1993 y valores anuales.",
+        "title": "demanda_global_exportacion",
+        "dataset_identifier": "1",
+        "scrapingIdentifierCell": "D46",
+        "units": "Millones de pesos a precios de 1993",
+        "type": "number",
+        "id": "1.2_DGE_D_1993_T_26",
+        "scrapingDataStartCell": "D47"
+    },
+    {
+        "distribution_identifier": "1.2",
+        "description": "Consumo privado, en millones de pesos de 1993 y valores anuales.",
+        "title": "demanda_global_ibif",
+        "dataset_identifier": "1",
+        "scrapingIdentifierCell": "E46",
+        "units": "Millones de pesos a precios de 1993",
+        "type": "number",
+        "id": "1.2_DGI_D_1993_T_19",
+        "scrapingDataStartCell": "E47"
+    }
+]

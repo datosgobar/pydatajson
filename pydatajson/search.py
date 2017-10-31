@@ -14,6 +14,7 @@ from __future__ import with_statement
 from functools import partial
 
 from time_series import distribution_has_time_index, dataset_has_time_series
+from time_series import field_is_time_series
 from readers import read_catalog
 import custom_exceptions as ce
 
@@ -101,21 +102,26 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
         return filtered_distributions
 
 
-def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None):
+def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
+               only_time_series=False):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
 
     fields = []
-    for distribution in get_distributions(catalog, filter_in, filter_out):
+    for distribution in get_distributions(catalog, filter_in, filter_out,
+                                          only_time_series=only_time_series):
         if "field" in distribution and isinstance(distribution["field"], list):
             for field in distribution["field"]:
-                # agrega el id del dataset
-                field["dataset_identifier"] = distribution[
-                    "dataset_identifier"]
-                # agrega el id de la distribución
-                field["distribution_identifier"] = distribution["identifier"]
-                fields.append(field)
+                if not only_time_series or field_is_time_series(field,
+                                                                distribution):
+                    # agrega el id del dataset
+                    field["dataset_identifier"] = distribution[
+                        "dataset_identifier"]
+                    # agrega el id de la distribución
+                    field["distribution_identifier"] = distribution[
+                        "identifier"]
+                    fields.append(field)
 
     filtered_fields = filter(
         lambda x: _filter_dictionary(
@@ -128,6 +134,11 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None):
                 if meta_field in field]
     else:
         return filtered_fields
+
+
+def get_time_series(catalog, **kwargs):
+    kwargs["only_time_series"] = True
+    return get_fields(catalog, **kwargs)
 
 
 def get_dataset(catalog, identifier=None, title=None):

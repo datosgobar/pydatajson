@@ -61,7 +61,6 @@
                 "scrapingIdentifierCell": "F46",
                 "units": "Millones de pesos a precios de 1993",
                 "type": "number",
-                "id": "1.2_DGCP_D_1993_T_27",
                 "scrapingDataStartCell": "F47"
             },
             {
@@ -69,7 +68,7 @@
                 "title": "demanda_global_consumo_publico",
                 "scrapingIdentifierCell": "G46",
                 "units": "Millones de pesos a precios de 1993",
-                "type": "number",
+                "type": "string",
                 "id": "1.2_DGCP_D_1993_T_30",
                 "scrapingDataStartCell": "G47"
             }

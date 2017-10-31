@@ -607,13 +607,12 @@
                             "type": "number",
                             "scrapingIdentifierCell": "F46",
                             "scrapingDataStartCell": "F47",
-                            "units": "Millones de pesos a precios de 1993",
-                            "id": "1.2_DGCP_D_1993_T_27"
+                            "units": "Millones de pesos a precios de 1993"
                         },
                         {
                             "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
                             "title": "demanda_global_consumo_publico",
-                            "type": "number",
+                            "type": "string",
                             "scrapingIdentifierCell": "G46",
                             "scrapingDataStartCell": "G47",
                             "units": "Millones de pesos a precios de 1993",
