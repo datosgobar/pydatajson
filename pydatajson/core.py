@@ -99,6 +99,7 @@ class DataJson(dict):
     get_dataset = search.get_dataset
     get_distribution = search.get_distribution
     get_field = search.get_field
+    get_theme = search.get_theme
     get_field_location = search.get_field_location
     get_catalog_metadata = search.get_catalog_metadata
 

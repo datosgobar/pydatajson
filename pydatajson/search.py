@@ -20,6 +20,7 @@ import custom_exceptions as ce
 
 
 def get_themes(catalog):
+    catalog = read_catalog(catalog)
     return catalog.get("themeTaxonomy")
 
 
@@ -275,6 +276,35 @@ def get_field(catalog, identifier=None, title=None,
         return None
     else:
         return filtered_fields[0]
+
+
+def get_theme(catalog, identifier=None, label=None):
+    msg = "Se requiere un 'id' o 'label' para buscar el theme."
+    assert identifier or label, msg
+
+    themes = get_themes(catalog)
+
+    if not themes:
+        raise ce.ThemeTaxonomyNonExistentError()
+
+    # filtra por id (preferentemente) o label
+    if identifier:
+        filtered_themes = filter(lambda x: x["id"] == identifier, themes)
+        if len(filtered_themes) > 1:
+            raise ThemeIdRepeated([x["id"] for x in filtered_themes])
+
+    elif label:
+        filtered_themes = filter(lambda x: x["label"] == label, themes)
+        if len(filtered_themes) > 1:
+            raise ThemeLabelRepeated([x["label"] for x in filtered_themes])
+
+    else:
+        raise Exception(msg)
+
+    if len(filtered_themes) == 0:
+        return None
+    else:
+        return filtered_themes[0]
 
 
 def get_catalog_metadata(catalog, exclude_meta_fields=None):

@@ -46,6 +46,21 @@ class ThemeIdRepeated(BaseValidationError):
             validator, message, validator_value, path)
 
 
+class ThemeLabelRepeated(BaseValidationError):
+
+    def __init__(self, repeated_labels):
+
+        # TODO: construcción del error
+        validator = "repeatedValue"
+        message = "Etiquetas {} estan repetidas en mas de un `theme`".format(
+            repeated_labels)
+        validator_value = "Chequea labels duplicados en themeTaxonomy"
+        path = ["catalog", "themeTaxonomy"]
+
+        super(ThemeLabelRepeated, self).__init__(
+            validator, message, validator_value, path)
+
+
 class BaseUnexpectedValue(ValueError):
 
     """El id de una entidad está repetido en el catálogo."""
@@ -274,3 +289,10 @@ class DatasetIdNonExistentError(BaseNonExistentError):
     def __init__(self, dataset_id):
         msg = self.get_msg("dataset", "id", dataset_id)
         super(DatasetIdNonExistentError, self).__init__(msg)
+
+
+class ThemeTaxonomyNonExistentError(Exception):
+
+    def __init__(self, dataset_id):
+        msg = "Catalogo no tiene themeTaxonomy"
+        super(ThemeTaxonomyNonExistentError, self).__init__(msg)

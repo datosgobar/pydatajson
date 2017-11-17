@@ -1,6 +1,11 @@
 History
 =======
 
+0.3.20 (2017-11-16)
+-------------------
+
+* Agrego método `get_theme()` para devolver un tema de la taxonomía específica del catálogo según su `id` o `label`.
+
 0.3.19 (2017-10-31)
 -------------------
 

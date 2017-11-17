@@ -212,6 +212,15 @@ class SearchTestCase(unittest.TestCase):
         self.assertEqual(expected_result, field)
 
     @load_expected_result()
+    def test_get_theme(self, expected_result):
+        theme = pydatajson.search.get_theme(
+            self.catalog,
+            identifier="adjudicaciones"
+        )
+        pprint(theme)
+        self.assertEqual(expected_result, theme)
+
+    @load_expected_result()
     def test_get_distribution_of_dataset(self, expected_result):
         distribution = pydatajson.search.get_distribution(
             self.catalog,
