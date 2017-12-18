@@ -11,6 +11,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
+from six import text_type
 import io
 import os.path
 from urlparse import urlparse
@@ -369,7 +370,7 @@ El archivo a leer debe tener extensión XLSX."""
 
     # Me aseguro que los identificadores de dataset se guarden como cadenas
     for dataset in catalog["catalog_dataset"]:
-        dataset["dataset_identifier"] = unicode(dataset["dataset_identifier"])
+        dataset["dataset_identifier"] = text_type(dataset["dataset_identifier"])
 
     catalog["catalog_themeTaxonomy"] = (
         helpers.sheet_to_table(ws_theme))
@@ -382,9 +383,9 @@ El archivo a leer debe tener extensión XLSX."""
     distributions = helpers.sheet_to_table(ws_distribution)
     for distribution in distributions:
         # Me aseguro que los identificadores se guarden como cadenas
-        distribution["dataset_identifier"] = unicode(
+        distribution["dataset_identifier"] = text_type(
             distribution["dataset_identifier"])
-        distribution["distribution_identifier"] = unicode(
+        distribution["distribution_identifier"] = text_type(
             distribution["distribution_identifier"])
 
         dataset_index = _get_dataset_index(
@@ -403,8 +404,8 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
     fields = helpers.sheet_to_table(ws_field)
     for idx, field in enumerate(fields):
         # Me aseguro que los identificadores se guarden como cadenas
-        field["dataset_identifier"] = unicode(field["dataset_identifier"])
-        field["distribution_identifier"] = unicode(
+        field["dataset_identifier"] = text_type(field["dataset_identifier"])
+        field["distribution_identifier"] = text_type(
             field["distribution_identifier"])
 
         dataset_index, distribution_index = _get_distribution_indexes(

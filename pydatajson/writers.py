@@ -21,7 +21,7 @@ from openpyxl.styles import Font
 from openpyxl.utils import column_index_from_string
 import logging
 
-from six import string_types
+from six import string_types, text_type
 
 from . import helpers
 
@@ -245,7 +245,7 @@ def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
 
 def write_json(obj, path):
     """Escribo un objeto a un archivo JSON con codificación UTF-8."""
-    obj_str = unicode(json.dumps(obj, indent=4, separators=(",", ": "),
+    obj_str = text_type(json.dumps(obj, indent=4, separators=(",", ": "),
                                  ensure_ascii=False))
 
     helpers.ensure_dir_exists(os.path.dirname(path))

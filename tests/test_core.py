@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
+from six import text_type
 from functools import wraps
 import os.path
 from pprint import pprint
@@ -60,7 +61,7 @@ class DataJsonTestCase(unittest.TestCase):
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
 
-        print(unicode(json.dumps(
+        print(text_type(json.dumps(
             response_dict, indent=4, separators=(",", ": "),
             ensure_ascii=False
         )))
