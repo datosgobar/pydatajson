@@ -10,7 +10,7 @@ from __future__ import with_statement
 from datetime import datetime
 import os
 import json
-from urlparse import urlparse
+from six.moves.urllib_parse import urlparse
 
 from six import string_types
 from unidecode import unidecode

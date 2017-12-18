@@ -14,7 +14,7 @@ from __future__ import with_statement
 from six import text_type
 import io
 import os.path
-from urlparse import urlparse
+from six.moves.urllib_parse import urlparse
 import warnings
 import logging
 import json

@@ -19,7 +19,8 @@ import sys
 import warnings
 from collections import OrderedDict
 from datetime import datetime
-from urlparse import urljoin
+
+from six.moves.urllib_parse import urljoin
 
 from openpyxl.styles import Alignment, Font
 from six import string_types

@@ -10,7 +10,7 @@ from __future__ import with_statement
 import os.path
 import logging
 import json
-from urlparse import urljoin
+from six.moves.urllib_parse import urljoin
 from ckanapi import RemoteCKAN
 
 from helpers import clean_str, title_to_name
