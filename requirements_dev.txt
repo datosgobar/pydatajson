@@ -1,4 +1,3 @@
-pip
 bumpversion==0.5.3
 wheel==0.29.0
 watchdog==0.8.3
@@ -8,10 +7,10 @@ coverage==4.1
 Sphinx==1.5.2
 cryptography==1.4
 PyYAML==3.11
-nose
+nose==1.3.7
 recommonmark==0.4.0
-twine
-sphinx_rtd_theme
-vcrpy
-sphinxcontrib-napoleon
-mock
+twine==1.9.1
+sphinx-rtd-theme==0.2.4
+vcrpy==1.11.1
+sphinxcontrib-napoleon==0.6.1
+mock==2.0.0
