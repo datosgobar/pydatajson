@@ -7,38 +7,36 @@ Contiene la clase DataJson que reúne los métodos públicos para trabajar con
 archivos data.json.
 """
 
-from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import unicode_literals
 from __future__ import with_statement
 
-import sys
 import io
-import platform
-import os.path
-import warnings
-import re
 import json
+import os.path
+import re
+import sys
+import warnings
 from collections import OrderedDict
 from datetime import datetime
-import jsonschema
-from openpyxl.styles import Alignment, Font
 from urlparse import urljoin
-import collections
 
-import custom_exceptions as ce
+from openpyxl.styles import Alignment, Font
+from six import string_types
+
+from . import documentation
 from . import helpers
+from . import indicators
 from . import readers
-from . import writers
 from . import search
 from . import validation
-from . import indicators
-from . import documentation
+from . import writers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 DATA_FORMATS = [
     "csv", "xls", "xlsx", "ods", "dta"
-    "shp", "kml",
+                                 "shp", "kml",
     "json", "xml",
     "zip"
 ]
@@ -118,7 +116,7 @@ class DataJson(dict):
             for index, distribution in enumerate(dataset["distribution"]):
                 if (distribution["identifier"] == identifier and
                         (not dataset_identifier or
-                            dataset["identifier"] == dataset_identifier)):
+                         dataset["identifier"] == dataset_identifier)):
                     dataset["distribution"].pop(index)
                     print("Distribution {} del dataset {} en posicion {} fue eliminada.".format(
                         identifier, dataset["identifier"], index))
@@ -151,7 +149,7 @@ class DataJson(dict):
             "path": list(error.path),
             # La instancia validada es irrelevante si el error es de tipo 1
             "instance": (None if error.validator == "required" else
-                         error.instance)
+            error.instance)
         }
 
         # Identifico a qué nivel de jerarquía sucedió el error.
@@ -178,7 +176,7 @@ class DataJson(dict):
 
         if isinstance(str_or_list, list):
             strings = [s for s in str_or_list
-                       if isinstance(s, (str, unicode))]
+                       if isinstance(s, string_types)]
             stringified_list = ", ".join(strings)
 
         elif isinstance(str_or_list, unicode) or isinstance(str_or_list, str):
@@ -284,8 +282,8 @@ class DataJson(dict):
         return fields
 
     def _dataset_report(
-        self, dataset, dataset_validation, dataset_index,
-        catalog_fields, harvest='none', report=None, catalog_homepage=None
+            self, dataset, dataset_validation, dataset_index,
+            catalog_fields, harvest='none', report=None, catalog_homepage=None
     ):
         """ Genera una línea del `catalog_report`, correspondiente a un dataset
         de los que conforman el catálogo analizado."""
@@ -403,7 +401,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 presente en `catalog`.
         """
 
-        url = catalog if isinstance(catalog, (str, unicode)) else None
+        url = catalog if isinstance(catalog, string_types) else None
         catalog = readers.read_catalog(catalog)
 
         validation = self.validate_catalog(catalog)
@@ -460,7 +458,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             list: Contiene tantos dicts como datasets estén presentes en
                 `catalogs`, con la data del reporte generado.
         """
-        assert isinstance(catalogs, (str, unicode, dict, list))
+        assert isinstance(catalogs, string_types + (dict, list))
         if isinstance(catalogs, list):
             assert not catalog_ids or len(catalogs) == len(catalog_ids)
             assert not catalog_orgs or len(catalogs) == len(catalog_orgs)
@@ -468,14 +466,14 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 catalogs) == len(catalog_homepages)
 
         # Si se pasa un único catálogo, genero una lista que lo contenga
-        if isinstance(catalogs, (str, unicode, dict)):
+        if isinstance(catalogs, string_types + (dict,)):
             catalogs = [catalogs]
-        if not catalog_ids or isinstance(catalog_ids, (str, unicode, dict)):
+        if not catalog_ids or isinstance(catalog_ids, string_types + (dict,)):
             catalog_ids = [catalog_ids] * len(catalogs)
-        if not catalog_orgs or isinstance(catalog_orgs, (str, unicode, dict)):
+        if not catalog_orgs or isinstance(catalog_orgs, string_types + (dict,)):
             catalog_orgs = [catalog_orgs] * len(catalogs)
         if not catalog_homepages or isinstance(catalog_homepages,
-                                               (str, unicode, dict)):
+                                               string_types + (dict,)):
             catalog_homepages = [catalog_homepages] * len(catalogs)
 
         catalogs_reports = [
@@ -557,7 +555,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             por cada dataset a cosechar.
         """
         # Si se pasa un único catálogo, genero una lista que lo contenga
-        if isinstance(catalogs, (str, unicode, dict)):
+        if isinstance(catalogs, string_types + (dict,)):
             catalogs = [catalogs]
 
         if harvest == 'report':
@@ -568,7 +566,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             datasets_report = readers.read_table(report)
         elif harvest in ['valid', 'none', 'all']:
             # catalogs no puede faltar para estos criterios
-            assert isinstance(catalogs, (str, unicode, dict, list))
+            assert isinstance(catalogs, string_types + (dict, list))
             datasets_report = self.generate_datasets_report(catalogs, harvest)
         else:
             raise ValueError("""
@@ -645,13 +643,13 @@ actualizacion original de cada dataset.""".format(frequency))
         Returns:
             list of dicts: Lista de catálogos.
         """
-        assert isinstance(catalogs, (str, unicode, dict, list))
+        assert isinstance(catalogs, string_types + (dict, list))
         # Si se pasa un único catálogo, genero una lista que lo contenga
-        if isinstance(catalogs, (str, unicode, dict)):
+        if isinstance(catalogs, string_types + (dict,)):
             catalogs = [catalogs]
 
         harvestable_catalogs = [readers.read_catalog(c) for c in catalogs]
-        catalogs_urls = [catalog if isinstance(catalog, (str, unicode))
+        catalogs_urls = [catalog if isinstance(catalog, string_types)
                          else None for catalog in catalogs]
 
         # aplica los criterios de cosecha
@@ -678,7 +676,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                     catalog["dataset"] = [
                         dataset for dataset in catalog["dataset"]
                         if (catalog_url, dataset.get("title")) in
-                        datasets_to_harvest
+                           datasets_to_harvest
                     ]
                 else:
                     catalog["dataset"] = []
@@ -777,7 +775,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             str: Texto de la descripción generada.
         """
         # Si se paso una ruta, guardarla
-        if isinstance(catalog, (str, unicode)):
+        if isinstance(catalog, string_types):
             catalog_path_or_url = catalog
         else:
             catalog_path_or_url = None
@@ -858,7 +856,7 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
             "federated_datasets": indicators["datasets_federados_cant"],
             "not_federated_datasets": indicators["datasets_no_federados_cant"],
             "not_federated_datasets_pct": (
-                100.0 - indicators["datasets_federados_pct"]),
+                    100.0 - indicators["datasets_federados_pct"]),
             "not_federated_datasets_list": not_federated_datasets_list,
             "federated_removed_datasets_list": federated_removed_datasets_list,
             "federated_datasets_list": federated_datasets_list,
@@ -884,7 +882,7 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
             list: Lista de tuplas con los títulos de catálogo y dataset de cada
             reporte extraído.
         """
-        assert isinstance(report, (str, unicode, list))
+        assert isinstance(report, string_types + (list,))
 
         # Si `report` es una lista de tuplas con longitud 2, asumimos que es un
         # reporte procesado para extraer los datasets a harvestear. Se devuelve
