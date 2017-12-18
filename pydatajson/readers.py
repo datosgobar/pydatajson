@@ -18,6 +18,7 @@ import warnings
 import logging
 import json
 import requests
+from six import string_types
 from unidecode import unidecode
 import unicodecsv as csv
 import openpyxl as pyxl
@@ -49,7 +50,7 @@ def read_catalog(catalog, default_values=None):
     unknown_catalog_repr_msg = """
 No se pudo inferir una representación válida de un catálogo del parámetro
 provisto: {}.""".format(catalog)
-    assert isinstance(catalog, (dict, str, unicode)), unknown_catalog_repr_msg
+    assert isinstance(catalog, string_types + (dict,)), unknown_catalog_repr_msg
 
     if isinstance(catalog, dict):
         catalog_dict = catalog
@@ -162,7 +163,7 @@ def read_json(json_path_or_url):
         dict: El diccionario que resulta de deserializar json_path_or_url.
 
     """
-    assert isinstance(json_path_or_url, (str, unicode))
+    assert isinstance(json_path_or_url, string_types)
 
     parsed_url = urlparse(json_path_or_url)
     if parsed_url.scheme in ["http", "https"]:
@@ -200,7 +201,7 @@ def read_xlsx_catalog(xlsx_path_or_url, logger=None):
 
     """
     logger = logger or global_logger
-    assert isinstance(xlsx_path_or_url, (str, unicode))
+    assert isinstance(xlsx_path_or_url, string_types)
 
     parsed_url = urlparse(xlsx_path_or_url)
     if parsed_url.scheme in ["http", "https"]:
@@ -521,7 +522,7 @@ def read_table(path):
         list: Lista de diccionarios con claves idénticas representando el
         archivo original.
     """
-    assert isinstance(path, (str, unicode, list)), """
+    assert isinstance(path, string_types + (list,)), """
 {} no es un `path` valido""".format(path)
 
     # Si `path` es una lista, devolverla intacta si tiene formato tabular.

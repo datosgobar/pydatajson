@@ -11,6 +11,8 @@ from datetime import datetime
 import os
 import json
 from urlparse import urlparse
+
+from six import string_types
 from unidecode import unidecode
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -161,7 +163,7 @@ def parse_value(cell):
     value = cell.value
 
     # stripea espacios en strings
-    if isinstance(value, (str, unicode)):
+    if isinstance(value, string_types):
         value = value.strip()
 
     # convierte a texto ISO 8601 las fechas

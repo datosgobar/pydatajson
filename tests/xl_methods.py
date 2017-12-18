@@ -7,6 +7,7 @@ xl_methods
 Métodos ligeramente modificados a partir de abenassi/xlseries para manipular
 archivos en formato XLSX (https://github.com/abenassi/xlseries).
 """
+from six import string_types
 
 
 def compare_cells(wb1, wb2):
@@ -42,7 +43,7 @@ def normalize_value(value):
     """Strip spaces if the value is a string, convert None to empty string or
     let it pass otherwise."""
 
-    if isinstance(value, (unicode, str)):
+    if isinstance(value, string_types):
         return value.strip()
     elif value is None:
         return ""

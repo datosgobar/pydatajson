@@ -16,6 +16,8 @@ from datetime import datetime
 from functools import partial
 import json
 
+from six import string_types
+
 import custom_exceptions as ce
 from reporting import generate_datasets_summary
 from . import readers
@@ -46,9 +48,9 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
             datos sobre la lista entera en general.
     """
     central_catalog = central_catalog or CENTRAL_CATALOG
-    assert isinstance(catalogs, (str, unicode, dict, list))
+    assert isinstance(catalogs, string_types + (dict, list))
     # Si se pasa un único catálogo, genero una lista que lo contenga
-    if isinstance(catalogs, (str, unicode, dict)):
+    if isinstance(catalogs, string_types + (dict, )):
         catalogs = [catalogs]
 
     # Leo todos los catálogos

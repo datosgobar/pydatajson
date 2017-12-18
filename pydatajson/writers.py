@@ -21,6 +21,8 @@ from openpyxl.styles import Font
 from openpyxl.utils import column_index_from_string
 import logging
 
+from six import string_types
+
 from . import helpers
 
 
@@ -43,7 +45,7 @@ def write_tables(tables, path, column_styles=None, cell_styles=None,
             }
         path (str): Path al archivo CSV o XLSX de exportación.
     """
-    assert isinstance(path, (str, unicode)), "`path` debe ser un string"
+    assert isinstance(path, string_types), "`path` debe ser un string"
     assert isinstance(tables, dict), "`table` es dict de listas de dicts"
 
     # Deduzco el formato de archivo de `path` y redirijo según corresponda.
@@ -74,7 +76,7 @@ def write_table(table, path, column_styles=None, cell_styles=None):
         table (list of dicts): Tabla a ser exportada.
         path (str): Path al archivo CSV o XLSX de exportación.
     """
-    assert isinstance(path, (str, unicode)), "`path` debe ser un string"
+    assert isinstance(path, string_types), "`path` debe ser un string"
     assert isinstance(table, list), "`table` debe ser una lista de dicts"
 
     # si la tabla está vacía, no escribe nada
