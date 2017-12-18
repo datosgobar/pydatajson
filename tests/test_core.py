@@ -20,18 +20,17 @@ import mock
 import filecmp
 import io
 from .context import pydatajson
+from .support.decorators import load_case_filename, load_expected_result, RESULTS_DIR
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='once')
 
-RESULTS_DIR = os.path.join("tests", "results")
-
 
 class DataJsonTestCase(unittest.TestCase):
 
     SAMPLES_DIR = os.path.join("tests", "samples")
-    RESULTS_DIR = os.path.join("tests", "results")
+    RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
 
     @classmethod
@@ -75,40 +74,6 @@ class DataJsonTestCase(unittest.TestCase):
                 case_filename))
 
         self.assertEqual(expected_dict, response_dict)
-
-    def load_expected_result():
-
-        def case_decorator(test):
-            case_filename = test.__name__.split("test_")[-1]
-
-            @wraps(test)
-            def decorated_test(*args, **kwargs):
-                result_path = os.path.join(
-                    RESULTS_DIR, case_filename + ".json")
-
-                with io.open(result_path, encoding='utf8') as result_file:
-                    expected_result = json.load(result_file)
-
-                kwargs["expected_result"] = expected_result
-                test(*args, **kwargs)
-
-            return decorated_test
-
-        return case_decorator
-
-    def load_case_filename():
-
-        def case_decorator(test):
-            case_filename = test.__name__.split("test_validity_of_")[-1]
-
-            @wraps(test)
-            def decorated_test(*args, **kwargs):
-                kwargs["case_filename"] = case_filename
-                test(*args, **kwargs)
-
-            return decorated_test
-
-        return case_decorator
 
     # Tests de CAMPOS REQUERIDOS
 
