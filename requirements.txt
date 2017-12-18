@@ -13,3 +13,4 @@ ckanapi==4.0
 functools32
 urllib3
 unidecode
+six==1.11.0
