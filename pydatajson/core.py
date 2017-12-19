@@ -20,10 +20,9 @@ import warnings
 from collections import OrderedDict
 from datetime import datetime
 
-from six.moves.urllib_parse import urljoin
-
 from openpyxl.styles import Alignment, Font
-from six import string_types
+from six import string_types, iteritems
+from six.moves.urllib_parse import urljoin
 
 from . import documentation
 from . import helpers
@@ -68,7 +67,7 @@ class DataJson(dict):
         if catalog:
             catalog = readers.read_catalog(catalog,
                                            default_values=default_values)
-            for key, value in catalog.iteritems():
+            for key, value in iteritems(catalog):
                 self[key] = value
             self.has_catalog = True
         else:
@@ -179,10 +178,8 @@ class DataJson(dict):
             strings = [s for s in str_or_list
                        if isinstance(s, string_types)]
             stringified_list = ", ".join(strings)
-
-        elif isinstance(str_or_list, unicode) or isinstance(str_or_list, str):
+        elif isinstance(str_or_list, string_types):
             stringified_list = str_or_list
-
         else:
             stringified_list = None
 
