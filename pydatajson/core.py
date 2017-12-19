@@ -35,8 +35,8 @@ from . import writers
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 DATA_FORMATS = [
-    "csv", "xls", "xlsx", "ods", "dta"
-                                 "shp", "kml",
+    "csv", "xls", "xlsx", "ods", "dta",
+    "shp", "kml",
     "json", "xml",
     "zip"
 ]
