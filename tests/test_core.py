@@ -174,9 +174,7 @@ class TestDataJsonTestCase(object):
 
         # data.json remoto #1
 
-        datajson = "http://104.131.35.253/data.json"
-
-        res = self.dj.is_valid_catalog(datajson)
+        res = self.dj.is_valid_catalog(BAD_DATAJSON_URL)
         assert_false(res)
 
         exp = {
@@ -222,14 +220,12 @@ class TestDataJsonTestCase(object):
             }
         }
 
-        res = self.dj.validate_catalog(datajson)
+        res = self.dj.validate_catalog(BAD_DATAJSON_URL)
         assert_equal(exp, res)
 
         # data.json remoto #2
 
-        datajson = "http://181.209.63.71/data.json"
-
-        res = self.dj.is_valid_catalog(datajson)
+        res = self.dj.is_valid_catalog(GOOD_DATAJSON_URL)
         assert_false(res)
 
         exp = {
@@ -275,7 +271,7 @@ class TestDataJsonTestCase(object):
             }
         }
 
-        res = self.dj.validate_catalog(datajson)
+        res = self.dj.validate_catalog(GOOD_DATAJSON_URL)
         assert_equal(exp, res)
 
     def test_correctness_of_accrualPeriodicity_regex(self):
