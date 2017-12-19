@@ -4,16 +4,15 @@
 """Extensión de pydatajson para leer catálogos de metadatos a través de la API
 de CKAN v3.
 """
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import unicode_literals, print_function, with_statement, absolute_import
 import os.path
 import logging
 import json
 from six.moves.urllib_parse import urljoin
+from six import iteritems
 from ckanapi import RemoteCKAN
 
-from helpers import clean_str, title_to_name
+from .helpers import clean_str, title_to_name
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -88,7 +87,7 @@ def map_status_to_catalog(status):
         "site_description": "description"
     }
 
-    for status_key, catalog_key in catalog_mapping.iteritems():
+    for status_key, catalog_key in iteritems(catalog_mapping):
         try:
             catalog[catalog_key] = status[status_key]
         except:
@@ -103,7 +102,7 @@ catalog['%s'].""", status_key, catalog_key)
 
     if any([k in status for k in publisher_mapping.keys()]):
         catalog["publisher"] = dict()
-        for status_key, publisher_key in publisher_mapping.iteritems():
+        for status_key, publisher_key in iteritems(publisher_mapping):
             try:
                 catalog['publisher'][publisher_key] = status[status_key]
             except:
@@ -145,7 +144,7 @@ def map_package_to_dataset(package, portal_url):
         'url': 'landingPage'
     }
 
-    for package_key, dataset_key in dataset_mapping.iteritems():
+    for package_key, dataset_key in iteritems(dataset_mapping):
         try:
             dataset[dataset_key] = package[package_key]
         except:
@@ -161,7 +160,7 @@ se puede completar dataset['%s'].""",
 
     if any([k in package for k in publisher_mapping.keys()]):
         dataset["publisher"] = dict()
-        for package_key, publisher_key in publisher_mapping.iteritems():
+        for package_key, publisher_key in iteritems(publisher_mapping):
             try:
                 dataset['publisher'][publisher_key] = package[package_key]
             except:
@@ -177,7 +176,7 @@ se puede completar dataset['publisher']['%s'].""",
 
     if any([k in package for k in contact_point_mapping.keys()]):
         dataset["contactPoint"] = dict()
-        for package_key, contact_key in contact_point_mapping.iteritems():
+        for package_key, contact_key in iteritems(contact_point_mapping):
             try:
                 dataset['contactPoint'][contact_key] = package[package_key]
             except:
@@ -338,7 +337,7 @@ def map_resource_to_distribution(resource, portal_url):
         'id': 'identifier'  # No es parte del estandar de PAD pero es relevante
     }
 
-    for resource_key, distribution_key in distribution_mapping.iteritems():
+    for resource_key, distribution_key in iteritems(distribution_mapping):
         try:
             distribution[distribution_key] = resource[resource_key]
         except:
@@ -369,7 +368,7 @@ def map_group_to_theme(group):
         'description': 'description'
     }
 
-    for group_key, theme_key in theme_mapping.iteritems():
+    for group_key, theme_key in iteritems(theme_mapping):
         try:
             theme[theme_key] = group[group_key]
         except:
