@@ -1,7 +1,8 @@
 import io
 import json
 import os
-from functools import wraps
+
+from six import wraps
 
 RESULTS_DIR = os.path.join("tests", "results")
 
@@ -12,8 +13,7 @@ def load_expected_result():
 
         @wraps(test)
         def decorated_test(*args, **kwargs):
-            result_path = os.path.join(
-                RESULTS_DIR, case_filename + ".json")
+            result_path = os.path.join(RESULTS_DIR, case_filename + ".json")
 
             with io.open(result_path, encoding='utf8') as result_file:
                 expected_result = json.load(result_file)
