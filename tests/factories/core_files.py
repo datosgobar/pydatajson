@@ -3,6 +3,10 @@
 
 from __future__ import unicode_literals
 
+from tests.factories.catalog_errors import missing_catalog_title, missing_catalog_description, \
+    missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format
+from .utils import jsonschema_str
+
 FULL_DATA_RESPONSE = {
     "status": "OK",
     "error": {
@@ -85,78 +89,6 @@ TEST_FILE_RESPONSES = {
     'several_assorted_errors': None,
 
 }
-
-
-def jsonschema_str(string):
-    return repr(string)
-
-
-DEFAULT_OPTIONS = {
-    'title': "Datos Argentina",
-    'message': None,
-    'dataset': [
-        {
-            "status": "OK",
-            "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
-            "list_index": 0,
-            "errors": [],
-            "title": "Sistema de contrataciones electrónicas"
-        }
-    ]
-}
-
-
-def error_response(options=None):
-    default_options = DEFAULT_OPTIONS.copy()
-    if options is not None:
-        default_options.update(options)
-    options = default_options
-    return {
-        "status": "ERROR",
-        "error": {
-            "catalog": {
-                "status": "ERROR",
-                "errors": [
-                    {
-                        "instance": None,
-                        "validator": "required",
-                        "path": [],
-                        "message": options['message'],
-                        "error_code": 1,
-                        "validator_value": [
-                            "dataset",
-                            "title",
-                            "description",
-                            "publisher",
-                            "superThemeTaxonomy"
-                        ]
-                    }
-                ],
-                "title": options['title'],
-            },
-            "dataset": options['dataset'],
-        }
-    }
-
-
-def missing_catalog_dataset():
-    return error_response({
-        'message': "%s is a required property" % jsonschema_str('dataset'),
-        'dataset': None,
-    })
-
-
-def missing_catalog_title():
-    return error_response({
-        'message': "%s is a required property" % jsonschema_str('title'),
-        'title': None,
-    })
-
-
-def missing_catalog_description():
-    return error_response({
-        'message': "%s is a required property" % jsonschema_str('description'),
-    })
 
 
 def distribution_error():
@@ -262,7 +194,10 @@ DATAJSON_RESULTS = {
     'missing_dataset_title': missing_dataset_title(),
     'missing_dataset_description': missing_dataset_description(),
 
-    'missing_distribution_title': missing_distribution_title()
+    'missing_distribution_title': missing_distribution_title(),
+
+    'invalid_catalog_publisher_type': invalid_catalog_publisher_type(),
+    'invalid_publisher_mbox_format': invalid_publisher_mbox_format(),
 }
 
 TEST_FILE_RESPONSES.update(DATAJSON_RESULTS)
