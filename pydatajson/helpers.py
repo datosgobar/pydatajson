@@ -10,6 +10,8 @@ from __future__ import with_statement
 from datetime import datetime
 import os
 import json
+
+from openpyxl import load_workbook
 from six.moves.urllib_parse import urlparse
 
 from six import string_types
@@ -325,7 +327,8 @@ def get_ws_case_insensitive(wb, title):
 
 def find_ws_name(wb, name):
     """Busca una hoja en un workbook sin importar mayúsculas/minúsculas."""
-    if type(wb) == str or type(wb) == unicode:
+    if isinstance(wb, string_types):
+        # FIXME: importar o borrar segun corresponda
         wb = load_workbook(wb, read_only=True, data_only=True)
 
     for sheetname in wb.sheetnames:
