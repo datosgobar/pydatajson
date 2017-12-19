@@ -97,7 +97,8 @@ def invalid_catalog_publisher_type():
 def invalid_publisher_mbox_format():
     return catalog_error_response({
         "error_code": 2,
-        "message": "'datosATmodernizacion.gob.ar' is not a 'email'",
+        "message": "%s is not a %s" % (
+        jsonschema_str('datosATmodernizacion.gob.ar'), jsonschema_str('email')),
         "validator": "format",
         "validator_value": "email",
         "path": [
