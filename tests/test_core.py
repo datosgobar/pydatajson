@@ -3,20 +3,22 @@
 
 """Tests del modulo pydatajson."""
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import print_function, unicode_literals, with_statement
 
-from six import text_type
-from functools import wraps
-import os.path
-from pprint import pprint
-import unittest
 import json
+import os.path
+import unittest
+from collections import OrderedDict
+from pprint import pprint
+
 import nose
 import vcr
-from collections import OrderedDict
-import mock
+from six import iteritems, text_type
+
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 import filecmp
 import io
 from .context import pydatajson
@@ -28,7 +30,6 @@ my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
 
 
 class DataJsonTestCase(unittest.TestCase):
-
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
@@ -47,7 +48,7 @@ class DataJsonTestCase(unittest.TestCase):
 
     @classmethod
     def tearDown(cls):
-        del(cls.dj)
+        del (cls.dj)
 
     def run_case(self, case_filename, expected_dict=None):
 
@@ -1199,7 +1200,7 @@ revíselo manualmente""".format(actual_filename)
 
         # Catálogo no tiene 'issued', pero su dataset sí -> uso el del dataset
         expected = {
-            'catalogo_ultima_actualizacion_dias':  dias_diff
+            'catalogo_ultima_actualizacion_dias': dias_diff
         }
 
         for k, v in expected.items():
@@ -1227,7 +1228,7 @@ revíselo manualmente""".format(actual_filename)
             self.assertTrue(v is not None)
 
     def test_DataJson_constructor(self):
-        for key, value in self.catalog.iteritems():
+        for key, value in iteritems(self.catalog):
             self.assertEqual(self.dj[key], value)
 
     def test_datasets_property(self):
