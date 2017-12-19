@@ -7,21 +7,17 @@ Contiene los métodos para monitorear y generar indicadores de un catálogo o de
 una red de catálogos.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import print_function, absolute_import, unicode_literals, with_statement
 
+import json
 import os
 from datetime import datetime
-from functools import partial
-import json
 
 from six import string_types
 
-import custom_exceptions as ce
-from reporting import generate_datasets_summary
-from . import readers
 from . import helpers
+from . import readers
+from .reporting import generate_datasets_summary
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -50,7 +46,7 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
     central_catalog = central_catalog or CENTRAL_CATALOG
     assert isinstance(catalogs, string_types + (dict, list))
     # Si se pasa un único catálogo, genero una lista que lo contenga
-    if isinstance(catalogs, string_types + (dict, )):
+    if isinstance(catalogs, string_types + (dict,)):
         catalogs = [catalogs]
 
     # Leo todos los catálogos
@@ -111,9 +107,9 @@ def _generate_indicators(catalog, validator=None):
     # Agrego porcentaje de campos recomendados/optativos usados
     fields_count = _count_required_and_optional_fields(catalog)
     recomendados_pct = 100 * float(fields_count['recomendado']) / \
-        fields_count['total_recomendado']
+                       fields_count['total_recomendado']
     optativos_pct = 100 * float(fields_count['optativo']) / \
-        fields_count['total_optativo']
+                    fields_count['total_optativo']
     result.update({
         'campos_recomendados_pct': round(recomendados_pct, 2),
         'campos_optativos_pct': round(optativos_pct, 2)
@@ -220,10 +216,10 @@ def _network_indicator_percentages(fields, network_indicators):
     # % de campos recomendados y optativos utilizados en todo el catálogo
     if fields:  # 'fields' puede estar vacío si ningún campo es válido
         rec_pct = 100 * float(fields['recomendado']) / \
-            fields['total_recomendado']
+                  fields['total_recomendado']
 
         opt_pct = 100 * float(fields['optativo']) / \
-            fields['total_optativo']
+                  fields['total_optativo']
 
         network_indicators.update({
             'campos_recomendados_pct': round(rec_pct, 2),
@@ -342,7 +338,7 @@ def _generate_date_indicators(catalog, tolerance=0.2):
             days_diff = float((datetime.now() - date).days)
             interval = helpers.parse_repeating_time_interval(
                 periodicity) * \
-                (1 + tolerance)
+                       (1 + tolerance)
 
             if days_diff < interval:
                 actualizados += 1
@@ -394,7 +390,6 @@ def _count_distribution_formats(catalog):
 
 
 def _count_distribution_formats_dataset(dataset):
-
     formats = {}
     for distribution in dataset['distribution']:
         # 'format' es recomendado, no obligatorio. Puede no estar.
@@ -428,7 +423,7 @@ def _days_from_last_update(catalog, date_field="modified"):
     dias_ultima_actualizacion = None
     # "date_field" a nivel de catálogo puede no ser obligatorio,
     # si no está pasamos
-    if isinstance(date_modified, (unicode, str)):
+    if isinstance(date_modified, string_types):
         date = helpers.parse_date_string(date_modified)
         dias_ultima_actualizacion = (datetime.now() - date).days
 
