@@ -7,7 +7,7 @@ xl_methods
 Métodos ligeramente modificados a partir de abenassi/xlseries para manipular
 archivos en formato XLSX (https://github.com/abenassi/xlseries).
 """
-from six import string_types
+from six import string_types, text_type
 
 
 def compare_cells(wb1, wb2):
@@ -28,8 +28,8 @@ def compare_cells_ws(ws1, ws2):
 
             msg = "".join([_safe_str(cell1.value), " != ",
                            _safe_str(cell2.value), "\nrow: ",
-                           str(cell1.row),
-                           " column: ", str(cell1.column)])
+                           _safe_str(cell1.row),
+                           " column: ", _safe_str(cell1.column)])
 
             value1 = normalize_value(cell1.value)
             value2 = normalize_value(cell2.value)
@@ -52,14 +52,4 @@ def normalize_value(value):
 
 
 def _safe_str(value):
-
-    if not value:
-        retval = str(value)
-
-    elif isinstance(value, unicode):
-        retval = value.encode("utf-8")
-
-    else:
-        retval = str(value)
-
-    return retval
+    return text_type(value)
