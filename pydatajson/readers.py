@@ -7,25 +7,23 @@ Contiene los métodos auxiliares para leer archivos con información tabular y
 catálogos de metadatos, en distintos fomatos.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import unicode_literals, print_function, with_statement, absolute_import
 
-from six import text_type
 import io
-import os.path
-from six.moves.urllib_parse import urlparse
-import warnings
-import logging
 import json
-import requests
-from six import string_types
-from unidecode import unidecode
-import unicodecsv as csv
+import logging
+import os.path
+import warnings
+
 import openpyxl as pyxl
+import requests
+import unicodecsv as csv
+from six import string_types, text_type, iteritems
+from six.moves.urllib_parse import urlparse
+from unidecode import unidecode
+
+from . import custom_exceptions as ce
 from . import helpers
-from .ckan_reader import read_ckan_catalog
-import custom_exceptions as ce
 
 global_logger = logging.getLogger()
 
@@ -95,7 +93,7 @@ def apply_default_values(catalog, default_values):
             }
     """
 
-    for field, default_value in default_values.iteritems():
+    for field, default_value in iteritems(default_values):
         class_metadata = field.split("_")[0]
         field_json_path = field.split("_")[1:]
 
@@ -271,7 +269,7 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title,
                     )
                 )
 
-# Debe haber exactamente un dataset con el identificador provisto.
+    # Debe haber exactamente un dataset con el identificador provisto.
     no_dsets_msg = "No hay ningun dataset con el identifier {}".format(
         dataset_identifier)
     many_dsets_msg = "Hay mas de un dataset con el identifier {}: {}".format(
@@ -449,7 +447,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 dataset[field] = helpers.string_to_list(dataset[field])
 
     # Elimino los prefijos de los campos a nivel catálogo
-    for old_key in catalog.keys():
+    for old_key in list(catalog.keys()):
         if old_key.startswith("catalog_"):
             new_key = old_key.replace("catalog_", "")
             catalog[new_key] = catalog.pop(old_key)
@@ -467,7 +465,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
 
     # Elimino los prefijos de los campos a nivel dataset
     for dataset in catalog["dataset"]:
-        for old_key in dataset.keys():
+        for old_key in list(dataset.keys()):
             if old_key.startswith("dataset_"):
                 new_key = old_key.replace("dataset_", "")
                 dataset[new_key] = dataset.pop(old_key)
@@ -478,7 +476,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
     # distribución
     for dataset in catalog["dataset"]:
         for distribution in dataset["distribution"]:
-            for old_key in distribution.keys():
+            for old_key in list(distribution.keys()):
                 if old_key.startswith("distribution_"):
                     new_key = old_key.replace("distribution_", "")
                     distribution[new_key] = distribution.pop(old_key)
@@ -490,7 +488,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
         for distribution in dataset["distribution"]:
             if "field" in distribution:
                 for field in distribution["field"]:
-                    for old_key in field.keys():
+                    for old_key in list(field.keys()):
                         if old_key.startswith("field_"):
                             new_key = old_key.replace("field_", "")
                             field[new_key] = field.pop(old_key)
@@ -548,7 +546,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
 def _read_csv_table(path):
     """Lee un CSV a una lista de diccionarios."""
-    with open(path) as csvfile:
+    with open(path, 'rb') as csvfile:
         reader = csv.DictReader(csvfile)
         table = list(reader)
     return table
