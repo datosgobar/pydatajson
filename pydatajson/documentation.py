@@ -7,18 +7,9 @@ Contiene métodos para generar documentación en markdown de distintos
 componentes de un catálogo.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import print_function, unicode_literals, with_statement
 
-from functools import partial
-from collections import OrderedDict
-import json
-
-from validation import validate_catalog
-import custom_exceptions as ce
-from . import readers
-from . import helpers
+from six.moves import map
 
 
 def dataset_to_markdown(dataset):
@@ -41,8 +32,7 @@ def dataset_to_markdown(dataset):
 """
 
     if "distribution" in dataset:
-        distributions = "".join(
-            map(distribution_to_markdown, dataset["distribution"]))
+        distributions = "".join(map(distribution_to_markdown, dataset["distribution"]))
     else:
         distributions = ""
 
@@ -75,8 +65,7 @@ def distribution_to_markdown(distribution):
 """
 
     if "field" in distribution:
-        fields = "- " + \
-            "\n- ".join(map(field_to_markdown, distribution["field"]))
+        fields = "- " + "\n- ".join(map(field_to_markdown, distribution["field"]))
     else:
         fields = ""
 
