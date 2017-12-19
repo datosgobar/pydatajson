@@ -37,12 +37,12 @@ TEST_FILE_RESPONSES = {
     # Un datajson con valores correctos únicamente para las claves requeridas
     'minimum_data': None,
     # Tests de inputs inválidos
-    'missing_catalog_title': None,
-    'missing_catalog_description': None,
-    'missing_catalog_dataset': None,
-    'missing_dataset_title': None,
-    'missing_dataset_description': None,
-    'missing_distribution_title': None,
+    # 'missing_catalog_title': None,
+    # 'missing_catalog_description': None,
+    # 'missing_catalog_dataset': None,
+    # 'missing_dataset_title': None,
+    # 'missing_dataset_description': None,
+    # 'missing_distribution_title': None,
     'multiple_missing_descriptions': None,
 
     # Tests de TIPOS DE CAMPOS
@@ -85,3 +85,184 @@ TEST_FILE_RESPONSES = {
     'several_assorted_errors': None,
 
 }
+
+
+def jsonschema_str(string):
+    return repr(string)
+
+
+DEFAULT_OPTIONS = {
+    'title': "Datos Argentina",
+    'message': None,
+    'dataset': [
+        {
+            "status": "OK",
+            "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+            "list_index": 0,
+            "errors": [],
+            "title": "Sistema de contrataciones electrónicas"
+        }
+    ]
+}
+
+
+def error_response(options=None):
+    default_options = DEFAULT_OPTIONS.copy()
+    if options is not None:
+        default_options.update(options)
+    options = default_options
+    return {
+        "status": "ERROR",
+        "error": {
+            "catalog": {
+                "status": "ERROR",
+                "errors": [
+                    {
+                        "instance": None,
+                        "validator": "required",
+                        "path": [],
+                        "message": options['message'],
+                        "error_code": 1,
+                        "validator_value": [
+                            "dataset",
+                            "title",
+                            "description",
+                            "publisher",
+                            "superThemeTaxonomy"
+                        ]
+                    }
+                ],
+                "title": options['title'],
+            },
+            "dataset": options['dataset'],
+        }
+    }
+
+
+def missing_catalog_dataset():
+    return error_response({
+        'message': "%s is a required property" % jsonschema_str('dataset'),
+        'dataset': None,
+    })
+
+
+def missing_catalog_title():
+    return error_response({
+        'message': "%s is a required property" % jsonschema_str('title'),
+        'title': None,
+    })
+
+
+def missing_catalog_description():
+    return error_response({
+        'message': "%s is a required property" % jsonschema_str('description'),
+    })
+
+
+def distribution_error():
+    return {
+        "status": "ERROR",
+        "error": {
+            "catalog": {
+                "status": "OK",
+                "errors": [],
+                "title": "Datos Argentina"
+            },
+            "dataset": [
+                {
+                    "status": "ERROR",
+                    "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                    "list_index": 0,
+                    "errors": [
+                        {
+                            "instance": None,
+                            "validator": "required",
+                            "path": [
+                                "dataset",
+                                0,
+                                "distribution",
+                                0
+                            ],
+                            "message": "%s is a required property" % jsonschema_str('title'),
+                            "error_code": 1,
+                            "validator_value": [
+                                "accessURL",
+                                "downloadURL",
+                                "title",
+                                "issued"
+                            ]
+                        }
+                    ],
+                    "title": "Sistema de contrataciones electrónicas"
+                }
+            ]
+        }
+    }
+
+
+def dataset_error(string, dataset_title=None):
+    return {
+        "status": "ERROR",
+        "error": {
+            "catalog": {
+                "status": "OK",
+                "errors": [],
+                "title": "Datos Argentina"
+            },
+            "dataset": [
+                {
+                    "status": "ERROR",
+                    "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                    "list_index": 0,
+                    "errors": [
+                        {
+                            "instance": None,
+                            "validator": "required",
+                            "path": [
+                                "dataset",
+                                0
+                            ],
+                            "message": "%s is a required property" % jsonschema_str(string),
+                            "error_code": 1,
+                            "validator_value": [
+                                "title",
+                                "description",
+                                "publisher",
+                                "superTheme",
+                                "distribution",
+                                "accrualPeriodicity",
+                                "issued"
+                            ]
+                        }
+                    ],
+                    "title": dataset_title
+                }
+            ]
+        }
+    }
+
+
+def missing_dataset_title():
+    return dataset_error('title')
+
+
+def missing_dataset_description():
+    return dataset_error('description', dataset_title='Sistema de contrataciones electrónicas')
+
+
+def missing_distribution_title():
+    return distribution_error()
+
+
+DATAJSON_RESULTS = {
+    'missing_catalog_title': missing_catalog_title(),
+    'missing_catalog_description': missing_catalog_description(),
+    'missing_catalog_dataset': missing_catalog_dataset(),
+
+    'missing_dataset_title': missing_dataset_title(),
+    'missing_dataset_description': missing_dataset_description(),
+
+    'missing_distribution_title': missing_distribution_title()
+}
+
+TEST_FILE_RESPONSES.update(DATAJSON_RESULTS)

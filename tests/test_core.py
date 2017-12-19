@@ -11,7 +11,8 @@ from pprint import pprint
 
 import nose
 import vcr
-from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises
+from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
+    assert_dict_equal
 from six import iteritems, text_type
 
 from tests.factories.core_files import TEST_FILE_RESPONSES
@@ -57,8 +58,9 @@ class TestDataJsonTestCase(object):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         result_path = os.path.join(self.RESULTS_DIR, case_filename + ".json")
 
-        with io.open(result_path, encoding='utf8') as result_file:
-            expected_dict = expected_dict or json.load(result_file)
+        if expected_dict is None:
+            with io.open(result_path, encoding='utf8') as result_file:
+                expected_dict = json.load(result_file)
 
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
@@ -76,7 +78,8 @@ class TestDataJsonTestCase(object):
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
-        assert_equal(expected_dict, response_dict)
+        assert_equal.__self__.maxDiff = None
+        assert_dict_equal(expected_dict, response_dict)
 
     # Tests de CAMPOS REQUERIDOS
 
