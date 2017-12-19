@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import io
 import json
 import os
@@ -19,20 +22,6 @@ def load_expected_result():
                 expected_result = json.load(result_file)
 
             kwargs["expected_result"] = expected_result
-            test(*args, **kwargs)
-
-        return decorated_test
-
-    return case_decorator
-
-
-def load_case_filename():
-    def case_decorator(test):
-        case_filename = test.__name__.split("test_validity_of_")[-1]
-
-        @wraps(test)
-        def decorated_test(*args, **kwargs):
-            kwargs["case_filename"] = case_filename
             test(*args, **kwargs)
 
         return decorated_test

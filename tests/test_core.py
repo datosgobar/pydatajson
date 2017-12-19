@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Tests del modulo pydatajson."""
@@ -15,6 +14,8 @@ import vcr
 from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises
 from six import iteritems, text_type
 
+from tests.support.constants import BAD_DATAJSON_URL, GOOD_DATAJSON_URL
+
 try:
     import mock
 except ImportError:
@@ -22,11 +23,94 @@ except ImportError:
 import filecmp
 import io
 from .context import pydatajson
-from .support.decorators import load_case_filename, load_expected_result, RESULTS_DIR
+from .support.decorators import load_expected_result, RESULTS_DIR
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='once')
+
+FULL_DATA_RESPONSE = {
+    "status": "OK",
+    "error": {
+        "catalog": {
+            "status": "OK",
+            "errors": [],
+            "title": "Datos Argentina"
+        },
+        "dataset": [
+            {
+                "status": "OK",
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
+                "list_index": 0,
+                "errors": [],
+                "title": "Sistema de contrataciones electrónicas"
+            },
+            {
+                "status": "OK",
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                "list_index": 1,
+                "errors": [],
+                "title": "Sistema de contrataciones electrónicas (sin datos)"
+            }
+        ]
+    }
+}
+
+TEST_FILE_RESPONSES = {
+    # Tests de CAMPOS REQUERIDOS
+    # Tests de inputs válidos
+    'full_data': FULL_DATA_RESPONSE,
+    # Un datajson con valores correctos únicamente para las claves requeridas
+    'minimum_data': None,
+    # Tests de inputs inválidos
+    'missing_catalog_title': None,
+    'missing_catalog_description': None,
+    'missing_catalog_dataset': None,
+    'missing_dataset_title': None,
+    'missing_dataset_description': None,
+    'missing_distribution_title': None,
+    'multiple_missing_descriptions': None,
+
+    # Tests de TIPOS DE CAMPOS
+    # Tests de inputs válidos
+    'null_dataset_theme': None,
+    'null_field_description': None,
+    # Tests de inputs inválidos
+    'invalid_catalog_publisher_type': None,
+    'invalid_publisher_mbox_format': None,
+    # Catalog_publisher y distribution_bytesize fallan
+    'invalid_multiple_fields_type': None,
+    'invalid_dataset_theme_type': None,
+    'invalid_field_description_type': None,
+    'null_catalog_publisher': None,
+    # La clave requerida catalog["description"] NO puede ser str vacía
+    'empty_mandatory_string': None,
+    'empty_optional_string': None,
+    # dataset["accrualPeriodicity"] no cumple con el patrón esperado
+    'malformed_accrualperiodicity': None,
+    # catalog["issued"] no es una fecha ISO 8601 válida
+    'malformed_date': None,
+    # catalog["issued"] no es una fecha y hora ISO 8601 válida
+    'malformed_datetime': None,
+    # catalog["issued"] no es una fecha y hora ISO 8601 válida
+    'malformed_datetime2': None,
+    # dataset["temporal"] no es un rango de fechas ISO 8601 válido
+    'malformed_temporal': None,
+    # dataset["temporal"] no es un rango de fechas ISO 8601 válido
+    'malformed_temporal2': None,
+    # catalog["publisher"]["mbox"] no es un email válido
+    'malformed_email': None,
+    # catalog["superThemeTaxonomy"] no es una URI válida
+    'malformed_uri': None,
+    'invalid_dataset_type': None,
+    'invalid_themeTaxonomy': None,
+    'missing_dataset': None,
+    'too_long_field_title': None,
+    # Prueba que las listas con info de errores se generen correctamente
+    #   en presencia de 7 errores de distinto tipo y jerarquía
+    'several_assorted_errors': None,
+
+}
 
 
 class TestDataJsonTestCase(object):
@@ -79,180 +163,9 @@ class TestDataJsonTestCase(object):
     # Tests de CAMPOS REQUERIDOS
 
     # Tests de inputs válidos
-    @load_case_filename()
-    def test_validity_of_full_data(self, case_filename):
-        exp = {
-            "status": "OK",
-            "error": {
-                "catalog": {
-                    "status": "OK",
-                    "errors": [],
-                    "title": "Datos Argentina"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
-                        "list_index": 0,
-                        "errors": [],
-                        "title": "Sistema de contrataciones electrónicas"
-                    },
-                    {
-                        "status": "OK",
-                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
-                        "list_index": 1,
-                        "errors": [],
-                        "title": "Sistema de contrataciones electrónicas (sin datos)"
-                    }
-                ]
-            }
-        }
-        self.run_case(case_filename, exp)
-
-    @load_case_filename()
-    def test_validity_of_minimum_data(self, case_filename):
-        """Un datajson con valores correctos únicamente para las claves
-        requeridas."""
-        self.run_case(case_filename)
-
-    # Tests de inputs inválidos
-    @load_case_filename()
-    def test_validity_of_missing_catalog_title(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_catalog_description(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_catalog_dataset(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_dataset_title(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_dataset_description(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_distribution_title(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_multiple_missing_descriptions(self, case_filename):
-        """Datajson sin descripción de catálogo ni de su único dataset."""
-        self.run_case(case_filename)
-
-    # Tests de TIPOS DE CAMPOS
-
-    # Tests de inputs válidos
-    @load_case_filename()
-    def test_validity_of_null_dataset_theme(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_null_field_description(self, case_filename):
-        self.run_case(case_filename)
-
-    # Tests de inputs inválidos
-    @load_case_filename()
-    def test_validity_of_invalid_catalog_publisher_type(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_publisher_mbox_format(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_multiple_fields_type(self, case_filename):
-        """Catalog_publisher y distribution_bytesize fallan."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_dataset_theme_type(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_field_description_type(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_null_catalog_publisher(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_empty_mandatory_string(self, case_filename):
-        """La clave requerida catalog["description"] NO puede ser str vacía."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_empty_optional_string(self, case_filename):
-        """La clave opcional dataset["license"] SI puede ser str vacía."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_accrualperiodicity(self, case_filename):
-        """dataset["accrualPeriodicity"] no cumple con el patrón esperado."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_date(self, case_filename):
-        """catalog["issued"] no es una fecha ISO 8601 válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_datetime(self, case_filename):
-        """catalog["issued"] no es una fecha y hora ISO 8601 válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_datetime2(self, case_filename):
-        """catalog["issued"] no es una fecha y hora ISO 8601 válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_temporal(self, case_filename):
-        """dataset["temporal"] no es un rango de fechas ISO 8601 válido."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_temporal2(self, case_filename):
-        """dataset["temporal"] no es un rango de fechas ISO 8601 válido."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_email(self, case_filename):
-        """catalog["publisher"]["mbox"] no es un email válido."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_uri(self, case_filename):
-        """catalog["superThemeTaxonomy"] no es una URI válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_dataset_type(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_themeTaxonomy(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_dataset(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_too_long_field_title(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_several_assorted_errors(self, case_filename):
-        """Prueba que las listas con info de errores se generen correctamente
-        en presencia de 7 errores de distinto tipo y jerarquía."""
-        self.run_case(case_filename)
+    def test_validity(self):
+        for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
+            yield self.run_case, filename, value_or_none
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette()
