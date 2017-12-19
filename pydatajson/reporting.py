@@ -6,18 +6,14 @@
 Contiene los métodos para generar reportes sobre un catálogo.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import unicode_literals, print_function, with_statement, absolute_import
 
-from functools import partial
 from collections import OrderedDict
-import json
 
-from validation import validate_catalog
-import custom_exceptions as ce
+from pydatajson import writers
+from .validation import validate_catalog
+
 from . import readers
-from . import helpers
 
 
 def generate_datasets_summary(catalog, export_path=None, validator=None):
