@@ -157,3 +157,32 @@ def malformed_date():
             }
         ]
     })
+
+
+def malformed_datetime():
+    return catalog_error_response({
+        "instance": "2016-04-1419:48:05.433640-03:00",
+        "validator": "anyOf",
+        "path": [
+            "issued"
+        ],
+        "message": "u'2016-04-1419:48:05.433640-03:00' is not valid under any of the given schemas",
+        "error_code": 2,
+        "validator_value": [
+            {
+                "type": "string",
+                "format": "date"
+            },
+            {
+                "type": "string",
+                "format": "date-time"
+            },
+            {
+                "type": "null"
+            },
+            {
+                "type": "string",
+                "maxLength": 0
+            }
+        ]
+    })
