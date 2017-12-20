@@ -188,54 +188,23 @@ class TestDataJsonTestCase(object):
         res = self.dj.is_valid_catalog(BAD_DATAJSON_URL)
         assert_false(res)
 
-    @my_vcr.use_cassette('test_validate_bad_remote_datajson')
     def test_validate_invalid_remote_datajson_has_errors(self):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "ERROR",
-                    "errors": [
-                        {
-                            "instance": "",
-                            "validator": "format",
-                            "path": [
-                                "publisher",
-                                "mbox"
-                            ],
-                            "message": "u'' is not a u'email'",
-                            "error_code": 2,
-                            "validator_value": "email"
-                        },
-                        {
-                            "instance": "",
-                            "validator": "minLength",
-                            "path": [
-                                "publisher",
-                                "name"
-                            ],
-                            "message": "u'' is too short",
-                            "error_code": 2,
-                            "validator_value": 1
-                        }
-                    ],
-                    "title": "Andino Demo"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "errors": [],
-                        "title": "Dataset Demo",
-                        'identifier': u'289b6835-c5fb-4e8a-9013-1d4705c31840',
-                        u'list_index': 0
-                    }
-                ]
-            }
-        }
 
-        res = self.dj.validate_catalog(BAD_DATAJSON_URL)
-        assert_equal(exp, res)
+        errors = [
+            (
+                ['error', 'catalog', 'errors', 0, 'message'],
+                "%s is not a %s'" % (jsonschema_str(''), jsonschema_str('email'))
+            ),
+            (
+                ['error', 'catalog', 'errors', 1, 'message'],
+                "%s is too short" % jsonschema_str('')
+            ),
+        ]
+        for path, regex in errors:
+            with my_vcr.use_cassette('test_validate_bad_remote_datajson'):
+                yield self.validate_string_in, BAD_DATAJSON_URL, path, regex
+        # assert_equal(exp, res)
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette('test_validate_bad_remote_datajson2')
@@ -245,55 +214,21 @@ class TestDataJsonTestCase(object):
         res = self.dj.is_valid_catalog(BAD_DATAJSON_URL2)
         assert_false(res)
 
-    @my_vcr.use_cassette('test_validate_bad_remote_datajson2')
     def test_validate_invalid_remote_datajson_has_errors2(self):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "ERROR",
-                    "errors": [
-                        {
-                            "instance": "",
-                            "validator": "format",
-                            "path": [
-                                "publisher",
-                                "mbox"
-                            ],
-                            "message": "u'' is not a u'email'",
-                            "error_code": 2,
-                            "validator_value": "email"
-                        },
-                        {
-                            "instance": "",
-                            "validator": "minLength",
-                            "path": [
-                                "publisher",
-                                "name"
-                            ],
-                            "message": "u'' is too short",
-                            "error_code": 2,
-                            "validator_value": 1
-                        }
-                    ],
-                    "title": "Andino"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "errors": [],
-                        "title": "Dataset Demo",
-                        'identifier': '6897d435-8084-4685-b8ce-304b190755e4',
-                        'list_index': 0
-                    }
-                ]
-            }
-        }
-
-        res = self.dj.validate_catalog(BAD_DATAJSON_URL2)
-        assert_equal(exp, res)
+        errors = [
+            (
+                ['error', 'catalog', 'errors', 0, 'message'],
+                "%s is not a %s'" % (jsonschema_str(''), jsonschema_str('email'))
+            ),
+            (
+                ['error', 'catalog', 'errors', 1, 'message'],
+                "%s is too short" % jsonschema_str('')
+            ),
+        ]
+        for path, regex in errors:
+            with my_vcr.use_cassette('test_validate_bad_remote_datajson2'):
+                yield self.validate_string_in, BAD_DATAJSON_URL2, path, regex
 
     def test_correctness_of_accrualPeriodicity_regex(self):
         """Prueba que la regex de validación de
