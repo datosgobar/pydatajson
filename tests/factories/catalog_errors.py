@@ -117,3 +117,14 @@ def null_catalog_publisher():
         "validator": 'type',
         "validator_value": 'object',
     })
+
+
+def empty_mandatory_string():
+    return catalog_error_response({
+        "error_code": 2,
+        "message": "%s is too short" % jsonschema_str(''),
+        "path": ['description'],
+        "validator": 'minLength',
+        "validator_value": 1,
+        "instance": "",
+    })
