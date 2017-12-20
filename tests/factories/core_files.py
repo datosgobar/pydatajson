@@ -6,7 +6,8 @@ from __future__ import unicode_literals
 from tests.factories.catalog_errors import missing_catalog_title, missing_catalog_description, \
     missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format, \
     null_catalog_publisher, empty_mandatory_string
-from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description
+from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description, \
+    malformed_accrualperiodicity
 from tests.factories.other_errors import multiple_missing_descriptions, invalid_multiple_fields_type
 from .utils import jsonschema_str
 
@@ -68,7 +69,7 @@ TEST_FILE_RESPONSES = {
     # 'empty_mandatory_string': None,
     'empty_optional_string': None,
     # dataset["accrualPeriodicity"] no cumple con el patrón esperado
-    'malformed_accrualperiodicity': None,
+    # 'malformed_accrualperiodicity': None,
     # catalog["issued"] no es una fecha ISO 8601 válida
     'malformed_date': None,
     # catalog["issued"] no es una fecha y hora ISO 8601 válida
@@ -152,6 +153,7 @@ DATAJSON_RESULTS = {
 
     'missing_dataset_title': missing_dataset_title(),
     'missing_dataset_description': missing_dataset_description(),
+    'malformed_accrualperiodicity': malformed_accrualperiodicity(),
 
     'missing_distribution_title': missing_distribution_title(),
 
