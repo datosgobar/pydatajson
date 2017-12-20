@@ -107,3 +107,13 @@ def invalid_publisher_mbox_format():
         ],
         "instance": "datosATmodernizacion.gob.ar"
     })
+
+
+def null_catalog_publisher():
+    return catalog_error_response({
+        "error_code": 2,
+        "message": "None is not of type %s" % jsonschema_str('object'),
+        "path": ['publisher'],
+        "validator": 'type',
+        "validator_value": 'object',
+    })

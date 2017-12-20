@@ -4,7 +4,8 @@
 from __future__ import unicode_literals
 
 from tests.factories.catalog_errors import missing_catalog_title, missing_catalog_description, \
-    missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format
+    missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format, \
+    null_catalog_publisher
 from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description
 from tests.factories.other_errors import multiple_missing_descriptions, invalid_multiple_fields_type
 from .utils import jsonschema_str
@@ -62,7 +63,7 @@ TEST_FILE_RESPONSES = {
     # 'invalid_multiple_fields_type': None,
     # 'invalid_dataset_theme_type': None,
     'invalid_field_description_type': None,
-    'null_catalog_publisher': None,
+    #'null_catalog_publisher': None,
     # La clave requerida catalog["description"] NO puede ser str vacía
     'empty_mandatory_string': None,
     'empty_optional_string': None,
@@ -146,6 +147,7 @@ DATAJSON_RESULTS = {
     'missing_catalog_title': missing_catalog_title(),
     'missing_catalog_description': missing_catalog_description(),
     'missing_catalog_dataset': missing_catalog_dataset(),
+    'null_catalog_publisher': null_catalog_publisher(),
 
     'missing_dataset_title': missing_dataset_title(),
     'missing_dataset_description': missing_dataset_description(),

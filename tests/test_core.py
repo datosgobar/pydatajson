@@ -80,6 +80,7 @@ class TestDataJsonTestCase(object):
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
+        assert_dict_equal.__self__.maxDiff = None
         assert_dict_equal(expected_dict, response_dict)
 
     # Tests de CAMPOS REQUERIDOS
