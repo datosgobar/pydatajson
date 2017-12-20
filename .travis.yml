@@ -17,9 +17,6 @@ install:
 - pip install coveralls
 - mkdir tests/temp
 language: python
-matrix:
-  allow_failures:
-  - python: '3.5'
 notifications:
   slack:
     on_failure: always
@@ -29,6 +26,7 @@ os:
 - linux
 python:
 - '2.7'
+- '3.6'
 script:
 - nosetests --with-coverage --cover-package=pydatajson
 sudo: false
