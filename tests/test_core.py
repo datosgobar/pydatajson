@@ -13,6 +13,7 @@ import nose
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
     assert_dict_equal, assert_regexp_matches
+import re
 from six import iteritems, text_type
 
 from tests.factories.core_files import TEST_FILE_RESPONSES
@@ -96,9 +97,28 @@ class TestDataJsonTestCase(object):
         """
         case_filename = "invalid_dataset_type"
         expected_valid = False
-        regex = '\{.*\} is not of type %s' % jsonschema_str('array')
         path = ['error', 'catalog', 'errors', 0, 'message']
+        regex = '\{.*\} is not of type %s' % jsonschema_str('array')
 
+        self.validate_message(case_filename, expected_valid, path, regex)
+
+    def test_several_assorted_errors(self):
+        case_filename = "several_assorted_errors"
+        expected_errors = [
+            (['error', 'catalog', 'errors',], "%s is a required property" % jsonschema_str('title')),
+            (['error', 'catalog', 'errors',], "%s is not valid under any of the given schemas" % jsonschema_str('')),
+            (['error', 'catalog', 'errors',], "%s is not a %s" % (jsonschema_str('datosmodernizacion.gob.ar'), jsonschema_str('email'))),
+            (['error', 'catalog', 'errors',], "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')),
+
+            (['error', 'dataset', 0, 'errors',], "123 is not valid under any of the given schemas"),
+            (['error', 'dataset', 0, 'errors',], "\[.*\] is not of type %s" % jsonschema_str('object')),
+            (['error', 'dataset', 0, 'errors',], "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')),
+        ]
+
+        for path, regex in expected_errors:
+            self.validate_contains_message(case_filename, path, regex)
+
+    def validate_message(self, case_filename, expected_valid, path, regex):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
@@ -113,6 +133,22 @@ class TestDataJsonTestCase(object):
             response = response[key]
 
         assert_regexp_matches(response, regex)
+
+    def validate_contains_message(self, case_filename, path, regex):
+        sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
+        response_bool = self.dj.is_valid_catalog(sample_path)
+        response_dict = self.dj.validate_catalog(sample_path)
+
+        assert_false(response_bool)
+
+        response = response_dict.copy()
+        for key in path:
+            response = response[key]
+
+        p = re.compile(regex)
+        matches = [p.match(error['message']) for error in response]
+        assert_true(any(matches))
+
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette()

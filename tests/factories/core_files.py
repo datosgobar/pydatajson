@@ -88,7 +88,7 @@ TEST_FILE_RESPONSES = {
     'too_long_field_title': None,
     # Prueba que las listas con info de errores se generen correctamente
     #   en presencia de 7 errores de distinto tipo y jerarquía
-    'several_assorted_errors': None,
+    # 'several_assorted_errors': None,
 
 }
 
