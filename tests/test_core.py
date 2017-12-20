@@ -165,8 +165,11 @@ class TestDataJsonTestCase(object):
 
     def validate_contains_message_with_file(self, case_filename, path, regex):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
-        response_bool = self.dj.is_valid_catalog(sample_path)
-        response_dict = self.dj.validate_catalog(sample_path)
+        self.validate_contains_message(sample_path, path, regex)
+
+    def validate_contains_message(self, datajson, path, regex):
+        response_bool = self.dj.is_valid_catalog(datajson)
+        response_dict = self.dj.validate_catalog(datajson)
 
         assert_false(response_bool)
 
