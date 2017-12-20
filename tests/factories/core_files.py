@@ -5,7 +5,8 @@ from __future__ import unicode_literals
 
 from tests.factories.catalog_errors import missing_catalog_title, missing_catalog_description, \
     missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format, \
-    null_catalog_publisher, empty_mandatory_string, malformed_date, malformed_datetime
+    null_catalog_publisher, empty_mandatory_string, malformed_date, malformed_datetime, \
+    malformed_datetime2
 from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description, \
     malformed_accrualperiodicity
 from tests.factories.other_errors import multiple_missing_descriptions, invalid_multiple_fields_type
@@ -75,7 +76,7 @@ TEST_FILE_RESPONSES = {
     # catalog["issued"] no es una fecha y hora ISO 8601 válida
     # 'malformed_datetime': None,
     # catalog["issued"] no es una fecha y hora ISO 8601 válida
-    'malformed_datetime2': None,
+    # 'malformed_datetime2': None,
     # dataset["temporal"] no es un rango de fechas ISO 8601 válido
     'malformed_temporal': None,
     # dataset["temporal"] no es un rango de fechas ISO 8601 válido
@@ -151,6 +152,7 @@ DATAJSON_RESULTS = {
     'null_catalog_publisher': null_catalog_publisher(),
     'empty_mandatory_string': empty_mandatory_string(),
     'malformed_datetime': malformed_datetime(),
+    'malformed_datetime2': malformed_datetime2(),
 
     'missing_dataset_title': missing_dataset_title(),
     'missing_dataset_description': missing_dataset_description(),

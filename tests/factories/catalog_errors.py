@@ -166,7 +166,36 @@ def malformed_datetime():
         "path": [
             "issued"
         ],
-        "message": "u'2016-04-1419:48:05.433640-03:00' is not valid under any of the given schemas",
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str('2016-04-1419:48:05.433640-03:00'),
+        "error_code": 2,
+        "validator_value": [
+            {
+                "type": "string",
+                "format": "date"
+            },
+            {
+                "type": "string",
+                "format": "date-time"
+            },
+            {
+                "type": "null"
+            },
+            {
+                "type": "string",
+                "maxLength": 0
+            }
+        ]
+    })
+
+
+def malformed_datetime2():
+    return catalog_error_response({
+        "instance": "2016-04-54T19:48:05.433640-03:00",
+        "validator": "anyOf",
+        "path": [
+            "issued"
+        ],
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str('2016-04-54T19:48:05.433640-03:00'),
         "error_code": 2,
         "validator_value": [
             {
