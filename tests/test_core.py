@@ -13,7 +13,7 @@ from pprint import pprint
 import nose
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
-    assert_dict_equal, assert_regexp_matches
+    assert_dict_equal
 from six import iteritems, text_type
 
 from tests.factories.core_files import TEST_FILE_RESPONSES
@@ -111,21 +111,33 @@ class TestDataJsonTestCase(object):
     def test_several_assorted_errors(self):
         case_filename = "several_assorted_errors"
         expected_errors = [
-            (['error', 'catalog', 'errors', ],
-             "%s is a required property" % jsonschema_str('title')),
-            (['error', 'catalog', 'errors', ],
-             "%s is not valid under any of the given schemas" % jsonschema_str('')),
-            (['error', 'catalog', 'errors', ], "%s is not a %s" % (
-            jsonschema_str('datosmodernizacion.gob.ar'), jsonschema_str('email'))),
-            (['error', 'catalog', 'errors', ],
-             "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')),
-
             (
-            ['error', 'dataset', 0, 'errors', ], "123 is not valid under any of the given schemas"),
-            (['error', 'dataset', 0, 'errors', ],
-             "\[.*\] is not of type %s" % jsonschema_str('object')),
-            (['error', 'dataset', 0, 'errors', ],
-             "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')),
+                ['error', 'catalog', 'errors', ],
+                "%s is a required property" % jsonschema_str('title')
+            ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is not valid under any of the given schemas" % jsonschema_str('')
+            ),
+            (
+                ['error', 'catalog', 'errors', ], "%s is not a %s" % (
+                    jsonschema_str('datosmodernizacion.gob.ar'), jsonschema_str('email'))
+            ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "123 is not valid under any of the given schemas"),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "\[.*\] is not of type %s" % jsonschema_str('object')
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')
+            ),
         ]
 
         for path, regex in expected_errors:
@@ -133,19 +145,23 @@ class TestDataJsonTestCase(object):
 
     def validate_message_with_file(self, case_filename, expected_valid, path, regex):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
-        response_bool = self.dj.is_valid_catalog(sample_path)
-        response_dict = self.dj.validate_catalog(sample_path)
 
-        if expected_valid:
-            assert_true(response_bool)
-        else:
-            assert_false(response_bool)
+        self.validate_string_in(sample_path, path, regex)
+        self.validate_valid(sample_path, expected_valid)
+
+    def validate_string_in(self, datajson, path, regex):
+        response_dict = self.dj.validate_catalog(datajson)
 
         response = response_dict.copy()
         for key in path:
             response = response[key]
 
-        assert_regexp_matches(response, regex)
+    def validate_valid(self, datajson, expected_valid):
+        response_bool = self.dj.is_valid_catalog(datajson)
+        if expected_valid:
+            assert_true(response_bool)
+        else:
+            assert_false(response_bool)
 
     def validate_contains_message_with_file(self, case_filename, path, regex):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
