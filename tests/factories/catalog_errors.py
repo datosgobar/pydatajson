@@ -166,7 +166,8 @@ def malformed_datetime():
         "path": [
             "issued"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str('2016-04-1419:48:05.433640-03:00'),
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
+            '2016-04-1419:48:05.433640-03:00'),
         "error_code": 2,
         "validator_value": [
             {
@@ -195,7 +196,8 @@ def malformed_datetime2():
         "path": [
             "issued"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str('2016-04-54T19:48:05.433640-03:00'),
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
+            '2016-04-54T19:48:05.433640-03:00'),
         "error_code": 2,
         "validator_value": [
             {
@@ -214,4 +216,47 @@ def malformed_datetime2():
                 "maxLength": 0
             }
         ]
+    })
+
+
+def malformed_email():
+    return catalog_error_response({
+        "instance": "datosATmodernizacion.gob.ar",
+        "validator": "format",
+        "path": [
+            "publisher",
+            "mbox"
+        ],
+        "message": "%s is not a %s" % (
+            jsonschema_str('datosATmodernizacion.gob.ar'), jsonschema_str('email')),
+        "error_code": 2,
+        "validator_value": "email"
+    })
+
+
+def malformed_uri():
+    return catalog_error_response({
+        "instance": "datos.gob.ar/superThemeTaxonomy.json",
+        "validator": "format",
+        "path": [
+            "superThemeTaxonomy"
+        ],
+        "message": "%s is not a %s" % (
+        jsonschema_str('datos.gob.ar/superThemeTaxonomy.json'), jsonschema_str('uri')),
+        "error_code": 2,
+        "validator_value": "uri"
+    })
+
+
+def invalid_theme_taxonomy():
+    return catalog_error_response({
+        "instance": None,
+        "validator": "repeatedValue",
+        "path": [
+            "catalog",
+            "themeTaxonomy"
+        ],
+        "message": "Los ids [%s] estan repetidos en mas de un `theme`" % jsonschema_str('convocatorias'),
+        "error_code": 2,
+        "validator_value": "Chequea ids duplicados en themeTaxonomy"
     })

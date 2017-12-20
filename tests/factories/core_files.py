@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 from tests.factories.catalog_errors import missing_catalog_title, missing_catalog_description, \
     missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format, \
     null_catalog_publisher, empty_mandatory_string, malformed_date, malformed_datetime, \
-    malformed_datetime2
+    malformed_datetime2, malformed_email, malformed_uri, invalid_theme_taxonomy
 from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description, \
     malformed_accrualperiodicity, malformed_temporal, malformed_temporal2
 from tests.factories.other_errors import multiple_missing_descriptions, invalid_multiple_fields_type
@@ -82,11 +82,11 @@ TEST_FILE_RESPONSES = {
     # dataset["temporal"] no es un rango de fechas ISO 8601 válido
     # 'malformed_temporal2': None,
     # catalog["publisher"]["mbox"] no es un email válido
-    'malformed_email': None,
+    # 'malformed_email': None,
     # catalog["superThemeTaxonomy"] no es una URI válida
-    'malformed_uri': None,
+    # 'malformed_uri': None,
     # 'invalid_dataset_type': None,
-    'invalid_themeTaxonomy': None,
+    # 'invalid_themeTaxonomy': None,
     'missing_dataset': None,
     'too_long_field_title': None,
     # Prueba que las listas con info de errores se generen correctamente
@@ -153,6 +153,9 @@ DATAJSON_RESULTS = {
     'empty_mandatory_string': empty_mandatory_string(),
     'malformed_datetime': malformed_datetime(),
     'malformed_datetime2': malformed_datetime2(),
+    'malformed_email': malformed_email(),
+    'malformed_uri': malformed_uri(),
+    'invalid_themeTaxonomy': invalid_theme_taxonomy(),
 
     'missing_dataset_title': missing_dataset_title(),
     'missing_dataset_description': missing_dataset_description(),
