@@ -158,7 +158,8 @@ def malformed_temporal2():
             0,
             "temporal"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str('2015-01-10/31-12-2015'),
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
+            '2015-01-10/31-12-2015'),
         "error_code": 2,
         "validator_value": [
             {
@@ -171,6 +172,33 @@ def malformed_temporal2():
             {
                 "type": "string",
                 "maxLength": 0
+            }
+        ]
+    })
+
+
+def too_long_field_title():
+    return gen_dataset_error({
+        "instance": "organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc",
+        "validator": "anyOf",
+        "path": [
+            "dataset",
+            0,
+            "distribution",
+            0,
+            "field",
+            3,
+            "title"
+        ],
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str('organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc'),
+        "error_code": 2,
+        "validator_value": [
+            {
+                "type": "string",
+                "maxLength": 60
+            },
+            {
+                "type": "null"
             }
         ]
     })

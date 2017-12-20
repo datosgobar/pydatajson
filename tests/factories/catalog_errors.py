@@ -242,7 +242,7 @@ def malformed_uri():
             "superThemeTaxonomy"
         ],
         "message": "%s is not a %s" % (
-        jsonschema_str('datos.gob.ar/superThemeTaxonomy.json'), jsonschema_str('uri')),
+            jsonschema_str('datos.gob.ar/superThemeTaxonomy.json'), jsonschema_str('uri')),
         "error_code": 2,
         "validator_value": "uri"
     })
@@ -256,7 +256,26 @@ def invalid_theme_taxonomy():
             "catalog",
             "themeTaxonomy"
         ],
-        "message": "Los ids [%s] estan repetidos en mas de un `theme`" % jsonschema_str('convocatorias'),
+        "message": "Los ids [%s] estan repetidos en mas de un `theme`" % jsonschema_str(
+            'convocatorias'),
         "error_code": 2,
         "validator_value": "Chequea ids duplicados en themeTaxonomy"
+    })
+
+
+def missing_dataset():
+    return catalog_error_response({
+        "instance": None,
+        "validator": "required",
+        "path": [],
+        "message": "%s is a required property" % jsonschema_str('dataset'),
+        "error_code": 1,
+        "validator_value": [
+            "dataset",
+            "title",
+            "description",
+            "publisher",
+            "superThemeTaxonomy"
+        ],
+        "dataset": None,
     })
