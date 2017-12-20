@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 
-from tests.factories.catalog_errors import missing_catalog_title, missing_catalog_description, \
+from .catalog_errors import missing_catalog_title, \
+    missing_catalog_description, \
     missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format, \
     null_catalog_publisher, empty_mandatory_string, malformed_date, malformed_datetime, \
     malformed_datetime2, malformed_email, malformed_uri, invalid_theme_taxonomy, missing_dataset
-from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description, \
+from .dataset_errors import missing_dataset_title, \
+    missing_dataset_description, \
     malformed_accrualperiodicity, malformed_temporal, malformed_temporal2, too_long_field_title
-from tests.factories.other_errors import multiple_missing_descriptions, invalid_multiple_fields_type
-from .utils import jsonschema_str
+from .distribution_errors import missing_distribution_title
+from .other_errors import multiple_missing_descriptions, \
+    invalid_multiple_fields_type
 
 FULL_DATA_RESPONSE = {
     "status": "OK",
@@ -39,7 +42,7 @@ FULL_DATA_RESPONSE = {
     }
 }
 
-TEST_FILE_RESPONSES = {
+TEST_FROM_RESULT_FILE = {
     # Tests de CAMPOS REQUERIDOS
     # Tests de inputs válidos
     'full_data': FULL_DATA_RESPONSE,
@@ -60,53 +63,7 @@ TEST_FILE_RESPONSES = {
 
 }
 
-
-def distribution_error():
-    return {
-        "status": "ERROR",
-        "error": {
-            "catalog": {
-                "status": "OK",
-                "errors": [],
-                "title": "Datos Argentina"
-            },
-            "dataset": [
-                {
-                    "status": "ERROR",
-                    "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
-                    "list_index": 0,
-                    "errors": [
-                        {
-                            "instance": None,
-                            "validator": "required",
-                            "path": [
-                                "dataset",
-                                0,
-                                "distribution",
-                                0
-                            ],
-                            "message": "%s is a required property" % jsonschema_str('title'),
-                            "error_code": 1,
-                            "validator_value": [
-                                "accessURL",
-                                "downloadURL",
-                                "title",
-                                "issued"
-                            ]
-                        }
-                    ],
-                    "title": "Sistema de contrataciones electrónicas"
-                }
-            ]
-        }
-    }
-
-
-def missing_distribution_title():
-    return distribution_error()
-
-
-DATAJSON_RESULTS = {
+TEST_FROM_GENERATED_RESULT = {
 
     'multiple_missing_descriptions': multiple_missing_descriptions(),
     'invalid_multiple_fields_type': invalid_multiple_fields_type(),
@@ -137,4 +94,6 @@ DATAJSON_RESULTS = {
     'invalid_publisher_mbox_format': invalid_publisher_mbox_format(),
 }
 
-TEST_FILE_RESPONSES.update(DATAJSON_RESULTS)
+TEST_FILE_RESPONSES = {}
+TEST_FILE_RESPONSES.update(TEST_FROM_RESULT_FILE)
+TEST_FILE_RESPONSES.update(TEST_FROM_GENERATED_RESULT)

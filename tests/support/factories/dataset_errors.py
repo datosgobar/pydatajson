@@ -3,11 +3,12 @@
 
 from __future__ import unicode_literals
 
-from tests.factories.utils import jsonschema_str
+from tests.support.utils import jsonschema_str
 
 
-def gen_dataset_error(options=None):
+def dataset_error(options=None):
     default_options = {
+        "dataset_title": "Sistema de contrataciones electrónicas",
         "instance": "RP1Y",
         "validator": "anyOf",
         "path": [
@@ -58,49 +59,7 @@ def gen_dataset_error(options=None):
                             "validator_value": options['validator_value'],
                         }
                     ],
-                    "title": "Sistema de contrataciones electrónicas"
-                }
-            ]
-        }
-    }
-
-
-def dataset_error(string, dataset_title=None):
-    return {
-        "status": "ERROR",
-        "error": {
-            "catalog": {
-                "status": "OK",
-                "errors": [],
-                "title": "Datos Argentina"
-            },
-            "dataset": [
-                {
-                    "status": "ERROR",
-                    "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
-                    "list_index": 0,
-                    "errors": [
-                        {
-                            "instance": None,
-                            "validator": "required",
-                            "path": [
-                                "dataset",
-                                0
-                            ],
-                            "message": "%s is a required property" % jsonschema_str(string),
-                            "error_code": 1,
-                            "validator_value": [
-                                "title",
-                                "description",
-                                "publisher",
-                                "superTheme",
-                                "distribution",
-                                "accrualPeriodicity",
-                                "issued"
-                            ]
-                        }
-                    ],
-                    "title": dataset_title
+                    "title": options['dataset_title']
                 }
             ]
         }
@@ -108,21 +67,59 @@ def dataset_error(string, dataset_title=None):
 
 
 def missing_dataset_title():
-    return dataset_error('title')
+    return dataset_error({
+        "instance": None,
+        "validator": "required",
+        "path": [
+            "dataset",
+            0
+        ],
+        "message": "%s is a required property" % jsonschema_str('title'),
+        "error_code": 1,
+        "validator_value": [
+            "title",
+            "description",
+            "publisher",
+            "superTheme",
+            "distribution",
+            "accrualPeriodicity",
+            "issued"
+        ],
+        "dataset_title": None,
+    })
 
 
 def missing_dataset_description():
-    return dataset_error('description', dataset_title='Sistema de contrataciones electrónicas')
+    return dataset_error({
+        "instance": None,
+        "validator": "required",
+        "path": [
+            "dataset",
+            0
+        ],
+        "message": "%s is a required property" % jsonschema_str('description'),
+        "error_code": 1,
+        "validator_value": [
+            "title",
+            "description",
+            "publisher",
+            "superTheme",
+            "distribution",
+            "accrualPeriodicity",
+            "issued"
+        ],
+        "dataset_title": 'Sistema de contrataciones electrónicas',
+    })
 
 
 def malformed_accrualperiodicity():
-    return gen_dataset_error({
+    return dataset_error({
         'message': "%s is not valid under any of the given schemas" % jsonschema_str('RP1Y'),
     })
 
 
 def malformed_temporal():
-    return gen_dataset_error({
+    return dataset_error({
         "instance": "2015-01-1/2015-12-31",
         "validator": "anyOf",
         "path": [
@@ -150,7 +147,7 @@ def malformed_temporal():
 
 
 def malformed_temporal2():
-    return gen_dataset_error({
+    return dataset_error({
         "instance": "2015-01-10/31-12-2015",
         "validator": "anyOf",
         "path": [
@@ -178,7 +175,7 @@ def malformed_temporal2():
 
 
 def too_long_field_title():
-    return gen_dataset_error({
+    return dataset_error({
         "instance": "organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc",
         "validator": "anyOf",
         "path": [
@@ -190,7 +187,8 @@ def too_long_field_title():
             3,
             "title"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str('organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc'),
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
+            'organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc'),
         "error_code": 2,
         "validator_value": [
             {

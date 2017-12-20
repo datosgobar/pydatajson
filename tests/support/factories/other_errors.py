@@ -3,7 +3,7 @@
 
 from __future__ import unicode_literals
 
-from tests.factories.utils import jsonschema_str
+from tests.support.utils import jsonschema_str
 
 
 def gen_error(catalog_error, dataset_error):

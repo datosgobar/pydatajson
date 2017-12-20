@@ -16,9 +16,9 @@ from nose.tools import assert_true, assert_false, assert_equal, assert_list_equa
     assert_dict_equal
 from six import iteritems, text_type
 
-from tests.factories.core_files import TEST_FILE_RESPONSES
-from tests.factories.utils import jsonschema_str
-from tests.support.constants import BAD_DATAJSON_URL, BAD_DATAJSON_URL2
+from tests.support.factories.core_files import TEST_FILE_RESPONSES
+from .support.utils import jsonschema_str
+from .support.constants import BAD_DATAJSON_URL, BAD_DATAJSON_URL2
 
 try:
     import mock
