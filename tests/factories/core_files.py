@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 
 from tests.factories.catalog_errors import missing_catalog_title, missing_catalog_description, \
     missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format
+from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description
+from tests.factories.other_errors import multiple_missing_descriptions, invalid_multiple_fields_type
 from .utils import jsonschema_str
 
 FULL_DATA_RESPONSE = {
@@ -47,7 +49,7 @@ TEST_FILE_RESPONSES = {
     # 'missing_dataset_title': None,
     # 'missing_dataset_description': None,
     # 'missing_distribution_title': None,
-    'multiple_missing_descriptions': None,
+    #'multiple_missing_descriptions': None,
 
     # Tests de TIPOS DE CAMPOS
     # Tests de inputs válidos
@@ -57,7 +59,7 @@ TEST_FILE_RESPONSES = {
     'invalid_catalog_publisher_type': None,
     'invalid_publisher_mbox_format': None,
     # Catalog_publisher y distribution_bytesize fallan
-    'invalid_multiple_fields_type': None,
+    # 'invalid_multiple_fields_type': None,
     'invalid_dataset_theme_type': None,
     'invalid_field_description_type': None,
     'null_catalog_publisher': None,
@@ -132,61 +134,16 @@ def distribution_error():
     }
 
 
-def dataset_error(string, dataset_title=None):
-    return {
-        "status": "ERROR",
-        "error": {
-            "catalog": {
-                "status": "OK",
-                "errors": [],
-                "title": "Datos Argentina"
-            },
-            "dataset": [
-                {
-                    "status": "ERROR",
-                    "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
-                    "list_index": 0,
-                    "errors": [
-                        {
-                            "instance": None,
-                            "validator": "required",
-                            "path": [
-                                "dataset",
-                                0
-                            ],
-                            "message": "%s is a required property" % jsonschema_str(string),
-                            "error_code": 1,
-                            "validator_value": [
-                                "title",
-                                "description",
-                                "publisher",
-                                "superTheme",
-                                "distribution",
-                                "accrualPeriodicity",
-                                "issued"
-                            ]
-                        }
-                    ],
-                    "title": dataset_title
-                }
-            ]
-        }
-    }
-
-
-def missing_dataset_title():
-    return dataset_error('title')
-
-
-def missing_dataset_description():
-    return dataset_error('description', dataset_title='Sistema de contrataciones electrónicas')
-
-
 def missing_distribution_title():
     return distribution_error()
 
 
 DATAJSON_RESULTS = {
+
+    'multiple_missing_descriptions': multiple_missing_descriptions(),
+    'invalid_multiple_fields_type': invalid_multiple_fields_type(),
+
+
     'missing_catalog_title': missing_catalog_title(),
     'missing_catalog_description': missing_catalog_description(),
     'missing_catalog_dataset': missing_catalog_dataset(),
