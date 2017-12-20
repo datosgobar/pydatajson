@@ -80,7 +80,6 @@ class TestDataJsonTestCase(object):
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
-        assert_dict_equal.__self__.maxDiff = None
         assert_dict_equal(expected_dict, response_dict)
 
     # Tests de CAMPOS REQUERIDOS
@@ -142,7 +141,7 @@ class TestDataJsonTestCase(object):
         ]
 
         for path, regex in expected_errors:
-            self.validate_contains_message_with_file(case_filename, path, regex)
+            yield self.validate_contains_message_with_file, case_filename, path, regex
 
     def validate_message_with_file(self, case_filename, expected_valid, path, regex):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
