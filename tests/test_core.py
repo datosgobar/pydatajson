@@ -18,7 +18,7 @@ from six import iteritems, text_type
 
 from tests.factories.core_files import TEST_FILE_RESPONSES
 from tests.factories.utils import jsonschema_str
-from tests.support.constants import BAD_DATAJSON_URL, GOOD_DATAJSON_URL
+from tests.support.constants import BAD_DATAJSON_URL, BAD_DATAJSON_URL2
 
 try:
     import mock
@@ -181,13 +181,16 @@ class TestDataJsonTestCase(object):
         matches = [p.match(error['message']) for error in response]
         assert_true(any(matches))
 
-    @my_vcr.use_cassette()
-    def test_validate_bad_remote_datajson(self):
-        """ Testea `validate_catalog` contra un data.json remoto invalido."""
+    @my_vcr.use_cassette('test_validate_bad_remote_datajson')
+    def test_validate_invalid_remote_datajson_is_invalid(self):
+        """ Testea `is_valid_catalog` contra un data.json remoto invalido."""
 
         res = self.dj.is_valid_catalog(BAD_DATAJSON_URL)
         assert_false(res)
 
+    @my_vcr.use_cassette('test_validate_bad_remote_datajson')
+    def test_validate_invalid_remote_datajson_has_errors(self):
+        """ Testea `validate_catalog` contra un data.json remoto invalido."""
         exp = {
             "status": "ERROR",
             "error": {
@@ -235,12 +238,16 @@ class TestDataJsonTestCase(object):
         assert_equal(exp, res)
 
     # Tests contra una URL REMOTA
-    @my_vcr.use_cassette()
-    def test_validate_good_remote_datajson(self):
-        """ Testea `validate_catalog` contra un data.json remoto valido."""
+    @my_vcr.use_cassette('test_validate_bad_remote_datajson2')
+    def test_validate_invalid_remote_datajson_is_invalid2(self):
+        """ Testea `is_valid_catalog` contra un data.json remoto invalido."""
 
-        res = self.dj.is_valid_catalog(GOOD_DATAJSON_URL)
+        res = self.dj.is_valid_catalog(BAD_DATAJSON_URL2)
         assert_false(res)
+
+    @my_vcr.use_cassette('test_validate_bad_remote_datajson2')
+    def test_validate_invalid_remote_datajson_has_errors2(self):
+        """ Testea `validate_catalog` contra un data.json remoto invalido."""
 
         exp = {
             "status": "ERROR",
@@ -285,7 +292,7 @@ class TestDataJsonTestCase(object):
             }
         }
 
-        res = self.dj.validate_catalog(GOOD_DATAJSON_URL)
+        res = self.dj.validate_catalog(BAD_DATAJSON_URL2)
         assert_equal(exp, res)
 
     def test_correctness_of_accrualPeriodicity_regex(self):
