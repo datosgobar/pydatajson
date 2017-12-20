@@ -150,12 +150,9 @@ class TestDataJsonTestCase(object):
         assert_true(any(matches))
 
 
-    # Tests contra una URL REMOTA
     @my_vcr.use_cassette()
-    def test_validation_of_remote_datajsons(self):
-        """ Testea `validate_catalog` contra dos data.json remotos."""
-
-        # data.json remoto #1
+    def test_validate_bad_remote_datajson(self):
+        """ Testea `validate_catalog` contra un data.json remoto invalido."""
 
         res = self.dj.is_valid_catalog(BAD_DATAJSON_URL)
         assert_false(res)
@@ -206,7 +203,11 @@ class TestDataJsonTestCase(object):
         res = self.dj.validate_catalog(BAD_DATAJSON_URL)
         assert_equal(exp, res)
 
-        # data.json remoto #2
+
+    # Tests contra una URL REMOTA
+    @my_vcr.use_cassette()
+    def test_validate_good_remote_datajson(self):
+        """ Testea `validate_catalog` contra un data.json remoto valido."""
 
         res = self.dj.is_valid_catalog(GOOD_DATAJSON_URL)
         assert_false(res)
