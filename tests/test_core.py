@@ -13,12 +13,12 @@ from pprint import pprint
 import nose
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
-    assert_dict_equal
+    assert_dict_equal, assert_regexp_matches
 from six import iteritems, text_type
 
 from tests.support.factories.core_files import TEST_FILE_RESPONSES
-from .support.utils import jsonschema_str
 from .support.constants import BAD_DATAJSON_URL, BAD_DATAJSON_URL2
+from .support.utils import jsonschema_str
 
 try:
     import mock
@@ -152,10 +152,11 @@ class TestDataJsonTestCase(object):
 
     def validate_string_in(self, datajson, path, regex):
         response_dict = self.dj.validate_catalog(datajson)
-
+        p = re.compile(regex)
         response = response_dict.copy()
         for key in path:
             response = response[key]
+        assert_regexp_matches(response, p)
 
     def validate_valid(self, datajson, expected_valid):
         response_bool = self.dj.is_valid_catalog(datajson)
@@ -194,17 +195,17 @@ class TestDataJsonTestCase(object):
 
         errors = [
             (
-                ['error', 'catalog', 'errors', 0, 'message'],
-                "%s is not a %s'" % (jsonschema_str(''), jsonschema_str('email'))
+                ['error', 'catalog', 'errors', ],
+                "%s is too short" % jsonschema_str('')
             ),
             (
-                ['error', 'catalog', 'errors', 1, 'message'],
-                "%s is too short" % jsonschema_str('')
+                ['error', 'catalog', 'errors', ],
+                "%s is not a %s" % (jsonschema_str(''), jsonschema_str('email'))
             ),
         ]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson'):
-                yield self.validate_string_in, BAD_DATAJSON_URL, path, regex
+                yield self.validate_contains_message, BAD_DATAJSON_URL, path, regex
         # assert_equal(exp, res)
 
     # Tests contra una URL REMOTA
@@ -219,17 +220,17 @@ class TestDataJsonTestCase(object):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
         errors = [
             (
-                ['error', 'catalog', 'errors', 0, 'message'],
-                "%s is not a %s'" % (jsonschema_str(''), jsonschema_str('email'))
+                ['error', 'catalog', 'errors', ],
+                "%s is not a %s" % (jsonschema_str(''), jsonschema_str('email'))
             ),
             (
-                ['error', 'catalog', 'errors', 1, 'message'],
+                ['error', 'catalog', 'errors', ],
                 "%s is too short" % jsonschema_str('')
             ),
         ]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson2'):
-                yield self.validate_string_in, BAD_DATAJSON_URL2, path, regex
+                yield self.validate_contains_message, BAD_DATAJSON_URL2, path, regex
 
     def test_correctness_of_accrualPeriodicity_regex(self):
         """Prueba que la regex de validación de
