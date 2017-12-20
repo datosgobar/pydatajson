@@ -80,7 +80,6 @@ class TestDataJsonTestCase(object):
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
-        assert_equal.__self__.maxDiff = None
         assert_dict_equal(expected_dict, response_dict)
 
     # Tests de CAMPOS REQUERIDOS
@@ -100,14 +99,14 @@ class TestDataJsonTestCase(object):
         path = ['error', 'catalog', 'errors', 0, 'message']
         regex = '\{.*\} is not of type %s' % jsonschema_str('array')
 
-        self.validate_message(case_filename, expected_valid, path, regex)
+        self.validate_message_with_file(case_filename, expected_valid, path, regex)
 
     def test_invalid_dataset_theme_type(self):
         case_filename = "invalid_dataset_theme_type"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
         regex = "%s is not valid under any of the given schemas" % jsonschema_str('contrataciones')
-        self.validate_message(case_filename, expected_valid, path, regex)
+        self.validate_message_with_file(case_filename, expected_valid, path, regex)
 
     def test_several_assorted_errors(self):
         case_filename = "several_assorted_errors"
@@ -130,9 +129,9 @@ class TestDataJsonTestCase(object):
         ]
 
         for path, regex in expected_errors:
-            self.validate_contains_message(case_filename, path, regex)
+            self.validate_contains_message_with_file(case_filename, path, regex)
 
-    def validate_message(self, case_filename, expected_valid, path, regex):
+    def validate_message_with_file(self, case_filename, expected_valid, path, regex):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
@@ -148,7 +147,7 @@ class TestDataJsonTestCase(object):
 
         assert_regexp_matches(response, regex)
 
-    def validate_contains_message(self, case_filename, path, regex):
+    def validate_contains_message_with_file(self, case_filename, path, regex):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
