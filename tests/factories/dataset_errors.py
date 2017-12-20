@@ -54,7 +54,3 @@ def missing_dataset_title():
 
 def missing_dataset_description():
     return dataset_error('description', dataset_title='Sistema de contrataciones electrónicas')
-
-
-def invalid_dataset_type():
-    pass

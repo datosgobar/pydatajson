@@ -49,7 +49,7 @@ TEST_FILE_RESPONSES = {
     # 'missing_dataset_title': None,
     # 'missing_dataset_description': None,
     # 'missing_distribution_title': None,
-    #'multiple_missing_descriptions': None,
+    # 'multiple_missing_descriptions': None,
 
     # Tests de TIPOS DE CAMPOS
     # Tests de inputs válidos
@@ -82,7 +82,7 @@ TEST_FILE_RESPONSES = {
     'malformed_email': None,
     # catalog["superThemeTaxonomy"] no es una URI válida
     'malformed_uri': None,
-    'invalid_dataset_type': None,
+    # 'invalid_dataset_type': None,
     'invalid_themeTaxonomy': None,
     'missing_dataset': None,
     'too_long_field_title': None,
@@ -142,7 +142,6 @@ DATAJSON_RESULTS = {
 
     'multiple_missing_descriptions': multiple_missing_descriptions(),
     'invalid_multiple_fields_type': invalid_multiple_fields_type(),
-
 
     'missing_catalog_title': missing_catalog_title(),
     'missing_catalog_description': missing_catalog_description(),

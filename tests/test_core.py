@@ -12,10 +12,11 @@ from pprint import pprint
 import nose
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
-    assert_dict_equal
+    assert_dict_equal, assert_regexp_matches
 from six import iteritems, text_type
 
 from tests.factories.core_files import TEST_FILE_RESPONSES
+from tests.factories.utils import jsonschema_str
 from tests.support.constants import BAD_DATAJSON_URL, GOOD_DATAJSON_URL
 
 try:
@@ -87,6 +88,31 @@ class TestDataJsonTestCase(object):
     def test_validity(self):
         for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
             yield self.run_case, filename, value_or_none
+
+    def test_validity_of_invalid_dataset_type(self):
+        """
+        Validación ante un campo 'dataset' inválido en un catalogo
+        :return:
+        """
+        case_filename = "invalid_dataset_type"
+        expected_valid = False
+        regex = '\{.*\} is not of type %s' % jsonschema_str('array')
+        path = ['error', 'catalog', 'errors', 0, 'message']
+
+        sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
+        response_bool = self.dj.is_valid_catalog(sample_path)
+        response_dict = self.dj.validate_catalog(sample_path)
+
+        if expected_valid:
+            assert_true(response_bool)
+        else:
+            assert_false(response_bool)
+
+        response = response_dict.copy()
+        for key in path:
+            response = response[key]
+
+        assert_regexp_matches(response, regex)
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette()
