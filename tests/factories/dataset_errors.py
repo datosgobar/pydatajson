@@ -119,3 +119,58 @@ def malformed_accrualperiodicity():
     return gen_dataset_error({
         'message': "%s is not valid under any of the given schemas" % jsonschema_str('RP1Y'),
     })
+
+
+def malformed_temporal():
+    return gen_dataset_error({
+        "instance": "2015-01-1/2015-12-31",
+        "validator": "anyOf",
+        "path": [
+            "dataset",
+            0,
+            "temporal"
+        ],
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
+            '2015-01-1/2015-12-31'),
+        "error_code": 2,
+        "validator_value": [
+            {
+                "pattern": "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)\\/(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
+                "type": "string"
+            },
+            {
+                "type": "null"
+            },
+            {
+                "type": "string",
+                "maxLength": 0
+            }
+        ]
+    })
+
+
+def malformed_temporal2():
+    return gen_dataset_error({
+        "instance": "2015-01-10/31-12-2015",
+        "validator": "anyOf",
+        "path": [
+            "dataset",
+            0,
+            "temporal"
+        ],
+        "message": "%s is not valid under any of the given schemas" % jsonschema_str('2015-01-10/31-12-2015'),
+        "error_code": 2,
+        "validator_value": [
+            {
+                "pattern": "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)\\/(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
+                "type": "string"
+            },
+            {
+                "type": "null"
+            },
+            {
+                "type": "string",
+                "maxLength": 0
+            }
+        ]
+    })

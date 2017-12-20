@@ -8,7 +8,7 @@ from tests.factories.catalog_errors import missing_catalog_title, missing_catalo
     null_catalog_publisher, empty_mandatory_string, malformed_date, malformed_datetime, \
     malformed_datetime2
 from tests.factories.dataset_errors import missing_dataset_title, missing_dataset_description, \
-    malformed_accrualperiodicity
+    malformed_accrualperiodicity, malformed_temporal, malformed_temporal2
 from tests.factories.other_errors import multiple_missing_descriptions, invalid_multiple_fields_type
 from .utils import jsonschema_str
 
@@ -78,9 +78,9 @@ TEST_FILE_RESPONSES = {
     # catalog["issued"] no es una fecha y hora ISO 8601 válida
     # 'malformed_datetime2': None,
     # dataset["temporal"] no es un rango de fechas ISO 8601 válido
-    'malformed_temporal': None,
+    # 'malformed_temporal': None,
     # dataset["temporal"] no es un rango de fechas ISO 8601 válido
-    'malformed_temporal2': None,
+    # 'malformed_temporal2': None,
     # catalog["publisher"]["mbox"] no es un email válido
     'malformed_email': None,
     # catalog["superThemeTaxonomy"] no es una URI válida
@@ -158,6 +158,8 @@ DATAJSON_RESULTS = {
     'missing_dataset_description': missing_dataset_description(),
     'malformed_accrualperiodicity': malformed_accrualperiodicity(),
     'malformed_date': malformed_date(),
+    'malformed_temporal': malformed_temporal(),
+    'malformed_temporal2': malformed_temporal2(),
 
     'missing_distribution_title': missing_distribution_title(),
 
