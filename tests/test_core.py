@@ -6,6 +6,7 @@ from __future__ import print_function, unicode_literals, with_statement
 
 import json
 import os.path
+import re
 from collections import OrderedDict
 from pprint import pprint
 
@@ -13,7 +14,6 @@ import nose
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
     assert_dict_equal, assert_regexp_matches
-import re
 from six import iteritems, text_type
 
 from tests.factories.core_files import TEST_FILE_RESPONSES
@@ -102,17 +102,31 @@ class TestDataJsonTestCase(object):
 
         self.validate_message(case_filename, expected_valid, path, regex)
 
+    def test_invalid_dataset_theme_type(self):
+        case_filename = "invalid_dataset_theme_type"
+        expected_valid = False
+        path = ['error', 'dataset', 0, 'errors', 0, 'message']
+        regex = "%s is not valid under any of the given schemas" % jsonschema_str('contrataciones')
+        self.validate_message(case_filename, expected_valid, path, regex)
+
     def test_several_assorted_errors(self):
         case_filename = "several_assorted_errors"
         expected_errors = [
-            (['error', 'catalog', 'errors',], "%s is a required property" % jsonschema_str('title')),
-            (['error', 'catalog', 'errors',], "%s is not valid under any of the given schemas" % jsonschema_str('')),
-            (['error', 'catalog', 'errors',], "%s is not a %s" % (jsonschema_str('datosmodernizacion.gob.ar'), jsonschema_str('email'))),
-            (['error', 'catalog', 'errors',], "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')),
+            (['error', 'catalog', 'errors', ],
+             "%s is a required property" % jsonschema_str('title')),
+            (['error', 'catalog', 'errors', ],
+             "%s is not valid under any of the given schemas" % jsonschema_str('')),
+            (['error', 'catalog', 'errors', ], "%s is not a %s" % (
+            jsonschema_str('datosmodernizacion.gob.ar'), jsonschema_str('email'))),
+            (['error', 'catalog', 'errors', ],
+             "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')),
 
-            (['error', 'dataset', 0, 'errors',], "123 is not valid under any of the given schemas"),
-            (['error', 'dataset', 0, 'errors',], "\[.*\] is not of type %s" % jsonschema_str('object')),
-            (['error', 'dataset', 0, 'errors',], "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')),
+            (
+            ['error', 'dataset', 0, 'errors', ], "123 is not valid under any of the given schemas"),
+            (['error', 'dataset', 0, 'errors', ],
+             "\[.*\] is not of type %s" % jsonschema_str('object')),
+            (['error', 'dataset', 0, 'errors', ],
+             "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')),
         ]
 
         for path, regex in expected_errors:
@@ -148,7 +162,6 @@ class TestDataJsonTestCase(object):
         p = re.compile(regex)
         matches = [p.match(error['message']) for error in response]
         assert_true(any(matches))
-
 
     @my_vcr.use_cassette()
     def test_validate_bad_remote_datajson(self):
@@ -202,7 +215,6 @@ class TestDataJsonTestCase(object):
 
         res = self.dj.validate_catalog(BAD_DATAJSON_URL)
         assert_equal(exp, res)
-
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette()

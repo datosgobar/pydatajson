@@ -60,7 +60,7 @@ TEST_FILE_RESPONSES = {
     'invalid_publisher_mbox_format': None,
     # Catalog_publisher y distribution_bytesize fallan
     # 'invalid_multiple_fields_type': None,
-    'invalid_dataset_theme_type': None,
+    # 'invalid_dataset_theme_type': None,
     'invalid_field_description_type': None,
     'null_catalog_publisher': None,
     # La clave requerida catalog["description"] NO puede ser str vacía
