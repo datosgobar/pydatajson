@@ -339,7 +339,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
     def _dataset_qa(self, dataset):
         """Chequea si el dataset tiene una calidad mínima para cosechar."""
 
-        # VALIDACIONES
+        # 1. VALIDACIONES
         # chequea que haya por lo menos algún formato de datos reconocido
         has_data_format = False
         formats = self._count_distribution_formats_dataset(dataset).keys()
@@ -364,11 +364,11 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         else:
             has_min_desc = False
 
-        # EVALUACION DE COSECHA: evalua si se cosecha o no el dataset
+        # 2. EVALUACION DE COSECHA: evalua si se cosecha o no el dataset
         harvest = (has_title and has_description and
                    has_data_format and has_min_title and has_min_desc)
 
-        # NOTAS: genera notas de validación
+        # 3. NOTAS: genera notas de validación
         notes = []
         if not has_data_format:
             notes.append("No tiene distribuciones con datos.")
