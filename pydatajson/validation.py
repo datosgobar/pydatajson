@@ -6,21 +6,18 @@
 Contiene los métodos para validar el perfil de metadatos de un catálogo.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import unicode_literals, print_function, with_statement, absolute_import
 
 import os
 import platform
+from collections import Counter
+
 import jsonschema
-from collections import OrderedDict, Counter
 from openpyxl.styles import Alignment, Font
 
-import custom_exceptions as ce
-from functools import partial
+from . import custom_exceptions as ce
 from . import readers
 from . import writers
-from . import helpers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
@@ -259,7 +256,6 @@ def validate_catalog(catalog, only_errors=False, fmt="dict",
 
 
 def iter_custom_errors(catalog):
-
     # chequea que no se repiten los ids de la taxonomía específica
     if "themeTaxonomy" in catalog:
         theme_ids = [theme["id"] for theme in catalog["themeTaxonomy"]]
@@ -292,8 +288,7 @@ def _update_validation_response(error, response):
         "validator_value": error.validator_value,
         "path": list(error.path),
         # La instancia validada es irrelevante si el error es de tipo 1
-        "instance": (None if error.validator == "required" else
-                     error.instance)
+        "instance": (None if error.validator == "required" else error.instance)
     }
 
     # Identifico a qué nivel de jerarquía sucedió el error.

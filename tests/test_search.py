@@ -15,6 +15,8 @@ import os
 import io
 import json
 
+from six import text_type
+
 from .context import pydatajson
 
 SAMPLES_DIR = os.path.join("tests", "samples")
@@ -22,7 +24,7 @@ RESULTS_DIR = os.path.join("tests", "results")
 
 
 def pprint(result):
-    print(unicode(json.dumps(
+    print(text_type(json.dumps(
         result, indent=4, separators=(",", ": "),
         ensure_ascii=False
     )))

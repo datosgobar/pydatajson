@@ -8,18 +8,18 @@ Contiene los métodos para escribir
 - listas de diccionarios ("tablas") en formato CSV o XLSX
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import print_function, unicode_literals, with_statement
 
 import io
-import os
 import json
-import unicodecsv as csv
+import logging
+import os
+
 import openpyxl as pyxl
+import unicodecsv as csv
 from openpyxl.styles import Font
 from openpyxl.utils import column_index_from_string
-import logging
+from six import string_types, text_type, moves, iteritems
 
 from . import helpers
 
@@ -43,7 +43,7 @@ def write_tables(tables, path, column_styles=None, cell_styles=None,
             }
         path (str): Path al archivo CSV o XLSX de exportación.
     """
-    assert isinstance(path, (str, unicode)), "`path` debe ser un string"
+    assert isinstance(path, string_types), "`path` debe ser un string"
     assert isinstance(tables, dict), "`table` es dict de listas de dicts"
 
     # Deduzco el formato de archivo de `path` y redirijo según corresponda.
@@ -74,7 +74,7 @@ def write_table(table, path, column_styles=None, cell_styles=None):
         table (list of dicts): Tabla a ser exportada.
         path (str): Path al archivo CSV o XLSX de exportación.
     """
-    assert isinstance(path, (str, unicode)), "`path` debe ser un string"
+    assert isinstance(path, string_types), "`path` debe ser un string"
     assert isinstance(table, list), "`table` debe ser una lista de dicts"
 
     # si la tabla está vacía, no escribe nada
@@ -105,7 +105,7 @@ def _write_csv_table(table, path):
 
     headers = table[0].keys()
 
-    with open(path, 'w') as target_file:
+    with open(path, 'wb') as target_file:
         writer = csv.DictWriter(csvfile=target_file, fieldnames=headers,
                                 lineterminator="\n", encoding='utf-8')
         writer.writeheader()
@@ -114,23 +114,22 @@ def _write_csv_table(table, path):
 
 
 def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
-
     # dict de las columnas que corresponden a cada campo
-    header_row = ws.rows.next()
+    header_row = next(ws.rows)
     headers_cols = {cell.value: cell.column for cell in header_row}
 
     # aplica estilos de columnas
     if column_styles:
-        for col, properties in column_styles.iteritems():
+        for col, properties in iteritems(column_styles):
             # la col puede ser "A" o "nombre_campo"
             col = headers_cols.get(col, col)
-            for prop_name, prop_value in properties.iteritems():
+            for prop_name, prop_value in iteritems(properties):
                 setattr(ws.column_dimensions[col], prop_name, prop_value)
 
     # aplica estilos de celdas
     if cell_styles:
-        for i in xrange(1, ws.max_row + 1):
-            for j in xrange(1, ws.max_column + 1):
+        for i in moves.xrange(1, ws.max_row + 1):
+            for j in moves.xrange(1, ws.max_column + 1):
                 cell = ws.cell(row=i, column=j)
 
                 # si el valor es una URL válida, la celda es un hyperlink
@@ -140,21 +139,21 @@ def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
 
                 for cell_style in cell_styles:
                     match_all = (
-                        "col" not in cell_style and
-                        "row" not in cell_style
+                            "col" not in cell_style and
+                            "row" not in cell_style
                     )
                     match_row = (
-                        "row" in cell_style and
-                        cell_style["row"] == i
+                            "row" in cell_style and
+                            cell_style["row"] == i
                     )
                     match_col = (
-                        "col" in cell_style and
-                        column_index_from_string(
-                            headers_cols.get(cell_style["col"],
-                                             cell_style["col"])) == j
+                            "col" in cell_style and
+                            column_index_from_string(
+                                headers_cols.get(cell_style["col"],
+                                                 cell_style["col"])) == j
                     )
                     if match_all or match_row or match_col:
-                        for prop_name, prop_value in cell_style.iteritems():
+                        for prop_name, prop_value in iteritems(cell_style):
                             if prop_name != "col" and prop_name != "row":
                                 setattr(cell, prop_name, prop_value)
 
@@ -222,7 +221,7 @@ def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
                 headers.append(key)
     # se usan los headers de la primera fila para toda la tabla
     else:
-        headers = table[0].keys()
+        headers = list(table[0].keys())
 
     ws.append(headers)
 
@@ -243,8 +242,8 @@ def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
 
 def write_json(obj, path):
     """Escribo un objeto a un archivo JSON con codificación UTF-8."""
-    obj_str = unicode(json.dumps(obj, indent=4, separators=(",", ": "),
-                                 ensure_ascii=False))
+    obj_str = text_type(json.dumps(obj, indent=4, separators=(",", ": "),
+                                   ensure_ascii=False))
 
     helpers.ensure_dir_exists(os.path.dirname(path))
 
@@ -329,8 +328,7 @@ XLSX_FIELDS = {
 }
 
 
-def _tabulate_nested_dict(nested_dict_row, field_root="dataset",
-                          parents_roots=[]):
+def _tabulate_nested_dict(nested_dict_row, field_root="dataset", parents_roots=[]):
     table_dict_row = {}
 
     for key, value in nested_dict_row.items():

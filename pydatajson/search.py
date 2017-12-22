@@ -7,16 +7,14 @@ Contiene los métodos para navegar un data.json iterando y buscando entidades de
 un catálogo.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import unicode_literals, print_function, with_statement, absolute_import
 
-from functools import partial
+from six import iteritems
 
-from time_series import distribution_has_time_index, dataset_has_time_series
-from time_series import field_is_time_series
-from readers import read_catalog
-import custom_exceptions as ce
+from pydatajson.custom_exceptions import ThemeIdRepeated, ThemeLabelRepeated
+from . import custom_exceptions as ce
+from .readers import read_catalog
+from .time_series import distribution_has_time_index, dataset_has_time_series, field_is_time_series
 
 
 def get_themes(catalog):
@@ -30,20 +28,17 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
     filter_out = filter_out or {}
     catalog = read_catalog(catalog)
 
-    filtered_datasets = filter(
-        lambda x: _filter_dictionary(
-            x, filter_in.get("dataset"), filter_out.get("dataset")),
-        catalog["dataset"]
-    )
+    filtered_datasets = [
+        dataset for dataset in catalog["dataset"] if
+        _filter_dictionary(dataset, filter_in.get("dataset"), filter_out.get("dataset"))
+    ]
 
     # realiza filtros especiales
     if only_time_series:
-        filtered_datasets = filter(
-            dataset_has_time_series, filtered_datasets)
+        filtered_datasets = [dataset for dataset in filtered_datasets if dataset_has_time_series(dataset)]
 
     if meta_field:
-        return [dataset[meta_field] for dataset in filtered_datasets
-                if meta_field in dataset]
+        return [dataset[meta_field] for dataset in filtered_datasets if meta_field in dataset]
 
     if exclude_meta_fields:
         meta_filtered_datasets = []
@@ -73,16 +68,16 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
             distribution["dataset_identifier"] = dataset["identifier"]
             distributions.append(distribution)
 
-    filtered_distributions = filter(
-        lambda x: _filter_dictionary(
-            x, filter_in.get("distribution"), filter_out.get("distribution")),
-        distributions
-    )
+    filtered_distributions = [
+        distribution for distribution in distributions if
+        _filter_dictionary(distribution, filter_in.get("distribution"),
+                           filter_out.get("distribution"))
+    ]
 
     # realiza filtros especiales
     if only_time_series:
-        filtered_distributions = filter(
-            distribution_has_time_index, filtered_distributions)
+        filtered_distributions = [distribution for distribution in filtered_distributions if
+                                  distribution_has_time_index(distribution)]
 
     if meta_field:
         return [distribution[meta_field]
@@ -124,11 +119,8 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
                         "identifier"]
                     fields.append(field)
 
-    filtered_fields = filter(
-        lambda x: _filter_dictionary(
-            x, filter_in.get("field"), filter_out.get("field")),
-        fields
-    )
+    filtered_fields = [field for field in fields if
+                       _filter_dictionary(field, filter_in.get("field"), filter_out.get("field"))]
 
     if meta_field:
         return [field[meta_field] for field in filtered_fields
@@ -150,7 +142,7 @@ def get_dataset(catalog, identifier=None, title=None):
     if identifier:
         filtered_datasets = get_datasets(
             catalog, {"dataset": {"identifier": identifier}})
-    elif title:
+    elif title:  # TODO: is this required?
         filtered_datasets = get_datasets(
             catalog, {"dataset": {"title": title}})
 
@@ -159,8 +151,8 @@ def get_dataset(catalog, identifier=None, title=None):
             raise ce.DatasetIdRepetitionError(
                 identifier, filtered_datasets)
         elif title:
-            raise ce.DatasetTitleRepetitionError(
-                title, filtered_datasets)
+            # TODO: Improve exceptions module!
+            raise ce.DatasetTitleRepetitionError(title, filtered_datasets)
     elif len(filtered_datasets) == 0:
         return None
     else:
@@ -222,9 +214,8 @@ def get_field_location(catalog, identifier=None, title=None,
                 if "field" in distribution and isinstance(distribution["field"], list):
                     for field in distribution["field"]:
                         if (identifier and "id" in field and
-                            field["id"] == identifier
+                                field["id"] == identifier
                                 or title and field["title"] == title):
-
                             field_location = {
                                 "dataset_identifier": dataset["identifier"],
                                 "dataset_title": dataset["title"],
@@ -289,12 +280,12 @@ def get_theme(catalog, identifier=None, label=None):
 
     # filtra por id (preferentemente) o label
     if identifier:
-        filtered_themes = filter(lambda x: x["id"] == identifier, themes)
+        filtered_themes = [theme for theme in themes if theme["id"] == identifier]
         if len(filtered_themes) > 1:
             raise ThemeIdRepeated([x["id"] for x in filtered_themes])
 
     elif label:
-        filtered_themes = filter(lambda x: x["label"] == label, themes)
+        filtered_themes = [theme for theme in themes if theme["label"] == label]
         if len(filtered_themes) > 1:
             raise ThemeLabelRepeated([x["label"] for x in filtered_themes])
 
@@ -323,13 +314,13 @@ def _filter_dictionary(dictionary, filter_in=None, filter_out=None):
     # print(filter_in, filter_out)
     if filter_in:
         # chequea que el objeto tenga las propiedades de filtro positivo
-        for key, value in filter_in.iteritems():
+        for key, value in iteritems(filter_in):
             if dictionary.get(key) != value:
                 return False
 
     if filter_out:
         # chequea que el objeto NO tenga las propiedades de filtro negativo
-        for key, value in filter_out.iteritems():
+        for key, value in iteritems(filter_out):
             if dictionary.get(key) == value:
                 return False
 

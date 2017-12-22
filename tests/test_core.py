@@ -1,36 +1,42 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Tests del modulo pydatajson."""
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import with_statement
+from __future__ import print_function, unicode_literals, with_statement
 
-from functools import wraps
-import os.path
-from pprint import pprint
-import unittest
 import json
+import os.path
+import re
+from collections import OrderedDict
+from pprint import pprint
+
 import nose
 import vcr
-from collections import OrderedDict
-import mock
+from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
+    assert_dict_equal, assert_regexp_matches
+from six import iteritems, text_type
+
+from tests.support.factories.core_files import TEST_FILE_RESPONSES
+from .support.constants import BAD_DATAJSON_URL, BAD_DATAJSON_URL2
+from .support.utils import jsonschema_str
+
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 import filecmp
 import io
 from .context import pydatajson
+from .support.decorators import load_expected_result, RESULTS_DIR
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='once')
 
-RESULTS_DIR = os.path.join("tests", "results")
 
-
-class DataJsonTestCase(unittest.TestCase):
-
+class TestDataJsonTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
-    RESULTS_DIR = os.path.join("tests", "results")
+    RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
 
     @classmethod
@@ -47,356 +53,183 @@ class DataJsonTestCase(unittest.TestCase):
 
     @classmethod
     def tearDown(cls):
-        del(cls.dj)
+        del (cls.dj)
 
     def run_case(self, case_filename, expected_dict=None):
 
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         result_path = os.path.join(self.RESULTS_DIR, case_filename + ".json")
 
-        with io.open(result_path, encoding='utf8') as result_file:
-            expected_dict = expected_dict or json.load(result_file)
+        if expected_dict is None:
+            with io.open(result_path, encoding='utf8') as result_file:
+                expected_dict = json.load(result_file)
 
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
 
-        print(unicode(json.dumps(
+        print(text_type(json.dumps(
             response_dict, indent=4, separators=(",", ": "),
             ensure_ascii=False
         )))
 
         if expected_dict["status"] == "OK":
-            self.assertTrue(response_bool)
+            assert_true(response_bool)
         elif expected_dict["status"] == "ERROR":
-            self.assertFalse(response_bool)
+            assert_false(response_bool)
         else:
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
 
-        self.assertEqual(expected_dict, response_dict)
-
-    def load_expected_result():
-
-        def case_decorator(test):
-            case_filename = test.__name__.split("test_")[-1]
-
-            @wraps(test)
-            def decorated_test(*args, **kwargs):
-                result_path = os.path.join(
-                    RESULTS_DIR, case_filename + ".json")
-
-                with io.open(result_path, encoding='utf8') as result_file:
-                    expected_result = json.load(result_file)
-
-                kwargs["expected_result"] = expected_result
-                test(*args, **kwargs)
-
-            return decorated_test
-
-        return case_decorator
-
-    def load_case_filename():
-
-        def case_decorator(test):
-            case_filename = test.__name__.split("test_validity_of_")[-1]
-
-            @wraps(test)
-            def decorated_test(*args, **kwargs):
-                kwargs["case_filename"] = case_filename
-                test(*args, **kwargs)
-
-            return decorated_test
-
-        return case_decorator
+        assert_dict_equal(expected_dict, response_dict)
 
     # Tests de CAMPOS REQUERIDOS
 
     # Tests de inputs válidos
-    @load_case_filename()
-    def test_validity_of_full_data(self, case_filename):
-        exp = {
-            "status": "OK",
-            "error": {
-                "catalog": {
-                    "status": "OK",
-                    "errors": [],
-                    "title": "Datos Argentina"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
-                        "list_index": 0,
-                        "errors": [],
-                        "title": "Sistema de contrataciones electrónicas"
-                    },
-                    {
-                        "status": "OK",
-                        "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
-                        "list_index": 1,
-                        "errors": [],
-                        "title": "Sistema de contrataciones electrónicas (sin datos)"
-                    }
-                ]
-            }
-        }
-        self.run_case(case_filename, exp)
+    def test_validity(self):
+        for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
+            yield self.run_case, filename, value_or_none
 
-    @load_case_filename()
-    def test_validity_of_minimum_data(self, case_filename):
-        """Un datajson con valores correctos únicamente para las claves
-        requeridas."""
-        self.run_case(case_filename)
+    def test_validity_of_invalid_dataset_type(self):
+        """
+        Validación ante un campo 'dataset' inválido en un catalogo
+        :return:
+        """
+        case_filename = "invalid_dataset_type"
+        expected_valid = False
+        path = ['error', 'catalog', 'errors', 0, 'message']
+        regex = '\{.*\} is not of type %s' % jsonschema_str('array')
 
-    # Tests de inputs inválidos
-    @load_case_filename()
-    def test_validity_of_missing_catalog_title(self, case_filename):
-        self.run_case(case_filename)
+        self.validate_message_with_file(case_filename, expected_valid, path, regex)
 
-    @load_case_filename()
-    def test_validity_of_missing_catalog_description(self, case_filename):
-        self.run_case(case_filename)
+    def test_invalid_dataset_theme_type(self):
+        case_filename = "invalid_dataset_theme_type"
+        expected_valid = False
+        path = ['error', 'dataset', 0, 'errors', 0, 'message']
+        regex = "%s is not valid under any of the given schemas" % jsonschema_str('contrataciones')
+        self.validate_message_with_file(case_filename, expected_valid, path, regex)
 
-    @load_case_filename()
-    def test_validity_of_missing_catalog_dataset(self, case_filename):
-        self.run_case(case_filename)
+    def test_several_assorted_errors(self):
+        case_filename = "several_assorted_errors"
+        expected_errors = [
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is a required property" % jsonschema_str('title')
+            ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is not valid under any of the given schemas" % jsonschema_str('')
+            ),
+            (
+                ['error', 'catalog', 'errors', ], "%s is not a %s" % (
+                    jsonschema_str('datosmodernizacion.gob.ar'), jsonschema_str('email'))
+            ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "123 is not valid under any of the given schemas"),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "\[.*\] is not of type %s" % jsonschema_str('object')
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')
+            ),
+        ]
 
-    @load_case_filename()
-    def test_validity_of_missing_dataset_title(self, case_filename):
-        self.run_case(case_filename)
+        for path, regex in expected_errors:
+            yield self.validate_contains_message_with_file, case_filename, path, regex
 
-    @load_case_filename()
-    def test_validity_of_missing_dataset_description(self, case_filename):
-        self.run_case(case_filename)
+    def validate_message_with_file(self, case_filename, expected_valid, path, regex):
+        sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
 
-    @load_case_filename()
-    def test_validity_of_missing_distribution_title(self, case_filename):
-        self.run_case(case_filename)
+        self.validate_string_in(sample_path, path, regex)
+        self.validate_valid(sample_path, expected_valid)
 
-    @load_case_filename()
-    def test_validity_of_multiple_missing_descriptions(self, case_filename):
-        """Datajson sin descripción de catálogo ni de su único dataset."""
-        self.run_case(case_filename)
+    def validate_string_in(self, datajson, path, regex):
+        response_dict = self.dj.validate_catalog(datajson)
+        p = re.compile(regex)
+        response = response_dict.copy()
+        for key in path:
+            response = response[key]
+        assert_regexp_matches(response, p)
 
-    # Tests de TIPOS DE CAMPOS
+    def validate_valid(self, datajson, expected_valid):
+        response_bool = self.dj.is_valid_catalog(datajson)
+        if expected_valid:
+            assert_true(response_bool)
+        else:
+            assert_false(response_bool)
 
-    # Tests de inputs válidos
-    @load_case_filename()
-    def test_validity_of_null_dataset_theme(self, case_filename):
-        self.run_case(case_filename)
+    def validate_contains_message_with_file(self, case_filename, path, regex):
+        sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
+        self.validate_contains_message(sample_path, path, regex)
 
-    @load_case_filename()
-    def test_validity_of_null_field_description(self, case_filename):
-        self.run_case(case_filename)
+    def validate_contains_message(self, datajson, path, regex):
+        response_bool = self.dj.is_valid_catalog(datajson)
+        response_dict = self.dj.validate_catalog(datajson)
 
-    # Tests de inputs inválidos
-    @load_case_filename()
-    def test_validity_of_invalid_catalog_publisher_type(self, case_filename):
-        self.run_case(case_filename)
+        assert_false(response_bool)
 
-    @load_case_filename()
-    def test_validity_of_invalid_publisher_mbox_format(self, case_filename):
-        self.run_case(case_filename)
+        response = response_dict.copy()
+        for key in path:
+            response = response[key]
 
-    @load_case_filename()
-    def test_validity_of_invalid_multiple_fields_type(self, case_filename):
-        """Catalog_publisher y distribution_bytesize fallan."""
-        self.run_case(case_filename)
+        p = re.compile(regex)
+        matches = [p.match(error['message']) for error in response]
+        assert_true(any(matches))
 
-    @load_case_filename()
-    def test_validity_of_invalid_dataset_theme_type(self, case_filename):
-        self.run_case(case_filename)
+    @my_vcr.use_cassette('test_validate_bad_remote_datajson')
+    def test_validate_invalid_remote_datajson_is_invalid(self):
+        """ Testea `is_valid_catalog` contra un data.json remoto invalido."""
 
-    @load_case_filename()
-    def test_validity_of_invalid_field_description_type(self, case_filename):
-        self.run_case(case_filename)
+        res = self.dj.is_valid_catalog(BAD_DATAJSON_URL)
+        assert_false(res)
 
-    @load_case_filename()
-    def test_validity_of_null_catalog_publisher(self, case_filename):
-        self.run_case(case_filename)
+    def test_validate_invalid_remote_datajson_has_errors(self):
+        """ Testea `validate_catalog` contra un data.json remoto invalido."""
 
-    @load_case_filename()
-    def test_validity_of_empty_mandatory_string(self, case_filename):
-        """La clave requerida catalog["description"] NO puede ser str vacía."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_empty_optional_string(self, case_filename):
-        """La clave opcional dataset["license"] SI puede ser str vacía."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_accrualperiodicity(self, case_filename):
-        """dataset["accrualPeriodicity"] no cumple con el patrón esperado."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_date(self, case_filename):
-        """catalog["issued"] no es una fecha ISO 8601 válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_datetime(self, case_filename):
-        """catalog["issued"] no es una fecha y hora ISO 8601 válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_datetime2(self, case_filename):
-        """catalog["issued"] no es una fecha y hora ISO 8601 válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_temporal(self, case_filename):
-        """dataset["temporal"] no es un rango de fechas ISO 8601 válido."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_temporal2(self, case_filename):
-        """dataset["temporal"] no es un rango de fechas ISO 8601 válido."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_email(self, case_filename):
-        """catalog["publisher"]["mbox"] no es un email válido."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_malformed_uri(self, case_filename):
-        """catalog["superThemeTaxonomy"] no es una URI válida."""
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_dataset_type(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_invalid_themeTaxonomy(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_missing_dataset(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_too_long_field_title(self, case_filename):
-        self.run_case(case_filename)
-
-    @load_case_filename()
-    def test_validity_of_several_assorted_errors(self, case_filename):
-        """Prueba que las listas con info de errores se generen correctamente
-        en presencia de 7 errores de distinto tipo y jerarquía."""
-        self.run_case(case_filename)
+        errors = [
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is too short" % jsonschema_str('')
+            ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is not a %s" % (jsonschema_str(''), jsonschema_str('email'))
+            ),
+        ]
+        for path, regex in errors:
+            with my_vcr.use_cassette('test_validate_bad_remote_datajson'):
+                yield self.validate_contains_message, BAD_DATAJSON_URL, path, regex
+        # assert_equal(exp, res)
 
     # Tests contra una URL REMOTA
-    @my_vcr.use_cassette()
-    def test_validation_of_remote_datajsons(self):
-        """ Testea `validate_catalog` contra dos data.json remotos."""
+    @my_vcr.use_cassette('test_validate_bad_remote_datajson2')
+    def test_validate_invalid_remote_datajson_is_invalid2(self):
+        """ Testea `is_valid_catalog` contra un data.json remoto invalido."""
 
-        # data.json remoto #1
+        res = self.dj.is_valid_catalog(BAD_DATAJSON_URL2)
+        assert_false(res)
 
-        datajson = "http://104.131.35.253/data.json"
-
-        res = self.dj.is_valid_catalog(datajson)
-        self.assertFalse(res)
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "ERROR",
-                    "errors": [
-                        {
-                            "instance": "",
-                            "validator": "format",
-                            "path": [
-                                "publisher",
-                                "mbox"
-                            ],
-                            "message": "u'' is not a u'email'",
-                            "error_code": 2,
-                            "validator_value": "email"
-                        },
-                        {
-                            "instance": "",
-                            "validator": "minLength",
-                            "path": [
-                                "publisher",
-                                "name"
-                            ],
-                            "message": "u'' is too short",
-                            "error_code": 2,
-                            "validator_value": 1
-                        }
-                    ],
-                    "title": "Andino Demo"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "errors": [],
-                        "title": "Dataset Demo",
-                        'identifier': u'289b6835-c5fb-4e8a-9013-1d4705c31840',
-                        u'list_index': 0
-                    }
-                ]
-            }
-        }
-
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
-
-        # data.json remoto #2
-
-        datajson = "http://181.209.63.71/data.json"
-
-        res = self.dj.is_valid_catalog(datajson)
-        self.assertFalse(res)
-
-        exp = {
-            "status": "ERROR",
-            "error": {
-                "catalog": {
-                    "status": "ERROR",
-                    "errors": [
-                        {
-                            "instance": "",
-                            "validator": "format",
-                            "path": [
-                                "publisher",
-                                "mbox"
-                            ],
-                            "message": "u'' is not a u'email'",
-                            "error_code": 2,
-                            "validator_value": "email"
-                        },
-                        {
-                            "instance": "",
-                            "validator": "minLength",
-                            "path": [
-                                "publisher",
-                                "name"
-                            ],
-                            "message": "u'' is too short",
-                            "error_code": 2,
-                            "validator_value": 1
-                        }
-                    ],
-                    "title": "Andino"
-                },
-                "dataset": [
-                    {
-                        "status": "OK",
-                        "errors": [],
-                        "title": "Dataset Demo",
-                        'identifier': '6897d435-8084-4685-b8ce-304b190755e4',
-                        'list_index': 0
-                    }
-                ]
-            }
-        }
-
-        res = self.dj.validate_catalog(datajson)
-        self.assertEqual(exp, res)
+    def test_validate_invalid_remote_datajson_has_errors2(self):
+        """ Testea `validate_catalog` contra un data.json remoto invalido."""
+        errors = [
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is not a %s" % (jsonschema_str(''), jsonschema_str('email'))
+            ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is too short" % jsonschema_str('')
+            ),
+        ]
+        for path, regex in errors:
+            with my_vcr.use_cassette('test_validate_bad_remote_datajson2'):
+                yield self.validate_contains_message, BAD_DATAJSON_URL2, path, regex
 
     def test_correctness_of_accrualPeriodicity_regex(self):
         """Prueba que la regex de validación de
@@ -414,7 +247,7 @@ class DataJsonTestCase(unittest.TestCase):
         for value in valid_values:
             datajson["dataset"][0]["accrualPeriodicity"] = value
             res = self.dj.is_valid_catalog(datajson)
-            self.assertTrue(res, msg=value)
+            assert_true(res, msg=value)
 
         invalid_values = ['RP10Y', 'R/PY', 'R/P3', 'RR/P2Y', 'R/PnY',
                           'R/P6MT', 'R/PT', 'R/T1M', 'R/P0.M', '/P0.33M',
@@ -424,7 +257,7 @@ class DataJsonTestCase(unittest.TestCase):
         for value in invalid_values:
             datajson["dataset"][0]["accrualPeriodicity"] = value
             res = self.dj.is_valid_catalog(datajson)
-            self.assertFalse(res, msg=value)
+            assert_false(res, msg=value)
 
     # TESTS DE catalog_report
     # Reporte esperado para "full_data.json", con harvest = 0
@@ -447,7 +280,8 @@ class DataJsonTestCase(unittest.TestCase):
                      (u'dataset_accrualPeriodicity', u'R/P1Y'),
                      (u'dataset_description',
                       u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra)'),
-                     (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
+                     (u'dataset_publisher_name',
+                      u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
                      (u'dataset_superTheme', u'econ'),
                      (u'dataset_theme',
                       u'contrataciones, compras, convocatorias'),
@@ -460,7 +294,8 @@ class DataJsonTestCase(unittest.TestCase):
                      (u'dataset_modified',
                       u'2016-04-19T19:48:05.433640-03:00'),
                      (u'distributions_formats', '{"CSV": 1}'),
-                     (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
+                     (u'distributions_list',
+                      u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
                      (u'dataset_license',
                       u'Open Data Commons Open Database License 1.0'),
                      (u'dataset_language', u'spa'),
@@ -485,8 +320,10 @@ class DataJsonTestCase(unittest.TestCase):
                       u'Sistema de contrataciones electr\xf3nicas (sin datos)'),
                      (u'dataset_accrualPeriodicity',
                       u'R/P1Y'),
-                     (u'dataset_description', u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra) (sin datos)'),
-                     (u'dataset_publisher_name', u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
+                     (u'dataset_description',
+                      u'Datos correspondientes al Sistema de Contrataciones Electr\xf3nicas (Argentina Compra) (sin datos)'),
+                     (u'dataset_publisher_name',
+                      u'Ministerio de Modernizaci\xf3n. Secretar\xeda de Modernizaci\xf3n Administrativa. Oficina Nacional de Contrataciones'),
                      (u'dataset_superTheme',
                       u'ECON'),
                      (u'dataset_theme',
@@ -501,7 +338,8 @@ class DataJsonTestCase(unittest.TestCase):
                       u'2016-04-19T19:48:05.433640-03:00'),
                      (u'distributions_formats',
                       '{"PDF": 1}'),
-                     (u'distributions_list', u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf'),
+                     (u'distributions_list',
+                      u'"Convocatorias abiertas durante el a\xf1o 2015": http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf'),
                      (u'dataset_license',
                       u'Open Data Commons Open Database License 1.0'),
                      (u'dataset_language',
@@ -525,10 +363,10 @@ class DataJsonTestCase(unittest.TestCase):
         expected[1]["harvest"] = 0
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
-        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
-        self.assertEqual(actual[1]["harvest"], expected[1]["harvest"])
+        assert_equal(actual[0]["harvest"], expected[0]["harvest"])
+        assert_equal(actual[1]["harvest"], expected[1]["harvest"])
         # Compruebo que toda la lista sea la esperada
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     def test_catalog_report_harvest_valid(self):
         """catalog_report() marcará para cosecha los datasets con metadata
@@ -543,10 +381,10 @@ class DataJsonTestCase(unittest.TestCase):
         expected[1]["harvest"] = 1
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
-        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        assert_equal(actual[0]["harvest"], expected[0]["harvest"])
         # Compruebo que toda la lista sea la esperada
         print(actual)
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     def test_catalog_report_harvest_none(self):
         """catalog_report() no marcará ningún dataset para cosecha si
@@ -561,9 +399,9 @@ class DataJsonTestCase(unittest.TestCase):
         expected[1]["harvest"] = 0
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
-        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        assert_equal(actual[0]["harvest"], expected[0]["harvest"])
         # Compruebo que toda la lista sea la esperada
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     def test_catalog_report_harvest_all(self):
         """catalog_report() marcará todo dataset para cosecha si
@@ -578,9 +416,9 @@ class DataJsonTestCase(unittest.TestCase):
         expected[1]["harvest"] = 1
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
-        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        assert_equal(actual[0]["harvest"], expected[0]["harvest"])
         # Compruebo que toda la lista sea la esperada
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     def test_catalog_report_harvest_report(self):
         """catalog_report() marcará para cosecha los datasets presentes en
@@ -600,9 +438,9 @@ class DataJsonTestCase(unittest.TestCase):
         expected[1]["harvest"] = 0
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
-        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        assert_equal(actual[0]["harvest"], expected[0]["harvest"])
         # Compruebo que toda la lista sea la esperada
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
         # Compruebo que sí se harvestee si el reporte incluye el dataset del
         # catálogo
@@ -616,9 +454,9 @@ class DataJsonTestCase(unittest.TestCase):
         expected[0]["harvest"] = 1
 
         # Compruebo explícitamente que el valor de 'harvest' sea el esperado
-        self.assertEqual(actual[0]["harvest"], expected[0]["harvest"])
+        assert_equal(actual[0]["harvest"], expected[0]["harvest"])
         # Compruebo que toda la lista sea la esperada
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     @nose.tools.raises(ValueError)
     def test_catalog_report_harvest_report_without_report_file(self):
@@ -637,7 +475,7 @@ class DataJsonTestCase(unittest.TestCase):
         """Si la clave "dataset" de un catalogo no esta presente, el reporte es
         una tabla vacía."""
         catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
-        self.assertListEqual(self.dj.catalog_report(catalog), [])
+        assert_list_equal(self.dj.catalog_report(catalog), [])
 
     def test_generate_datasets_report(self):
         """generate_datasets_report() debe unir correctamente los resultados de
@@ -653,7 +491,7 @@ class DataJsonTestCase(unittest.TestCase):
         for catalog in catalogs:
             expected.extend(return_value)
 
-        self.assertEqual(actual, expected)
+        assert_equal(actual, expected)
 
     def test_generate_datasets_report_single_catalog(self):
         """Invocar generate_datasets_report con una str que sea la ruta a un
@@ -665,7 +503,7 @@ class DataJsonTestCase(unittest.TestCase):
         report_str = self.dj.generate_datasets_report(catalog_str)
         report_list = self.dj.generate_datasets_report(catalog_list)
 
-        self.assertListEqual(report_str, report_list)
+        assert_list_equal(report_str, report_list)
 
     @mock.patch('pydatajson.writers.write_table')
     def test_export_generate_datasets_report(self, write_table_mock):
@@ -737,7 +575,7 @@ class DataJsonTestCase(unittest.TestCase):
         actual_config = self.dj.generate_harvester_config(
             catalogs="un catalogo", harvest='valid', frequency=None)
 
-        self.assertListEqual(actual_config, expected_config)
+        assert_list_equal(actual_config, expected_config)
 
     def test_generate_harvester_config_no_freq(self):
         """generate_harvester_config() debe filtrar el resultado de
@@ -797,7 +635,7 @@ class DataJsonTestCase(unittest.TestCase):
         actual_config = self.dj.generate_harvester_config(
             catalogs="un catalogo", harvest='valid')
 
-        self.assertListEqual(actual_config, expected_config)
+        assert_list_equal(actual_config, expected_config)
 
     # TESTS DE GENERATE_HARVESTABLE_CATALOGS
 
@@ -824,7 +662,7 @@ class DataJsonTestCase(unittest.TestCase):
         expected = [pydatajson.readers.read_catalog(c) for c in catalogs]
         actual = self.dj.generate_harvestable_catalogs(catalogs, harvest='all')
 
-        self.assertEqual(actual, expected)
+        assert_equal(actual, expected)
 
     @mock.patch('pydatajson.readers.read_catalog',
                 return_value=CATALOG.copy())
@@ -837,7 +675,7 @@ class DataJsonTestCase(unittest.TestCase):
 
         for catalog in harvest_none:
             # Una lista vacía es "falsa"
-            self.assertFalse(catalog["dataset"])
+            assert_false(catalog["dataset"])
 
     REPORT = [
         {
@@ -890,7 +728,7 @@ class DataJsonTestCase(unittest.TestCase):
         actual = self.dj.generate_harvestable_catalogs(
             catalogs, harvest='valid')
 
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     @mock.patch('pydatajson.DataJson.generate_datasets_report',
                 return_value=REPORT)
@@ -922,7 +760,7 @@ class DataJsonTestCase(unittest.TestCase):
             catalogs, harvest='report', report=datasets_to_harvest)
 
         # `expected` es igual que en la prueba anterior.
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     def test_generate_datasets_summary(self):
         """Genera informe conciso sobre datasets correctamente."""
@@ -949,7 +787,7 @@ class DataJsonTestCase(unittest.TestCase):
                          ('cant_errores', 0),
                          ('cant_distribuciones', 1)])]
 
-        self.assertListEqual(actual, expected)
+        assert_list_equal(actual, expected)
 
     @my_vcr.use_cassette()
     def test_generate_catalog_readme(self):
@@ -970,7 +808,7 @@ class DataJsonTestCase(unittest.TestCase):
 {} se escribió correctamente, pero no es idéntico al esperado. Por favor,
 revíselo manualmente""".format(actual_filename)
 
-        self.assertTrue(comparison)
+        assert_true(comparison)
 
     @my_vcr.use_cassette()
     def test_generate_catalog_indicators(self):
@@ -988,7 +826,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertTrue(indicators[k], v)
+            assert_true(indicators[k], v)
 
     @my_vcr.use_cassette()
     def test_date_indicators(self):
@@ -1011,7 +849,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
     def test_format_indicators(self):
@@ -1028,7 +866,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     def test_field_indicators_on_min_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
@@ -1042,7 +880,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     def test_field_indicators_on_full_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
@@ -1056,7 +894,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     def test_federation_indicators_same_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
@@ -1072,7 +910,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     def test_federation_indicators_no_datasets(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
@@ -1091,7 +929,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     def test_federation_indicators_removed_datasets(self):
 
@@ -1113,7 +951,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
         # CASO 2
         # se buscan los datasets federados en el central que fueron eliminados
@@ -1134,7 +972,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
     def test_network_indicators(self):
@@ -1166,7 +1004,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(network_indicators[k], v)
+            assert_equal(network_indicators[k], v)
 
     @my_vcr.use_cassette()
     def test_indicators_invalid_periodicity(self):
@@ -1184,7 +1022,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v, k)
+            assert_equal(indicators[k], v, k)
 
     @my_vcr.use_cassette()
     def test_indicators_missing_periodicity(self):
@@ -1200,7 +1038,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v, k)
+            assert_equal(indicators[k], v, k)
 
     @my_vcr.use_cassette()
     def test_indicators_missing_dataset(self):
@@ -1221,7 +1059,7 @@ revíselo manualmente""".format(actual_filename)
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v, k)
+            assert_equal(indicators[k], v, k)
 
     @my_vcr.use_cassette()
     def test_last_updated_indicator_missing_issued_field(self):
@@ -1233,22 +1071,22 @@ revíselo manualmente""".format(actual_filename)
 
         # Catálogo no tiene 'issued', pero su dataset sí -> uso el del dataset
         expected = {
-            'catalogo_ultima_actualizacion_dias':  dias_diff
+            'catalogo_ultima_actualizacion_dias': dias_diff
         }
 
         for k, v in expected.items():
-            self.assertEqual(indicators[k], v, k)
+            assert_equal(indicators[k], v, k)
 
     def test_dataset_is_updated(self):
         catalog = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
 
         # Datasset con periodicity mensual vencida
         dataset = "Base de datos legislativos Infoleg"
-        self.assertFalse(self.dj.dataset_is_updated(catalog, dataset))
+        assert_false(self.dj.dataset_is_updated(catalog, dataset))
 
         # Dataset con periodicity eventual, siempre True
         dataset = "Declaración Jurada Patrimonial Integral de carácter público"
-        self.assertTrue(self.dj.dataset_is_updated(catalog, dataset))
+        assert_true(self.dj.dataset_is_updated(catalog, dataset))
 
     def test_date_network_indicators_empty_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "invalid_catalog_empty.json")
@@ -1258,33 +1096,33 @@ revíselo manualmente""".format(actual_filename)
         )
 
         for k, v in network_indics.items():
-            self.assertTrue(v is not None)
+            assert_true(v is not None)
 
     def test_DataJson_constructor(self):
-        for key, value in self.catalog.iteritems():
-            self.assertEqual(self.dj[key], value)
+        for key, value in iteritems(self.catalog):
+            assert_equal(self.dj[key], value)
 
     def test_datasets_property(self):
         """La propiedad datasets equivale a clave 'dataset' de un catalog."""
-        self.assertEqual(self.dj.datasets, self.catalog["dataset"])
-        self.assertEqual(self.dj.datasets, self.dj["dataset"])
+        assert_equal(self.dj.datasets, self.catalog["dataset"])
+        assert_equal(self.dj.datasets, self.dj["dataset"])
 
     @load_expected_result()
     def test_datasets(self, expected_result):
         datasets = self.dj.get_datasets()
         pprint(datasets)
-        self.assertEqual(expected_result, datasets)
+        assert_equal(expected_result, datasets)
 
         datasets = self.dj.datasets
         pprint(datasets)
-        self.assertEqual(expected_result, datasets)
+        assert_equal(expected_result, datasets)
 
     def test_datasets_without_catalog(self):
-        with self.assertRaises(KeyError):
+        with assert_raises(KeyError):
             dj = pydatajson.DataJson()
             datasets = dj.get_datasets()
 
-        with self.assertRaises(KeyError):
+        with assert_raises(KeyError):
             dj = pydatajson.DataJson()
             datasets = dj.datasets
 
@@ -1295,31 +1133,31 @@ revíselo manualmente""".format(actual_filename)
             for distribution in dataset["distribution"]:
                 distribution["dataset_identifier"] = dataset["identifier"]
                 distributions.append(distribution)
-        self.assertEqual(self.dj.distributions, distributions)
+        assert_equal(self.dj.distributions, distributions)
 
         distributions = []
         for dataset in self.dj["dataset"]:
             for distribution in dataset["distribution"]:
                 distribution["dataset_identifier"] = dataset["identifier"]
                 distributions.append(distribution)
-        self.assertEqual(self.dj.distributions, distributions)
+        assert_equal(self.dj.distributions, distributions)
 
     @load_expected_result()
     def test_distributions(self, expected_result):
         distributions = self.dj.get_distributions()
         pprint(distributions)
-        self.assertEqual(expected_result, distributions)
+        assert_equal(expected_result, distributions)
 
         distributions = self.dj.distributions
         pprint(distributions)
-        self.assertEqual(expected_result, distributions)
+        assert_equal(expected_result, distributions)
 
     def test_distributions_without_catalog(self):
-        with self.assertRaises(KeyError):
+        with assert_raises(KeyError):
             dj = pydatajson.DataJson()
             distributions = dj.get_distributions()
 
-        with self.assertRaises(KeyError):
+        with assert_raises(KeyError):
             dj = pydatajson.DataJson()
             distributions = dj.distributions
 
@@ -1334,7 +1172,7 @@ revíselo manualmente""".format(actual_filename)
                         field["distribution_identifier"] = distribution[
                             "identifier"]
                         fields.append(field)
-        self.assertEqual(self.dj.fields, fields)
+        assert_equal(self.dj.fields, fields)
 
         fields = []
         for dataset in self.dj["dataset"]:
@@ -1345,24 +1183,24 @@ revíselo manualmente""".format(actual_filename)
                         field["distribution_identifier"] = distribution[
                             "identifier"]
                         fields.append(field)
-        self.assertEqual(self.dj.fields, fields)
+        assert_equal(self.dj.fields, fields)
 
     @load_expected_result()
     def test_fields(self, expected_result):
         fields = self.dj.get_fields()
         pprint(fields)
-        self.assertEqual(expected_result, fields)
+        assert_equal(expected_result, fields)
 
         fields = self.dj.fields
         pprint(fields)
-        self.assertEqual(expected_result, fields)
+        assert_equal(expected_result, fields)
 
     def test_fields_without_catalog(self):
-        with self.assertRaises(KeyError):
+        with assert_raises(KeyError):
             dj = pydatajson.DataJson()
             fields = dj.get_fields()
 
-        with self.assertRaises(KeyError):
+        with assert_raises(KeyError):
             dj = pydatajson.DataJson()
             fields = dj.fields
 

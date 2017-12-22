@@ -10,7 +10,11 @@ from __future__ import with_statement
 from datetime import datetime
 import os
 import json
-from urlparse import urlparse
+
+from openpyxl import load_workbook
+from six.moves.urllib_parse import urlparse
+
+from six import string_types
 from unidecode import unidecode
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -161,7 +165,7 @@ def parse_value(cell):
     value = cell.value
 
     # stripea espacios en strings
-    if isinstance(value, (str, unicode)):
+    if isinstance(value, string_types):
         value = value.strip()
 
     # convierte a texto ISO 8601 las fechas
@@ -323,7 +327,8 @@ def get_ws_case_insensitive(wb, title):
 
 def find_ws_name(wb, name):
     """Busca una hoja en un workbook sin importar mayúsculas/minúsculas."""
-    if type(wb) == str or type(wb) == unicode:
+    if isinstance(wb, string_types):
+        # FIXME: importar o borrar segun corresponda
         wb = load_workbook(wb, read_only=True, data_only=True)
 
     for sheetname in wb.sheetnames:
