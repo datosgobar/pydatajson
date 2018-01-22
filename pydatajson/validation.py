@@ -81,13 +81,13 @@ def is_valid_catalog(catalog, validator=None):
     Returns:
         bool: True si el data.json cumple con el schema, sino False.
     """
+    catalog = readers.read_catalog(catalog)
     if not validator:
         if hasattr(catalog, "validator"):
             validator = catalog.validator
         else:
             validator = create_validator()
 
-    catalog = readers.read_catalog(catalog)
     jsonschema_res = validator.is_valid(catalog)
     custom_errors = iter_custom_errors(catalog)
 
@@ -256,12 +256,37 @@ def validate_catalog(catalog, only_errors=False, fmt="dict",
 
 
 def iter_custom_errors(catalog):
+    """Realiza validaciones sin usar el jsonschema.
+
+    En esta función se agregan bloques de código en python que realizan
+    validaciones complicadas o imposibles de especificar usando jsonschema.
+    """
+
     # chequea que no se repiten los ids de la taxonomía específica
-    if "themeTaxonomy" in catalog:
-        theme_ids = [theme["id"] for theme in catalog["themeTaxonomy"]]
-        dups = _find_dups(theme_ids)
-        if len(dups) > 0:
-            yield ce.ThemeIdRepeated(dups)
+    try:
+        if "themeTaxonomy" in catalog:
+            theme_ids = [theme["id"] for theme in catalog["themeTaxonomy"]]
+            dups = _find_dups(theme_ids)
+            if len(dups) > 0:
+                yield ce.ThemeIdRepeated(dups)
+    except Exception as e:
+        print(e)
+
+    # chequea que la extensión de fileName y format sean consistentes
+    try:
+        for dataset in catalog["dataset"]:
+            for distribution in dataset:
+                if "fileName" in distribution and "format" in distribution:
+                    format_extension = distribution[
+                        "format"].split("/")[-1].lower()
+                    fileName_extension = distribution[
+                        "extension"].split(".")[-1].lower()
+                    if format_extension != fileName_extension:
+                        yield ce.FileNameExtensionError(
+                            distribution["identifier"], format_extension,
+                            fileName_extension)
+    except Exception as e:
+        print(e)
 
 
 def _find_dups(elements):

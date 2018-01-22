@@ -296,3 +296,12 @@ class ThemeTaxonomyNonExistentError(Exception):
     def __init__(self, dataset_id):
         msg = "Catalogo no tiene themeTaxonomy"
         super(ThemeTaxonomyNonExistentError, self).__init__(msg)
+
+
+class FileNameExtensionError(Exception):
+
+    def __init__(self, distribution_id, format_extension, fileName_extension):
+        tmpl = "distribution '{}' tiene distintas extensiones: format ('{}') y fileName ('{}')"
+        msg = tmpl.format(distribution_id, format_extension,
+                          fileName_extension)
+        super(FileNameExtensionError, self).__init__(msg)
