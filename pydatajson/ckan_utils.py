@@ -3,9 +3,8 @@
 
 import json
 import re
-import calendar
 from dateutil import parser, tz
-from datetime import datetime, timedelta
+
 
 
 def append_attribute_to_extra(package, dataset, attribute, serialize=False):
@@ -33,7 +32,7 @@ def map_dataset_to_package(dataset):
     package['resources'] = map_distributions_to_resources(distributions)
 
     super_themes = dataset['superTheme']
-    package['groups'] = [{'name': super_theme} for super_theme in super_themes]
+    package['groups'] = [{'name': re.sub(r'(\W+|-)', '', super_theme).lower()} for super_theme in super_themes]
 #    package['extra'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
 
 #   Recomendados y opcionales
@@ -58,10 +57,10 @@ def map_dataset_to_package(dataset):
     package['tags'] = []
     keywords = dataset.get('keyword')
     if keywords:
-        package['tags'] += [{'name': keyword} for keyword in keywords]
+        package['tags'] += [{'name': re.sub(r'(\W+|-)', '', keyword).lower()} for keyword in keywords]
     themes = dataset.get('theme')
     if themes:
-        package['tags'] += [{'name': theme} for theme in themes]
+        package['tags'] += [{'name': re.sub(r'(\W+|-)', '', theme).lower()} for theme in themes]
 
     return package
 
