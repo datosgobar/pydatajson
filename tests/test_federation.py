@@ -1,6 +1,6 @@
 import unittest
 import os
-
+from dateutil import parser, tz
 from ckanapi import RemoteCKAN
 from .context import pydatajson
 
@@ -56,13 +56,35 @@ class FederationTestCase(unittest.TestCase):
 
         tags = [tag['name'] for tag in self.package['tags']]
         themes_and_keywords = self.dataset.get('theme', []) + self.dataset.get('keyword', [])
+        themes_and_keywords = list(set(themes_and_keywords))
         self.assertItemsEqual(themes_and_keywords, tags)
 
     def test_resources_replicated_attributes_stay_the_same(self):
-        pass
+        for resource in self.package['resources']:
+            distribution = next(x for x in self.dataset['distribution'] if x['identifier'] == resource['id'])
+            replicated_attributes = {'name': 'title',
+                                     'url': 'downloadURL',
+                                     'description': 'description',
+                                     'format': 'format',
+                                     'mimetype': 'mediaType'
+                                     }
+            for k, v in replicated_attributes.items():
+                self.assertEqual(distribution.get(v), resource.get(k))
 
     def test_resources_transformed_attributes_are_correct(self):
-        pass
+        for resource in self.package['resources']:
+            distribution = next(x for x in self.dataset['distribution'] if x['identifier'] == resource['id'])
+            self.assertEqual(unicode(distribution.get('byteSize')), resource.get('size'))
+
+            dist_issued_time = parser.parse(distribution.get('issued')).astimezone(tz.tzutc())
+            dist_issued_time = dist_issued_time.replace(tzinfo=None).isoformat()
+            self.assertEqual(dist_issued_time, resource['created'])
+
+            dist_modified_time = distribution.get('modified')
+            if dist_modified_time:
+                dist_modified_time = parser.parse(dist_modified_time).astimezone(tz.tzutc())
+                dist_modified_time = dist_modified_time.replace(tzinfo=None).isoformat()
+            self.assertEqual(dist_modified_time, resource.get('last_modified'))
 
 
 if __name__ == '__main__':

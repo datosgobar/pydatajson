@@ -14,7 +14,8 @@ def push_dataset_to_ckan(catalog, dataset_origin_identifier, portal_url, owner_o
 #   Create missing groups
     existing_groups = ckan_portal.call_action('group_list')
     new_groups = set(dataset['superTheme']) - set(existing_groups)
-    for
+    for new_group in new_groups:
+        ckan_portal.call_action('group_create', {'name': new_group})
     package = map_dataset_to_package(dataset)
     package['owner_org'] = owner_org
     if dataset_destination_identifier:

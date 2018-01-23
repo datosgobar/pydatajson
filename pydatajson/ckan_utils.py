@@ -4,7 +4,7 @@
 import json
 import re
 import calendar
-from dateutil import parser
+from dateutil import parser, tz
 from datetime import datetime, timedelta
 
 
@@ -68,8 +68,8 @@ def map_dataset_to_package(dataset):
 
 def convert_iso_string_to_utc(date_string):
     date_time = parser.parse(date_string)
-    utc_date_time = datetime.fromtimestamp(calendar.timegm(date_time.timetuple()))
-    utc_date_time += timedelta(microseconds=date_time.microsecond)
+    utc_date_time = date_time.astimezone(tz.tzutc())
+    utc_date_time = utc_date_time.replace(tzinfo=None)
     return utc_date_time.isoformat()
 
 
@@ -87,7 +87,7 @@ def map_distributions_to_resources(distributions):
         resource['format'] = distribution.get('format')
         last_modified = distribution.get('modified')
         if last_modified:
-            resource[last_modified] = convert_iso_string_to_utc(last_modified)
+            resource['last_modified'] = convert_iso_string_to_utc(last_modified)
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
         resources.append(resource)
