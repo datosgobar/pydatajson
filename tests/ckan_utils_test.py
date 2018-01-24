@@ -2,13 +2,14 @@ import unittest
 import os
 import re
 from dateutil import parser, tz
-from ckanapi import RemoteCKAN
 from .context import pydatajson
+from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
 
-class FederationTestCase(unittest.TestCase):
+class DatasetConversionTestCase(unittest.TestCase):
+    sample = 'full_data.json'
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -16,51 +17,45 @@ class FederationTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
-        cls.dataset = catalog.datasets[0]
-        cls.portal = RemoteCKAN('http://localhost:8080', apikey='fe3c3610-6f7a-4e97-8f47-30c891cf1456')
-        cls.dataset_id = catalog.push_dataset_to_ckan(cls.dataset['identifier'], "http://localhost:8080", 'org-test',
-                                                      "fe3c3610-6f7a-4e97-8f47-30c891cf1456",
-                                                      dataset_destination_identifier=u'fdf76740-2d2c-4283-964e-5f9c641400e2')
-        data_dict = {'id': cls.dataset_id}
-        cls.package = cls.portal.call_action('package_show', data_dict=data_dict)
+        cls.catalog = pydatajson.DataJson(cls.get_sample(cls.sample))
+        cls.dataset = cls.catalog.datasets[0]
+        cls.distributions = cls.dataset['distribution']
 
-    @classmethod
-    def tearDownClass(cls):
-        data_dict = {'id': cls.dataset_id}
-        cls.portal.call_action('dataset_purge', data_dict=data_dict)
-
-    def test_dataset_plain_replicated_attributes_stay_the_same(self):
+    def test_replicated_plain_attributes_are_corrext(self):
+        package = map_dataset_to_package(self.dataset)
         plain_replicated_attributes = [('title', 'title'),
                                        ('notes', 'description'),
                                        ('license_id', 'license'),
                                        ('url', 'landingPage')]
         for fst, snd in plain_replicated_attributes:
-            self.assertEqual(self.dataset.get(snd), self.package.get(fst))
+            self.assertEqual(self.dataset.get(snd), package.get(fst))
 
     def test_dataset_nested_replicated_attributes_stay_the_same(self):
+        package = map_dataset_to_package(self.dataset)
         contact_point_nested = [('maintainer', 'fn'),
                                 ('maintainer_email', 'hasEmail')]
         for fst, snd in contact_point_nested:
-            self.assertEqual(self.dataset.get('contactPoint', {}).get(snd), self.package.get(fst))
+            self.assertEqual(self.dataset.get('contactPoint', {}).get(snd), package.get(fst))
 
         publisher_nested = [('author', 'name'),
                             ('author_email', 'mbox')]
         for fst, snd in publisher_nested:
-            self.assertEqual(self.dataset.get('publisher').get(snd), self.package.get(fst))
+            self.assertEqual(self.dataset.get('publisher').get(snd), package.get(fst))
 
     def test_dataset_array_attributes_are_correct(self):
-        groups = [group['name'] for group in self.package.get('groups', [])]
+        package = map_dataset_to_package(self.dataset)
+        groups = [group['name'] for group in package.get('groups', [])]
         super_themes = [re.sub(r'(\W+|-)', '', s_theme).lower() for s_theme in self.dataset.get('superTheme')]
         self.assertItemsEqual(super_themes, groups)
 
-        tags = [tag['name'] for tag in self.package['tags']]
+        tags = [tag['name'] for tag in package['tags']]
         themes_and_keywords = self.dataset.get('theme', []) + self.dataset.get('keyword', [])
-        themes_and_keywords = list(set(themes_and_keywords))
+        themes_and_keywords = themes_and_keywords
         self.assertItemsEqual(themes_and_keywords, tags)
 
     def test_resources_replicated_attributes_stay_the_same(self):
-        for resource in self.package['resources']:
+        resources = map_distributions_to_resources(self.distributions)
+        for resource in resources:
             distribution = next(x for x in self.dataset['distribution'] if x['identifier'] == resource['id'])
             replicated_attributes = [('name', 'title'),
                                      ('url', 'downloadURL'),
@@ -72,10 +67,11 @@ class FederationTestCase(unittest.TestCase):
                     self.assertIsNone(resource.get(fst))
 
     def test_resources_transformed_attributes_are_correct(self):
-        for resource in self.package['resources']:
+        resources = map_distributions_to_resources(self.distributions)
+        for resource in resources:
             distribution = next(x for x in self.dataset['distribution'] if x['identifier'] == resource['id'])
             if distribution.get('byteSize'):
-                self.assertEqual(unicode(distribution.get('byteSize')), resource.get('size'))
+                self.assertEqual(distribution.get('byteSize'), resource.get('size'))
             else:
                 self.assertIsNone(resource.get('size'))
 
@@ -91,7 +87,7 @@ class FederationTestCase(unittest.TestCase):
                 if distribution.get(snd):
                     dist_time = parser.parse(distribution.get(snd)).astimezone(tz.tzutc())
                     dist_time = dist_time.replace(tzinfo=None).isoformat()
-                    self.assertEqual(unicode(dist_time), resource.get(fst))
+                    self.assertEqual(dist_time, resource.get(fst))
                 else:
                     self.assertIsNone(resource.get(fst))
 
