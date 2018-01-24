@@ -8,7 +8,10 @@ import re
 
 
 def push_dataset_to_ckan(catalog, dataset_origin_identifier, portal_url, owner_org,
-                         apikey=None, dataset_destination_identifier=None):
+                         apikey, dataset_destination_identifier=None):
+
+    if not catalog.is_valid_catalog():
+        raise ValueError('The catalog is invalid')
 
     dataset = catalog.get_dataset(dataset_origin_identifier)
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
