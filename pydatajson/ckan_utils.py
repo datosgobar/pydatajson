@@ -6,7 +6,6 @@ import re
 from dateutil import parser, tz
 
 
-
 def append_attribute_to_extra(package, dataset, attribute, serialize=False):
     value = dataset.get(attribute)
     if value:

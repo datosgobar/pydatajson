@@ -16,15 +16,14 @@ class FederationTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        catalog = pydatajson.DataJson(cls.get_sample('minimum_data.json'))
+        catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
         cls.dataset = catalog.datasets[0]
         cls.portal = RemoteCKAN('http://localhost:8080', apikey='fe3c3610-6f7a-4e97-8f47-30c891cf1456')
         cls.dataset_id = catalog.push_dataset_to_ckan(cls.dataset['identifier'], "http://localhost:8080", 'org-test',
-                                                      "fe3c3610-6f7a-4e97-8f47-30c891cf1456")
-
-    def setUp(self):
-        data_dict = {'id': self.dataset_id}
-        self.package = self.portal.call_action('package_show', data_dict=data_dict)
+                                                      "fe3c3610-6f7a-4e97-8f47-30c891cf1456",
+                                                      dataset_destination_identifier=u'fdf76740-2d2c-4283-964e-5f9c641400e2')
+        data_dict = {'id': cls.dataset_id}
+        cls.package = cls.portal.call_action('package_show', data_dict=data_dict)
 
     @classmethod
     def tearDownClass(cls):
@@ -82,7 +81,7 @@ class FederationTestCase(unittest.TestCase):
 
             description_attributes = [('description', 'description'), ('format', 'format')]
             for fst, snd in description_attributes:
-                if distribution.get('snd'):
+                if distribution.get(snd):
                     self.assertEqual(distribution.get(snd), resource.get(fst))
                 else:
                     self.assertEqual(u'', resource.get(fst))
