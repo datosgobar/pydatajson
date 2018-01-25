@@ -35,7 +35,6 @@ def map_dataset_to_package(dataset):
 #    package['extra'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
 
 #   Recomendados y opcionales
-    package['license_id'] = dataset.get('license')
     package['url'] = dataset.get('landingPage')
     package['author_email'] = dataset['publisher'].get('mbox')
 

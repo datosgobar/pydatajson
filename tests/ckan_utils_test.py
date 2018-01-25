@@ -25,7 +25,6 @@ class DatasetConversionTestCase(unittest.TestCase):
         package = map_dataset_to_package(self.dataset)
         plain_replicated_attributes = [('title', 'title'),
                                        ('notes', 'description'),
-                                       ('license_id', 'license'),
                                        ('url', 'landingPage')]
         for fst, snd in plain_replicated_attributes:
             self.assertEqual(self.dataset.get(snd), package.get(fst))
