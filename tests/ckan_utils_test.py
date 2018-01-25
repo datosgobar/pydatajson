@@ -35,7 +35,6 @@ class DatasetConversionTestCase(unittest.TestCase):
                                 ('maintainer_email', 'hasEmail')]
         for fst, snd in contact_point_nested:
             self.assertEqual(self.dataset.get('contactPoint', {}).get(snd), package.get(fst))
-
         publisher_nested = [('author', 'name'),
                             ('author_email', 'mbox')]
         for fst, snd in publisher_nested:
@@ -58,7 +57,10 @@ class DatasetConversionTestCase(unittest.TestCase):
             distribution = next(x for x in self.dataset['distribution'] if x['identifier'] == resource['id'])
             replicated_attributes = [('name', 'title'),
                                      ('url', 'downloadURL'),
-                                     ('mimetype', 'mediaType')]
+                                     ('mimetype', 'mediaType'),
+                                     ('description', 'description'),
+                                     ('format', 'format'),
+                                     ('size', 'byteSize')]
             for fst, snd in replicated_attributes:
                 if distribution.get(snd):
                     self.assertEqual(distribution.get(snd), resource.get(fst))
@@ -69,18 +71,6 @@ class DatasetConversionTestCase(unittest.TestCase):
         resources = map_distributions_to_resources(self.distributions)
         for resource in resources:
             distribution = next(x for x in self.dataset['distribution'] if x['identifier'] == resource['id'])
-            if distribution.get('byteSize'):
-                self.assertEqual(distribution.get('byteSize'), resource.get('size'))
-            else:
-                self.assertIsNone(resource.get('size'))
-
-            description_attributes = [('description', 'description'), ('format', 'format')]
-            for fst, snd in description_attributes:
-                if distribution.get(snd):
-                    self.assertEqual(distribution.get(snd), resource.get(fst))
-                else:
-                    self.assertEqual(u'', resource.get(fst))
-
             time_attributes = [('created', 'issued'), ('last_modified', 'modified')]
             for fst, snd in time_attributes:
                 if distribution.get(snd):
