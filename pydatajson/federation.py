@@ -8,11 +8,11 @@ import re
 
 
 def push_dataset_to_ckan(catalog, dataset_origin_identifier, portal_url, owner_org,
-                         apikey, dataset_destination_identifier=None, remote_ckan_class=RemoteCKAN):
+                         apikey, dataset_destination_identifier=None):
     if not catalog.is_valid_catalog():
         raise ValueError('The catalog is invalid')
     dataset = catalog.get_dataset(dataset_origin_identifier)
-    ckan_portal = remote_ckan_class(portal_url, apikey=apikey)
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
 
 #   Create missing groups
     existing_groups = ckan_portal.call_action('group_list')

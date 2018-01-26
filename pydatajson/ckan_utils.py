@@ -11,12 +11,12 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
     if value:
         if serialize:
             value = json.dumps(value)
-#        package['extra'].append({'key': attribute, 'value': value})
+        package['extras'].append({'key': attribute, 'value': value})
 
 
 def map_dataset_to_package(dataset):
     package = dict()
-#    package['extra'] = []
+    package['extras'] = []
 #   Obligatorios
     package['name'] = re.sub(r'(\W+|-)', '', dataset['title']).lower()
     package['title'] = dataset['title']
@@ -32,20 +32,20 @@ def map_dataset_to_package(dataset):
 
     super_themes = dataset['superTheme']
     package['groups'] = [{'name': re.sub(r'(\W+|-)', '', super_theme).lower()} for super_theme in super_themes]
-#    package['extra'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
+    package['extras'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
 
 #   Recomendados y opcionales
     package['url'] = dataset.get('landingPage')
     package['author_email'] = dataset['publisher'].get('mbox')
-
     append_attribute_to_extra(package, dataset, 'modified')
     append_attribute_to_extra(package, dataset, 'temporal')
-    append_attribute_to_extra(package, dataset, 'language', serialize=True)
+    append_attribute_to_extra(package, dataset, 'language')
+
     spatial = dataset.get('spatial')
 
     if spatial:
         serializable = type(spatial) is not unicode
-        append_attribute_to_extra(package, dataset, 'spatial', serialize=serializable)
+        append_attribute_to_extra(package, dataset, 'spatial', serializable)
 
     contact_point = dataset.get('contactPoint')
     if contact_point:
