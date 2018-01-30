@@ -51,6 +51,9 @@ class DatasetConversionTestCase(unittest.TestCase):
         themes_and_keywords = themes_and_keywords
         self.assertItemsEqual(themes_and_keywords, tags)
 
+    def test_dataset_extra_attributes_are_correct(self):
+        pass
+
     def test_resources_replicated_attributes_stay_the_same(self):
         resources = map_distributions_to_resources(self.distributions)
         for resource in resources:
