@@ -89,10 +89,9 @@ class FederationTestCase(unittest.TestCase):
         def mock_call_action(action, data_dict=None):
             if action == 'license_list':
                 return [{'title': 'somelicense', 'url': 'somelicense.com', 'id': '1'},
-                        {'title': 'Open Data Commons Open Database License 1.0',
-                         'url': 'someUrl', 'id': '2'}]
+                        {'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
             elif action == 'package_create':
-                self.assertEqual('2', data_dict['license_id'])
+                self.assertEqual('notspecified', data_dict['license_id'])
                 return {'id': 'default_id'}
             else:
                 return []

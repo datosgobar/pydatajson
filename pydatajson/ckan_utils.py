@@ -44,7 +44,7 @@ def map_dataset_to_package(dataset):
     spatial = dataset.get('spatial')
 
     if spatial:
-        serializable = type(spatial) is not unicode
+        serializable = type(spatial) is list
         append_attribute_to_extra(package, dataset, 'spatial', serializable)
 
     contact_point = dataset.get('contactPoint')
