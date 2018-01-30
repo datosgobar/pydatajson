@@ -14,3 +14,4 @@ functools32==3.2.3.post2;python_version<"3.4"
 urllib3==1.22
 Unidecode==0.4.21
 six==1.11.0
+python-dateutil==2.6.1
