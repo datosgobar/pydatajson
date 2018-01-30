@@ -103,5 +103,62 @@ class DatasetConversionTestCase(unittest.TestCase):
                     self.assertIsNone(resource.get(fst))
 
 
+class DatetimeConversionTests(unittest.TestCase):
+
+    def test_timezones_are_handled_correctly(self):
+        buenos_aires = '2018-01-29T14:14:09.291510-03:00'
+        buenos_aires_utc = '2018-01-29T17:14:09.291510'
+        res = convert_iso_string_to_utc(buenos_aires)
+        self.assertEqual(buenos_aires_utc, res)
+
+        moscow = '2018-01-29T14:14:09.291510+03:00'
+        moscow_utc = '2018-01-29T11:14:09.291510'
+        res = convert_iso_string_to_utc(moscow)
+        self.assertEqual(moscow_utc, res)
+
+    def test_dates_change_correctly(self):
+        buenos_aires = '2018-01-29T22:14:09.291510-03:00'
+        buenos_aires_utc = '2018-01-30T01:14:09.291510'
+        res = convert_iso_string_to_utc(buenos_aires)
+        self.assertEqual(buenos_aires_utc, res)
+
+        moscow = '2018-01-29T01:14:09.291510+03:00'
+        moscow_utc = '2018-01-28T22:14:09.291510'
+        res = convert_iso_string_to_utc(moscow)
+        self.assertEqual(moscow_utc, res)
+
+    def test_datetimes_without_timezones_stay_the_same(self):
+        no_timezone_string = '2018-01-29T22:14:09.291510'
+        res = convert_iso_string_to_utc(no_timezone_string)
+        self.assertEqual(no_timezone_string, res)
+
+    def test_datetimes_without_microseconds_are_handled_correctly(self):
+        buenos_aires = '2018-01-29T14:14:09-03:00'
+        buenos_aires_utc = '2018-01-29T17:14:09'
+        res = convert_iso_string_to_utc(buenos_aires)
+        self.assertEqual(buenos_aires_utc, res)
+
+        moscow = '2018-01-29T14:14:09+03:00'
+        moscow_utc = '2018-01-29T11:14:09'
+        res = convert_iso_string_to_utc(moscow)
+        self.assertEqual(moscow_utc, res)
+
+    def test_datetimes_without_seconds_are_handled_correctly(self):
+        buenos_aires = '2018-01-29T14:14-03:00'
+        buenos_aires_utc = '2018-01-29T17:14:00'
+        res = convert_iso_string_to_utc(buenos_aires)
+        self.assertEqual(buenos_aires_utc, res)
+
+        moscow = '2018-01-29T14:14+03:00'
+        moscow_utc = '2018-01-29T11:14:00'
+        res = convert_iso_string_to_utc(moscow)
+        self.assertEqual(moscow_utc, res)
+
+    def test_dates_stay_the_same(self):
+        date = '2018-01-29'
+        res = convert_iso_string_to_utc(date)
+        self.assertEqual(date, res)
+
+
 if __name__ == '__main__':
     unittest.main()

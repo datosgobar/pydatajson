@@ -65,7 +65,13 @@ def map_dataset_to_package(dataset):
 
 def convert_iso_string_to_utc(date_string):
     date_time = parser.parse(date_string)
-    utc_date_time = date_time.astimezone(tz.tzutc())
+    if not date_time.time():
+        return date_string
+
+    if date_time.tzinfo is not None:
+        utc_date_time = date_time.astimezone(tz.tzutc())
+    else:
+        utc_date_time = date_time
     utc_date_time = utc_date_time.replace(tzinfo=None)
     return utc_date_time.isoformat()
 

@@ -96,6 +96,8 @@ class FederationTestCase(unittest.TestCase):
                 return {'id': 'default_id'}
             else:
                 return []
+        mock_portal.return_value.call_action = mock_call_action
+        push_dataset_to_ckan(self.catalog, self.dataset['identifier'], 'portal', 'key', 'owner')
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_invalid_catalogs_are_rejected(self, mock_portal):
