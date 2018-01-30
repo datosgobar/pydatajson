@@ -39,7 +39,7 @@ def map_dataset_to_package(dataset):
     package['author_email'] = dataset['publisher'].get('mbox')
     append_attribute_to_extra(package, dataset, 'modified')
     append_attribute_to_extra(package, dataset, 'temporal')
-    append_attribute_to_extra(package, dataset, 'language')
+    append_attribute_to_extra(package, dataset, 'language', serialize=True)
 
     spatial = dataset.get('spatial')
 

@@ -56,18 +56,22 @@ class DatasetConversionTestCase(unittest.TestCase):
         package = map_dataset_to_package(self.dataset)
 #       extras are included in dataset
         for extra in package['extras']:
-            dataset_value = self.dataset[extra['key']]
+            if extra['key'] == 'super_theme':
+                dataset_value = self.dataset['superTheme']
+            else:
+                dataset_value = self.dataset[extra['key']]
             if type(dataset_value) is list:
                 dataset_value = json.dumps(dataset_value)
             self.assertEqual(dataset_value, extra['value'])
 #       dataset attributes are included in extras
-        extra_attrs = ['super_theme', 'issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial']
+        extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial']
         for key in extra_attrs:
             value = self.dataset[key]
             if type(value) is list:
                 value = json.dumps(value)
             resulting_dict = {'key': key, 'value': value}
             self.assertTrue(resulting_dict in package['extras'])
+        self.assertTrue({'key': 'super_theme', 'value': json.dumps(self.dataset['superTheme'])})
 
     def test_resources_replicated_attributes_stay_the_same(self):
         resources = map_distributions_to_resources(self.distributions)
