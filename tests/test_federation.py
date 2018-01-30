@@ -1,6 +1,10 @@
 import unittest
 import os
-from mock import patch
+try:
+    from mock import patch
+except ImportError:
+    from unittest.mock import patch
+
 from .context import pydatajson
 from pydatajson.federation import push_dataset_to_ckan
 from ckanapi.errors import NotFound

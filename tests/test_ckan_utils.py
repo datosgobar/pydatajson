@@ -9,6 +9,7 @@ from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_r
 SAMPLES_DIR = os.path.join("tests", "samples")
 
 
+# noinspection PyCompatibility
 class DatasetConversionTestCase(unittest.TestCase):
     sample = 'full_data.json'
 
@@ -45,12 +46,19 @@ class DatasetConversionTestCase(unittest.TestCase):
         package = map_dataset_to_package(self.dataset)
         groups = [group['name'] for group in package.get('groups', [])]
         super_themes = [re.sub(r'(\W+|-)', '', s_theme).lower() for s_theme in self.dataset.get('superTheme')]
-        self.assertItemsEqual(super_themes, groups)
+        try:
+            self.assertItemsEqual(super_themes, groups)
+        except AttributeError:
+            self.assertCountEqual(super_themes, groups)
 
         tags = [tag['name'] for tag in package['tags']]
         themes_and_keywords = self.dataset.get('theme', []) + self.dataset.get('keyword', [])
         themes_and_keywords = themes_and_keywords
-        self.assertItemsEqual(themes_and_keywords, tags)
+        try:
+            self.assertItemsEqual(themes_and_keywords, tags)
+        except AttributeError:
+            # noinspection PyCompatibility
+            self.assertCountEqual(themes_and_keywords, tags)
 
     def test_dataset_extra_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset)

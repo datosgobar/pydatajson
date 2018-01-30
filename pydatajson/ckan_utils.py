@@ -3,6 +3,7 @@
 
 import json
 import re
+from datetime import time
 from dateutil import parser, tz
 
 
@@ -65,7 +66,7 @@ def map_dataset_to_package(dataset):
 
 def convert_iso_string_to_utc(date_string):
     date_time = parser.parse(date_string)
-    if not date_time.time():
+    if date_time.time() == time(0):
         return date_string
 
     if date_time.tzinfo is not None:
