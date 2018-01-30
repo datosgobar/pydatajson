@@ -1,9 +1,10 @@
 import unittest
 import os
 import re
+import json
 from dateutil import parser, tz
 from .context import pydatajson
-from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources
+from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources, convert_iso_string_to_utc
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
@@ -52,7 +53,21 @@ class DatasetConversionTestCase(unittest.TestCase):
         self.assertItemsEqual(themes_and_keywords, tags)
 
     def test_dataset_extra_attributes_are_correct(self):
-        pass
+        package = map_dataset_to_package(self.dataset)
+#       extras are included in dataset
+        for extra in package['extras']:
+            dataset_value = self.dataset[extra['key']]
+            if type(dataset_value) is list:
+                dataset_value = json.dumps(dataset_value)
+            self.assertEqual(dataset_value, extra['value'])
+#       dataset attributes are included in extras
+        extra_attrs = ['super_theme', 'issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial']
+        for key in extra_attrs:
+            value = self.dataset[key]
+            if type(value) is list:
+                value = json.dumps(value)
+            resulting_dict = {'key': key, 'value': value}
+            self.assertTrue(resulting_dict in package['extras'])
 
     def test_resources_replicated_attributes_stay_the_same(self):
         resources = map_distributions_to_resources(self.distributions)
