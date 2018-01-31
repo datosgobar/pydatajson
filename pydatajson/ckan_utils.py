@@ -14,11 +14,12 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         package['extras'].append({'key': attribute, 'value': value})
 
 
-def map_dataset_to_package(dataset):
+def map_dataset_to_package(dataset, catalog_id):
     package = dict()
     package['extras'] = []
 #   Obligatorios
-    package['name'] = re.sub(r'(\W+|-)', '', dataset['title']).lower()
+    package['id'] = catalog_id+'_'+dataset['identifier']
+    package['name'] = re.sub(r'(\W-)+', '', dataset['title']).lower()
     package['title'] = dataset['title']
     package['private'] = False
     package['notes'] = dataset['description']
@@ -28,10 +29,10 @@ def map_dataset_to_package(dataset):
     append_attribute_to_extra(package, dataset, 'accrualPeriodicity')
 
     distributions = dataset['distribution']
-    package['resources'] = map_distributions_to_resources(distributions)
+    package['resources'] = map_distributions_to_resources(distributions, package['id'])
 
     super_themes = dataset['superTheme']
-    package['groups'] = [{'name': re.sub(r'(\W+|-)', '', super_theme).lower()} for super_theme in super_themes]
+    package['groups'] = [{'name': re.sub(r'(\W|-)+', '', super_theme).lower()} for super_theme in super_themes]
     package['extras'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
 
 #   Recomendados y opcionales
@@ -55,10 +56,10 @@ def map_dataset_to_package(dataset):
     package['tags'] = []
     keywords = dataset.get('keyword')
     if keywords:
-        package['tags'] += [{'name': re.sub(r'(\W+|-)', '', keyword).lower()} for keyword in keywords]
+        package['tags'] += [{'name': re.sub(r'(\W-)+', '', keyword).lower()} for keyword in keywords]
     themes = dataset.get('theme')
     if themes:
-        package['tags'] += [{'name': re.sub(r'(\W+|-)', '', theme).lower()} for theme in themes]
+        package['tags'] += [{'name': re.sub(r'(\W-)+', '', theme).lower()} for theme in themes]
 
     return package
 
@@ -76,12 +77,12 @@ def convert_iso_string_to_utc(date_string):
     return utc_date_time.isoformat()
 
 
-def map_distributions_to_resources(distributions):
+def map_distributions_to_resources(distributions, package_id):
     resources = []
     for distribution in distributions:
         resource = dict()
 #       Obligatorios
-        resource['id'] = distribution['identifier']
+        resource['id'] = package_id+'_'+distribution['identifier']
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
         resource['created'] = convert_iso_string_to_utc(distribution['issued'])
@@ -96,7 +97,7 @@ def map_distributions_to_resources(distributions):
         resource['accessURL'] = distribution.get('accessURL')
         dist_fields = distribution.get('field')
         if dist_fields:
-            resource['field'] = json.dumps(dist_fields)
+            resource['attributesDescription'] = json.dumps(dist_fields)
         resources.append(resource)
 
     return resources
