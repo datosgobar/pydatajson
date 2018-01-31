@@ -9,7 +9,6 @@ from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_r
 SAMPLES_DIR = os.path.join("tests", "samples")
 
 
-# noinspection PyCompatibility
 class DatasetConversionTestCase(unittest.TestCase):
     sample = 'full_data.json'
 
@@ -57,28 +56,39 @@ class DatasetConversionTestCase(unittest.TestCase):
         try:
             self.assertItemsEqual(themes_and_keywords, tags)
         except AttributeError:
-            # noinspection PyCompatibility
             self.assertCountEqual(themes_and_keywords, tags)
 
     def test_dataset_extra_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset)
 #       extras are included in dataset
-        for extra in package['extras']:
-            if extra['key'] == 'super_theme':
-                dataset_value = self.dataset['superTheme']
-            else:
-                dataset_value = self.dataset[extra['key']]
-            if type(dataset_value) is list:
-                dataset_value = json.dumps(dataset_value)
-            self.assertEqual(dataset_value, extra['value'])
+        if package['extras']:
+            for extra in package['extras']:
+                if extra['key'] == 'super_theme':
+                    dataset_value = self.dataset['superTheme']
+                else:
+                    dataset_value = self.dataset[extra['key']]
+                if type(dataset_value) is list:
+                    extra_value = json.loads(extra['value'])
+                    try:
+                        self.assertItemsEqual(dataset_value, extra_value)
+                    except AttributeError:
+                        self.assertCountEqual(dataset_value, extra_value)
+                else:
+                    extra_value = extra['value']
+                    self.assertEqual(dataset_value, extra_value)
+
+    def test_dataset_extra_attributes_are_complete(self):
+        package = map_dataset_to_package(self.dataset)
 #       dataset attributes are included in extras
         extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial']
         for key in extra_attrs:
-            value = self.dataset[key]
-            if type(value) is list:
-                value = json.dumps(value)
-            resulting_dict = {'key': key, 'value': value}
-            self.assertTrue(resulting_dict in package['extras'])
+            value = self.dataset.get(key)
+            if value:
+                if type(value) is list:
+                    value = json.dumps(value)
+                resulting_dict = {'key': key, 'value': value}
+                self.assertTrue(resulting_dict in package['extras'])
+
         self.assertTrue({'key': 'super_theme', 'value': json.dumps(self.dataset['superTheme'])})
 
     def test_resources_replicated_attributes_stay_the_same(self):
@@ -109,6 +119,19 @@ class DatasetConversionTestCase(unittest.TestCase):
                     self.assertEqual(dist_time, resource.get(fst))
                 else:
                     self.assertIsNone(resource.get(fst))
+
+    def test_resources_extra_attributes_are_created_correctly(self):
+        resources = map_distributions_to_resources(self.distributions)
+        for resource in resources:
+            distribution = next(x for x in self.dataset['distribution'] if x['identifier'] == resource['id'])
+            self.assertEqual(distribution.get('accessURL'), resource.get('accessURL'))
+            dist_fields = distribution.get('field')
+            if dist_fields:
+                res_fields = json.loads(resource.get('field'))
+                for dist_field, res_field in zip(dist_fields, res_fields):
+                    self.assertDictEqual(dist_field, res_field)
+            else:
+                self.assertIsNone(resource.get('field'))
 
 
 class DatetimeConversionTests(unittest.TestCase):

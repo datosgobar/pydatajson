@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import json
 import re
 from datetime import time
@@ -94,6 +93,10 @@ def map_distributions_to_resources(distributions):
             resource['last_modified'] = convert_iso_string_to_utc(last_modified)
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
+        resource['accessURL'] = distribution.get('accessURL')
+        dist_fields = distribution.get('field')
+        if dist_fields:
+            resource['field'] = json.dumps(dist_fields)
         resources.append(resource)
 
     return resources
