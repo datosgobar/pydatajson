@@ -7,20 +7,19 @@ from .ckan_utils import map_dataset_to_package
 import re
 
 
-def push_dataset_to_ckan(catalog, dataset_origin_identifier, portal_url, owner_org, apikey):
+def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifier, portal_url, apikey):
 
     if not catalog.is_valid_catalog():
         raise ValueError('The catalog is invalid')
     dataset = catalog.get_dataset(dataset_origin_identifier)
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
 
-    catalog_id = catalog.get('identifier', re.sub(r'(\W-)+', '', catalog['title']).lower())
     package = map_dataset_to_package(dataset, catalog_id)
     package['owner_org'] = owner_org
 
 #   Create missing groups
     existing_groups = ckan_portal.call_action('group_list')
-    dataset_groups = [re.sub(r'(\W-)+', '', group).lower() for group in dataset['superTheme']]
+    dataset_groups = [re.sub(r'[^\w-]+', '', group).lower() for group in dataset['superTheme']]
     new_groups = set(dataset_groups) - set(existing_groups)
     for new_group in new_groups:
         ckan_portal.call_action('group_create', {'name': new_group.lower()})

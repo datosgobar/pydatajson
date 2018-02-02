@@ -22,7 +22,7 @@ class FederationTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
-        cls.catalog_id = cls.catalog.get('identifier', re.sub(r'(\W-)+', '', cls.catalog['title']).lower())
+        cls.catalog_id = cls.catalog.get('identifier', re.sub(r'[^\w-]+', '', cls.catalog['title']).lower())
         cls.dataset = cls.catalog.datasets[0]
         cls.dataset_id = cls.dataset['identifier']
 
@@ -36,7 +36,8 @@ class FederationTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, self.dataset['identifier'], 'portal', 'key', 'owner')
+        res_id = push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
+                                      self.dataset['identifier'], 'portal', 'key')
         self.assertEqual(self.catalog_id+'_'+self.dataset_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
@@ -47,7 +48,8 @@ class FederationTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, self.dataset['identifier'], 'portal', 'key', 'owner')
+        res_id = push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
+                                      self.dataset['identifier'], 'portal', 'key')
         self.assertEqual(self.catalog_id+'_'+self.dataset_id, res_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
@@ -61,7 +63,8 @@ class FederationTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.catalog, self.dataset['identifier'], 'portal', 'key', 'owner')
+        push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
+                             self.dataset['identifier'], 'portal', 'key')
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_if_group_exists_is_not_created(self, mock_portal):
@@ -76,7 +79,8 @@ class FederationTestCase(unittest.TestCase):
                 return []
 
         mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.catalog, self.dataset['identifier'], 'portal', 'key', 'owner')
+        push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
+                             self.dataset['identifier'], 'portal', 'key')
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_licenses_are_interpreted_correctly(self, mock_portal):
@@ -90,13 +94,15 @@ class FederationTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.catalog, self.dataset['identifier'], 'portal', 'key', 'owner')
+        push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
+                             self.dataset['identifier'], 'portal', 'key')
 
     def test_invalid_catalogs_are_rejected(self):
         invalid_sample = self.get_sample('missing_catalog_description.json')
         invalid_catalog = pydatajson.DataJson(invalid_sample)
+        invalid_dataset_id = invalid_catalog.datasets[0]['identifier']
         with self.assertRaises(ValueError):
-            push_dataset_to_ckan(invalid_catalog, self.dataset['identifier'], 'portal', 'key', 'owner')
+            push_dataset_to_ckan(invalid_catalog, self.catalog_id, 'owner', invalid_dataset_id, 'portal', 'key')
 
 
 if __name__ == '__main__':
