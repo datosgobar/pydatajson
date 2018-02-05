@@ -19,10 +19,11 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
 
 #   Create missing groups
     existing_groups = ckan_portal.call_action('group_list')
-    dataset_groups = [re.sub(r'[^\w-]+', '', group).lower() for group in dataset['superTheme']]
+    dataset_groups = [re.sub(r'[^a-z-_]+', '', group.lower()) for group in dataset['superTheme']]
     new_groups = set(dataset_groups) - set(existing_groups)
     for new_group in new_groups:
         ckan_portal.call_action('group_create', {'name': new_group.lower()})
+
 
 #   Get license id
     if dataset.get('license'):
@@ -42,4 +43,5 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
     except NotFound:
         pushed_package = ckan_portal.call_action('package_create', data_dict=package)
 
+    ckan_portal.close()
     return pushed_package['id']

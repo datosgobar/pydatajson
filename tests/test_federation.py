@@ -22,9 +22,13 @@ class FederationTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
-        cls.catalog_id = cls.catalog.get('identifier', re.sub(r'[^\w-]+', '', cls.catalog['title']).lower())
+        cls.catalog_id = cls.catalog.get('identifier', re.sub(r'[^a-z-_]+', '', cls.catalog['title']).lower())
         cls.dataset = cls.catalog.datasets[0]
         cls.dataset_id = cls.dataset['identifier']
+        cls.minimum_catalog = pydatajson.DataJson(cls.get_sample('minimum_data.json'))
+        cls.minimum_catalog_id = cls.minimum_catalog.get('identifier',
+                                                         re.sub(r'[^a-z-_]+', '', cls.minimum_catalog['title']).lower())
+        cls.minimum_dataset = cls.minimum_catalog.datasets[0]
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_id_is_created_correctly(self, mock_portal):
@@ -96,6 +100,22 @@ class FederationTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = mock_call_action
         push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
                              self.dataset['identifier'], 'portal', 'key')
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_dataset_without_license_sets_notspecified(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'license_list':
+                return [{'title': 'somelicense', 'url': 'somelicense.com', 'id': '1'},
+                        {'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
+            elif action == 'package_update':
+                self.assertEqual('notspecified', data_dict['license_id'])
+                return {'id': data_dict['id']}
+            else:
+                return []
+
+        mock_portal.return_value.call_action = mock_call_action
+        push_dataset_to_ckan(self.minimum_catalog, self.minimum_catalog_id, 'owner',
+                             self.minimum_dataset['identifier'], 'portal', 'key')
 
     def test_invalid_catalogs_are_rejected(self):
         invalid_sample = self.get_sample('missing_catalog_description.json')

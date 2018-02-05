@@ -19,7 +19,7 @@ def map_dataset_to_package(dataset, catalog_id):
     package['extras'] = []
 #   Obligatorios
     package['id'] = catalog_id+'_'+dataset['identifier']
-    package['name'] = re.sub(r'[^\w-]+', '', dataset['title']).lower()
+    package['name'] = re.sub(r'[^a-z-_]+', '', dataset['title'].lower())
     package['title'] = dataset['title']
     package['private'] = False
     package['notes'] = dataset['description']
@@ -32,7 +32,7 @@ def map_dataset_to_package(dataset, catalog_id):
     package['resources'] = map_distributions_to_resources(distributions, package['id'])
 
     super_themes = dataset['superTheme']
-    package['groups'] = [{'name': re.sub(r'[^\w-]+', '', super_theme).lower()} for super_theme in super_themes]
+    package['groups'] = [{'name': re.sub(r'[^a-z-_]+', '', super_theme.lower())} for super_theme in super_themes]
     package['extras'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
 
 #   Recomendados y opcionales
@@ -56,10 +56,10 @@ def map_dataset_to_package(dataset, catalog_id):
     package['tags'] = []
     keywords = dataset.get('keyword')
     if keywords:
-        package['tags'] += [{'name': re.sub(r'[^\w-]+', '', keyword).lower()} for keyword in keywords]
+        package['tags'] += [{'name': re.sub(r'[^a-z-_]+', '', keyword.lower())} for keyword in keywords]
     themes = dataset.get('theme')
     if themes:
-        package['tags'] += [{'name': re.sub(r'[^\w-]+', '', theme).lower()} for theme in themes]
+        package['tags'] += [{'name': re.sub(r'[^a-z-_]+', '', theme.lower())} for theme in themes]
 
     return package
 

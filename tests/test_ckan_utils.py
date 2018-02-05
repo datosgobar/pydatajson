@@ -19,7 +19,7 @@ class DatasetConversionTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample(cls.sample))
-        cls.catalog_id = cls.catalog.get('identifier', re.sub(r'[^\w-]+', '', cls.catalog['title']).lower())
+        cls.catalog_id = cls.catalog.get('identifier', re.sub(r'[^a-z-_]+', '', cls.catalog['title'].lower()))
         cls.dataset = cls.catalog.datasets[0]
         cls.dataset_id = cls.dataset['identifier']
         cls.distributions = cls.dataset['distribution']
@@ -47,7 +47,7 @@ class DatasetConversionTestCase(unittest.TestCase):
     def test_dataset_array_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id)
         groups = [group['name'] for group in package.get('groups', [])]
-        super_themes = [re.sub(r'[^\w-]+', '', s_theme).lower() for s_theme in self.dataset.get('superTheme')]
+        super_themes = [re.sub(r'[^a-z-_]+', '', s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
         try:
             self.assertItemsEqual(super_themes, groups)
         except AttributeError:
@@ -55,7 +55,6 @@ class DatasetConversionTestCase(unittest.TestCase):
 
         tags = [tag['name'] for tag in package['tags']]
         themes_and_keywords = self.dataset.get('theme', []) + self.dataset.get('keyword', [])
-        themes_and_keywords = themes_and_keywords
         try:
             self.assertItemsEqual(themes_and_keywords, tags)
         except AttributeError:
