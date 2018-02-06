@@ -16,12 +16,16 @@ ckan_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
 
 
 class FederationTestCase(unittest.TestCase):
+    
+    portal_url = 'http://181.209.63.239'
+    apikey = '<una_apikey>'
+
     @classmethod
     def get_sample(cls, sample_filename):
         return os.path.join(SAMPLES_DIR, sample_filename)
 
     def setUp(self):
-        self.portal = RemoteCKAN('http://181.209.63.239', apikey="<una_apikey>")
+        self.portal = RemoteCKAN(self.portal_url, apikey=self.apikey)
         self.full_catalog = pydatajson.DataJson(self.get_sample('full_data.json'))
         self.justice_catalog = pydatajson.DataJson(self.get_sample('catalogo_justicia.json'))
 
@@ -45,7 +49,7 @@ class FederationTestCase(unittest.TestCase):
         dataset = catalog.datasets[0]
         dataset_id = dataset['identifier']
         return_id = push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                                         'http://181.209.63.239', "<una_apikey>")
+                                         self.portal_url, self.apikey)
         self.assertEqual(return_id, catalog_id+'_'+dataset_id)
 
     @ckan_vcr.use_cassette()
@@ -54,11 +58,11 @@ class FederationTestCase(unittest.TestCase):
         catalog_id = catalog.get('identifier', re.sub(r'[^a-z-_]+', '', catalog['title']).lower())
         dataset_id = catalog.datasets[0]['identifier']
         push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                             'http://181.209.63.239', "<una_apikey>")
+                             self.portal_url, self.apikey)
 
         catalog.datasets[0]['description'] = 'updated description'
         return_id = push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                                         'http://181.209.63.239', "<una_apikey>")
+                                         self.portal_url, self.apikey)
 
         data_dict = {'id': catalog_id+'_'+dataset_id}
         package = self.portal.call_action('package_show', data_dict=data_dict)
@@ -80,7 +84,7 @@ class FederationTestCase(unittest.TestCase):
                 continue
 
         push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                             'http://181.209.63.239', "<una_apikey>")
+                             self.portal_url, self.apikey)
 
         groups = set(self.portal.call_action('group_list'))
         self.assertTrue(super_themes.issubset(groups))
@@ -91,21 +95,21 @@ class FederationTestCase(unittest.TestCase):
         full_dataset = self.full_catalog.datasets[0]
         full_dataset_id = full_dataset['identifier']
         push_dataset_to_ckan(self.full_catalog, catalog_id, 'oficina-de-muestra', full_dataset_id,
-                             'http://181.209.63.239', '<una_apikey>')
+                             self.portal_url, self.apikey)
 
         justice_dataset = self.justice_catalog.datasets[0]
         justice_dataset_id = justice_dataset['identifier']
         push_dataset_to_ckan(self.justice_catalog, catalog_id, 'oficina-de-muestra', justice_dataset_id,
-                             'http://181.209.63.239', '<una_apikey>')
+                             self.portal_url, self.apikey)
         # Switch them and update
         full_dataset['distribution'], justice_dataset['distribution'] = justice_dataset['distribution'],\
                                                                         full_dataset['distribution']
 
         full_package_id = push_dataset_to_ckan(self.full_catalog, catalog_id, 'oficina-de-muestra', full_dataset_id,
-                                               'http://181.209.63.239', '<una_apikey>')
+                                               self.portal_url, self.apikey)
         justice_package_id = push_dataset_to_ckan(self.justice_catalog, catalog_id, 'oficina-de-muestra',
-                                                  justice_dataset_id, 'http://181.209.63.239',
-                                                  '<una_apikey>')
+                                                  justice_dataset_id, self.portal_url,
+                                                  self.apikey)
         # Switch them back
         full_dataset['distribution'], justice_dataset['distribution'] = justice_dataset['distribution'], \
                                                                         full_dataset['distribution']
@@ -132,7 +136,7 @@ class FederationTestCase(unittest.TestCase):
         invalida_dataset_id = invalid_catalog.datasets[0]['identifier']
         with self.assertRaises(ValueError):
             push_dataset_to_ckan(invalid_catalog, 'invalid', 'oficina-de-muestra', invalida_dataset_id,
-                                 'http://181.209.63.239', '<una_apikey>')
+                                 self.portal_url, self.apikey)
 
 
 if __name__ == '__main__':
