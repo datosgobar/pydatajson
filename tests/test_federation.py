@@ -29,6 +29,10 @@ class FederationTestCase(unittest.TestCase):
         cls.minimum_catalog_id = cls.minimum_catalog.get('identifier',
                                                          re.sub(r'[^a-z-_]+', '', cls.minimum_catalog['title']).lower())
         cls.minimum_dataset = cls.minimum_catalog.datasets[0]
+        # PATCH: minimum_data no tiene los identificadores obligatorios. Se los agrego aca, pero hay que refactorizar
+        # tests y samples desactualizados para cumplir con los perfiles nuevos
+        cls.minimum_dataset['identifier'] = cls.dataset['identifier']
+        cls.minimum_dataset['distribution'][0]['identifier'] = cls.dataset['distribution'][0]['identifier']
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_id_is_created_correctly(self, mock_portal):

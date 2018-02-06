@@ -102,7 +102,7 @@ class DataJson(dict):
     get_field_location = search.get_field_location
     get_catalog_metadata = search.get_catalog_metadata
 
-#   Metodos para interactuar con un portal de CKAN
+    # Metodos para interactuar con un portal de CKAN
     push_dataset_to_ckan = federation.push_dataset_to_ckan
 
     def remove_dataset(self, identifier):
