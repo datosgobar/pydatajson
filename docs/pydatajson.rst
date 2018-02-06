@@ -36,6 +36,14 @@ pydatajson.helpers module
     :undoc-members:
     :show-inheritance:
 
+pydatajson.federation module
+-------------------------
+
+.. automodule:: pydatajson.federation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pydatajson.readers module
 -------------------------
 
@@ -51,7 +59,6 @@ pydatajson.writers module
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Module contents
 ---------------
