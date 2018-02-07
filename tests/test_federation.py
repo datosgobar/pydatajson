@@ -127,7 +127,3 @@ class FederationTestCase(unittest.TestCase):
         invalid_dataset_id = invalid_catalog.datasets[0]['identifier']
         with self.assertRaises(ValueError):
             push_dataset_to_ckan(invalid_catalog, self.catalog_id, 'owner', invalid_dataset_id, 'portal', 'key')
-
-
-if __name__ == '__main__':
-    unittest.main()

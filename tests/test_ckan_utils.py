@@ -191,7 +191,3 @@ class DatetimeConversionTests(unittest.TestCase):
         date = '2018-01-29'
         res = convert_iso_string_to_utc(date)
         self.assertEqual(date, res)
-
-
-if __name__ == '__main__':
-    unittest.main()
