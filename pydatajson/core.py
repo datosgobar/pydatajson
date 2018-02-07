@@ -31,6 +31,7 @@ from . import readers
 from . import search
 from . import validation
 from . import writers
+from . import federation
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -100,6 +101,9 @@ class DataJson(dict):
     get_theme = search.get_theme
     get_field_location = search.get_field_location
     get_catalog_metadata = search.get_catalog_metadata
+
+    # Metodos para interactuar con un portal de CKAN
+    push_dataset_to_ckan = federation.push_dataset_to_ckan
 
     def remove_dataset(self, identifier):
         for index, dataset in enumerate(self["dataset"]):
