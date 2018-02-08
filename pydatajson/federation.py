@@ -23,8 +23,6 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
-    if not catalog.is_valid_catalog():
-        raise ValueError('The catalog is invalid')
     dataset = catalog.get_dataset(dataset_origin_identifier)
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
 
@@ -52,7 +50,7 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
         package['license_id'] = 'notspecified'
 
     try:
-        pushed_package = ckan_portal.call_action('package_update', data_dict=package)
+        pushed_package = ckan_portal.call_action('package_patch', data_dict=package)
     except NotFound:
         pushed_package = ckan_portal.call_action('package_create', data_dict=package)
 

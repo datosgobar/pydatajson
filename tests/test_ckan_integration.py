@@ -18,7 +18,7 @@ CKAN_VCR = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
 class FederationTestCase(unittest.TestCase):
     
     portal_url = 'http://181.209.63.239'
-    apikey = 'an_apikey'
+    apikey = '29c81939-c8f2-4c72-9e62-793e076b5dfd'
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -125,17 +125,7 @@ class FederationTestCase(unittest.TestCase):
         self.assertEqual(len(justice_package['resources']), len(full_dataset['distribution']))
 
         for resource, justice_distribution in zip(full_package['resources'], justice_dataset['distribution']):
-            self.assertEqual('same-catalog-id_'+full_dataset_id+'_'+justice_distribution['identifier'],
-                             resource['id'])
+            self.assertEqual('same-catalog-id_'+justice_distribution['identifier'], resource['id'])
 
         for resource, full_distribution in zip(justice_package['resources'], full_dataset['distribution']):
-            self.assertEqual('same-catalog-id_'+justice_dataset_id+'_'+full_distribution['identifier'],
-                             resource['id'])
-
-    def test_invalid_catalogs_are_rejected(self):
-        invalid_sample = self.get_sample('missing_catalog_description.json')
-        invalid_catalog = pydatajson.DataJson(invalid_sample)
-        invalida_dataset_id = invalid_catalog.datasets[0]['identifier']
-        with self.assertRaises(ValueError):
-            push_dataset_to_ckan(invalid_catalog, 'invalid', 'oficina-de-muestra', invalida_dataset_id,
-                                 self.portal_url, self.apikey)
+            self.assertEqual('same-catalog-id_'+full_distribution['identifier'], resource['id'])

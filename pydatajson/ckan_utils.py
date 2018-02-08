@@ -19,21 +19,23 @@ def map_dataset_to_package(dataset, catalog_id):
     package['extras'] = []
 #   Obligatorios
     package['id'] = catalog_id+'_'+dataset['identifier']
-    package['name'] = re.sub(r'[^a-z-_]+', '', dataset['title'].lower())
-    package['title'] = dataset['title']
+    package['name'] = re.sub(r'[^a-z-_]+', '', dataset['title'].lower()) if dataset.get('title') else None
+    package['title'] = dataset.get('title')
     package['private'] = False
-    package['notes'] = dataset['description']
-    package['author'] = dataset['publisher']['name']
+    package['notes'] = dataset.get('description')
+    package['author'] = dataset.get('publisher', {}).get('name')
 
     append_attribute_to_extra(package, dataset, 'issued')
     append_attribute_to_extra(package, dataset, 'accrualPeriodicity')
 
-    distributions = dataset['distribution']
-    package['resources'] = map_distributions_to_resources(distributions, package['id'])
+    distributions = dataset.get('distribution')
+    if distributions:
+        package['resources'] = map_distributions_to_resources(distributions, catalog_id)
 
-    super_themes = dataset['superTheme']
-    package['groups'] = [{'name': re.sub(r'[^a-z-_]+', '', super_theme.lower())} for super_theme in super_themes]
-    package['extras'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
+    super_themes = dataset.get('superTheme')
+    if super_themes:
+        package['groups'] = [{'name': re.sub(r'[^a-z-_]+', '', super_theme.lower())} for super_theme in super_themes]
+        package['extras'].append({'key': 'super_theme', 'value': json.dumps(super_themes)})
 
 #   Recomendados y opcionales
     package['url'] = dataset.get('landingPage')
@@ -77,12 +79,12 @@ def convert_iso_string_to_utc(date_string):
     return utc_date_time.isoformat()
 
 
-def map_distributions_to_resources(distributions, package_id):
+def map_distributions_to_resources(distributions, catalog_id):
     resources = []
     for distribution in distributions:
         resource = dict()
 #       Obligatorios
-        resource['id'] = package_id+'_'+distribution['identifier']
+        resource['id'] = catalog_id + '_' + distribution['identifier']
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
         resource['created'] = convert_iso_string_to_utc(distribution['issued'])

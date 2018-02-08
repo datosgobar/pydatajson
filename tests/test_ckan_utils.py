@@ -10,7 +10,6 @@ SAMPLES_DIR = os.path.join("tests", "samples")
 
 
 class DatasetConversionTestCase(unittest.TestCase):
-    sample = 'full_data.json'
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -18,10 +17,10 @@ class DatasetConversionTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.catalog = pydatajson.DataJson(cls.get_sample(cls.sample))
+        cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
         cls.catalog_id = cls.catalog.get('identifier', re.sub(r'[^a-z-_]+', '', cls.catalog['title'].lower()))
         cls.dataset = cls.catalog.datasets[0]
-        cls.dataset_id = cls.dataset['identifier']
+        cls.dataset_id = cls.dataset.get('identifier')
         cls.distributions = cls.dataset['distribution']
 
     def test_replicated_plain_attributes_are_corrext(self):
