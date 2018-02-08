@@ -18,7 +18,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['127']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:52 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:04 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -110,7 +110,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['5727']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:52 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:04 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -158,13 +158,13 @@ interactions:
       {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
       \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
       de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "created": "2016-04-14T22:48:05.433640",
-      "last_modified": "2016-04-19T22:48:05.433640", "size": 5120, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_1.1",
+      "last_modified": "2016-04-19T22:48:05.433640", "size": 5120, "id": "same-catalog-id_1.1",
       "name": "Convocatorias abiertas durante el a\u00f1o 2015"}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['4035']
+      Content-Length: ['3998']
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
@@ -178,7 +178,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['195']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:52 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:04 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 404, message: Not Found}
@@ -226,13 +226,13 @@ interactions:
       {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
       \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
       de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "created": "2016-04-14T22:48:05.433640",
-      "last_modified": "2016-04-19T22:48:05.433640", "size": 5120, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_1.1",
+      "last_modified": "2016-04-19T22:48:05.433640", "size": 5120, "id": "same-catalog-id_1.1",
       "name": "Convocatorias abiertas durante el a\u00f1o 2015"}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['4035']
+      Content-Length: ['3998']
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
@@ -244,7 +244,7 @@ interactions:
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-07T15:48:52.823168", "metadata_modified": "2018-02-07T15:48:52.844775",
+        "metadata_created": "2018-02-08T18:34:04.754153", "metadata_modified": "2018-02-08T18:34:04.775535",
         "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
         "state": "active", "version": null, "creator_user_id": "824dc36b-38b0-448d-bcb2-dda225089ba2",
@@ -272,15 +272,15 @@ interactions:
         \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
         de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
         "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777", "webstore_last_updated":
-        null, "datastore_active": false, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_1.1",
-        "size": "5120", "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        null, "datastore_active": false, "id": "same-catalog-id_1.1", "size": "5120",
+        "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
         "hash": "", "description": "Listado de las convocatorias abiertas durante
         el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
         "CSV", "last_modified": "2016-04-19T22:48:05.433640", "url_type": null, "mimetype":
         "text/csv", "cache_url": null, "name": "Convocatorias abiertas durante el
         a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
-        "1aa25125-adf7-4453-9eff-03e90f071c9f", "resource_type": null}], "num_resources":
+        "5ccbddba-de69-4dd5-8f60-69bbb17920ee", "resource_type": null}], "num_resources":
         1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "bienes",
         "id": "7cacc193-5776-46b3-8f31-ccc52042248f", "name": "bienes"}, {"vocabulary_id":
         null, "state": "active", "display_name": "compras", "id": "27e042d0-87b8-416e-9745-8b504dc182e0",
@@ -289,7 +289,7 @@ interactions:
         {"vocabulary_id": null, "state": "active", "display_name": "convocatorias",
         "id": "a7cf30d4-d35a-433a-914f-47727d61b6f7", "name": "convocatorias"}], "groups":
         [{"display_name": "econ", "description": "", "image_display_url": "", "title":
-        "", "id": "68d64483-9323-47da-80a7-bc874747179f", "name": "econ"}], "license_id":
+        "", "id": "d9680d0a-7cca-4df9-b130-12bd51c62f38", "name": "econ"}], "license_id":
         "notspecified", "relationships_as_subject": [], "organization": {"description":
         "", "created": "2018-02-07T15:37:27.733652", "title": "oficina-de-muestra",
         "name": "oficina-de-muestra", "is_organization": true, "state": "active",
@@ -304,13 +304,13 @@ interactions:
         "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
         {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
         {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
-        de contrataciones electr\u00f3nicas", "revision_id": "1aa25125-adf7-4453-9eff-03e90f071c9f"}}'}
+        de contrataciones electr\u00f3nicas", "revision_id": "5ccbddba-de69-4dd5-8f60-69bbb17920ee"}}'}
     headers:
       cache-control: [no-cache]
       connection: [keep-alive]
-      content-length: ['5868']
+      content-length: ['5831']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:53 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:05 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -333,7 +333,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['127']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:53 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:05 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -425,7 +425,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['5727']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:53 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:05 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -485,9 +485,8 @@ interactions:
       \"title\": \"modificada_por\"}, {\"type\": \"integer\", \"description\": \"Identificar
       \\u00fanico de la norma que modifica.\", \"title\": \"modifica_a\"}]", "created":
       "2016-09-29T11:17:50.274309", "last_modified": "2016-12-19T12:38:58.700747",
-      "size": null, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_1",
-      "name": "Base Infoleg de Normativa Nacional"}, {"mimetype": null, "accessURL":
-      "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
+      "size": null, "id": "same-catalog-id_1", "name": "Base Infoleg de Normativa
+      Nacional"}, {"mimetype": null, "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
       "description": "Base complementaria Infoleg con normas nacionales modificadas:
       leyes, decisiones administrativas, decretos, resoluciones, disposiciones, acordadas
       y todo acto administrativo publicado en la primera secci\u00f3n del Bolet\u00edn
@@ -509,9 +508,9 @@ interactions:
       \"title\": \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario
       del t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
       \"title\": \"titulo_sumario\"}]", "created": "2016-10-14T16:02:49.841535", "last_modified":
-      "2016-12-19T14:48:05.348064", "size": null, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_2",
-      "name": "Base Complementaria Infoleg de Normas Modificadas"}, {"mimetype": null,
-      "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
+      "2016-12-19T14:48:05.348064", "size": null, "id": "same-catalog-id_2", "name":
+      "Base Complementaria Infoleg de Normas Modificadas"}, {"mimetype": null, "accessURL":
+      "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
       "description": "Base complementaria Infoleg con normas nacionales modificatorias:
       leyes,  decisiones administrativas, decretos, resoluciones, disposiciones, acordadas
       y  todo acto administrativo publicado en la primera secci\u00f3n del Bolet\u00edn
@@ -533,13 +532,13 @@ interactions:
       \"title\": \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario
       del t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
       \"title\": \"titulo_sumario\"}]", "created": "2016-10-18T17:26:58.415087", "last_modified":
-      "2016-12-19T14:47:21.330355", "size": null, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_3",
-      "name": "Base Complementaria Infoleg de Normas Modificatorias"}]}'
+      "2016-12-19T14:47:21.330355", "size": null, "id": "same-catalog-id_3", "name":
+      "Base Complementaria Infoleg de Normas Modificatorias"}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['9168']
+      Content-Length: ['9057']
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
@@ -553,7 +552,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['195']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:53 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:05 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 404, message: Not Found}
@@ -613,9 +612,8 @@ interactions:
       \"title\": \"modificada_por\"}, {\"type\": \"integer\", \"description\": \"Identificar
       \\u00fanico de la norma que modifica.\", \"title\": \"modifica_a\"}]", "created":
       "2016-09-29T11:17:50.274309", "last_modified": "2016-12-19T12:38:58.700747",
-      "size": null, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_1",
-      "name": "Base Infoleg de Normativa Nacional"}, {"mimetype": null, "accessURL":
-      "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
+      "size": null, "id": "same-catalog-id_1", "name": "Base Infoleg de Normativa
+      Nacional"}, {"mimetype": null, "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
       "description": "Base complementaria Infoleg con normas nacionales modificadas:
       leyes, decisiones administrativas, decretos, resoluciones, disposiciones, acordadas
       y todo acto administrativo publicado en la primera secci\u00f3n del Bolet\u00edn
@@ -637,9 +635,9 @@ interactions:
       \"title\": \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario
       del t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
       \"title\": \"titulo_sumario\"}]", "created": "2016-10-14T16:02:49.841535", "last_modified":
-      "2016-12-19T14:48:05.348064", "size": null, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_2",
-      "name": "Base Complementaria Infoleg de Normas Modificadas"}, {"mimetype": null,
-      "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
+      "2016-12-19T14:48:05.348064", "size": null, "id": "same-catalog-id_2", "name":
+      "Base Complementaria Infoleg de Normas Modificadas"}, {"mimetype": null, "accessURL":
+      "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
       "description": "Base complementaria Infoleg con normas nacionales modificatorias:
       leyes,  decisiones administrativas, decretos, resoluciones, disposiciones, acordadas
       y  todo acto administrativo publicado en la primera secci\u00f3n del Bolet\u00edn
@@ -661,13 +659,13 @@ interactions:
       \"title\": \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario
       del t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
       \"title\": \"titulo_sumario\"}]", "created": "2016-10-18T17:26:58.415087", "last_modified":
-      "2016-12-19T14:47:21.330355", "size": null, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_3",
-      "name": "Base Complementaria Infoleg de Normas Modificatorias"}]}'
+      "2016-12-19T14:47:21.330355", "size": null, "id": "same-catalog-id_3", "name":
+      "Base Complementaria Infoleg de Normas Modificatorias"}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['9168']
+      Content-Length: ['9057']
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
@@ -680,7 +678,7 @@ interactions:
         del Sistema Argentino de Informaci\u00f3n Jur\u00eddica", "relationships_as_object":
         [], "private": false, "maintainer_email": "datosabiertos@saij.gob.ar", "num_tags":
         9, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23", "metadata_created":
-        "2018-02-07T15:48:53.420868", "metadata_modified": "2018-02-07T15:48:53.456973",
+        "2018-02-08T18:34:05.284899", "metadata_modified": "2018-02-08T18:34:05.316366",
         "author": "Ministerio de Justicia y Derechos Humanos. Secretar\u00eda de Planificaci\u00f3n
         Estrat\u00e9gica. Direcci\u00f3n Nacional del Sistema Argentino de Informaci\u00f3n
         Jur\u00eddica", "author_email": "datosabiertos@saij.gob.ar", "state": "active",
@@ -716,7 +714,7 @@ interactions:
         que la modifica.\", \"title\": \"modificada_por\"}, {\"type\": \"integer\",
         \"description\": \"Identificar \\u00fanico de la norma que modifica.\", \"title\":
         \"modifica_a\"}]", "package_id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23",
-        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_1",
+        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_1",
         "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/8db246a2-48dd-4f2f-b08e-ab6293747882",
         "hash": "", "description": "Base de documentos digitales normativos nacionales:
         leyes, decisiones administrativas, decretos, resoluciones, disposiciones,
@@ -725,7 +723,7 @@ interactions:
         "url_type": null, "mimetype": null, "cache_url": null, "name": "Base Infoleg
         de Normativa Nacional", "created": "2016-09-29T11:17:50.274309", "url": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/8db246a2-48dd-4f2f-b08e-ab6293747882/download/baseinfolegnormativanacional.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
-        "c909ff98-1b1e-4bf1-a270-2be1a97c91c5", "resource_type": null}, {"cache_last_updated":
+        "b4dbd4f6-8d45-4192-9139-56084ea02b77", "resource_type": null}, {"cache_last_updated":
         null, "attributesDescription": "[{\"type\": \"integer\", \"description\":
         \"Identificador \\u00fanico de la norma modificada dentro de la base de datos.\",
         \"title\": \"id_norma_modificada\"}, {\"type\": \"integer\", \"description\":
@@ -743,8 +741,8 @@ interactions:
         \"string\", \"description\": \"Sumario del t\\u00edtulo en una o dos palabras.
         (Ej: \\\"sistema integrado de jubilaciones\\\")\", \"title\": \"titulo_sumario\"}]",
         "package_id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23", "webstore_last_updated":
-        null, "datastore_active": false, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_2",
-        "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
+        null, "datastore_active": false, "id": "same-catalog-id_2", "size": null,
+        "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
         "hash": "", "description": "Base complementaria Infoleg con normas nacionales
         modificadas: leyes, decisiones administrativas, decretos, resoluciones, disposiciones,
         acordadas y todo acto administrativo publicado en la primera secci\u00f3n
@@ -754,7 +752,7 @@ interactions:
         Infoleg de Normas Modificadas", "created": "2016-10-14T16:02:49.841535", "url":
         "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/d9fbf1d5-679e-4833-bcdc-3a8f58523d18/download/basecomplementariainfolegnormasmodificadas.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 1, "revision_id":
-        "c909ff98-1b1e-4bf1-a270-2be1a97c91c5", "resource_type": null}, {"cache_last_updated":
+        "b4dbd4f6-8d45-4192-9139-56084ea02b77", "resource_type": null}, {"cache_last_updated":
         null, "attributesDescription": "[{\"type\": \"integer\", \"description\":
         \"Identificador \\u00fanico de la norma modificatoria dentro de la base de
         datos.\", \"title\": \"id_norma_modificatoria\"}, {\"type\": \"integer\",
@@ -772,7 +770,7 @@ interactions:
         \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario del
         t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
         \"title\": \"titulo_sumario\"}]", "package_id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23",
-        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_3",
+        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_3",
         "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
         "hash": "", "description": "Base complementaria Infoleg con normas nacionales
         modificatorias: leyes,  decisiones administrativas, decretos, resoluciones,
@@ -783,7 +781,7 @@ interactions:
         null, "name": "Base Complementaria Infoleg de Normas Modificatorias", "created":
         "2016-10-18T17:26:58.415087", "url": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/f9170086-6538-44f1-8c7e-3e193c1fea7f/download/basecomplementariainfolegnormasmodificatorias.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 2, "revision_id":
-        "c909ff98-1b1e-4bf1-a270-2be1a97c91c5", "resource_type": null}], "num_resources":
+        "b4dbd4f6-8d45-4192-9139-56084ea02b77", "resource_type": null}], "num_resources":
         3, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "acordadas",
         "id": "a843f06d-1215-4b68-9946-958cbd67cc39", "name": "acordadas"}, {"vocabulary_id":
         null, "state": "active", "display_name": "administrativas", "id": "33f302e5-4b3c-4ee8-9d9a-1066c83e7af7",
@@ -800,7 +798,7 @@ interactions:
         "9b182d6f-c93a-4c52-8f7c-d9584fd1c581", "name": "leyes"}, {"vocabulary_id":
         null, "state": "active", "display_name": "resoluciones", "id": "8b591b18-3fa2-42d7-a7f9-4178a380ce33",
         "name": "resoluciones"}], "groups": [{"display_name": "just", "description":
-        "", "image_display_url": "", "title": "", "id": "548bc2a4-9f80-4bbc-874b-32a4dc207558",
+        "", "image_display_url": "", "title": "", "id": "3696757d-30f7-42ee-9b9c-93036a7ec2ce",
         "name": "just"}], "license_id": "odc-odbl", "relationships_as_subject": [],
         "organization": {"description": "", "created": "2018-02-07T15:37:27.733652",
         "title": "oficina-de-muestra", "name": "oficina-de-muestra", "is_organization":
@@ -816,13 +814,13 @@ interactions:
         "value": "R/P1M"}, {"key": "issued", "value": "2016-09-05T18:25:21.249967"},
         {"key": "modified", "value": "2016-12-19T18:19:32.496552"}, {"key": "super_theme",
         "value": "[\"JUST\"]"}], "license_url": "http://www.opendefinition.org/licenses/odc-odbl",
-        "title": "Base de datos legislativos Infoleg", "revision_id": "c909ff98-1b1e-4bf1-a270-2be1a97c91c5"}}'}
+        "title": "Base de datos legislativos Infoleg", "revision_id": "b4dbd4f6-8d45-4192-9139-56084ea02b77"}}'}
     headers:
       cache-control: [no-cache]
       connection: [keep-alive]
-      content-length: ['12457']
+      content-length: ['12346']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:54 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:05 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -845,7 +843,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['127']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:54 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -937,7 +935,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['5727']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:54 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -994,9 +992,8 @@ interactions:
       \"title\": \"modificada_por\"}, {\"type\": \"integer\", \"description\": \"Identificar
       \\u00fanico de la norma que modifica.\", \"title\": \"modifica_a\"}]", "created":
       "2016-09-29T11:17:50.274309", "last_modified": "2016-12-19T12:38:58.700747",
-      "size": null, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_1",
-      "name": "Base Infoleg de Normativa Nacional"}, {"mimetype": null, "accessURL":
-      "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
+      "size": null, "id": "same-catalog-id_1", "name": "Base Infoleg de Normativa
+      Nacional"}, {"mimetype": null, "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
       "description": "Base complementaria Infoleg con normas nacionales modificadas:
       leyes, decisiones administrativas, decretos, resoluciones, disposiciones, acordadas
       y todo acto administrativo publicado en la primera secci\u00f3n del Bolet\u00edn
@@ -1018,9 +1015,9 @@ interactions:
       \"title\": \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario
       del t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
       \"title\": \"titulo_sumario\"}]", "created": "2016-10-14T16:02:49.841535", "last_modified":
-      "2016-12-19T14:48:05.348064", "size": null, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_2",
-      "name": "Base Complementaria Infoleg de Normas Modificadas"}, {"mimetype": null,
-      "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
+      "2016-12-19T14:48:05.348064", "size": null, "id": "same-catalog-id_2", "name":
+      "Base Complementaria Infoleg de Normas Modificadas"}, {"mimetype": null, "accessURL":
+      "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
       "description": "Base complementaria Infoleg con normas nacionales modificatorias:
       leyes,  decisiones administrativas, decretos, resoluciones, disposiciones, acordadas
       y  todo acto administrativo publicado en la primera secci\u00f3n del Bolet\u00edn
@@ -1042,13 +1039,13 @@ interactions:
       \"title\": \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario
       del t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
       \"title\": \"titulo_sumario\"}]", "created": "2016-10-18T17:26:58.415087", "last_modified":
-      "2016-12-19T14:47:21.330355", "size": null, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_3",
-      "name": "Base Complementaria Infoleg de Normas Modificatorias"}]}'
+      "2016-12-19T14:47:21.330355", "size": null, "id": "same-catalog-id_3", "name":
+      "Base Complementaria Infoleg de Normas Modificatorias"}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['8996']
+      Content-Length: ['8885']
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
@@ -1060,7 +1057,7 @@ interactions:
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-07T15:48:52.823168", "metadata_modified": "2018-02-07T15:48:54.218187",
+        "metadata_created": "2018-02-08T18:34:04.754153", "metadata_modified": "2018-02-08T18:34:06.088581",
         "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
         "state": "active", "version": null, "creator_user_id": "824dc36b-38b0-448d-bcb2-dda225089ba2",
@@ -1095,7 +1092,7 @@ interactions:
         que la modifica.\", \"title\": \"modificada_por\"}, {\"type\": \"integer\",
         \"description\": \"Identificar \\u00fanico de la norma que modifica.\", \"title\":
         \"modifica_a\"}]", "package_id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_1",
+        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_1",
         "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/8db246a2-48dd-4f2f-b08e-ab6293747882",
         "hash": "", "description": "Base de documentos digitales normativos nacionales:
         leyes, decisiones administrativas, decretos, resoluciones, disposiciones,
@@ -1104,7 +1101,7 @@ interactions:
         "url_type": null, "mimetype": null, "cache_url": null, "name": "Base Infoleg
         de Normativa Nacional", "created": "2016-09-29T11:17:50.274309", "url": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/8db246a2-48dd-4f2f-b08e-ab6293747882/download/baseinfolegnormativanacional.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
-        "a5bf1ad0-a066-41dd-9734-658b39515701", "resource_type": null}, {"cache_last_updated":
+        "649ba4b6-4748-4e24-aa85-12a0e157fd2a", "resource_type": null}, {"cache_last_updated":
         null, "attributesDescription": "[{\"type\": \"integer\", \"description\":
         \"Identificador \\u00fanico de la norma modificada dentro de la base de datos.\",
         \"title\": \"id_norma_modificada\"}, {\"type\": \"integer\", \"description\":
@@ -1122,8 +1119,8 @@ interactions:
         \"string\", \"description\": \"Sumario del t\\u00edtulo en una o dos palabras.
         (Ej: \\\"sistema integrado de jubilaciones\\\")\", \"title\": \"titulo_sumario\"}]",
         "package_id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777", "webstore_last_updated":
-        null, "datastore_active": false, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_2",
-        "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
+        null, "datastore_active": false, "id": "same-catalog-id_2", "size": null,
+        "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
         "hash": "", "description": "Base complementaria Infoleg con normas nacionales
         modificadas: leyes, decisiones administrativas, decretos, resoluciones, disposiciones,
         acordadas y todo acto administrativo publicado en la primera secci\u00f3n
@@ -1133,7 +1130,7 @@ interactions:
         Infoleg de Normas Modificadas", "created": "2016-10-14T16:02:49.841535", "url":
         "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/d9fbf1d5-679e-4833-bcdc-3a8f58523d18/download/basecomplementariainfolegnormasmodificadas.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 1, "revision_id":
-        "a5bf1ad0-a066-41dd-9734-658b39515701", "resource_type": null}, {"cache_last_updated":
+        "649ba4b6-4748-4e24-aa85-12a0e157fd2a", "resource_type": null}, {"cache_last_updated":
         null, "attributesDescription": "[{\"type\": \"integer\", \"description\":
         \"Identificador \\u00fanico de la norma modificatoria dentro de la base de
         datos.\", \"title\": \"id_norma_modificatoria\"}, {\"type\": \"integer\",
@@ -1151,7 +1148,7 @@ interactions:
         \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario del
         t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
         \"title\": \"titulo_sumario\"}]", "package_id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_3",
+        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_3",
         "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
         "hash": "", "description": "Base complementaria Infoleg con normas nacionales
         modificatorias: leyes,  decisiones administrativas, decretos, resoluciones,
@@ -1162,7 +1159,7 @@ interactions:
         null, "name": "Base Complementaria Infoleg de Normas Modificatorias", "created":
         "2016-10-18T17:26:58.415087", "url": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/f9170086-6538-44f1-8c7e-3e193c1fea7f/download/basecomplementariainfolegnormasmodificatorias.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 2, "revision_id":
-        "a5bf1ad0-a066-41dd-9734-658b39515701", "resource_type": null}], "num_resources":
+        "649ba4b6-4748-4e24-aa85-12a0e157fd2a", "resource_type": null}], "num_resources":
         3, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "bienes",
         "id": "7cacc193-5776-46b3-8f31-ccc52042248f", "name": "bienes"}, {"vocabulary_id":
         null, "state": "active", "display_name": "compras", "id": "27e042d0-87b8-416e-9745-8b504dc182e0",
@@ -1171,7 +1168,7 @@ interactions:
         {"vocabulary_id": null, "state": "active", "display_name": "convocatorias",
         "id": "a7cf30d4-d35a-433a-914f-47727d61b6f7", "name": "convocatorias"}], "groups":
         [{"display_name": "econ", "description": "", "image_display_url": "", "title":
-        "", "id": "68d64483-9323-47da-80a7-bc874747179f", "name": "econ"}], "license_id":
+        "", "id": "d9680d0a-7cca-4df9-b130-12bd51c62f38", "name": "econ"}], "license_id":
         "notspecified", "relationships_as_subject": [], "organization": {"description":
         "", "created": "2018-02-07T15:37:27.733652", "title": "oficina-de-muestra",
         "name": "oficina-de-muestra", "is_organization": true, "state": "active",
@@ -1186,13 +1183,13 @@ interactions:
         "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
         {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
         {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
-        de contrataciones electr\u00f3nicas", "revision_id": "1aa25125-adf7-4453-9eff-03e90f071c9f"}}'}
+        de contrataciones electr\u00f3nicas", "revision_id": "5ccbddba-de69-4dd5-8f60-69bbb17920ee"}}'}
     headers:
       cache-control: [no-cache]
       connection: [keep-alive]
-      content-length: ['11553']
+      content-length: ['11442']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:54 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -1215,7 +1212,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['127']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:54 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -1307,7 +1304,7 @@ interactions:
       connection: [keep-alive]
       content-length: ['5727']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:54 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -1358,13 +1355,13 @@ interactions:
       {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
       \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
       de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "created": "2016-04-14T22:48:05.433640",
-      "last_modified": "2016-04-19T22:48:05.433640", "size": 5120, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_1.1",
+      "last_modified": "2016-04-19T22:48:05.433640", "size": 5120, "id": "same-catalog-id_1.1",
       "name": "Convocatorias abiertas durante el a\u00f1o 2015"}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['4207']
+      Content-Length: ['4170']
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
@@ -1377,7 +1374,7 @@ interactions:
         del Sistema Argentino de Informaci\u00f3n Jur\u00eddica", "relationships_as_object":
         [], "private": false, "maintainer_email": "datosabiertos@saij.gob.ar", "num_tags":
         9, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23", "metadata_created":
-        "2018-02-07T15:48:53.420868", "metadata_modified": "2018-02-07T15:48:54.929406",
+        "2018-02-08T18:34:05.284899", "metadata_modified": "2018-02-08T18:34:06.413914",
         "author": "Ministerio de Justicia y Derechos Humanos. Secretar\u00eda de Planificaci\u00f3n
         Estrat\u00e9gica. Direcci\u00f3n Nacional del Sistema Argentino de Informaci\u00f3n
         Jur\u00eddica", "author_email": "datosabiertos@saij.gob.ar", "state": "active",
@@ -1406,15 +1403,15 @@ interactions:
         \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
         de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
         "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23", "webstore_last_updated":
-        null, "datastore_active": false, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_1.1",
-        "size": "5120", "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        null, "datastore_active": false, "id": "same-catalog-id_1.1", "size": "5120",
+        "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
         "hash": "", "description": "Listado de las convocatorias abiertas durante
         el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
         "CSV", "last_modified": "2016-04-19T22:48:05.433640", "url_type": null, "mimetype":
         "text/csv", "cache_url": null, "name": "Convocatorias abiertas durante el
         a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
-        "b57ed709-992a-41d9-811e-32ebc4c596be", "resource_type": null}], "num_resources":
+        "eb6e9501-8c1f-4b55-9904-e001910be0fd", "resource_type": null}], "num_resources":
         1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "acordadas",
         "id": "a843f06d-1215-4b68-9946-958cbd67cc39", "name": "acordadas"}, {"vocabulary_id":
         null, "state": "active", "display_name": "administrativas", "id": "33f302e5-4b3c-4ee8-9d9a-1066c83e7af7",
@@ -1431,7 +1428,7 @@ interactions:
         "9b182d6f-c93a-4c52-8f7c-d9584fd1c581", "name": "leyes"}, {"vocabulary_id":
         null, "state": "active", "display_name": "resoluciones", "id": "8b591b18-3fa2-42d7-a7f9-4178a380ce33",
         "name": "resoluciones"}], "groups": [{"display_name": "just", "description":
-        "", "image_display_url": "", "title": "", "id": "548bc2a4-9f80-4bbc-874b-32a4dc207558",
+        "", "image_display_url": "", "title": "", "id": "3696757d-30f7-42ee-9b9c-93036a7ec2ce",
         "name": "just"}], "license_id": "odc-odbl", "relationships_as_subject": [],
         "organization": {"description": "", "created": "2018-02-07T15:37:27.733652",
         "title": "oficina-de-muestra", "name": "oficina-de-muestra", "is_organization":
@@ -1447,13 +1444,13 @@ interactions:
         "value": "R/P1M"}, {"key": "issued", "value": "2016-09-05T18:25:21.249967"},
         {"key": "modified", "value": "2016-12-19T18:19:32.496552"}, {"key": "super_theme",
         "value": "[\"JUST\"]"}], "license_url": "http://www.opendefinition.org/licenses/odc-odbl",
-        "title": "Base de datos legislativos Infoleg", "revision_id": "c909ff98-1b1e-4bf1-a270-2be1a97c91c5"}}'}
+        "title": "Base de datos legislativos Infoleg", "revision_id": "b4dbd4f6-8d45-4192-9139-56084ea02b77"}}'}
     headers:
       cache-control: [no-cache]
       connection: [keep-alive]
-      content-length: ['6772']
+      content-length: ['6735']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:55 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -1475,7 +1472,7 @@ interactions:
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-07T15:48:52.823168", "metadata_modified": "2018-02-07T15:48:54.218187",
+        "metadata_created": "2018-02-08T18:34:04.754153", "metadata_modified": "2018-02-08T18:34:06.088581",
         "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
         "state": "active", "version": null, "creator_user_id": "824dc36b-38b0-448d-bcb2-dda225089ba2",
@@ -1510,7 +1507,7 @@ interactions:
         que la modifica.\", \"title\": \"modificada_por\"}, {\"type\": \"integer\",
         \"description\": \"Identificar \\u00fanico de la norma que modifica.\", \"title\":
         \"modifica_a\"}]", "package_id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_1",
+        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_1",
         "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/8db246a2-48dd-4f2f-b08e-ab6293747882",
         "hash": "", "description": "Base de documentos digitales normativos nacionales:
         leyes, decisiones administrativas, decretos, resoluciones, disposiciones,
@@ -1519,7 +1516,7 @@ interactions:
         "url_type": null, "mimetype": null, "cache_url": null, "name": "Base Infoleg
         de Normativa Nacional", "created": "2016-09-29T11:17:50.274309", "url": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/8db246a2-48dd-4f2f-b08e-ab6293747882/download/baseinfolegnormativanacional.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
-        "a5bf1ad0-a066-41dd-9734-658b39515701", "resource_type": null}, {"cache_last_updated":
+        "649ba4b6-4748-4e24-aa85-12a0e157fd2a", "resource_type": null}, {"cache_last_updated":
         null, "attributesDescription": "[{\"type\": \"integer\", \"description\":
         \"Identificador \\u00fanico de la norma modificada dentro de la base de datos.\",
         \"title\": \"id_norma_modificada\"}, {\"type\": \"integer\", \"description\":
@@ -1537,8 +1534,8 @@ interactions:
         \"string\", \"description\": \"Sumario del t\\u00edtulo en una o dos palabras.
         (Ej: \\\"sistema integrado de jubilaciones\\\")\", \"title\": \"titulo_sumario\"}]",
         "package_id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777", "webstore_last_updated":
-        null, "datastore_active": false, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_2",
-        "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
+        null, "datastore_active": false, "id": "same-catalog-id_2", "size": null,
+        "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/d9fbf1d5-679e-4833-bcdc-3a8f58523d18",
         "hash": "", "description": "Base complementaria Infoleg con normas nacionales
         modificadas: leyes, decisiones administrativas, decretos, resoluciones, disposiciones,
         acordadas y todo acto administrativo publicado en la primera secci\u00f3n
@@ -1548,7 +1545,7 @@ interactions:
         Infoleg de Normas Modificadas", "created": "2016-10-14T16:02:49.841535", "url":
         "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/d9fbf1d5-679e-4833-bcdc-3a8f58523d18/download/basecomplementariainfolegnormasmodificadas.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 1, "revision_id":
-        "a5bf1ad0-a066-41dd-9734-658b39515701", "resource_type": null}, {"cache_last_updated":
+        "649ba4b6-4748-4e24-aa85-12a0e157fd2a", "resource_type": null}, {"cache_last_updated":
         null, "attributesDescription": "[{\"type\": \"integer\", \"description\":
         \"Identificador \\u00fanico de la norma modificatoria dentro de la base de
         datos.\", \"title\": \"id_norma_modificatoria\"}, {\"type\": \"integer\",
@@ -1566,7 +1563,7 @@ interactions:
         \"titulo_resumido\"}, {\"type\": \"string\", \"description\": \"Sumario del
         t\\u00edtulo en una o dos palabras. (Ej: \\\"sistema integrado de jubilaciones\\\")\",
         \"title\": \"titulo_sumario\"}]", "package_id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_99db6631-d1c9-470b-a73e-c62daa32c777_3",
+        "webstore_last_updated": null, "datastore_active": false, "id": "same-catalog-id_3",
         "size": null, "state": "active", "accessURL": "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg/archivo/f9170086-6538-44f1-8c7e-3e193c1fea7f",
         "hash": "", "description": "Base complementaria Infoleg con normas nacionales
         modificatorias: leyes,  decisiones administrativas, decretos, resoluciones,
@@ -1577,7 +1574,7 @@ interactions:
         null, "name": "Base Complementaria Infoleg de Normas Modificatorias", "created":
         "2016-10-18T17:26:58.415087", "url": "http://datos.jus.gob.ar/dataset/d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23/resource/f9170086-6538-44f1-8c7e-3e193c1fea7f/download/basecomplementariainfolegnormasmodificatorias.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 2, "revision_id":
-        "a5bf1ad0-a066-41dd-9734-658b39515701", "resource_type": null}], "num_resources":
+        "649ba4b6-4748-4e24-aa85-12a0e157fd2a", "resource_type": null}], "num_resources":
         3, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "bienes",
         "id": "7cacc193-5776-46b3-8f31-ccc52042248f", "name": "bienes"}, {"vocabulary_id":
         null, "state": "active", "display_name": "compras", "id": "27e042d0-87b8-416e-9745-8b504dc182e0",
@@ -1586,7 +1583,7 @@ interactions:
         {"vocabulary_id": null, "state": "active", "display_name": "convocatorias",
         "id": "a7cf30d4-d35a-433a-914f-47727d61b6f7", "name": "convocatorias"}], "groups":
         [{"display_name": "econ", "description": "", "image_display_url": "", "title":
-        "", "id": "68d64483-9323-47da-80a7-bc874747179f", "name": "econ"}], "license_id":
+        "", "id": "d9680d0a-7cca-4df9-b130-12bd51c62f38", "name": "econ"}], "license_id":
         "notspecified", "relationships_as_subject": [], "organization": {"description":
         "", "created": "2018-02-07T15:37:27.733652", "title": "oficina-de-muestra",
         "name": "oficina-de-muestra", "is_organization": true, "state": "active",
@@ -1601,13 +1598,13 @@ interactions:
         "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
         {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
         {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
-        de contrataciones electr\u00f3nicas", "revision_id": "1aa25125-adf7-4453-9eff-03e90f071c9f"}}'}
+        de contrataciones electr\u00f3nicas", "revision_id": "5ccbddba-de69-4dd5-8f60-69bbb17920ee"}}'}
     headers:
       cache-control: [no-cache]
       connection: [keep-alive]
-      content-length: ['11551']
+      content-length: ['11440']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:55 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}
@@ -1630,7 +1627,7 @@ interactions:
         del Sistema Argentino de Informaci\u00f3n Jur\u00eddica", "relationships_as_object":
         [], "private": false, "maintainer_email": "datosabiertos@saij.gob.ar", "num_tags":
         9, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23", "metadata_created":
-        "2018-02-07T15:48:53.420868", "metadata_modified": "2018-02-07T15:48:54.929406",
+        "2018-02-08T18:34:05.284899", "metadata_modified": "2018-02-08T18:34:06.413914",
         "author": "Ministerio de Justicia y Derechos Humanos. Secretar\u00eda de Planificaci\u00f3n
         Estrat\u00e9gica. Direcci\u00f3n Nacional del Sistema Argentino de Informaci\u00f3n
         Jur\u00eddica", "author_email": "datosabiertos@saij.gob.ar", "state": "active",
@@ -1659,15 +1656,15 @@ interactions:
         \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
         de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
         "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23", "webstore_last_updated":
-        null, "datastore_active": false, "id": "same-catalog-id_d9a963ea-8b1d-4ca3-9dd9-07a4773e8c23_1.1",
-        "size": "5120", "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        null, "datastore_active": false, "id": "same-catalog-id_1.1", "size": "5120",
+        "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
         "hash": "", "description": "Listado de las convocatorias abiertas durante
         el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
         "CSV", "last_modified": "2016-04-19T22:48:05.433640", "url_type": null, "mimetype":
         "text/csv", "cache_url": null, "name": "Convocatorias abiertas durante el
         a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
-        "b57ed709-992a-41d9-811e-32ebc4c596be", "resource_type": null}], "num_resources":
+        "eb6e9501-8c1f-4b55-9904-e001910be0fd", "resource_type": null}], "num_resources":
         1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "acordadas",
         "id": "a843f06d-1215-4b68-9946-958cbd67cc39", "name": "acordadas"}, {"vocabulary_id":
         null, "state": "active", "display_name": "administrativas", "id": "33f302e5-4b3c-4ee8-9d9a-1066c83e7af7",
@@ -1684,7 +1681,7 @@ interactions:
         "9b182d6f-c93a-4c52-8f7c-d9584fd1c581", "name": "leyes"}, {"vocabulary_id":
         null, "state": "active", "display_name": "resoluciones", "id": "8b591b18-3fa2-42d7-a7f9-4178a380ce33",
         "name": "resoluciones"}], "groups": [{"display_name": "just", "description":
-        "", "image_display_url": "", "title": "", "id": "548bc2a4-9f80-4bbc-874b-32a4dc207558",
+        "", "image_display_url": "", "title": "", "id": "3696757d-30f7-42ee-9b9c-93036a7ec2ce",
         "name": "just"}], "license_id": "odc-odbl", "relationships_as_subject": [],
         "organization": {"description": "", "created": "2018-02-07T15:37:27.733652",
         "title": "oficina-de-muestra", "name": "oficina-de-muestra", "is_organization":
@@ -1700,13 +1697,13 @@ interactions:
         "value": "R/P1M"}, {"key": "issued", "value": "2016-09-05T18:25:21.249967"},
         {"key": "modified", "value": "2016-12-19T18:19:32.496552"}, {"key": "super_theme",
         "value": "[\"JUST\"]"}], "license_url": "http://www.opendefinition.org/licenses/odc-odbl",
-        "title": "Base de datos legislativos Infoleg", "revision_id": "c909ff98-1b1e-4bf1-a270-2be1a97c91c5"}}'}
+        "title": "Base de datos legislativos Infoleg", "revision_id": "b4dbd4f6-8d45-4192-9139-56084ea02b77"}}'}
     headers:
       cache-control: [no-cache]
       connection: [keep-alive]
-      content-length: ['6770']
+      content-length: ['6733']
       content-type: [application/json;charset=utf-8]
-      date: ['Wed, 07 Feb 2018 15:48:55 GMT']
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
       pragma: [no-cache]
       server: [nginx/1.11.9]
     status: {code: 200, message: OK}

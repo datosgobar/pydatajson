@@ -53,12 +53,14 @@ class FederationTestCase(unittest.TestCase):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
                 return {'id': data_dict['id']}
+            if action == 'package_create':
+                self.fail('should not be called')
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
         res_id = push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
                                       self.dataset['identifier'], 'portal', 'key')
-        self.assertEqual(self.catalog_id+'_'+self.dataset_id, res_id, res_id)
+        self.assertEqual(self.catalog_id+'_'+self.dataset_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_new_groups_are_created(self, mock_portal):
@@ -120,10 +122,3 @@ class FederationTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = mock_call_action
         push_dataset_to_ckan(self.minimum_catalog, self.minimum_catalog_id, 'owner',
                              self.minimum_dataset['identifier'], 'portal', 'key')
-
-    def test_invalid_catalogs_are_rejected(self):
-        invalid_sample = self.get_sample('missing_catalog_description.json')
-        invalid_catalog = pydatajson.DataJson(invalid_sample)
-        invalid_dataset_id = invalid_catalog.datasets[0]['identifier']
-        with self.assertRaises(ValueError):
-            push_dataset_to_ckan(invalid_catalog, self.catalog_id, 'owner', invalid_dataset_id, 'portal', 'key')

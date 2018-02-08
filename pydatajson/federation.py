@@ -23,8 +23,6 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
-    if not catalog.is_valid_catalog():
-        raise ValueError('The catalog is invalid')
     dataset = catalog.get_dataset(dataset_origin_identifier)
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
 
