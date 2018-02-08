@@ -37,7 +37,7 @@ class FederationTestCase(unittest.TestCase):
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_id_is_created_correctly(self, mock_portal):
         def mock_call_action(action, data_dict=None):
-            if action == 'package_patch':
+            if action == 'package_update':
                 raise NotFound
             if action == 'package_create':
                 return {'id': data_dict['id']}
@@ -51,7 +51,7 @@ class FederationTestCase(unittest.TestCase):
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_id_is_updated_correctly(self, mock_portal):
         def mock_call_action(action, data_dict=None):
-            if action == 'package_patch':
+            if action == 'package_update':
                 return {'id': data_dict['id']}
             if action == 'package_create':
                 self.fail('should not be called')
@@ -68,7 +68,7 @@ class FederationTestCase(unittest.TestCase):
             if action == 'group_create':
                 self.assertEqual('econ', data_dict['name'])
                 return None
-            elif action == 'package_patch':
+            elif action == 'package_update':
                 return {'id': data_dict['id']}
             else:
                 return []
@@ -83,7 +83,7 @@ class FederationTestCase(unittest.TestCase):
                 return ['econ']
             elif action == 'group_create':
                 self.fail("should not be called")
-            elif action == 'package_patch':
+            elif action == 'package_update':
                 return {'id': data_dict['id']}
             else:
                 return []
@@ -98,7 +98,7 @@ class FederationTestCase(unittest.TestCase):
             if action == 'license_list':
                 return [{'title': 'somelicense', 'url': 'somelicense.com', 'id': '1'},
                         {'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
-            elif action == 'package_patch':
+            elif action == 'package_update':
                 self.assertEqual('notspecified', data_dict['license_id'])
                 return {'id': data_dict['id']}
             else:
@@ -113,7 +113,7 @@ class FederationTestCase(unittest.TestCase):
             if action == 'license_list':
                 return [{'title': 'somelicense', 'url': 'somelicense.com', 'id': '1'},
                         {'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
-            elif action == 'package_patch':
+            elif action == 'package_update':
                 self.assertEqual('notspecified', data_dict['license_id'])
                 return {'id': data_dict['id']}
             else:

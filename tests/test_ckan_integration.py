@@ -18,7 +18,7 @@ CKAN_VCR = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
 class FederationTestCase(unittest.TestCase):
     
     portal_url = 'http://181.209.63.239'
-    apikey = '29c81939-c8f2-4c72-9e62-793e076b5dfd'
+    apikey = 'una_apikey'
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -110,8 +110,7 @@ class FederationTestCase(unittest.TestCase):
         full_package_id = push_dataset_to_ckan(self.full_catalog, catalog_id, 'oficina-de-muestra', full_dataset_id,
                                                self.portal_url, self.apikey)
         justice_package_id = push_dataset_to_ckan(self.justice_catalog, catalog_id, 'oficina-de-muestra',
-                                                  justice_dataset_id, self.portal_url,
-                                                  self.apikey)
+                                                  justice_dataset_id, self.portal_url, self.apikey)
         # Switch them back
         full_dataset['distribution'], justice_dataset['distribution'] = \
             justice_dataset['distribution'], full_dataset['distribution']
