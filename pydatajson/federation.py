@@ -56,3 +56,22 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
 
     ckan_portal.close()
     return pushed_package['id']
+
+
+def remove_dataset_from_ckan(portal_url, apikey, identifier=None, organization=None, publisher=None):
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    query = ''
+    if identifier:
+        query = 'id:"'+identifier+'"'
+    if organization:
+        if query:
+            query += ' OR '
+        query += 'owner_org:"'+organization+'"'
+    if publisher:
+        if query:
+            query += ' OR '
+        query += 'author:"'+publisher+'"'
+    if query:
+        package_list = ckan_portal.call_action('package_search', data_dict={'q': query})
+        for package in package_list['result']:
+            ckan_portal.call_action('dataset_purge', data_dict={'id': package['id']})
