@@ -66,12 +66,14 @@ def remove_dataset_from_ckan(portal_url, apikey, identifier=None, organization=N
     if organization:
         if query:
             query += ' OR '
-        query += 'owner_org:"'+organization+'"'
+        query += 'organization:"'+organization+'"'
     if publisher:
         if query:
             query += ' OR '
         query += 'author:"'+publisher+'"'
     if query:
-        package_list = ckan_portal.call_action('package_search', data_dict={'q': query})
-        for package in package_list['result']:
-            ckan_portal.call_action('dataset_purge', data_dict={'id': package['id']})
+        search_result = ckan_portal.call_action('package_search', data_dict={'q': query, 'rows': 500})
+        while search_result['count'] > 0:
+            for package in search_result['results']:
+                ckan_portal.call_action('dataset_purge', data_dict={'id': package['id']})
+            search_result = ckan_portal.call_action('package_search', data_dict={'q': query, 'rows': 500})

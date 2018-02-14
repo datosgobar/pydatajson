@@ -2,18 +2,18 @@ import unittest
 import os
 import re
 try:
-    from mock import patch
+    from mock import patch, MagicMock
 except ImportError:
-    from unittest.mock import patch
+    from unittest.mock import patch, MagicMock
 
 from .context import pydatajson
-from pydatajson.federation import push_dataset_to_ckan
+from pydatajson.federation import push_dataset_to_ckan, remove_dataset_from_ckan
 from ckanapi.errors import NotFound
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
 
-class FederationTestCase(unittest.TestCase):
+class PushDatasetTestCase(unittest.TestCase):
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -122,3 +122,49 @@ class FederationTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = mock_call_action
         push_dataset_to_ckan(self.minimum_catalog, self.minimum_catalog_id, 'owner',
                              self.minimum_dataset['identifier'], 'portal', 'key')
+
+
+class RemoveDatasetTestCase(unittest.TestCase):
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_empty_search_doesnt_call_purge(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_search':
+                return {'count': 0, 'results': []}
+            if action == 'dataset_purge':
+                self.fail('should not be called')
+
+        mock_portal.return_value.call_action = mock_call_action
+        remove_dataset_from_ckan('portal', 'key', identifier='id')
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_remove_one_dataset(self, mock_portal):
+        results = {'count': 1, 'results': [{'id': 'some_id'}]}
+
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_search':
+                return results
+            if action == 'dataset_purge':
+                self.assertEqual('some_id', data_dict['id'])
+                results['count'] = 0
+                results['results'] = []
+
+        mock_portal.return_value.call_action = mock_call_action
+        remove_dataset_from_ckan('portal', 'key', identifier='id')
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_remove_over_500_datasets(self, mock_portal):
+        results = {'count': 501, 'results': [{'id': 'some_id'}], 'times_called': 0}
+
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_search':
+                results['times_called'] += 1
+                return results
+            if action == 'dataset_purge':
+                self.assertEqual(results['results'][0]['id'], data_dict['id'])
+                results['count'] = max(0, results['count'] - 500)
+                results['results'] = [{'id': 'other_id'}]
+
+        mock_portal.return_value.call_action = mock_call_action
+        remove_dataset_from_ckan('portal', 'key', identifier='id', organization='org', publisher='pub')
+        self.assertEqual(3, results['times_called'])
