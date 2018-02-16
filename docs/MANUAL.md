@@ -28,8 +28,9 @@ Un Portal de datos consiste en un *catálogo*, compuesto por *datasets*, que a s
 
 La librería cuenta con funciones para tres objetivos principales:
 - **validación de metadatos de catálogos** y los datasets,
-- **generación de reportes** sobre el contenido y la validez de los metadatos de catálogos y datasets, y
-- **transformación de archivos de metadatos** al formato estándar (JSON).
+- **generación de reportes** sobre el contenido y la validez de los metadatos de catálogos y datasets,
+- **transformación de archivos de metadatos** al formato estándar (JSON),
+- **federación de datasets** a portales de destino.
 
 
 Como se menciona en el Glosario estos métodos no tienen acceso *directo* a ningún catálogo, dataset ni distribución, sino únicamente a sus *representaciones externas*: archivos o partes de archivos en formato JSON que describen ciertas propiedades. Por conveniencia, en este documento se usan frases como "validar el dataset X", cuando una versión más precisa sería "validar la fracción del archivo `data.json` que consiste en una representación del dataset X en forma de diccionario". La diferencia es sutil, pero conviene mantenerla presente.
@@ -85,7 +86,7 @@ Existen dos métodos, cuyos reportes se incluyen diariamente entre los archivos 
 
 ### Métodos para federación de datasets
 
-- **pydatajson.DataJson.push_dataset_to_ckan()**: Copia la metadata de un dataset y la escribe en un portal de ckan.
+- **pydatajson.DataJson.push_dataset_to_ckan()**: Copia la metadata de un dataset y la escribe en un portal de CKAN.
 Toma los siguientes parámetros:
   - **catalog_id**: El prefijo que va a preceder el id del dataset en el portal destino. 
   - **owner_org**: La organización a la que pertence el dataset. Debe encontrarse en el portal de destino.
@@ -95,9 +96,25 @@ Toma los siguientes parámetros:
   organización pasada como parámetro y los grupos nuevos en caso de que el dataset tenga un super theme que no
   estuviera presente anteriormente en el catálogo de destino.
   
+  Retorna el id en el nodo de destino del dataset federado.
+  
   **Advertencia**: La función `push_dataset_to_ckan()` sólo garantiza consistencia con los estándares de CKAN. Para
   mantener una consistencia más estricta dentro del catálogo a federar, es necesario validar los datos antes de pasarlos
   a la función. 
+
+- **pydatajson.DataJson.remove_dataset_from_ckan()**: Hace un borrado físico de un dataset en un portal de CKAN.
+Toma los siguientes parámetros:
+    - **portal_url**: La URL del portal CKAN. Debe implementar la funcionalidad de `/data.json`.
+    - **apikey**: La apikey de un usuario con los permisos que le permitan borrar el dataset.
+    - **filter_in**: Define el diccionario de filtro en el campo `dataset`. El filtro acepta los datasets cuyos campos
+    coincidan con todos los del diccionario `filter_in['dataset']`.
+    - **filter_out**: Define el diccionario de filtro en el campo `dataset`. El filtro acepta los datasets cuyos campos
+    coincidan con alguno de los del diccionario `filter_out['dataset']`.
+    - **only_time_series**: Borrar los datasets que tengan recursos con series de tiempo.
+    - **organization**: Borrar los datasets que pertenezcan a cierta organizacion.
+    
+    En caso de pasar más de un parámetro opcional, la función `remove_dataset_from_ckan()` borra aquellos datasets que
+    cumplan con todas las condiciones.
 
 ## Uso
     
