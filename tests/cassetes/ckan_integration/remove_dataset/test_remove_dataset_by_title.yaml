@@ -24,30 +24,30 @@ interactions:
         , \n      \"description\": \"\"\n    }, \n    {\n      \"label\": \"untema\"\
         , \n      \"id\": \"untema\", \n      \"description\": \"\"\n    }\n  ], \n\
         \  \"dataset\": [\n    {\n      \"title\": \"data3_3\", \n      \"modified\"\
-        : \"2018-02-16T18:31:02.176813\", \n      \"identifier\": \"3.3\", \n    \
-        \  \"issued\": \"2018-02-16T18:31:02.171829\", \n      \"landingPage\": \"\
+        : \"2018-02-16T18:31:17.752348\", \n      \"identifier\": \"3.3\", \n    \
+        \  \"issued\": \"2018-02-16T18:31:17.747505\", \n      \"landingPage\": \"\
         unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
         : \"author_c\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
-        \    \"title\": \"data3_2\", \n      \"modified\": \"2018-02-16T18:31:01.586059\"\
-        , \n      \"identifier\": \"3.2\", \n      \"issued\": \"2018-02-16T18:31:01.581046\"\
+        \    \"title\": \"data3_2\", \n      \"modified\": \"2018-02-16T18:31:17.169239\"\
+        , \n      \"identifier\": \"3.2\", \n      \"issued\": \"2018-02-16T18:31:17.164192\"\
         , \n      \"landingPage\": \"unknow\", \n      \"publisher\": {\n        \"\
         mbox\": null, \n        \"name\": \"author_b\"\n      }, \n      \"contactPoint\"\
         : {}\n    }, \n    {\n      \"title\": \"data3_1\", \n      \"modified\":\
-        \ \"2018-02-16T18:31:01.001658\", \n      \"identifier\": \"3.1\", \n    \
-        \  \"issued\": \"2018-02-16T18:31:00.996484\", \n      \"landingPage\": \"\
+        \ \"2018-02-16T18:31:16.585886\", \n      \"identifier\": \"3.1\", \n    \
+        \  \"issued\": \"2018-02-16T18:31:16.581051\", \n      \"landingPage\": \"\
         unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
         : \"author_a\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
-        \    \"title\": \"data2_2\", \n      \"modified\": \"2018-02-16T18:31:00.409989\"\
-        , \n      \"identifier\": \"2.2\", \n      \"issued\": \"2018-02-16T18:31:00.404934\"\
+        \    \"title\": \"data2_2\", \n      \"modified\": \"2018-02-16T18:31:15.952541\"\
+        , \n      \"identifier\": \"2.2\", \n      \"issued\": \"2018-02-16T18:31:15.947592\"\
         , \n      \"landingPage\": \"unknow\", \n      \"publisher\": {\n        \"\
         mbox\": null, \n        \"name\": \"author_b\"\n      }, \n      \"contactPoint\"\
         : {}\n    }, \n    {\n      \"title\": \"data2_1\", \n      \"modified\":\
-        \ \"2018-02-16T18:30:59.792350\", \n      \"identifier\": \"2.1\", \n    \
-        \  \"issued\": \"2018-02-16T18:30:59.787429\", \n      \"landingPage\": \"\
+        \ \"2018-02-16T18:31:15.369209\", \n      \"identifier\": \"2.1\", \n    \
+        \  \"issued\": \"2018-02-16T18:31:15.364092\", \n      \"landingPage\": \"\
         unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
         : \"author_a\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
-        \    \"title\": \"data1_1\", \n      \"modified\": \"2018-02-16T18:30:59.185659\"\
-        , \n      \"identifier\": \"1.1\", \n      \"issued\": \"2018-02-16T18:30:59.180409\"\
+        \    \"title\": \"data1_1\", \n      \"modified\": \"2018-02-16T18:31:14.790041\"\
+        , \n      \"identifier\": \"1.1\", \n      \"issued\": \"2018-02-16T18:31:14.784927\"\
         , \n      \"landingPage\": \"unknow\", \n      \"publisher\": {\n        \"\
         mbox\": null, \n        \"name\": \"author_a\"\n      }, \n      \"contactPoint\"\
         : {}\n    }\n  ]\n}"}
@@ -55,12 +55,12 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['2704']
       content-type: [application/json; charset=UTF-8]
-      date: ['Fri, 16 Feb 2018 18:31:02 GMT']
+      date: ['Fri, 16 Feb 2018 18:31:18 GMT']
       keep-alive: ['timeout=5, max=100']
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: !!python/unicode '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -78,7 +78,7 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:31:02 GMT']
+      date: ['Fri, 16 Feb 2018 18:31:18 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
@@ -96,13 +96,13 @@ interactions:
     uri: http://localhost:8080/api/action/package_list
   response:
     body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_list",
-        "success": true, "result": ["data2_1", "data2_2", "data3_1", "data3_2", "data3_3"]}'}
+        "success": true, "result": ["data1_1", "data2_1", "data2_2", "data3_1", "data3_2"]}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['158']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:31:03 GMT']
+      date: ['Fri, 16 Feb 2018 18:31:18 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
