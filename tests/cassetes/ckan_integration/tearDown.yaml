@@ -1,0 +1,210 @@
+interactions:
+- request:
+    body: !!python/unicode '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/package_list
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_list",
+        "success": true, "result": ["dataset-de-prueba", "fruta", "sistemadecontratacioneselectrnicas"]}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['171']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:02 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:02 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/package_list
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_list",
+        "success": true, "result": ["dataset-de-prueba", "fruta", "sistemadecontratacioneselectrnicas"]}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['171']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:03 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:03 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/package_list
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_list",
+        "success": true, "result": ["dataset-de-prueba", "fruta", "sistemadecontratacioneselectrnicas"]}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['171']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:04 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:04 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/package_list
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_list",
+        "success": true, "result": ["basededatoslegislativosinfoleg", "dataset-de-prueba",
+        "fruta", "sistemadecontratacioneselectrnicas"]}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['205']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:06 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:07 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://181.209.63.239/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Thu, 08 Feb 2018 18:34:07 GMT']
+      pragma: [no-cache]
+      server: [nginx/1.11.9]
+    status: {code: 200, message: OK}
+version: 1

@@ -83,8 +83,24 @@ Existen dos métodos, cuyos reportes se incluyen diariamente entre los archivos 
 - **pydatajson.DataJson.generate_datasets_summary()**: Devuelve un informe tabular (en formato CSV o XLSX) sobre los datasets de un catálogo, detallando cuántas distribuciones tiene y el estado de sus propios metadatos.
 - **pydatajson.DataJson.generate_catalog_readme()**: Genera un archivo de texto plano en formato Markdown para ser utilizado como "README", es decir, como texto introductorio al contenido del catálogo.
 
-## Uso
+### Métodos para federación de datasets
 
+- **pydatajson.DataJson.push_dataset_to_ckan()**: Copia la metadata de un dataset y la escribe en un portal de ckan.
+Toma los siguientes parámetros:
+  - **catalog_id**: El prefijo que va a preceder el id del dataset en el portal destino. 
+  - **owner_org**: La organización a la que pertence el dataset. Debe encontrarse en el portal de destino.
+  - **dataset_origin_identifier**: Identificador del dataset en el catálogo de origen.
+  - **portal_url**: URL del portal de CKAN de destino.
+  - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
+  organización pasada como parámetro y los grupos nuevos en caso de que el dataset tenga un super theme que no
+  estuviera presente anteriormente en el catálogo de destino.
+  
+  **Advertencia**: La función `push_dataset_to_ckan()` sólo garantiza consistencia con los estándares de CKAN. Para
+  mantener una consistencia más estricta dentro del catálogo a federar, es necesario validar los datos antes de pasarlos
+  a la función. 
+
+## Uso
+    
 ### Setup
 
 `DataJson` valida catálogos contra un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos (v0.1)](https://github.com/datosgobar/paquete-apertura-datos/raw/master/docs/Gu%C3%ADa%20para%20el%20uso%20y%20la%20publicaci%C3%B3n%20de%20metadatos%20(v0.1).pdf) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos). El setup por default cubre la enorme mayoría de los casos:
