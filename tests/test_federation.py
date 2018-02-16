@@ -128,43 +128,60 @@ class RemoveDatasetTestCase(unittest.TestCase):
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_empty_search_doesnt_call_purge(self, mock_portal):
-        def mock_call_action(action, data_dict=None):
-            if action == 'package_search':
-                return {'count': 0, 'results': []}
-            if action == 'dataset_purge':
-                self.fail('should not be called')
+        mock_portal.return_value.call_action = MagicMock()
+        remove_dataset_from_ckan('portal', 'key')
+        mock_portal.return_value.call_action.assert_not_called()
 
-        mock_portal.return_value.call_action = mock_call_action
-        remove_dataset_from_ckan('portal', 'key', identifier='id')
+    @patch('pydatajson.federation.get_datasets')
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_filter_in_datasets(self, mock_portal, mock_search):
+        mock_portal.return_value.call_action = MagicMock()
+        mock_search.return_value = ['some_id']
+        filter_in = {'dataset': {'id': 'some_id'}}
+        remove_dataset_from_ckan('portal', 'key',  filter_in=filter_in)
+        mock_portal.return_value.call_action.assert_called_with('dataset_purge', data_dict={'id': 'some_id'})
+
+    @patch('pydatajson.federation.get_datasets')
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_filter_in_out_datasets(self, mock_portal, mock_search):
+        mock_portal.return_value.call_action = MagicMock()
+        mock_search.return_value = ['some_id', 'other_id']
+        filter_out = {'dataset': {'id': 'some_id'}}
+        remove_dataset_from_ckan('portal', 'key', filter_out=filter_out)
+        mock_portal.return_value.call_action.assert_any_call('dataset_purge', data_dict={'id': 'other_id'})
+        mock_portal.return_value.call_action.assert_any_call('dataset_purge', data_dict={'id': 'some_id'})
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
-    def test_remove_one_dataset(self, mock_portal):
-        results = {'count': 1, 'results': [{'id': 'some_id'}]}
-
-        def mock_call_action(action, data_dict=None):
-            if action == 'package_search':
-                return results
-            if action == 'dataset_purge':
-                self.assertEqual('some_id', data_dict['id'])
-                results['count'] = 0
-                results['results'] = []
-
-        mock_portal.return_value.call_action = mock_call_action
-        remove_dataset_from_ckan('portal', 'key', identifier='id')
+    def test_query_one_dataset(self, mock_portal):
+        mock_portal.return_value.call_action = MagicMock(return_value={'count': 1, 'results': [{'id': 'some_id'}]})
+        remove_dataset_from_ckan('portal', 'key',  organization='some_org')
+        data_dict = {'q': 'organization:"some_org"', 'rows': 500, 'start': 0}
+        mock_portal.return_value.call_action.assert_any_call('package_search', data_dict=data_dict)
+        mock_portal.return_value.call_action.assert_any_call('dataset_purge', data_dict={'id': 'some_id'})
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
-    def test_remove_over_500_datasets(self, mock_portal):
-        results = {'count': 501, 'results': [{'id': 'some_id'}], 'times_called': 0}
+    def test_query_over_500_datasets(self, mock_portal):
+        count = 1001
+        # First, the query results. Then the "dataset_purge" None results
+        side_effects = [{'count': count, 'results': [{'id': 'id_1'}]},
+                        {'count': count, 'results': [{'id': 'id_2'}]},
+                        {'count': count, 'results': [{'id': 'id_3'}]},
+                        None, None, None
+                        ]
+        mock_portal.return_value.call_action = MagicMock(side_effect=side_effects)
+        remove_dataset_from_ckan('portal', 'key', organization='some_org')
+        for start in range(0, count, 500):
+            data_dict = {'q': 'organization:"some_org"', 'rows': 500, 'start': start}
+            mock_portal.return_value.call_action.assert_any_call('package_search', data_dict=data_dict)
+        for x in ['1', '2', '3']:
+            mock_portal.return_value.call_action.assert_any_call('dataset_purge', data_dict={'id': 'id_'+x})
 
-        def mock_call_action(action, data_dict=None):
-            if action == 'package_search':
-                results['times_called'] += 1
-                return results
-            if action == 'dataset_purge':
-                self.assertEqual(results['results'][0]['id'], data_dict['id'])
-                results['count'] = max(0, results['count'] - 500)
-                results['results'] = [{'id': 'other_id'}]
-
-        mock_portal.return_value.call_action = mock_call_action
-        remove_dataset_from_ckan('portal', 'key', identifier='id', organization='org', publisher='pub')
-        self.assertEqual(3, results['times_called'])
+    @patch('pydatajson.federation.get_datasets')
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_remove_through_filters_and_organization(self, mock_portal, mock_search):
+        filter_results = ['id_1', 'id_2']
+        org_results = [{'id': 'id_2'}, {'id': 'id_3'}]
+        mock_search.return_value = filter_results
+        mock_portal.return_value.call_action = MagicMock(return_value={'count': 2, 'results': org_results})
+        remove_dataset_from_ckan('portal', 'key', only_time_series=True, organization='some_org')
+        mock_portal.return_value.call_action.assert_called_with('dataset_purge', data_dict={'id': 'id_2'})
