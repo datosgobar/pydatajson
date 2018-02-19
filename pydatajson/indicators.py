@@ -107,9 +107,9 @@ def _generate_indicators(catalog, validator=None):
     # Agrego porcentaje de campos recomendados/optativos usados
     fields_count = _count_required_and_optional_fields(catalog)
     recomendados_pct = 100 * float(fields_count['recomendado']) / \
-                       fields_count['total_recomendado']
+        fields_count['total_recomendado']
     optativos_pct = 100 * float(fields_count['optativo']) / \
-                    fields_count['total_optativo']
+        fields_count['total_optativo']
     result.update({
         'campos_recomendados_pct': round(recomendados_pct, 2),
         'campos_optativos_pct': round(optativos_pct, 2)
@@ -216,10 +216,10 @@ def _network_indicator_percentages(fields, network_indicators):
     # % de campos recomendados y optativos utilizados en todo el catálogo
     if fields:  # 'fields' puede estar vacío si ningún campo es válido
         rec_pct = 100 * float(fields['recomendado']) / \
-                  fields['total_recomendado']
+            fields['total_recomendado']
 
         opt_pct = 100 * float(fields['optativo']) / \
-                  fields['total_optativo']
+            fields['total_optativo']
 
         network_indicators.update({
             'campos_recomendados_pct': round(rec_pct, 2),
@@ -338,7 +338,7 @@ def _generate_date_indicators(catalog, tolerance=0.2):
             days_diff = float((datetime.now() - date).days)
             interval = helpers.parse_repeating_time_interval(
                 periodicity) * \
-                       (1 + tolerance)
+                (1 + tolerance)
 
             if days_diff < interval:
                 actualizados += 1
@@ -524,7 +524,8 @@ def _count_fields_recursive(dataset, fields):
     return key_count
 
 
-def datasets_equal(dataset, other):
+def datasets_equal(dataset, other, fields_dataset=None,
+                   fields_distribution=None):
     """Función de igualdad de dos datasets: se consideran iguales si
     los valores de los campos 'title', 'publisher.name',
     'accrualPeriodicity' e 'issued' son iguales en ambos.
@@ -538,20 +539,52 @@ def datasets_equal(dataset, other):
     """
 
     # Campos a comparar. Si es un campo anidado escribirlo como lista
-    fields = [
-        'title',
-        ['publisher', 'name']
-    ]
+    if not fields_dataset:
+        fields_dataset = [
+            'title',
+            ['publisher', 'name']
+        ]
 
-    for field in fields:
-        if isinstance(field, list):
-            value = helpers.traverse_dict(dataset, field)
-            other_value = helpers.traverse_dict(other, field)
+    for field_dataset in fields_dataset:
+        if isinstance(field_dataset, list):
+            value = helpers.traverse_dict(dataset, field_dataset)
+            other_value = helpers.traverse_dict(other, field_dataset)
         else:
-            value = dataset.get(field)
-            other_value = other.get(field)
+            value = dataset.get(field_dataset)
+            other_value = other.get(field_dataset)
 
         if value != other_value:
+            return False
+
+    if fields_distribution:
+        dataset_distributions = dataset.get("distribution")
+        other_distributions = other.get("distribution")
+
+        if len(dataset_distributions) != len(other_distributions):
+            return False
+
+        distributions_equal = True
+        for dataset_distribution, other_distribution in zip(
+                dataset_distributions, other_distributions):
+
+            for field_distribution in fields_distribution:
+                if isinstance(field_distribution, list):
+                    value = helpers.traverse_dict(
+                        dataset_distribution, field_distribution)
+                    other_value = helpers.traverse_dict(
+                        other_distribution, field_distribution)
+                else:
+                    value = dataset_distribution.get(field_distribution)
+                    other_value = other_distribution.get(field_distribution)
+
+                if value != other_value:
+                    print("{} ({}) es distinto de \n{} ({})".format(
+                        value, dataset_distribution.get("title"),
+                        other_value, other_distribution.get("title")
+                    ))
+                    distributions_equal = False
+
+        if not distributions_equal:
             return False
 
     return True
