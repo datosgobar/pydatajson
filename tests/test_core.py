@@ -129,6 +129,10 @@ class TestDataJsonTestCase(object):
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
+                "%s is too long" % jsonschema_str('title' * 25)
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
                 "123 is not valid under any of the given schemas"),
             (
                 ['error', 'dataset', 0, 'errors', ],
