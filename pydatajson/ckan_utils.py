@@ -40,6 +40,7 @@ def map_dataset_to_package(dataset, catalog_id):
     package['author_email'] = dataset['publisher'].get('mbox')
     append_attribute_to_extra(package, dataset, 'modified')
     append_attribute_to_extra(package, dataset, 'temporal')
+    append_attribute_to_extra(package, dataset, 'source')
     append_attribute_to_extra(package, dataset, 'language', serialize=True)
 
     spatial = dataset.get('spatial')
@@ -95,6 +96,7 @@ def map_distributions_to_resources(distributions, catalog_id):
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
         resource['accessURL'] = distribution.get('accessURL')
+        resource['fileName'] = distribution.get('fileName')
         dist_fields = distribution.get('field')
         if dist_fields:
             resource['attributesDescription'] = json.dumps(dist_fields)
