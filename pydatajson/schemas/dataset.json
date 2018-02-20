@@ -32,7 +32,12 @@
            "type": "array",
            "items": { "$ref": "distribution.json" }
         },
-        "title": { "$ref": "mixed-types.json#nonEmptyString" },
+        "title": {
+            "allOf": [
+                { "$ref": "mixed-types.json#nonEmptyString"},
+                { "maxLength" : 100}
+            ]
+        },
         "description": { "$ref": "mixed-types.json#nonEmptyString" },
         "issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
         "superTheme": {
