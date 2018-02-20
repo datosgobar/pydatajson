@@ -1,0 +1,197 @@
+interactions:
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['184']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=99']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:36 GMT']
+      keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['184']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:36 GMT']
+      keep-alive: ['timeout=5, max=99']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:37 GMT']
+      keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['184']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:37 GMT']
+      keep-alive: ['timeout=5, max=99']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:43 GMT']
+      keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:30:43 GMT']
+      keep-alive: ['timeout=5, max=99']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+version: 1

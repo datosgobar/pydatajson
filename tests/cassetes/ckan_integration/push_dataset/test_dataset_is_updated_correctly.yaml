@@ -9,18 +9,19 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/group_list
+    uri: http://localhost:8080/api/action/group_list
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=group_list",
-        "success": true, "result": ["econ", "just", "tema-1"]}'}
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=group_list",
+        "success": true, "result": ["asdasdasd", "econ", "just", "untema"]}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
-      content-length: ['127']
+      connection: [Keep-Alive]
+      content-length: ['140']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:02 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
     body: !!python/unicode '{}'
@@ -32,9 +33,9 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/license_list
+    uri: http://localhost:8080/api/action/license_list
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=license_list",
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
         "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
         "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
         "False", "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
@@ -107,12 +108,13 @@ interactions:
         "False", "id": "other-closed"}]}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
+      connection: [Keep-Alive]
       content-length: ['5727']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:02 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
     body: !!python/unicode '{"owner_org": "oficina-de-muestra", "maintainer": "Ministerio
@@ -168,19 +170,20 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/package_update
+    uri: http://localhost:8080/api/action/package_update
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_update",
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
         "success": false, "error": {"message": "No encontrado: No se ha encontrado
         el paquete.", "__type": "Not Found Error"}}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
+      connection: [Keep-Alive]
       content-length: ['195']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:02 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
     body: !!python/unicode '{"owner_org": "oficina-de-muestra", "maintainer": "Ministerio
@@ -236,18 +239,18 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/package_create
+    uri: http://localhost:8080/api/action/package_create
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_create",
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
         "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
         "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "datosargentina_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-08T18:34:02.702307", "metadata_modified": "2018-02-08T18:34:02.725005",
+        "metadata_created": "2018-02-16T18:30:35.294767", "metadata_modified": "2018-02-16T18:30:35.305538",
         "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
-        "state": "active", "version": null, "creator_user_id": "824dc36b-38b0-448d-bcb2-dda225089ba2",
+        "state": "active", "version": null, "creator_user_id": "829bb729-5190-45f9-bdb2-36bd4e26c606",
         "type": "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
         "[{\"id\": \"proc12\", \"type\": \"integer\", \"description\": \"Identificador
         \\u00fanico del procedimiento de contrataci\\u00f3n\", \"title\": \"procedimiento_id\"},
@@ -280,39 +283,40 @@ interactions:
         "text/csv", "cache_url": null, "name": "Convocatorias abiertas durante el
         a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
         "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
-        "7a63b2b4-012a-4744-9050-904ce132b60a", "resource_type": null}], "num_resources":
+        "250a77b8-6cbf-4915-957c-be3483917bd9", "resource_type": null}], "num_resources":
         1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "bienes",
-        "id": "7cacc193-5776-46b3-8f31-ccc52042248f", "name": "bienes"}, {"vocabulary_id":
-        null, "state": "active", "display_name": "compras", "id": "27e042d0-87b8-416e-9745-8b504dc182e0",
+        "id": "99dbdcc0-255c-478d-81fe-f43f3ebd92e0", "name": "bienes"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "compras", "id": "3e943e22-6674-42ef-b070-db7e66470c73",
         "name": "compras"}, {"vocabulary_id": null, "state": "active", "display_name":
-        "contrataciones", "id": "ea24713a-553f-4ce8-aaa7-65bd66de53c7", "name": "contrataciones"},
+        "contrataciones", "id": "63de8d8c-2ad3-44fb-9380-9832cf1b8bd6", "name": "contrataciones"},
         {"vocabulary_id": null, "state": "active", "display_name": "convocatorias",
-        "id": "a7cf30d4-d35a-433a-914f-47727d61b6f7", "name": "convocatorias"}], "groups":
+        "id": "6c4b1f4a-137c-4e2a-8280-8e9ee62eeb45", "name": "convocatorias"}], "groups":
         [{"display_name": "econ", "description": "", "image_display_url": "", "title":
-        "", "id": "ddf819de-dfd5-474d-9335-9a2d74c28f64", "name": "econ"}], "license_id":
+        "", "id": "4f39cce8-da19-491d-82fb-f3ce36afbb2f", "name": "econ"}], "license_id":
         "notspecified", "relationships_as_subject": [], "organization": {"description":
-        "", "created": "2018-02-07T15:37:27.733652", "title": "oficina-de-muestra",
+        "", "created": "2018-02-09T20:56:59.614318", "title": "oficina-de-muestra",
         "name": "oficina-de-muestra", "is_organization": true, "state": "active",
-        "image_url": "", "revision_id": "ea6c44f9-b41b-4a4c-b362-2738b4ba9d30", "type":
-        "organization", "id": "5d50512b-c887-4ee8-b776-8499530eab39", "approval_status":
+        "image_url": "", "revision_id": "c31db8bc-b9ec-4ad9-b5d5-6af59f8aa384", "type":
+        "organization", "id": "f67b061c-011c-45ef-a44b-0efff0ac9ca6", "approval_status":
         "approved"}, "name": "sistemadecontratacioneselectrnicas", "isopen": false,
         "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
         "notes": "Datos correspondientes al Sistema de Contrataciones Electr\u00f3nicas
-        (Argentina Compra)", "owner_org": "5d50512b-c887-4ee8-b776-8499530eab39",
+        (Argentina Compra)", "owner_org": "f67b061c-011c-45ef-a44b-0efff0ac9ca6",
         "extras": [{"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "issued",
         "value": "2016-04-14T19:48:05.433640-03:00"}, {"key": "language", "value":
         "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
         {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
         {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
-        de contrataciones electr\u00f3nicas", "revision_id": "7a63b2b4-012a-4744-9050-904ce132b60a"}}'}
+        de contrataciones electr\u00f3nicas", "revision_id": "250a77b8-6cbf-4915-957c-be3483917bd9"}}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
+      connection: [Keep-Alive]
       content-length: ['5828']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:02 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
     body: !!python/unicode '{}'
@@ -324,18 +328,19 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/group_list
+    uri: http://localhost:8080/api/action/group_list
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=group_list",
-        "success": true, "result": ["econ", "just", "tema-1"]}'}
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=group_list",
+        "success": true, "result": ["asdasdasd", "econ", "just", "untema"]}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
-      content-length: ['127']
+      connection: [Keep-Alive]
+      content-length: ['140']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:03 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
     body: !!python/unicode '{}'
@@ -347,9 +352,9 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/license_list
+    uri: http://localhost:8080/api/action/license_list
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=license_list",
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
         "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
         "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
         "False", "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
@@ -422,12 +427,13 @@ interactions:
         "False", "id": "other-closed"}]}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
+      connection: [Keep-Alive]
       content-length: ['5727']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:03 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
     body: !!python/unicode '{"owner_org": "oficina-de-muestra", "maintainer": "Ministerio
@@ -482,20 +488,19 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/package_update
+    uri: http://localhost:8080/api/action/package_update
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_update",
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
         "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
         "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "datosargentina_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-08T18:34:02.702307", "owner_org": "5d50512b-c887-4ee8-b776-8499530eab39",
-        "metadata_modified": "2018-02-08T18:34:03.100638", "author": "Ministerio de
-        Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n Administrativa.
-        Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
-        "state": "active", "version": null, "license_id": "notspecified", "type":
-        "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
+        "metadata_created": "2018-02-16T18:30:35.294767", "metadata_modified": "2018-02-16T18:30:35.965200",
+        "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
+        "state": "active", "version": null, "creator_user_id": "829bb729-5190-45f9-bdb2-36bd4e26c606",
+        "type": "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
         "[{\"id\": \"proc12\", \"type\": \"integer\", \"description\": \"Identificador
         \\u00fanico del procedimiento de contrataci\\u00f3n\", \"title\": \"procedimiento_id\"},
         {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico del organismo
@@ -520,43 +525,46 @@ interactions:
         de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
         "datosargentina_99db6631-d1c9-470b-a73e-c62daa32c777", "webstore_last_updated":
         null, "datastore_active": false, "id": "datosargentina_1.1", "size": "5120",
-        "state": "active", "mimetype": "text/csv", "hash": "", "description": "Listado
-        de las convocatorias abiertas durante el a\u00f1o 2015 en el sistema de contrataciones
-        electr\u00f3nicas", "format": "CSV", "mimetype_inner": null, "url_type": null,
-        "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
-        "cache_url": null, "name": "Convocatorias abiertas durante el a\u00f1o 2015",
-        "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
-        "webstore_url": null, "last_modified": "2016-04-19T22:48:05.433640", "position":
-        0, "revision_id": "7a63b2b4-012a-4744-9050-904ce132b60a", "resource_type":
-        null}], "num_resources": 1, "tags": [{"vocabulary_id": null, "state": "active",
-        "display_name": "bienes", "id": "7cacc193-5776-46b3-8f31-ccc52042248f", "name":
-        "bienes"}, {"vocabulary_id": null, "state": "active", "display_name": "compras",
-        "id": "27e042d0-87b8-416e-9745-8b504dc182e0", "name": "compras"}, {"vocabulary_id":
-        null, "state": "active", "display_name": "contrataciones", "id": "ea24713a-553f-4ce8-aaa7-65bd66de53c7",
-        "name": "contrataciones"}, {"vocabulary_id": null, "state": "active", "display_name":
-        "convocatorias", "id": "a7cf30d4-d35a-433a-914f-47727d61b6f7", "name": "convocatorias"}],
-        "groups": [{"display_name": "econ", "description": "", "title": "", "image_display_url":
-        "", "id": "ddf819de-dfd5-474d-9335-9a2d74c28f64", "name": "econ"}], "creator_user_id":
-        "824dc36b-38b0-448d-bcb2-dda225089ba2", "relationships_as_subject": [], "name":
-        "sistemadecontratacioneselectrnicas", "isopen": false, "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
-        "notes": "updated description", "title": "Sistema de contrataciones electr\u00f3nicas",
-        "extras": [{"value": "R/P1Y", "key": "accrualPeriodicity"}, {"value": "2016-04-14T19:48:05.433640-03:00",
-        "key": "issued"}, {"value": "[\"spa\"]", "key": "language"}, {"value": "2016-04-19T19:48:05.433640-03:00",
-        "key": "modified"}, {"value": "ARG", "key": "spatial"}, {"value": "[\"econ\"]",
-        "key": "super_theme"}, {"value": "2015-01-01/2015-12-31", "key": "temporal"}],
-        "organization": {"description": "", "title": "oficina-de-muestra", "created":
-        "2018-02-07T15:37:27.733652", "approval_status": "approved", "is_organization":
-        true, "state": "active", "image_url": "", "revision_id": "ea6c44f9-b41b-4a4c-b362-2738b4ba9d30",
-        "type": "organization", "id": "5d50512b-c887-4ee8-b776-8499530eab39", "name":
-        "oficina-de-muestra"}, "revision_id": "7906578f-2a76-4bcb-be39-d9b893da1b3e"}}'}
+        "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "hash": "", "description": "Listado de las convocatorias abiertas durante
+        el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
+        "CSV", "last_modified": "2016-04-19T22:48:05.433640", "url_type": null, "mimetype":
+        "text/csv", "cache_url": null, "name": "Convocatorias abiertas durante el
+        a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
+        "250a77b8-6cbf-4915-957c-be3483917bd9", "resource_type": null}], "num_resources":
+        1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "bienes",
+        "id": "99dbdcc0-255c-478d-81fe-f43f3ebd92e0", "name": "bienes"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "compras", "id": "3e943e22-6674-42ef-b070-db7e66470c73",
+        "name": "compras"}, {"vocabulary_id": null, "state": "active", "display_name":
+        "contrataciones", "id": "63de8d8c-2ad3-44fb-9380-9832cf1b8bd6", "name": "contrataciones"},
+        {"vocabulary_id": null, "state": "active", "display_name": "convocatorias",
+        "id": "6c4b1f4a-137c-4e2a-8280-8e9ee62eeb45", "name": "convocatorias"}], "groups":
+        [{"display_name": "econ", "description": "", "image_display_url": "", "title":
+        "", "id": "4f39cce8-da19-491d-82fb-f3ce36afbb2f", "name": "econ"}], "license_id":
+        "notspecified", "relationships_as_subject": [], "organization": {"description":
+        "", "created": "2018-02-09T20:56:59.614318", "title": "oficina-de-muestra",
+        "name": "oficina-de-muestra", "is_organization": true, "state": "active",
+        "image_url": "", "revision_id": "c31db8bc-b9ec-4ad9-b5d5-6af59f8aa384", "type":
+        "organization", "id": "f67b061c-011c-45ef-a44b-0efff0ac9ca6", "approval_status":
+        "approved"}, "name": "sistemadecontratacioneselectrnicas", "isopen": false,
+        "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+        "notes": "updated description", "owner_org": "f67b061c-011c-45ef-a44b-0efff0ac9ca6",
+        "extras": [{"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "issued",
+        "value": "2016-04-14T19:48:05.433640-03:00"}, {"key": "language", "value":
+        "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+        {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
+        {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
+        de contrataciones electr\u00f3nicas", "revision_id": "d5c27202-1124-47f8-864e-76d4e9467ebc"}}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
+      connection: [Keep-Alive]
       content-length: ['5759']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:03 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
     body: !!python/unicode '{"id": "datosargentina_99db6631-d1c9-470b-a73e-c62daa32c777"}'
@@ -568,20 +576,19 @@ interactions:
       Content-Type: [application/json]
       User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
     method: POST
-    uri: http://181.209.63.239/api/action/package_show
+    uri: http://localhost:8080/api/action/package_show
   response:
-    body: {string: !!python/unicode '{"help": "http://181.209.63.239/api/3/action/help_show?name=package_show",
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_show",
         "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
         "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "datosargentina_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-08T18:34:02.702307", "owner_org": "5d50512b-c887-4ee8-b776-8499530eab39",
-        "metadata_modified": "2018-02-08T18:34:03.100638", "author": "Ministerio de
-        Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n Administrativa.
-        Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
-        "state": "active", "version": null, "license_id": "notspecified", "type":
-        "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
+        "metadata_created": "2018-02-16T18:30:35.294767", "metadata_modified": "2018-02-16T18:30:35.965200",
+        "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
+        "state": "active", "version": null, "creator_user_id": "829bb729-5190-45f9-bdb2-36bd4e26c606",
+        "type": "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
         "[{\"id\": \"proc12\", \"type\": \"integer\", \"description\": \"Identificador
         \\u00fanico del procedimiento de contrataci\\u00f3n\", \"title\": \"procedimiento_id\"},
         {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico del organismo
@@ -606,42 +613,45 @@ interactions:
         de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
         "datosargentina_99db6631-d1c9-470b-a73e-c62daa32c777", "webstore_last_updated":
         null, "datastore_active": false, "id": "datosargentina_1.1", "size": "5120",
-        "state": "active", "mimetype": "text/csv", "hash": "", "description": "Listado
-        de las convocatorias abiertas durante el a\u00f1o 2015 en el sistema de contrataciones
-        electr\u00f3nicas", "format": "CSV", "mimetype_inner": null, "url_type": null,
-        "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
-        "cache_url": null, "name": "Convocatorias abiertas durante el a\u00f1o 2015",
-        "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
-        "webstore_url": null, "last_modified": "2016-04-19T22:48:05.433640", "position":
-        0, "revision_id": "7a63b2b4-012a-4744-9050-904ce132b60a", "resource_type":
-        null}], "num_resources": 1, "tags": [{"vocabulary_id": null, "state": "active",
-        "display_name": "bienes", "id": "7cacc193-5776-46b3-8f31-ccc52042248f", "name":
-        "bienes"}, {"vocabulary_id": null, "state": "active", "display_name": "compras",
-        "id": "27e042d0-87b8-416e-9745-8b504dc182e0", "name": "compras"}, {"vocabulary_id":
-        null, "state": "active", "display_name": "contrataciones", "id": "ea24713a-553f-4ce8-aaa7-65bd66de53c7",
-        "name": "contrataciones"}, {"vocabulary_id": null, "state": "active", "display_name":
-        "convocatorias", "id": "a7cf30d4-d35a-433a-914f-47727d61b6f7", "name": "convocatorias"}],
-        "groups": [{"display_name": "econ", "description": "", "title": "", "image_display_url":
-        "", "id": "ddf819de-dfd5-474d-9335-9a2d74c28f64", "name": "econ"}], "creator_user_id":
-        "824dc36b-38b0-448d-bcb2-dda225089ba2", "relationships_as_subject": [], "name":
-        "sistemadecontratacioneselectrnicas", "isopen": false, "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
-        "notes": "updated description", "title": "Sistema de contrataciones electr\u00f3nicas",
-        "extras": [{"value": "R/P1Y", "key": "accrualPeriodicity"}, {"value": "2016-04-14T19:48:05.433640-03:00",
-        "key": "issued"}, {"value": "[\"spa\"]", "key": "language"}, {"value": "2016-04-19T19:48:05.433640-03:00",
-        "key": "modified"}, {"value": "ARG", "key": "spatial"}, {"value": "[\"econ\"]",
-        "key": "super_theme"}, {"value": "2015-01-01/2015-12-31", "key": "temporal"}],
-        "organization": {"description": "", "title": "oficina-de-muestra", "created":
-        "2018-02-07T15:37:27.733652", "approval_status": "approved", "is_organization":
-        true, "state": "active", "image_url": "", "revision_id": "ea6c44f9-b41b-4a4c-b362-2738b4ba9d30",
-        "type": "organization", "id": "5d50512b-c887-4ee8-b776-8499530eab39", "name":
-        "oficina-de-muestra"}, "revision_id": "7906578f-2a76-4bcb-be39-d9b893da1b3e"}}'}
+        "state": "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "hash": "", "description": "Listado de las convocatorias abiertas durante
+        el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
+        "CSV", "last_modified": "2016-04-19T22:48:05.433640", "url_type": null, "mimetype":
+        "text/csv", "cache_url": null, "name": "Convocatorias abiertas durante el
+        a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "webstore_url": null, "mimetype_inner": null, "position": 0, "revision_id":
+        "250a77b8-6cbf-4915-957c-be3483917bd9", "resource_type": null}], "num_resources":
+        1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "bienes",
+        "id": "99dbdcc0-255c-478d-81fe-f43f3ebd92e0", "name": "bienes"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "compras", "id": "3e943e22-6674-42ef-b070-db7e66470c73",
+        "name": "compras"}, {"vocabulary_id": null, "state": "active", "display_name":
+        "contrataciones", "id": "63de8d8c-2ad3-44fb-9380-9832cf1b8bd6", "name": "contrataciones"},
+        {"vocabulary_id": null, "state": "active", "display_name": "convocatorias",
+        "id": "6c4b1f4a-137c-4e2a-8280-8e9ee62eeb45", "name": "convocatorias"}], "groups":
+        [{"display_name": "econ", "description": "", "image_display_url": "", "title":
+        "", "id": "4f39cce8-da19-491d-82fb-f3ce36afbb2f", "name": "econ"}], "license_id":
+        "notspecified", "relationships_as_subject": [], "organization": {"description":
+        "", "created": "2018-02-09T20:56:59.614318", "title": "oficina-de-muestra",
+        "name": "oficina-de-muestra", "is_organization": true, "state": "active",
+        "image_url": "", "revision_id": "c31db8bc-b9ec-4ad9-b5d5-6af59f8aa384", "type":
+        "organization", "id": "f67b061c-011c-45ef-a44b-0efff0ac9ca6", "approval_status":
+        "approved"}, "name": "sistemadecontratacioneselectrnicas", "isopen": false,
+        "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+        "notes": "updated description", "owner_org": "f67b061c-011c-45ef-a44b-0efff0ac9ca6",
+        "extras": [{"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "issued",
+        "value": "2016-04-14T19:48:05.433640-03:00"}, {"key": "language", "value":
+        "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+        {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
+        {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
+        de contrataciones electr\u00f3nicas", "revision_id": "d5c27202-1124-47f8-864e-76d4e9467ebc"}}'}
     headers:
       cache-control: [no-cache]
-      connection: [keep-alive]
+      connection: [Keep-Alive]
       content-length: ['5757']
       content-type: [application/json;charset=utf-8]
-      date: ['Thu, 08 Feb 2018 18:34:03 GMT']
+      date: ['Fri, 16 Feb 2018 18:30:36 GMT']
+      keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
-      server: [nginx/1.11.9]
+      server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 version: 1

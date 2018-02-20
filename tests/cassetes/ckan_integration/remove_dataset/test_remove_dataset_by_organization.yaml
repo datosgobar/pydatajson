@@ -1,0 +1,123 @@
+interactions:
+- request:
+    body: !!python/unicode '{"q": "organization:\"org-2\"", "start": 0, "rows": 500}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['56']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/package_search
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_search",
+        "success": true, "result": {"count": 2, "sort": "score desc, metadata_modified
+        desc", "facets": {}, "results": [{"license_title": null, "maintainer": null,
+        "relationships_as_object": [], "private": false, "maintainer_email": null,
+        "num_tags": 0, "id": "2.2", "metadata_created": "2018-02-16T18:31:05.246182",
+        "metadata_modified": "2018-02-16T18:31:05.251295", "author": "author_b", "author_email":
+        null, "state": "active", "version": null, "creator_user_id": "829bb729-5190-45f9-bdb2-36bd4e26c606",
+        "type": "dataset", "resources": [], "num_resources": 0, "tags": [], "groups":
+        [], "license_id": null, "relationships_as_subject": [], "organization": {"description":
+        "", "created": "2018-02-09T13:22:45.948695", "title": "", "name": "org-2",
+        "is_organization": true, "state": "active", "image_url": "", "revision_id":
+        "c88eba5b-ada6-4093-a31c-5a90a824d0c7", "type": "organization", "id": "2",
+        "approval_status": "approved"}, "name": "data2_2", "isopen": false, "url":
+        null, "notes": null, "owner_org": "2", "extras": [], "title": "data2_2", "revision_id":
+        "a8066ba4-5d1b-469f-a613-ac23d8c035df"}, {"license_title": null, "maintainer":
+        null, "relationships_as_object": [], "private": false, "maintainer_email":
+        null, "num_tags": 0, "id": "2.1", "metadata_created": "2018-02-16T18:31:04.679264",
+        "metadata_modified": "2018-02-16T18:31:04.684256", "author": "author_a", "author_email":
+        null, "state": "active", "version": null, "creator_user_id": "829bb729-5190-45f9-bdb2-36bd4e26c606",
+        "type": "dataset", "resources": [], "num_resources": 0, "tags": [], "groups":
+        [], "license_id": null, "relationships_as_subject": [], "organization": {"description":
+        "", "created": "2018-02-09T13:22:45.948695", "title": "", "name": "org-2",
+        "is_organization": true, "state": "active", "image_url": "", "revision_id":
+        "c88eba5b-ada6-4093-a31c-5a90a824d0c7", "type": "organization", "id": "2",
+        "approval_status": "approved"}, "name": "data2_1", "isopen": false, "url":
+        null, "notes": null, "owner_org": "2", "extras": [], "title": "data2_1", "revision_id":
+        "d3ae458d-6adf-431d-9559-df6ef0b7ea37"}], "search_facets": {}}}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['2177']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:31:07 GMT']
+      keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:31:07 GMT']
+      keep-alive: ['timeout=5, max=99']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['108']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:31:07 GMT']
+      keep-alive: ['timeout=5, max=98']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/package_list
+  response:
+    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_list",
+        "success": true, "result": ["data1_1", "data3_1", "data3_2", "data3_3"]}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['147']
+      content-type: [application/json;charset=utf-8]
+      date: ['Fri, 16 Feb 2018 18:31:08 GMT']
+      keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+version: 1
