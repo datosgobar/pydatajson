@@ -100,7 +100,8 @@ class DatasetConversionTestCase(unittest.TestCase):
                                      ('mimetype', 'mediaType'),
                                      ('description', 'description'),
                                      ('format', 'format'),
-                                     ('size', 'byteSize')]
+                                     ('size', 'byteSize'),
+                                     ('fileName', 'fileName')]
             for fst, snd in replicated_attributes:
                 if distribution.get(snd):
                     self.assertEqual(distribution.get(snd), resource.get(fst))
