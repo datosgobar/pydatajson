@@ -279,3 +279,19 @@ def missing_dataset():
         ],
         "dataset": None,
     })
+
+
+def repeated_downloadURL():
+    return catalog_error({
+        "instance": None,
+        "validator": "repeatedValue",
+        "path": [
+            "catalog",
+            "dataset"
+        ],
+        "message": "DownloadURL's [%s] estan repetidas en mas de un `distribution`" % jsonschema_str(
+            'http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
+        "error_code": 2,
+        "validator_value": "Chequea downloadURL's duplicados en las distribuciones"
+    })
+

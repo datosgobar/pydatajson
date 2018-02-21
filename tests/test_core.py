@@ -79,7 +79,7 @@ class TestDataJsonTestCase(object):
         else:
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
-
+qe
         assert_dict_equal(expected_dict, response_dict)
 
     # Tests de CAMPOS REQUERIDOS

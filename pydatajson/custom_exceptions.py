@@ -67,10 +67,10 @@ class DownloadURLRepetitionError(BaseValidationError):
 
         # TODO: construcción del error
         validator = "repeatedValue"
-        message = "downloadURL's {} estan repetidas en mas de un `distribution`".format(
+        message = "DownloadURL's {} estan repetidas en mas de un `distribution`".format(
             repeated_urls)
         validator_value = "Chequea downloadURL's duplicados en las distribuciones"
-        path = ["catalog", "dataset", "distribution"]
+        path = ["catalog", "dataset"]
 
         super(DownloadURLRepetitionError, self).__init__(
             validator, message, validator_value, path)
