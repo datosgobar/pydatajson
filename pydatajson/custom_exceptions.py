@@ -61,6 +61,21 @@ class ThemeLabelRepeated(BaseValidationError):
             validator, message, validator_value, path)
 
 
+class DownloadURLRepetitionError(BaseValidationError):
+
+    def __init__(self, repeated_urls):
+
+        # TODO: construcción del error
+        validator = "repeatedValue"
+        message = "DownloadURL's {} estan repetidas en mas de un `distribution`".format(
+            repeated_urls)
+        validator_value = "Chequea downloadURL's duplicados en las distribuciones"
+        path = ["catalog", "dataset"]
+
+        super(DownloadURLRepetitionError, self).__init__(
+            validator, message, validator_value, path)
+
+
 class BaseUnexpectedValue(ValueError):
 
     """El id de una entidad está repetido en el catálogo."""
