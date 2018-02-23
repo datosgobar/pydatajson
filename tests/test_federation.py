@@ -63,34 +63,30 @@ class PushDatasetTestCase(unittest.TestCase):
         self.assertEqual(self.catalog_id+'_'+self.dataset_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
-    def test_new_groups_are_created(self, mock_portal):
-        def mock_call_action(action, data_dict=None):
-            if action == 'group_create':
-                self.assertEqual('econ', data_dict['name'])
-                return None
-            elif action == 'package_update':
-                return {'id': data_dict['id']}
-            else:
-                return []
-        mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
-                             self.dataset['identifier'], 'portal', 'key')
+    def test_tags_are_passed_correctly(self, mock_portal):
+        themes = self.dataset['theme']
+        theme_taxonomy = self.catalog.themes
+        keywords = [kw for kw in self.dataset['keyword']]
+        for theme in themes:
+            label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
+            keywords.append(label)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
-    def test_if_group_exists_is_not_created(self, mock_portal):
         def mock_call_action(action, data_dict=None):
-            if action == 'group_list':
-                return ['econ']
-            elif action == 'group_create':
-                self.fail("should not be called")
-            elif action == 'package_update':
+            if action == 'package_update':
+                try:
+                    self.assertItemsEqual(keywords, [tag['name'] for tag in data_dict['tags']])
+                except AttributeError:
+                    self.assertCountEqual(keywords, [tag['name'] for tag in data_dict['tags']])
                 return {'id': data_dict['id']}
+            if action == 'package_create':
+                self.fail('should not be called')
             else:
                 return []
 
         mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
-                             self.dataset['identifier'], 'portal', 'key')
+        res_id = push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
+                                      self.dataset['identifier'], 'portal', 'key')
+        self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_licenses_are_interpreted_correctly(self, mock_portal):
