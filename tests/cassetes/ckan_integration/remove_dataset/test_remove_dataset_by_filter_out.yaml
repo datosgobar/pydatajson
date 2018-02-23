@@ -17,58 +17,39 @@ interactions:
         , \n  \"publisher\": {\n    \"mbox\": \"\", \n    \"name\": \"\"\n  }, \n\
         \  \"issued\": \"\", \n  \"modified\": \"\", \n  \"language\": \"\", \n  \"\
         license\": \"\", \n  \"homepage\": \"\", \n  \"rights\": \"\", \n  \"spatial\"\
-        : [], \n  \"themeTaxonomy\": [\n    {\n      \"label\": \"asdasdasd\", \n\
-        \      \"id\": \"asdasdasd\", \n      \"description\": \"\"\n    }, \n   \
-        \ {\n      \"label\": \"econ\", \n      \"id\": \"econ\", \n      \"description\"\
-        : \"\"\n    }, \n    {\n      \"label\": \"just\", \n      \"id\": \"just\"\
-        , \n      \"description\": \"\"\n    }, \n    {\n      \"label\": \"untema\"\
-        , \n      \"id\": \"untema\", \n      \"description\": \"\"\n    }\n  ], \n\
-        \  \"dataset\": [\n    {\n      \"title\": \"data3_3\", \n      \"modified\"\
-        : \"2018-02-16T18:30:52.349606\", \n      \"identifier\": \"3.3\", \n    \
-        \  \"issued\": \"2018-02-16T18:30:52.344796\", \n      \"landingPage\": \"\
-        unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
-        : \"author_c\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
-        \    \"title\": \"data3_2\", \n      \"modified\": \"2018-02-16T18:30:51.707503\"\
-        , \n      \"identifier\": \"3.2\", \n      \"issued\": \"2018-02-16T18:30:51.702800\"\
+        : [], \n  \"themeTaxonomy\": [], \n  \"dataset\": [\n    {\n      \"title\"\
+        : \"data3_3\", \n      \"modified\": \"2018-02-23T15:37:22.232294\", \n  \
+        \    \"identifier\": \"3.3\", \n      \"issued\": \"2018-02-23T15:37:22.227695\"\
         , \n      \"landingPage\": \"unknow\", \n      \"publisher\": {\n        \"\
-        mbox\": null, \n        \"name\": \"author_b\"\n      }, \n      \"contactPoint\"\
-        : {}\n    }, \n    {\n      \"title\": \"data3_1\", \n      \"modified\":\
-        \ \"2018-02-16T18:30:51.124318\", \n      \"identifier\": \"3.1\", \n    \
-        \  \"issued\": \"2018-02-16T18:30:51.119506\", \n      \"landingPage\": \"\
+        mbox\": null, \n        \"name\": \"author_c\"\n      }, \n      \"contactPoint\"\
+        : {}\n    }, \n    {\n      \"title\": \"data3_2\", \n      \"modified\":\
+        \ \"2018-02-23T15:37:21.630533\", \n      \"identifier\": \"3.2\", \n    \
+        \  \"issued\": \"2018-02-23T15:37:21.625811\", \n      \"landingPage\": \"\
         unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
-        : \"author_a\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
-        \    \"title\": \"data2_2\", \n      \"modified\": \"2018-02-16T18:30:50.541044\"\
-        , \n      \"identifier\": \"2.2\", \n      \"issued\": \"2018-02-16T18:30:50.535886\"\
-        , \n      \"landingPage\": \"unknow\", \n      \"publisher\": {\n        \"\
-        mbox\": null, \n        \"name\": \"author_b\"\n      }, \n      \"contactPoint\"\
-        : {}\n    }, \n    {\n      \"title\": \"data2_1\", \n      \"modified\":\
-        \ \"2018-02-16T18:30:49.973846\", \n      \"identifier\": \"2.1\", \n    \
-        \  \"issued\": \"2018-02-16T18:30:49.968858\", \n      \"landingPage\": \"\
-        unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
-        : \"author_a\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
-        \    \"title\": \"data1_1\", \n      \"modified\": \"2018-02-16T18:30:49.399508\"\
-        , \n      \"identifier\": \"1.1\", \n      \"issued\": \"2018-02-16T18:30:49.394604\"\
+        : \"author_b\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
+        \    \"title\": \"data3_1\", \n      \"modified\": \"2018-02-23T15:37:20.796785\"\
+        , \n      \"identifier\": \"3.1\", \n      \"issued\": \"2018-02-23T15:37:20.792292\"\
         , \n      \"landingPage\": \"unknow\", \n      \"publisher\": {\n        \"\
         mbox\": null, \n        \"name\": \"author_a\"\n      }, \n      \"contactPoint\"\
-        : {}\n    }, \n    {\n      \"title\": \"hgh\", \n      \"description\": \"\
-        gh\", \n      \"modified\": \"2018-02-16T18:15:35.698651\", \n      \"identifier\"\
-        : \"174744dc-dea4-490f-b0c9-2e152362348b\", \n      \"issued\": \"2018-02-16T18:15:28.256401\"\
-        , \n      \"landingPage\": \"http://localhost:8080/dataset/hghhg\", \n   \
-        \   \"license\": \"Creative Commons Attribution\", \n      \"spatial\": [\n\
-        \        \"None\"\n      ], \n      \"publisher\": {\n        \"mbox\": \"\
-        \", \n        \"name\": \"gh\"\n      }, \n      \"contactPoint\": {}, \n\
-        \      \"distribution\": [\n        {\n          \"identifier\": \"715ce0dd-0bfe-40e0-a06a-976ed696be44\"\
-        , \n          \"title\": \"gh\", \n          \"description\": \"g\", \n  \
-        \        \"issued\": \"2018-02-16T18:15:34.995347\", \n          \"license\"\
-        : \"cc-by\", \n          \"accessURL\": \"http://localhost:8080/dataset/hghhg/resource/715ce0dd-0bfe-40e0-a06a-976ed696be44\"\
-        , \n          \"downloadURL\": \"http://grd\"\n        }\n      ], \n    \
-        \  \"superTheme\": [\n        \"SOCI\"\n      ], \n      \"accrualPeriodicity\"\
-        : \"R/P2Y\"\n    }\n  ]\n}"}
+        : {}\n    }, \n    {\n      \"title\": \"data2_2\", \n      \"modified\":\
+        \ \"2018-02-23T15:37:20.167619\", \n      \"identifier\": \"2.2\", \n    \
+        \  \"issued\": \"2018-02-23T15:37:20.162454\", \n      \"landingPage\": \"\
+        unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
+        : \"author_b\"\n      }, \n      \"contactPoint\": {}\n    }, \n    {\n  \
+        \    \"title\": \"data2_1\", \n      \"modified\": \"2018-02-23T15:37:19.538179\"\
+        , \n      \"identifier\": \"2.1\", \n      \"issued\": \"2018-02-23T15:37:19.533486\"\
+        , \n      \"landingPage\": \"unknow\", \n      \"publisher\": {\n        \"\
+        mbox\": null, \n        \"name\": \"author_a\"\n      }, \n      \"contactPoint\"\
+        : {}\n    }, \n    {\n      \"title\": \"data1_1\", \n      \"modified\":\
+        \ \"2018-02-23T15:37:18.962353\", \n      \"identifier\": \"1.1\", \n    \
+        \  \"issued\": \"2018-02-23T15:37:18.956413\", \n      \"landingPage\": \"\
+        unknow\", \n      \"publisher\": {\n        \"mbox\": null, \n        \"name\"\
+        : \"author_a\"\n      }, \n      \"contactPoint\": {}\n    }\n  ]\n}"}
     headers:
       connection: [Keep-Alive]
-      content-length: ['3669']
+      content-length: ['2357']
       content-type: [application/json; charset=UTF-8]
-      date: ['Fri, 16 Feb 2018 18:30:52 GMT']
+      date: ['Fri, 23 Feb 2018 15:37:22 GMT']
       keep-alive: ['timeout=5, max=100']
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
@@ -91,7 +72,7 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:53 GMT']
+      date: ['Fri, 23 Feb 2018 15:37:22 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
@@ -115,7 +96,7 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:53 GMT']
+      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
@@ -139,7 +120,7 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:53 GMT']
+      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
@@ -163,32 +144,8 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:53 GMT']
+      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
       keep-alive: ['timeout=5, max=97']
-      pragma: [no-cache]
-      server: [Apache/2.4.7 (Ubuntu)]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"id": "174744dc-dea4-490f-b0c9-2e152362348b"}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['46']
-      Content-Type: [application/json]
-      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
-    method: POST
-    uri: http://localhost:8080/api/action/dataset_purge
-  response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
-        "success": true, "result": null}'}
-    headers:
-      cache-control: [no-cache]
-      connection: [Keep-Alive]
-      content-length: ['108']
-      content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:53 GMT']
-      keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
@@ -211,7 +168,7 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['125']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:53 GMT']
+      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]

@@ -74,26 +74,6 @@ class PushTestCase(unittest.TestCase):
         self.assertEqual('updated description', package['notes'])
 
     @CKAN_VCR.use_cassette()
-    def test_groups_are_created(self):
-        catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', re.sub(r'[^a-z-_]+', '', catalog['title'].lower()))
-        dataset_id = catalog.datasets[0]['identifier']
-        super_themes = catalog.datasets[0]['superTheme']
-        super_themes = set(map(lambda x: x.lower(), super_themes))
-
-        for s_theme in super_themes:
-            try:
-                self.portal.call_action('group_delete', data_dict={'id': s_theme})
-            except NotFound:
-                continue
-
-        push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                             self.portal_url, self.apikey)
-
-        groups = set(self.portal.call_action('group_list'))
-        self.assertTrue(super_themes.issubset(groups))
-
-    @CKAN_VCR.use_cassette()
     def test_resources_swapped_correctly(self):
         catalog_id = 'same-catalog-id'
         full_dataset = self.full_catalog.datasets[0]

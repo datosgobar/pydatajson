@@ -53,11 +53,11 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(super_themes, groups)
 
         tags = [tag['name'] for tag in package['tags']]
-        themes_and_keywords = self.dataset.get('theme', []) + self.dataset.get('keyword', [])
+        keywords = self.dataset.get('keyword', [])
         try:
-            self.assertItemsEqual(themes_and_keywords, tags)
+            self.assertItemsEqual(keywords, tags)
         except AttributeError:
-            self.assertCountEqual(themes_and_keywords, tags)
+            self.assertCountEqual(keywords, tags)
 
     def test_dataset_extra_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id)
