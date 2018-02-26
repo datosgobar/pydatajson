@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -11,20 +11,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:39 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    body: '{"id": "basededatoslegislativosinfoleg"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -35,7 +35,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -43,13 +43,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:35 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:39 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -60,20 +60,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:36 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    body: '{"id": "basededatoslegislativosinfoleg"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -84,7 +84,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -92,13 +92,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:36 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -109,20 +109,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:37 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:42 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    body: '{"id": "basededatoslegislativosinfoleg"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -133,7 +133,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -141,13 +141,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:37 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:42 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "sistemadecontratacioneselectrnicas"}'
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -158,20 +158,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:43 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:47 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "basededatoslegislativosinfoleg"}'
+    body: '{"id": "basededatoslegislativosinfoleg"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -182,16 +182,211 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:30:43 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:47 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:39 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:39 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:40 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:41 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:42 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:42 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "sistemadecontratacioneselectrnicas"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['44']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:48 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "basededatoslegislativosinfoleg"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:49 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 version: 1
