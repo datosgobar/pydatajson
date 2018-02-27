@@ -13,7 +13,7 @@ from pprint import pprint
 import nose
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises, \
-    assert_dict_equal, assert_regexp_matches
+    assert_dict_equal, assert_regexp_matches, set_trace
 from six import iteritems, text_type
 
 from tests.support.factories.core_files import TEST_FILE_RESPONSES
@@ -133,7 +133,13 @@ class TestDataJsonTestCase(object):
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
-                "123 is not valid under any of the given schemas"),
+                "123 is not valid under any of the given schemas"
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "%s is not valid under any of the given schemas" %
+                jsonschema_str('convocatoriasabiertasduranteela.*o.csv')
+            ),
             (
                 ['error', 'dataset', 0, 'errors', ],
                 "\[.*\] is not of type %s" % jsonschema_str('object')
@@ -184,6 +190,7 @@ class TestDataJsonTestCase(object):
 
         p = re.compile(regex)
         matches = [p.match(error['message']) for error in response]
+        # set_trace()
         assert_true(any(matches))
 
     @my_vcr.use_cassette('test_validate_bad_remote_datajson')
