@@ -190,7 +190,6 @@ class TestDataJsonTestCase(object):
 
         p = re.compile(regex)
         matches = [p.match(error['message']) for error in response]
-        # set_trace()
         assert_true(any(matches))
 
     @my_vcr.use_cassette('test_validate_bad_remote_datajson')
