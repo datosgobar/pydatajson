@@ -34,9 +34,10 @@
         "fileName": {
           "allOf":[
               { "$ref": "mixed-types.json#stringOrNull" },
-              {
-                  "if": { "type": "string" },
-                  "then": { "pattern": "^[a-zA-Z0-9._-]+$"}
+              { "anyOf": [
+                  { "not": { "type": "string" } },
+                  { "pattern": "^[0-9a-zA-Z-._]+$" }
+                ]
               }
           ]
         },
