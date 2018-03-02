@@ -177,6 +177,22 @@
                     "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.xls",
                     "issued": "2016-04-14T19:48:05.433640-03:00",
                     "fileName": "convocatoriasabiertasduranteelao.xls"
+                },
+                {
+                    "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8b",
+                    "identifier": "d_7d4d816f-3a40-476e-ab71-d48a3f0eb3c9",
+                    "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                    "license": "Open Data Commons Open Database License 1.0",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                    "byteSize": 5120,
+                    "format": "application/vnd.ms-excel",
+                    "rights": "Derechos especificados en la licencia.",
+                    "mediaType": "application/vnd.ms-excel",
+                    "modified": "2016-04-19T19:48:05.433640-03:00",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.xlsx",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "fileName": "convocatoriasabiertasduranteelao.xlsx"
                 }
             ],
             "source": "Ministerio de modernizacion"
