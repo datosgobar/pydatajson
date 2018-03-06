@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -11,20 +11,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:17 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:15 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -35,20 +35,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:18 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:15 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -59,20 +59,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:18 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:15 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -83,20 +83,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:18 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:15 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -107,20 +107,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:18 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:15 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -131,20 +131,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:18 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:16 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -155,7 +155,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -163,13 +163,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:20 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -180,7 +180,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -188,13 +188,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:20 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -205,20 +205,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:20 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -229,7 +229,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -237,13 +237,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:20 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -254,20 +254,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:20 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -278,7 +278,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -286,13 +286,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:23 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:20 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -303,20 +303,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:28 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:25 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -327,20 +327,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:28 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:25 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -351,20 +351,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:28 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:25 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -375,7 +375,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -383,13 +383,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:28 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:25 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -400,20 +400,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:28 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:25 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -424,7 +424,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -432,13 +432,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:29 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:25 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -449,7 +449,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -457,13 +457,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:33 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:29 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -474,20 +474,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:33 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:29 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -498,20 +498,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:34 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:29 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -522,20 +522,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:34 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:30 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -546,20 +546,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:34 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:30 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -570,20 +570,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:34 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:30 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -594,20 +594,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:39 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:35 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -618,7 +618,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -626,13 +626,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:39 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:35 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -643,7 +643,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -651,13 +651,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:39 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:35 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -668,20 +668,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:39 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:35 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -692,20 +692,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:39 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:35 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -716,20 +716,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:39 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:35 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -740,20 +740,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:44 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:40 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -764,20 +764,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:44 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:40 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -788,20 +788,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:45 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:40 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -812,20 +812,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:45 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:41 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -836,7 +836,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -844,13 +844,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:45 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:41 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -861,20 +861,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:45 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:41 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -885,20 +885,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:51 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:46 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -909,20 +909,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:51 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:46 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -933,20 +933,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:51 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:47 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -957,20 +957,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:51 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:47 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -981,20 +981,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:51 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:47 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1005,7 +1005,7 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": false, "error": {"message": "No encontrado: Dataset was not found",
         "__type": "Not Found Error"}}'}
     headers:
@@ -1013,13 +1013,13 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['184']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:51 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:47 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
 - request:
-    body: !!python/unicode '{"id": "1.1"}'
+    body: '{"id": "1.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1030,20 +1030,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:56 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:51 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1054,20 +1054,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:56 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:51 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1078,20 +1078,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:56 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:52 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.1"}'
+    body: '{"id": "3.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1102,20 +1102,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:56 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:52 GMT']
       keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.2"}'
+    body: '{"id": "3.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1126,20 +1126,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:57 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:52 GMT']
       keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "3.3"}'
+    body: '{"id": "3.3"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1150,16 +1150,1179 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 23 Feb 2018 15:37:57 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:52 GMT']
       keep-alive: ['timeout=5, max=95']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:18 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:18 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:19 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:19 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:19 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:19 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:25 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:25 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:25 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:25 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:25 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:25 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:30 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:30 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:31 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:31 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:31 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:31 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:36 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:36 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:36 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:36 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:37 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:37 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:42 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:43 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:43 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:43 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:43 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:43 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:49 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:49 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:49 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:49 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:49 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:49 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:55 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:55 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:56 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:56 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:56 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": false, "error": {"message": "No encontrado: Dataset was not found",
+        "__type": "Not Found Error"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['184']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:56 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 404, message: Not Found}
+- request:
+    body: '{"id": "1.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:24:02 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:24:02 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:24:02 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:24:02 GMT']
+      Keep-Alive: ['timeout=5, max=97']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:24:02 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "3.3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:24:02 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 version: 1

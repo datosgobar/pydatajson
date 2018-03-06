@@ -1,11 +1,11 @@
 import unittest
 import os
-import re
 import vcr
 from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound
+from pydatajson.helpers import title_to_name
+from pydatajson.federation import push_dataset_to_ckan, remove_datasets_from_ckan
 from .context import pydatajson
-from pydatajson.federation import push_dataset_to_ckan, remove_dataset_from_ckan
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
@@ -32,9 +32,9 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def tearDown(self):
         full_dataset = self.full_catalog.datasets[0]
-        full_name = re.sub(r'[^a-z-_]+', '', full_dataset['title'].lower())
+        full_name = title_to_name(full_dataset['title'])
         justice_dataset = self.justice_catalog.datasets[0]
-        justice_name = re.sub(r'[^a-z-_]+', '', justice_dataset['title'].lower())
+        justice_name = title_to_name(justice_dataset['title'])
         try:
             self.portal.call_action('dataset_purge', data_dict={'id': full_name})
         except NotFound:
@@ -49,7 +49,7 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_dataset_is_created_correctly(self):
         catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', re.sub(r'[^a-z-_]+', '', catalog['title'].lower()))
+        catalog_id = catalog.get('identifier', title_to_name(catalog['title']))
         dataset = catalog.datasets[0]
         dataset_id = dataset['identifier']
         return_id = push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
@@ -59,7 +59,7 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_dataset_is_updated_correctly(self):
         catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', re.sub(r'[^a-z-_]+', '', catalog['title'].lower()))
+        catalog_id = catalog.get('identifier', title_to_name(catalog['title']))
         dataset_id = catalog.datasets[0]['identifier']
         push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
                              self.portal_url, self.apikey)
@@ -150,20 +150,20 @@ class RemoveTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_remove_dataset_by_id(self):
         filter_in = {'dataset': {'identifier': '1.1'}}
-        remove_dataset_from_ckan(self.portal_url, self.apikey, filter_in=filter_in)
+        remove_datasets_from_ckan(self.portal_url, self.apikey, filter_in=filter_in)
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data1_1' not in package_list)
 
     @CKAN_VCR.use_cassette()
     def test_remove_dataset_by_title(self):
         filter_in = {'dataset': {'title': 'data3_3'}}
-        remove_dataset_from_ckan(self.portal_url, self.apikey, filter_in=filter_in)
+        remove_datasets_from_ckan(self.portal_url, self.apikey, filter_in=filter_in)
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data3_3' not in package_list)
 
     @CKAN_VCR.use_cassette()
     def test_remove_dataset_by_organization(self):
-        remove_dataset_from_ckan(self.portal_url, self.apikey, organization='org-2')
+        remove_datasets_from_ckan(self.portal_url, self.apikey, organization='org-2')
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data2_1' not in package_list)
         self.assertTrue('data2_2' not in package_list)
@@ -171,14 +171,14 @@ class RemoveTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_remove_dataset_by_publisher_and_organization(self):
         filter_in = {'dataset': {'publisher': {'name': 'author_b', 'mbox': None}}}
-        remove_dataset_from_ckan(self.portal_url, self.apikey, filter_in=filter_in, organization='org-3')
+        remove_datasets_from_ckan(self.portal_url, self.apikey, filter_in=filter_in, organization='org-3')
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data3_2' not in package_list)
 
     @CKAN_VCR.use_cassette()
     def test_remove_dataset_by_filter_out(self):
         filter_out = {'dataset': {'publisher': {'name': 'author_b', 'mbox': None}}}
-        remove_dataset_from_ckan(self.portal_url, self.apikey, filter_out=filter_out)
+        remove_datasets_from_ckan(self.portal_url, self.apikey, filter_out=filter_out)
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data2_2' in package_list)
         self.assertTrue('data3_2' in package_list)
@@ -188,7 +188,7 @@ class RemoveTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_remove_dataset_by_filter_out_and_organization(self):
         filter_out = {'dataset': {'publisher': {'name': 'author_b', 'mbox': None}}}
-        remove_dataset_from_ckan(self.portal_url, self.apikey, filter_out=filter_out, organization='org-3')
+        remove_datasets_from_ckan(self.portal_url, self.apikey, filter_out=filter_out, organization='org-3')
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data3_1' not in package_list)
         self.assertTrue('data3_3' not in package_list)
@@ -198,7 +198,7 @@ class RemoveTestCase(unittest.TestCase):
         filter_in = {'dataset': {'identifier': '4.4'}}
         package_list_pre = self.ckan_portal.call_action('package_list')
 
-        remove_dataset_from_ckan(self.portal_url, self.apikey, filter_in=filter_in, organization='org-4')
+        remove_datasets_from_ckan(self.portal_url, self.apikey, filter_in=filter_in, organization='org-4')
 
         package_list_post = self.ckan_portal.call_action('package_list')
         self.assertEqual(len(package_list_pre), len(package_list_post))
@@ -207,7 +207,7 @@ class RemoveTestCase(unittest.TestCase):
     def test_with_no_parametres(self):
         package_list_pre = self.ckan_portal.call_action('package_list')
 
-        remove_dataset_from_ckan(self.portal_url, self.apikey)
+        remove_datasets_from_ckan(self.portal_url, self.apikey)
 
         package_list_post = self.ckan_portal.call_action('package_list')
         self.assertEqual(len(package_list_pre), len(package_list_post))
