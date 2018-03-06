@@ -10,6 +10,7 @@ from __future__ import with_statement
 from datetime import datetime
 import os
 import json
+import re
 
 from openpyxl import load_workbook
 from six.moves.urllib_parse import urlparse
@@ -27,22 +28,19 @@ STOP_WORDS = [
 ]
 
 
-def title_to_name(title):
+def title_to_name(title, decode=True):
     """Convierte un título en un nombre normalizado para generar urls."""
-
     # decodifica y pasa a minúsculas
-    decoded_title = unidecode(title).lower()
+    if decode:
+        title = unidecode(title)
+    title = title.lower()
 
     # remueve caracteres no permitidos
-    allowed_characters = "abcdefghijklmnopqrstuvwxyz-0123456789 "
-    filtered_title = "".join((char for char in decoded_title
-                              if char in allowed_characters))
+    filtered_title = re.sub(r'[^a-z0-9- ]+', '', title)
 
-    # remueve stop words y une palabras sólo con un "-"
-    normalized_title = "-".join(
-        [word for word in filtered_title.split()
-         if word not in STOP_WORDS]
-    )
+    # remueve stop words y espacios y une palabras sólo con un "-"
+    normalized_title = '-'.join([word for word in filtered_title.split() if word not in STOP_WORDS])
+
     return normalized_title
 
 
