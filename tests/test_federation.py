@@ -7,7 +7,7 @@ except ImportError:
     from unittest.mock import patch, MagicMock
 
 from .context import pydatajson
-from pydatajson.federation import push_dataset_to_ckan, remove_dataset_from_ckan
+from pydatajson.federation import push_dataset_to_ckan, remove_datasets_from_ckan
 from ckanapi.errors import NotFound
 
 SAMPLES_DIR = os.path.join("tests", "samples")
@@ -125,7 +125,7 @@ class RemoveDatasetTestCase(unittest.TestCase):
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_empty_search_doesnt_call_purge(self, mock_portal):
         mock_portal.return_value.call_action = MagicMock()
-        remove_dataset_from_ckan('portal', 'key')
+        remove_datasets_from_ckan('portal', 'key')
         mock_portal.return_value.call_action.assert_not_called()
 
     @patch('pydatajson.federation.get_datasets')
@@ -134,7 +134,7 @@ class RemoveDatasetTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = MagicMock()
         mock_search.return_value = ['some_id']
         filter_in = {'dataset': {'id': 'some_id'}}
-        remove_dataset_from_ckan('portal', 'key',  filter_in=filter_in)
+        remove_datasets_from_ckan('portal', 'key',  filter_in=filter_in)
         mock_portal.return_value.call_action.assert_called_with('dataset_purge', data_dict={'id': 'some_id'})
 
     @patch('pydatajson.federation.get_datasets')
@@ -143,14 +143,14 @@ class RemoveDatasetTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = MagicMock()
         mock_search.return_value = ['some_id', 'other_id']
         filter_out = {'dataset': {'id': 'some_id'}}
-        remove_dataset_from_ckan('portal', 'key', filter_out=filter_out)
+        remove_datasets_from_ckan('portal', 'key', filter_out=filter_out)
         mock_portal.return_value.call_action.assert_any_call('dataset_purge', data_dict={'id': 'other_id'})
         mock_portal.return_value.call_action.assert_any_call('dataset_purge', data_dict={'id': 'some_id'})
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_query_one_dataset(self, mock_portal):
         mock_portal.return_value.call_action = MagicMock(return_value={'count': 1, 'results': [{'id': 'some_id'}]})
-        remove_dataset_from_ckan('portal', 'key',  organization='some_org')
+        remove_datasets_from_ckan('portal', 'key',  organization='some_org')
         data_dict = {'q': 'organization:"some_org"', 'rows': 500, 'start': 0}
         mock_portal.return_value.call_action.assert_any_call('package_search', data_dict=data_dict)
         mock_portal.return_value.call_action.assert_any_call('dataset_purge', data_dict={'id': 'some_id'})
@@ -165,7 +165,7 @@ class RemoveDatasetTestCase(unittest.TestCase):
                         None, None, None
                         ]
         mock_portal.return_value.call_action = MagicMock(side_effect=side_effects)
-        remove_dataset_from_ckan('portal', 'key', organization='some_org')
+        remove_datasets_from_ckan('portal', 'key', organization='some_org')
         for start in range(0, count, 500):
             data_dict = {'q': 'organization:"some_org"', 'rows': 500, 'start': start}
             mock_portal.return_value.call_action.assert_any_call('package_search', data_dict=data_dict)
@@ -179,5 +179,5 @@ class RemoveDatasetTestCase(unittest.TestCase):
         org_results = [{'id': 'id_2'}, {'id': 'id_3'}]
         mock_search.return_value = filter_results
         mock_portal.return_value.call_action = MagicMock(return_value={'count': 2, 'results': org_results})
-        remove_dataset_from_ckan('portal', 'key', only_time_series=True, organization='some_org')
+        remove_datasets_from_ckan('portal', 'key', only_time_series=True, organization='some_org')
         mock_portal.return_value.call_action.assert_called_with('dataset_purge', data_dict={'id': 'id_2'})
