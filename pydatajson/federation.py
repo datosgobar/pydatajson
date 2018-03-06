@@ -52,16 +52,23 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
             package['tags'].append({'name': label})
 
     try:
-        pushed_package = ckan_portal.call_action('package_update', data_dict=package)
+        pushed_package = ckan_portal.call_action(
+            'package_update', data_dict=package)
     except NotFound:
-        pushed_package = ckan_portal.call_action('package_create', data_dict=package)
+        pushed_package = ckan_portal.call_action(
+            'package_create', data_dict=package)
 
     ckan_portal.close()
     return pushed_package['id']
 
 
-def remove_dataset_from_ckan(portal_url, apikey, filter_in=None, filter_out=None,
-                             only_time_series=False, organization=None):
+def remove_dataset_from_ckan(identifier, portal_url, apikey):
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    ckan_portal.call_action('dataset_purge', data_dict={'id': identifier})
+
+
+def remove_datasets_from_ckan(portal_url, apikey, filter_in=None, filter_out=None,
+                              only_time_series=False, organization=None):
     """Borra un dataset en el portal pasado por parámetro.
 
             Args:
@@ -78,17 +85,20 @@ def remove_dataset_from_ckan(portal_url, apikey, filter_in=None, filter_out=None
     identifiers = []
     datajson_filters = filter_in or filter_out or only_time_series
     if datajson_filters:
-        identifiers += get_datasets(portal_url+'/data.json', filter_in=filter_in, filter_out=filter_out,
+        identifiers += get_datasets(portal_url + '/data.json', filter_in=filter_in, filter_out=filter_out,
                                     only_time_series=only_time_series, meta_field='identifier')
     if organization:
-        query = 'organization:"'+organization+'"'
-        search_result = ckan_portal.call_action('package_search', data_dict={'q': query, 'rows': 500, 'start': 0})
-        org_identifiers = [dataset['id'] for dataset in search_result['results']]
+        query = 'organization:"' + organization + '"'
+        search_result = ckan_portal.call_action('package_search', data_dict={
+                                                'q': query, 'rows': 500, 'start': 0})
+        org_identifiers = [dataset['id']
+                           for dataset in search_result['results']]
         start = 500
         while search_result['count'] > start:
             search_result = ckan_portal.call_action('package_search',
                                                     data_dict={'q': query, 'rows': 500, 'start': start})
-            org_identifiers += [dataset['id'] for dataset in search_result['results']]
+            org_identifiers += [dataset['id']
+                                for dataset in search_result['results']]
             start += 500
 
         if datajson_filters:
