@@ -20,7 +20,7 @@ def map_dataset_to_package(dataset, catalog_id):
     package['extras'] = []
 #   Obligatorios
     package['id'] = catalog_id+'_'+dataset['identifier']
-    package['name'] = title_to_name(dataset['title'])
+    package['name'] = title_to_name(dataset['title'], decode=False)
     package['title'] = dataset['title']
     package['private'] = False
     package['notes'] = dataset['description']
@@ -33,7 +33,7 @@ def map_dataset_to_package(dataset, catalog_id):
     package['resources'] = map_distributions_to_resources(distributions, catalog_id)
 
     super_themes = dataset['superTheme']
-    package['groups'] = [{'name': title_to_name(super_theme)} for super_theme in super_themes]
+    package['groups'] = [{'name': title_to_name(super_theme, decode=False)} for super_theme in super_themes]
     append_attribute_to_extra(package, dataset, 'superTheme', overriding_name='super_theme', serialize=True)
 
 #   Recomendados y opcionales
