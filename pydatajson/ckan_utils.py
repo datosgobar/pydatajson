@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-import re
 from datetime import time
 from dateutil import parser, tz
+from .helpers import title_to_name
 
 
 def append_attribute_to_extra(package, dataset, attribute, overriding_name=None, serialize=False):
     value = dataset.get(attribute)
-    overriding_name = overriding_name or attribute
+    key = overriding_name or attribute
     if value:
         if serialize:
             value = json.dumps(value)
-        package['extras'].append({'key': overriding_name, 'value': value})
+        package['extras'].append({'key': key, 'value': value})
 
 
 def map_dataset_to_package(dataset, catalog_id):
@@ -20,7 +20,7 @@ def map_dataset_to_package(dataset, catalog_id):
     package['extras'] = []
 #   Obligatorios
     package['id'] = catalog_id+'_'+dataset['identifier']
-    package['name'] = re.sub(r'[^a-z-_]+', '', dataset['title'].lower())
+    package['name'] = title_to_name(dataset['title'])
     package['title'] = dataset['title']
     package['private'] = False
     package['notes'] = dataset['description']
@@ -33,7 +33,7 @@ def map_dataset_to_package(dataset, catalog_id):
     package['resources'] = map_distributions_to_resources(distributions, catalog_id)
 
     super_themes = dataset['superTheme']
-    package['groups'] = [{'name': re.sub(r'[^a-z-_]+', '', super_theme.lower())} for super_theme in super_themes]
+    package['groups'] = [{'name': title_to_name(super_theme)} for super_theme in super_themes]
     append_attribute_to_extra(package, dataset, 'superTheme', overriding_name='super_theme', serialize=True)
 
 #   Recomendados y opcionales
