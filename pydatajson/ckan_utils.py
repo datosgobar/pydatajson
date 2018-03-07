@@ -6,13 +6,12 @@ from dateutil import parser, tz
 from .helpers import title_to_name
 
 
-def append_attribute_to_extra(package, dataset, attribute, overriding_name=None, serialize=False):
+def append_attribute_to_extra(package, dataset, attribute, serialize=False):
     value = dataset.get(attribute)
-    key = overriding_name or attribute
     if value:
         if serialize:
             value = json.dumps(value)
-        package['extras'].append({'key': key, 'value': value})
+        package['extras'].append({'key': attribute, 'value': value})
 
 
 def map_dataset_to_package(dataset, catalog_id):
@@ -34,7 +33,7 @@ def map_dataset_to_package(dataset, catalog_id):
 
     super_themes = dataset['superTheme']
     package['groups'] = [{'name': title_to_name(super_theme, decode=False)} for super_theme in super_themes]
-    append_attribute_to_extra(package, dataset, 'superTheme', overriding_name='super_theme', serialize=True)
+    append_attribute_to_extra(package, dataset, 'superTheme', serialize=True)
 
 #   Recomendados y opcionales
     package['url'] = dataset.get('landingPage')
