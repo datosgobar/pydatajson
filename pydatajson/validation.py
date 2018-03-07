@@ -13,6 +13,11 @@ import platform
 import mimetypes
 from collections import Counter
 
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
+
 import jsonschema
 from openpyxl.styles import Alignment, Font
 
@@ -270,11 +275,13 @@ def iter_custom_errors(catalog):
             dups = _find_dups(theme_ids)
             if len(dups) > 0:
                 yield ce.ThemeIdRepeated(dups)
-        # chequea que la extensión de fileName y format sean consistentes
+        # chequea que la extensión de fileName, downloadURL y format sean consistentes
         for dataset_idx, dataset in enumerate(catalog["dataset"]):
             for distribution_idx, distribution in enumerate(dataset["distribution"]):
-                if not format_matches_extension(distribution):
-                    yield ce.FileNameExtensionError(dataset_idx, distribution_idx, distribution)
+                for attribute in ['downloadURL', 'fileName']:
+                    if not format_matches_extension(distribution, attribute):
+                        yield ce.ExtensionError(dataset_idx, distribution_idx, distribution, attribute)
+
         # chequea que no haya duplicados en los downloadURL de las distribuciones
         urls = []
         for dataset in catalog["dataset"]:
@@ -377,15 +384,23 @@ def _catalog_validation_to_list(response):
     return {"catalog": rows_catalog, "dataset": rows_dataset}
 
 
-def format_matches_extension(distribution):
-    if "fileName" in distribution and "format" in distribution:
-        fileName_extension = distribution["fileName"].split(".")[-1].lower()
+def format_matches_extension(distribution, attribute):
+    if attribute in distribution and "format" in distribution:
         if "/" in distribution['format']:
-            fileName_extension = '.' + fileName_extension
             possible_format_extensions = mimetypes.guess_all_extensions(distribution['format'])
-            if fileName_extension not in possible_format_extensions:
-                return False
         else:
-            if fileName_extension != distribution['format'].lower():
-                return False
+            possible_format_extensions = ['.' + distribution['format'].lower()]
+
+        if attribute == 'downloadURL':
+            file_name = urlparse(distribution['downloadURL']).path
+            extension = os.path.splitext(file_name)[-1].lower()
+            if not extension:
+                return True
+        else:
+            file_name = distribution['fileName']
+            extension = os.path.splitext(file_name)[-1].lower()
+
+        if extension not in possible_format_extensions:
+            return False
+
     return True

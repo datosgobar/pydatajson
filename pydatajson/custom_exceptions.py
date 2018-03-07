@@ -76,17 +76,18 @@ class DownloadURLRepetitionError(BaseValidationError):
             validator, message, validator_value, path)
 
 
-class FileNameExtensionError(BaseValidationError):
+class ExtensionError(BaseValidationError):
 
-    def __init__(self, dataset_idx, distribution_idx, distribution):
+    def __init__(self, dataset_idx, distribution_idx, distribution, attribute):
 
         validator = 'mismatchedValue'
-        message = "distribution '{}' tiene distintas extensiones: format ('{}') y fileName ('{}')".format(
+        template = "distribution '{}' tiene distintas extensiones: format ('{}') y " + attribute + " ('{}')"
+        message = template.format(
             distribution['identifier'], distribution['format'], distribution['fileName'].split('.')[-1])
-        validator_value = 'Chequea format y la extension del fileName'
+        validator_value = 'Chequea format y la extension del ' + attribute
         path = ['dataset', dataset_idx, 'distribution', distribution_idx]
 
-        super(FileNameExtensionError, self).__init__(
+        super(ExtensionError, self).__init__(
             validator, message, validator_value, path)
 
 
