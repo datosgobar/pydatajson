@@ -153,7 +153,7 @@ class DataJson(dict):
             "path": list(error.path),
             # La instancia validada es irrelevante si el error es de tipo 1
             "instance": (None if error.validator == "required" else
-            error.instance)
+                         error.instance)
         }
 
         # Identifico a qué nivel de jerarquía sucedió el error.
@@ -678,7 +678,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                     catalog["dataset"] = [
                         dataset for dataset in catalog["dataset"]
                         if (catalog_url, dataset.get("title")) in
-                           datasets_to_harvest
+                        datasets_to_harvest
                     ]
                 else:
                     catalog["dataset"] = []
@@ -858,7 +858,7 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
             "federated_datasets": indicators["datasets_federados_cant"],
             "not_federated_datasets": indicators["datasets_no_federados_cant"],
             "not_federated_datasets_pct": (
-                    100.0 - indicators["datasets_federados_pct"]),
+                100.0 - indicators["datasets_federados_pct"]),
             "not_federated_datasets_list": not_federated_datasets_list,
             "federated_removed_datasets_list": federated_removed_datasets_list,
             "federated_datasets_list": federated_datasets_list,
@@ -1046,9 +1046,32 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         else:
             return text
 
-    def make_catalogs_backup(self, catalogs=None, catalog_ids=None,
-                             local_dir="catalog", with_data=False):
-        """Realiza copia de los datos y metadatos de uno o más catálogos."""
+    def make_catalogs_backup(self, catalogs=None,
+                             local_catalogs_dir=".",
+                             copy_metadata=True, copy_data=True):
+        """Realiza copia de los datos y metadatos de uno o más catálogos.
+
+        Args:
+            catalogs (list or dict): Lista de catálogos (elementos que pueden
+                ser interpretados por DataJson como catálogos) o diccionario
+                donde las keys se interpretan como los catalog_identifier:
+                    {
+                        "modernizacion": "http://infra.datos.gob.ar/catalog/modernizacion/data.json"
+                    }
+                Cuando es una lista, los ids se toman de catalog_identifer, y
+                se ignoran los catálogos que no tengan catalog_identifier.
+                Cuando se pasa un diccionario, los keys reemplazan a los
+                catalog_identifier (estos no se leeen).
+            local_catalogs_dir (str): Directorio local en el cual se va a crear
+                la carpeta "catalog/..." con todos los catálogos.
+            copy_metadata (bool): Si es verdadero, se generan los archivos
+                data.json y catalog.xlsx.
+            copy_data (bool): Si es verdadero, se descargan todas las
+                distribuciones de todos los catálogos.
+
+        Return:
+            None
+        """
 
         # TODO: implementar función
         pass
