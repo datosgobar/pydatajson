@@ -7,7 +7,6 @@ from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound
 from .ckan_utils import map_dataset_to_package
 from .search import get_datasets
-import re
 
 
 def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifier, portal_url, apikey):
@@ -30,14 +29,6 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
     package = map_dataset_to_package(dataset, catalog_id)
     package['owner_org'] = owner_org
 
-    # Create missing groups
-    existing_groups = ckan_portal.call_action('group_list')
-    dataset_groups = [re.sub(r'[^a-z-_]+', '', group.lower())
-                      for group in dataset['superTheme']]
-    new_groups = set(dataset_groups) - set(existing_groups)
-    for new_group in new_groups:
-        ckan_portal.call_action('group_create', {'name': new_group.lower()})
-
     # Get license id
     if dataset.get('license'):
         license_list = ckan_portal.call_action('license_list')
@@ -50,6 +41,15 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
             package['license_id'] = 'notspecified'
     else:
         package['license_id'] = 'notspecified'
+
+    # Move themes to keywords
+    themes = dataset.get('theme')
+    if themes:
+        package['tags'] = package.get('tags') or []
+        theme_taxonomy = catalog.themes
+        for theme in themes:
+            label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
+            package['tags'].append({'name': label})
 
     try:
         pushed_package = ckan_portal.call_action(
