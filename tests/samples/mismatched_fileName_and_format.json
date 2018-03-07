@@ -61,7 +61,7 @@
                     "rights": "Derechos especificados en la licencia.",
                     "mediaType": "text/csv",
                     "modified": "2016-04-19T19:48:05.433640-03:00",
-                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf",
                     "field": [
                         {
                             "title": "procedimiento_id",
@@ -186,13 +186,13 @@
                     "title": "Convocatorias abiertas durante el año 2015",
                     "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
                     "byteSize": 5120,
-                    "format": "application/vnd.ms-excel",
+                    "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     "rights": "Derechos especificados en la licencia.",
                     "mediaType": "application/vnd.ms-excel",
                     "modified": "2016-04-19T19:48:05.433640-03:00",
                     "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.xlsx",
                     "issued": "2016-04-14T19:48:05.433640-03:00",
-                    "fileName": "convocatoriasabiertasduranteelao.xlsx"
+                    "fileName": "convocatoriasabiertasduranteelao.xls"
                 }
             ],
             "source": "Ministerio de modernizacion"
