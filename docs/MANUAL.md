@@ -93,8 +93,7 @@ Toma los siguientes parámetros:
   - **dataset_origin_identifier**: Identificador del dataset en el catálogo de origen.
   - **portal_url**: URL del portal de CKAN de destino.
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
-  organización pasada como parámetro y los grupos nuevos en caso de que el dataset tenga un super theme que no
-  estuviera presente anteriormente en el catálogo de destino.
+  organización pasada como parámetro.
   
   Retorna el id en el nodo de destino del dataset federado.
   

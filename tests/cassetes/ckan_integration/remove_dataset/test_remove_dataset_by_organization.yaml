@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: !!python/unicode '{"q": "organization:\"org-2\"", "start": 0, "rows": 500}'
+    body: '{"rows": 500, "start": 0, "q": "organization:\"org-2\""}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -11,45 +11,47 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/package_search
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_search",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_search",
         "success": true, "result": {"count": 2, "sort": "score desc, metadata_modified
         desc", "facets": {}, "results": [{"license_title": null, "maintainer": null,
         "relationships_as_object": [], "private": false, "maintainer_email": null,
-        "num_tags": 0, "id": "2.2", "metadata_created": "2018-02-16T18:31:05.246182",
-        "metadata_modified": "2018-02-16T18:31:05.251295", "author": "author_b", "author_email":
-        null, "state": "active", "version": null, "creator_user_id": "829bb729-5190-45f9-bdb2-36bd4e26c606",
+        "num_tags": 0, "id": "2.2", "metadata_created": "2018-03-06T17:22:32.099256",
+        "metadata_modified": "2018-03-06T17:22:32.103770", "author": "author_b", "author_email":
+        null, "state": "active", "version": null, "creator_user_id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
         "type": "dataset", "resources": [], "num_resources": 0, "tags": [], "groups":
         [], "license_id": null, "relationships_as_subject": [], "organization": {"description":
-        "", "created": "2018-02-09T13:22:45.948695", "title": "", "name": "org-2",
+        "", "created": "2018-02-23T14:33:41.673347", "title": "org-2", "name": "org-2",
         "is_organization": true, "state": "active", "image_url": "", "revision_id":
-        "c88eba5b-ada6-4093-a31c-5a90a824d0c7", "type": "organization", "id": "2",
+        "b8f9cffe-7c19-4068-89a4-e6da9bd2315a", "type": "organization", "id": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
         "approval_status": "approved"}, "name": "data2_2", "isopen": false, "url":
-        null, "notes": null, "owner_org": "2", "extras": [], "title": "data2_2", "revision_id":
-        "a8066ba4-5d1b-469f-a613-ac23d8c035df"}, {"license_title": null, "maintainer":
-        null, "relationships_as_object": [], "private": false, "maintainer_email":
-        null, "num_tags": 0, "id": "2.1", "metadata_created": "2018-02-16T18:31:04.679264",
-        "metadata_modified": "2018-02-16T18:31:04.684256", "author": "author_a", "author_email":
-        null, "state": "active", "version": null, "creator_user_id": "829bb729-5190-45f9-bdb2-36bd4e26c606",
-        "type": "dataset", "resources": [], "num_resources": 0, "tags": [], "groups":
-        [], "license_id": null, "relationships_as_subject": [], "organization": {"description":
-        "", "created": "2018-02-09T13:22:45.948695", "title": "", "name": "org-2",
+        null, "notes": null, "owner_org": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
+        "extras": [], "title": "data2_2", "revision_id": "94256396-a71b-4208-bdad-caeb64f22ece"},
+        {"license_title": null, "maintainer": null, "relationships_as_object": [],
+        "private": false, "maintainer_email": null, "num_tags": 0, "id": "2.1", "metadata_created":
+        "2018-03-06T17:22:31.433265", "metadata_modified": "2018-03-06T17:22:31.438262",
+        "author": "author_a", "author_email": null, "state": "active", "version":
+        null, "creator_user_id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8", "type": "dataset",
+        "resources": [], "num_resources": 0, "tags": [], "groups": [], "license_id":
+        null, "relationships_as_subject": [], "organization": {"description": "",
+        "created": "2018-02-23T14:33:41.673347", "title": "org-2", "name": "org-2",
         "is_organization": true, "state": "active", "image_url": "", "revision_id":
-        "c88eba5b-ada6-4093-a31c-5a90a824d0c7", "type": "organization", "id": "2",
+        "b8f9cffe-7c19-4068-89a4-e6da9bd2315a", "type": "organization", "id": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
         "approval_status": "approved"}, "name": "data2_1", "isopen": false, "url":
-        null, "notes": null, "owner_org": "2", "extras": [], "title": "data2_1", "revision_id":
-        "d3ae458d-6adf-431d-9559-df6ef0b7ea37"}], "search_facets": {}}}'}
+        null, "notes": null, "owner_org": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
+        "extras": [], "title": "data2_1", "revision_id": "2fcb2a23-7747-4fba-a2c4-87e98fb3c652"}],
+        "search_facets": {}}}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
-      content-length: ['2177']
+      content-length: ['2327']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:31:07 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:34 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.2"}'
+    body: '{"id": "2.2"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -60,20 +62,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:31:07 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:34 GMT']
       keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"id": "2.1"}'
+    body: '{"id": "2.1"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -84,20 +86,20 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/dataset_purge
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
         "success": true, "result": null}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['108']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:31:07 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:34 GMT']
       keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{}'
+    body: '{}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -108,16 +110,139 @@ interactions:
     method: POST
     uri: http://localhost:8080/api/action/package_list
   response:
-    body: {string: !!python/unicode '{"help": "http://localhost:8080/api/3/action/help_show?name=package_list",
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_list",
         "success": true, "result": ["data1_1", "data3_1", "data3_2", "data3_3"]}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['147']
       content-type: [application/json;charset=utf-8]
-      date: ['Fri, 16 Feb 2018 18:31:08 GMT']
+      date: ['Tue, 06 Mar 2018 17:22:35 GMT']
       keep-alive: ['timeout=5, max=100']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"q": "organization:\"org-2\"", "rows": 500, "start": 0}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['56']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/package_search
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_search",
+        "success": true, "result": {"count": 2, "sort": "score desc, metadata_modified
+        desc", "facets": {}, "results": [{"license_title": null, "maintainer": null,
+        "relationships_as_object": [], "private": false, "maintainer_email": null,
+        "num_tags": 0, "id": "2.2", "metadata_created": "2018-03-06T17:23:39.507306",
+        "metadata_modified": "2018-03-06T17:23:39.511952", "author": "author_b", "author_email":
+        null, "state": "active", "version": null, "creator_user_id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
+        "type": "dataset", "resources": [], "num_resources": 0, "tags": [], "groups":
+        [], "license_id": null, "relationships_as_subject": [], "organization": {"description":
+        "", "created": "2018-02-23T14:33:41.673347", "title": "org-2", "name": "org-2",
+        "is_organization": true, "state": "active", "image_url": "", "revision_id":
+        "b8f9cffe-7c19-4068-89a4-e6da9bd2315a", "type": "organization", "id": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
+        "approval_status": "approved"}, "name": "data2_2", "isopen": false, "url":
+        null, "notes": null, "owner_org": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
+        "extras": [], "title": "data2_2", "revision_id": "5364fa60-7a98-4cb4-93ef-a92f2725f5eb"},
+        {"license_title": null, "maintainer": null, "relationships_as_object": [],
+        "private": false, "maintainer_email": null, "num_tags": 0, "id": "2.1", "metadata_created":
+        "2018-03-06T17:23:38.832733", "metadata_modified": "2018-03-06T17:23:38.837197",
+        "author": "author_a", "author_email": null, "state": "active", "version":
+        null, "creator_user_id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8", "type": "dataset",
+        "resources": [], "num_resources": 0, "tags": [], "groups": [], "license_id":
+        null, "relationships_as_subject": [], "organization": {"description": "",
+        "created": "2018-02-23T14:33:41.673347", "title": "org-2", "name": "org-2",
+        "is_organization": true, "state": "active", "image_url": "", "revision_id":
+        "b8f9cffe-7c19-4068-89a4-e6da9bd2315a", "type": "organization", "id": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
+        "approval_status": "approved"}, "name": "data2_1", "isopen": false, "url":
+        null, "notes": null, "owner_org": "3055c0d7-6617-4094-ada6-e3fffc85c50d",
+        "extras": [], "title": "data2_1", "revision_id": "7e5e16d7-87f4-4617-aeb2-4257b8975ecf"}],
+        "search_facets": {}}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['2327']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:42 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.2"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:42 GMT']
+      Keep-Alive: ['timeout=5, max=99']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "2.1"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['13']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/dataset_purge
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=dataset_purge",
+        "success": true, "result": null}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['108']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:42 GMT']
+      Keep-Alive: ['timeout=5, max=98']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/package_list
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_list",
+        "success": true, "result": ["data1_1", "data3_1", "data3_2", "data3_3"]}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['147']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 06 Mar 2018 17:23:42 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
 version: 1

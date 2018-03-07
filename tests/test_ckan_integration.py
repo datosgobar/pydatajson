@@ -1,11 +1,11 @@
 import unittest
 import os
-import re
 import vcr
 from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound
-from .context import pydatajson
+from pydatajson.helpers import title_to_name
 from pydatajson.federation import push_dataset_to_ckan, remove_datasets_from_ckan
+from .context import pydatajson
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
@@ -35,10 +35,9 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def tearDown(self):
         full_dataset = self.full_catalog.datasets[0]
-        full_name = re.sub(r'[^a-z-_]+', '', full_dataset['title'].lower())
+        full_name = title_to_name(full_dataset['title'])
         justice_dataset = self.justice_catalog.datasets[0]
-        justice_name = re.sub(
-            r'[^a-z-_]+', '', justice_dataset['title'].lower())
+        justice_name = title_to_name(justice_dataset['title'])
         try:
             self.portal.call_action(
                 'dataset_purge', data_dict={'id': full_name})
@@ -55,8 +54,7 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_dataset_is_created_correctly(self):
         catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', re.sub(
-            r'[^a-z-_]+', '', catalog['title'].lower()))
+        catalog_id = catalog.get('identifier', title_to_name(catalog['title']))
         dataset = catalog.datasets[0]
         dataset_id = dataset['identifier']
         return_id = push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
@@ -66,8 +64,7 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_dataset_is_updated_correctly(self):
         catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', re.sub(
-            r'[^a-z-_]+', '', catalog['title'].lower()))
+        catalog_id = catalog.get('identifier', title_to_name(catalog['title']))
         dataset_id = catalog.datasets[0]['identifier']
         push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
                              self.portal_url, self.apikey)
@@ -80,28 +77,6 @@ class PushTestCase(unittest.TestCase):
         package = self.portal.call_action('package_show', data_dict=data_dict)
         self.assertEqual(return_id, catalog_id + '_' + dataset_id)
         self.assertEqual('updated description', package['notes'])
-
-    @CKAN_VCR.use_cassette()
-    def test_groups_are_created(self):
-        catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', re.sub(
-            r'[^a-z-_]+', '', catalog['title'].lower()))
-        dataset_id = catalog.datasets[0]['identifier']
-        super_themes = catalog.datasets[0]['superTheme']
-        super_themes = set(map(lambda x: x.lower(), super_themes))
-
-        for s_theme in super_themes:
-            try:
-                self.portal.call_action(
-                    'group_delete', data_dict={'id': s_theme})
-            except NotFound:
-                continue
-
-        push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                             self.portal_url, self.apikey)
-
-        groups = set(self.portal.call_action('group_list'))
-        self.assertTrue(super_themes.issubset(groups))
 
     @CKAN_VCR.use_cassette()
     def test_resources_swapped_correctly(self):
@@ -249,10 +224,8 @@ class RemoveTestCase(unittest.TestCase):
     def test_empty_query_result(self):
         filter_in = {'dataset': {'identifier': '4.4'}}
         package_list_pre = self.ckan_portal.call_action('package_list')
-
         remove_datasets_from_ckan(
             self.portal_url, self.apikey, filter_in=filter_in, organization='org-4')
-
         package_list_post = self.ckan_portal.call_action('package_list')
         self.assertEqual(len(package_list_pre), len(package_list_post))
 
