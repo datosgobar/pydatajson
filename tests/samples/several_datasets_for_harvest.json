@@ -1,34 +1,31 @@
 {
-    "publisher": {
-        "mbox": "datos@modernizacion.gob.ar",
-        "name": "Ministerio de Modernización"
-    },
-    "description": "Datasets para reporte pre cosecha",
-    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "title": "Cosechando Datos Argentina",
+    "description": "Datasets para reporte pre cosecha",
+    "publisher": {
+        "name": "Ministerio de Modernización",
+        "mbox": "datos@modernizacion.gob.ar"
+    },
+    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "dataset": [
         {
-            "publisher": {},
-            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
-            "superTheme": [
-                "ECON",
-                "HEAL"
-            ],
             "title": "Sistema de contrataciones electrónicas UNO",
-            "issued": "2016-04-14T19:48:05.433640-03:00",
-            "source": "Ministerio de modernizacion",
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
+            "publisher": {
+            },
+            "superTheme": [
+                "ECON", "HEAL"
+            ],
             "accrualPeriodicity": "R/P1Y",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {
                     "accessURL": "http://datos.gob.ar/dataset1.csv",
-                    "issued": "2016-04-14T19:48:05.433640-03:00",
-                    "title": "Convocatorias 2015"
+                    "title": "Convocatorias 2015",
+                    "issued": "2016-04-14T19:48:05.433640-03:00"
                 },
                 {
                     "accessURL": "http://datos.gob.ar",
-                    "downloadURL": [
-                        "http://186.33.211.253/dataset2.csv"
-                    ],
+                    "downloadURL": ["http://186.33.211.253/dataset2.csv"],
                     "title": "Convocatorias 2016",
                     "issued": "2016-04-14T19:48:05.433640-03:00"
                 },
@@ -47,17 +44,16 @@
             ]
         },
         {
+            "title": "Sistema de contrataciones electrónicas DOS",
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
             },
-            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "superTheme": [
                 "ECON"
             ],
-            "title": "Sistema de contrataciones electrónicas DOS",
-            "issued": "2016-04-14T19:48:05.433640-03:00",
-            "source": "Ministerio de modernizacion",
             "accrualPeriodicity": "R/P1Y",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {
                     "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
@@ -68,17 +64,16 @@
             ]
         },
         {
+            "title": "Sistema de contrataciones electrónicas TRES",
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
             },
-            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "superTheme": [
                 "ECON"
             ],
-            "title": "Sistema de contrataciones electrónicas TRES",
-            "issued": "2016-04-14T19:48:05.433640-03:00",
-            "source": "Ministerio de modernizacion",
             "accrualPeriodicity": "R/P1Y",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
             "distribution": [
                 {
                     "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
@@ -88,7 +83,5 @@
                 }
             ]
         }
-    ],
-    "version": "1.1",
-    "identifier": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8"
+    ]
 }

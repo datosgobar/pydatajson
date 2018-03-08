@@ -31,16 +31,6 @@
          },
         "modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
         "rights": { "$ref": "mixed-types.json#stringOrNull" },
-        "fileName": {
-          "allOf":[
-              { "$ref": "mixed-types.json#stringOrNull" },
-              { "anyOf": [
-                  { "not": { "type": "string" } },
-                  { "pattern": "^[0-9a-zA-Z-._]+$" }
-                ]
-              }
-          ]
-        },
         "field": {
             "type": "array",
             "items": { "$ref": "field.json" }
