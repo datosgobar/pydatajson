@@ -61,7 +61,8 @@ TEST_FROM_RESULT_FILE = {
     'invalid_field_description_type': None,
     # La clave requerida catalog["description"] NO puede ser str vacía
     'empty_optional_string': None,
-
+    # El format y extension de fileName de las distribuciones deben coincidir si estan los campos presentes
+    'mismatched_fileName_and_format': None,
 }
 
 TEST_FROM_GENERATED_RESULT = {

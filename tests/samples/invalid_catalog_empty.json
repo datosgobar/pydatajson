@@ -3,11 +3,9 @@
         "mbox": "",
         "name": ""
     },
-    "identifier": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
     "description": "Describí el portal. Explicá de qué se trata tu catálogo de datos. Por favor, hacelo en no más de tres líneas.",
     "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "title": "Ministerio de Desarrollos Social",
     "dataset": [],
-    "version": "1.1",
     "themeTaxonomy": []
 }

@@ -1,52 +1,50 @@
 {
-    "publisher": {
-        "mbox": "datos@modernizacion.gob.ar",
-        "name": "Ministerio de Modernización"
-    },
-    "license": "Open Data Commons Open Database License 1.0",
+    "title": "Datos Argentina",
     "description": "Portal de Datos Abiertos del Gobierno de la República Argentina",
+    "publisher": {
+        "name": "Ministerio de Modernización",
+        "mbox": "datos@modernizacion.gob.ar"
+    },
+    "issued": "2016-04-14T19:48:05.433640-03:00",
+    "modified": "2016-04-19T19:48:05.433640-03:00",
     "language": [
         "spa"
     ],
-    "title": "Datos Argentina",
-    "issued": "2016-04-14T19:48:05.433640-03:00",
-    "rights": "Derechos especificados en la licencia.",
-    "modified": "2016-04-19T19:48:05.433640-03:00",
+    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "themeTaxonomy": [
         {
+            "id": "convocatorias",
             "label": "Convocatorias",
-            "description": "Datasets sobre licitaciones en estado de convocatoria.",
-            "id": "convocatorias"
+            "description": "Datasets sobre licitaciones en estado de convocatoria."
         },
         {
+            "id": "compras",
             "label": "Compras",
-            "description": "Datasets sobre compras realizadas.",
-            "id": "compras"
+            "description": "Datasets sobre compras realizadas."
         },
         {
+            "id": "contrataciones",
             "label": "Contrataciones",
-            "description": "Datasets sobre contrataciones.",
-            "id": "contrataciones"
+            "description": "Datasets sobre contrataciones."
         },
         {
+            "id": "adjudicaciones",
             "label": "Adjudicaciones",
-            "description": "Datasets sobre licitaciones adjudicadas.",
-            "id": "adjudicaciones"
+            "description": "Datasets sobre licitaciones adjudicadas."
         },
         {
+            "id": "normativa",
             "label": "Normativa",
-            "description": "Datasets sobre normativa para compras y contrataciones.",
-            "id": "normativa"
+            "description": "Datasets sobre normativa para compras y contrataciones."
         },
         {
+            "id": "proveedores",
             "label": "Proveedores",
-            "description": "Datasets sobre proveedores del Estado.",
-            "id": "proveedores"
+            "description": "Datasets sobre proveedores del Estado."
         }
     ],
-    "version": "1.1",
-    "spatial": "ARG",
-    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
-    "identifier": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
-    "homepage": "http://datos.gob.ar"
+    "license": "Open Data Commons Open Database License 1.0",
+    "homepage": "http://datos.gob.ar",
+    "rights": "Derechos especificados en la licencia.",
+    "spatial": "ARG"
 }

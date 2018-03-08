@@ -1,13 +1,10 @@
 {
     "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
-    "identifier": "d_7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
     "rights": "Derechos especificados en la licencia.",
     "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
     "license": "Open Data Commons Open Database License 1.0",
-    "fileName": "convocatoriasabiertasduranteelao.pdf",
     "title": "Convocatorias abiertas durante el año 2015",
     "byteSize": 5120,
-    "fileName": "convocatoriasabiertasduranteelao.pdf",
     "format": "PDF",
     "mediaType": "application/pdf",
     "modified": "2016-04-19T19:48:05.433640-03:00",
