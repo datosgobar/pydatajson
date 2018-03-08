@@ -1,0 +1,254 @@
+{
+    "publisher": {
+        "mbox": "datos@modernizacion.gob.ar",
+        "name": "Ministerio de Modernización"
+    },
+    "license": "Open Data Commons Open Database License 1.0",
+    "description": "Portal de Datos Abiertos del Gobierno de la República Argentina",
+    "language": [
+        "spa"
+    ],
+    "title": "Datos Argentina",
+    "issued": "2016-04-14T19:48:05.433640-03:00",
+    "rights": "Derechos especificados en la licencia.",
+    "modified": "2016-04-19T19:48:05.433640-03:00",
+    "dataset": [
+        {
+            "publisher": {
+                "mbox": "onc@modernizacion.gob.ar",
+                "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
+            },
+            "license": "Open Data Commons Open Database License 1.0",
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
+            "superTheme": [
+                "econ"
+            ],
+            "title": "Sistema de contrataciones electrónicas",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
+            "temporal": "2015-01-01/2015-12-31",
+            "modified": "2016-04-19T19:48:05.433640-03:00",
+            "language": [
+                "spa"
+            ],
+            "theme": [
+                "contrataciones",
+                "compras",
+                "convocatorias"
+            ],
+            "keyword": [
+                "bienes",
+                "compras",
+                "contrataciones"
+            ],
+            "accrualPeriodicity": "R/P1Y",
+            "spatial": "ARG",
+            "identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
+            "contactPoint": {
+                "hasEmail": "onc-compraselectronicas@modernizacion.gob.ar",
+                "fn": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones. Dirección de Compras Electrónicas."
+            },
+            "landingPage": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+            "distribution": [
+                {
+                    "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+                    "identifier": "1.1",
+                    "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                    "license": "Open Data Commons Open Database License 1.0",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
+                    "byteSize": 5120,
+                    "format": "text/csv",
+                    "rights": "Derechos especificados en la licencia.",
+                    "mediaType": "text/csv",
+                    "modified": "2016-04-19T19:48:05.433640-03:00",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf",
+                    "field": [
+                        {
+                            "title": "procedimiento_id",
+                            "type": "integer",
+                            "id": "proc12",
+                            "description": "Identificador único del procedimiento de contratación"
+                        },
+                        {
+                            "type": "integer",
+                            "description": "Identificador único del organismo que realiza la convocatoria. Organismo de máximo nivel jerárquico al que pertenece la unidad operativa de contrataciones.",
+                            "title": "organismo_unidad_operativa_contrataciones_id"
+                        },
+                        {
+                            "type": "integer",
+                            "description": "Identificador único de la unidad operativa de contrataciones",
+                            "title": "unidad_operativa_contrataciones_id"
+                        },
+                        {
+                            "type": "string",
+                            "description": "Organismo que realiza la convocatoria. Organismo de máximo nivel jerárquico al que pertenece la unidad operativa de contrataciones.",
+                            "title": "organismo_unidad_operativa_contrataciones_desc"
+                        },
+                        {
+                            "type": "string",
+                            "description": "Unidad operativa de contrataciones.",
+                            "title": "unidad_operativa_contrataciones_desc"
+                        },
+                        {
+                            "type": "string",
+                            "description": "Tipo de procedimiento al que se adecua la contratación.",
+                            "title": "tipo_procedimiento_contratacion"
+                        },
+                        {
+                            "type": "date",
+                            "description": "Año en el que se inició el proceso de la convocatoria.",
+                            "title": "ejercicio_procedimiento_anio"
+                        },
+                        {
+                            "type": "date",
+                            "description": "Fecha de publicación de la convocatoria en formato AAAA-MM-DD, ISO 8601.",
+                            "title": "fecha_publicacion_convocatoria"
+                        },
+                        {
+                            "type": "string",
+                            "description": "Modalidad bajo la cual se realiza la convocatoria.",
+                            "title": "modalidad_convocatoria"
+                        },
+                        {
+                            "type": "string",
+                            "description": "Clase de la convocatoria.",
+                            "title": "clase_convocatoria"
+                        },
+                        {
+                            "type": "string",
+                            "description": "Objeto/objetivo de la convocatoria",
+                            "title": "objeto_convocatoria"
+                        }
+                    ],
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "fileName": "convocatoriasabiertasduranteelao.csv"
+                }
+            ],
+            "source": "Ministerio de modernizacion"
+        },
+        {
+            "publisher": {
+                "mbox": "onc@modernizacion.gob.ar",
+                "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
+            },
+            "license": "Open Data Commons Open Database License 1.0",
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra) (sin datos)",
+            "superTheme": [
+                "ECON"
+            ],
+            "title": "Sistema de contrataciones electrónicas (sin datos)",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
+            "temporal": "2015-01-01/2015-12-31",
+            "modified": "2016-04-19T19:48:05.433640-03:00",
+            "language": [
+                "spa"
+            ],
+            "theme": [
+                "contrataciones",
+                "compras",
+                "convocatorias"
+            ],
+            "keyword": [
+                "bienes",
+                "compras",
+                "contrataciones"
+            ],
+            "accrualPeriodicity": "R/P1Y",
+            "spatial": "ARG",
+            "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+            "contactPoint": {
+                "hasEmail": "onc-compraselectronicas@modernizacion.gob.ar",
+                "fn": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones. Dirección de Compras Electrónicas."
+            },
+            "landingPage": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+            "distribution": [
+                {
+                    "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+                    "identifier": "d_7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
+                    "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                    "license": "Open Data Commons Open Database License 1.0",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                    "byteSize": 5120,
+                    "format": "application/vnd.ms-excel",
+                    "rights": "Derechos especificados en la licencia.",
+                    "mediaType": "application/vnd.ms-excel",
+                    "modified": "2016-04-19T19:48:05.433640-03:00",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.xls",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "fileName": "convocatoriasabiertasduranteelao.xls"
+                },
+                {
+                    "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8b",
+                    "identifier": "d_7d4d816f-3a40-476e-ab71-d48a3f0eb3c9",
+                    "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                    "license": "Open Data Commons Open Database License 1.0",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                    "byteSize": 5120,
+                    "format": "application/vnd.ms-excel",
+                    "rights": "Derechos especificados en la licencia.",
+                    "mediaType": "application/vnd.ms-excel",
+                    "modified": "2016-04-19T19:48:05.433640-03:00",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.xlsx",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "fileName": "convocatoriasabiertasduranteelao.xls"
+                },
+                {
+                    "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8c",
+                    "identifier": "d_7d4d816f-3a40-476e-ab71-d48a3f0eb3ca",
+                    "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                    "license": "Open Data Commons Open Database License 1.0",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                    "byteSize": 5120,
+                    "format": "CSV",
+                    "rights": "Derechos especificados en la licencia.",
+                    "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "modified": "2016-04-19T19:48:05.433640-03:00",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/archivo.separado.con.puntos",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "fileName": "convocatoriasabiertasduranteelao.xls"
+                }
+            ],
+            "source": "Ministerio de modernizacion"
+        }
+    ],
+    "identifier": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
+    "version": "1.1",
+    "spatial": "ARG",
+    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
+    "themeTaxonomy": [
+        {
+            "label": "Convocatorias",
+            "description": "Datasets sobre licitaciones en estado de convocatoria.",
+            "id": "convocatorias"
+        },
+        {
+            "label": "Compras",
+            "description": "Datasets sobre compras realizadas.",
+            "id": "compras"
+        },
+        {
+            "label": "Contrataciones",
+            "description": "Datasets sobre contrataciones.",
+            "id": "contrataciones"
+        },
+        {
+            "label": "Adjudicaciones",
+            "description": "Datasets sobre licitaciones adjudicadas.",
+            "id": "adjudicaciones"
+        },
+        {
+            "label": "Normativa",
+            "description": "Datasets sobre normativa para compras y contrataciones.",
+            "id": "normativa"
+        },
+        {
+            "label": "Proveedores",
+            "description": "Datasets sobre proveedores del Estado.",
+            "id": "proveedores"
+        }
+    ],
+    "homepage": "http://datos.gob.ar"
+}
