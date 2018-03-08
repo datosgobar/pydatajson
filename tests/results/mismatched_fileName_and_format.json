@@ -21,7 +21,7 @@
                             "distribution", 
                             0
                         ], 
-                        "message": "distribution '1.1' tiene distintas extensiones: format ('PDF') y fileName ('csv')", 
+                        "message": "distribution '1.1' tiene distintas extensiones: format ('PDF') y fileName ('.csv')",
                         "error_code": 2, 
                         "validator_value": "Chequea format y la extension del fileName"
                     }
@@ -42,7 +42,7 @@
                             "distribution", 
                             1
                         ], 
-                        "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3c9' tiene distintas extensiones: format ('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') y fileName ('xls')", 
+                        "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3c9' tiene distintas extensiones: format ('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') y fileName ('.xls')",
                         "error_code": 2, 
                         "validator_value": "Chequea format y la extension del fileName"
                     }
