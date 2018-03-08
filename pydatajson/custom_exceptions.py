@@ -7,6 +7,10 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 import os
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 
 class BaseValidationError(object):
@@ -82,8 +86,9 @@ class ExtensionError(BaseValidationError):
 
         validator = 'mismatchedValue'
         template = "distribution '{}' tiene distintas extensiones: format ('{}') y " + attribute + " ('{}')"
+        extension = os.path.splitext(urlparse(distribution[attribute]).path)[-1].lower()
         message = template.format(
-            distribution['identifier'], distribution['format'], distribution['fileName'].split('.')[-1])
+            distribution['identifier'], distribution['format'], extension)
         validator_value = 'Chequea format y la extension del ' + attribute
         path = ['dataset', dataset_idx, 'distribution', distribution_idx]
 

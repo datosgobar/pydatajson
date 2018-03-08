@@ -391,14 +391,11 @@ def format_matches_extension(distribution, attribute):
         else:
             possible_format_extensions = ['.' + distribution['format'].lower()]
 
-        if attribute == 'downloadURL':
-            file_name = urlparse(distribution['downloadURL']).path
-            extension = os.path.splitext(file_name)[-1].lower()
-            if not extension:
-                return True
-        else:
-            file_name = distribution['fileName']
-            extension = os.path.splitext(file_name)[-1].lower()
+        file_name = urlparse(distribution[attribute]).path
+        extension = os.path.splitext(file_name)[-1].lower()
+
+        if attribute == 'downloadURL' and not extension:
+            return True
 
         if extension not in possible_format_extensions:
             return False
