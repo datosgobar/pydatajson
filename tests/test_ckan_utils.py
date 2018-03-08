@@ -1,11 +1,10 @@
 import unittest
 import os
-import re
 import json
 from dateutil import parser, tz
 from .context import pydatajson
 from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources, convert_iso_string_to_utc
-
+from pydatajson.helpers import title_to_name
 SAMPLES_DIR = os.path.join("tests", "samples")
 
 
@@ -18,7 +17,7 @@ class DatasetConversionTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
-        cls.catalog_id = cls.catalog.get('identifier', re.sub(r'[^a-z-_]+', '', cls.catalog['title'].lower()))
+        cls.catalog_id = cls.catalog.get('identifier', title_to_name(cls.catalog['title']))
         cls.dataset = cls.catalog.datasets[0]
         cls.dataset_id = cls.dataset.get('identifier')
         cls.distributions = cls.dataset['distribution']
@@ -46,18 +45,18 @@ class DatasetConversionTestCase(unittest.TestCase):
     def test_dataset_array_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id)
         groups = [group['name'] for group in package.get('groups', [])]
-        super_themes = [re.sub(r'[^a-z-_]+', '', s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
+        super_themes = [title_to_name(s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
         try:
             self.assertItemsEqual(super_themes, groups)
         except AttributeError:
             self.assertCountEqual(super_themes, groups)
 
         tags = [tag['name'] for tag in package['tags']]
-        themes_and_keywords = self.dataset.get('theme', []) + self.dataset.get('keyword', [])
+        keywords = self.dataset.get('keyword', [])
         try:
-            self.assertItemsEqual(themes_and_keywords, tags)
+            self.assertItemsEqual(keywords, tags)
         except AttributeError:
-            self.assertCountEqual(themes_and_keywords, tags)
+            self.assertCountEqual(keywords, tags)
 
     def test_dataset_extra_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id)
