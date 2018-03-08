@@ -10,7 +10,6 @@ from __future__ import unicode_literals, print_function, with_statement, absolut
 
 import os
 import platform
-import mimetypes
 from collections import Counter
 
 import jsonschema
@@ -271,10 +270,17 @@ def iter_custom_errors(catalog):
             if len(dups) > 0:
                 yield ce.ThemeIdRepeated(dups)
         # chequea que la extensión de fileName y format sean consistentes
-        for dataset_idx, dataset in enumerate(catalog["dataset"]):
-            for distribution_idx, distribution in enumerate(dataset["distribution"]):
-                if not format_matches_extension(distribution):
-                    yield ce.FileNameExtensionError(dataset_idx, distribution_idx, distribution)
+        for dataset in catalog["dataset"]:
+            for distribution in dataset:
+                if "fileName" in distribution and "format" in distribution:
+                    format_extension = distribution[
+                        "format"].split("/")[-1].lower()
+                    fileName_extension = distribution[
+                        "extension"].split(".")[-1].lower()
+                    if format_extension != fileName_extension:
+                        yield ce.FileNameExtensionError(
+                            distribution["identifier"], format_extension,
+                            fileName_extension)
         # chequea que no haya duplicados en los downloadURL de las distribuciones
         urls = []
         for dataset in catalog["dataset"]:
@@ -375,17 +381,3 @@ def _catalog_validation_to_list(response):
             rows_dataset.append(validation_result)
 
     return {"catalog": rows_catalog, "dataset": rows_dataset}
-
-
-def format_matches_extension(distribution):
-    if "fileName" in distribution and "format" in distribution:
-        fileName_extension = distribution["fileName"].split(".")[-1].lower()
-        if "/" in distribution['format']:
-            fileName_extension = '.' + fileName_extension
-            possible_format_extensions = mimetypes.guess_all_extensions(distribution['format'])
-            if fileName_extension not in possible_format_extensions:
-                return False
-        else:
-            if fileName_extension != distribution['format'].lower():
-                return False
-    return True

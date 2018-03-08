@@ -1,5 +1,29 @@
 interactions:
 - request:
+    body: '{"id": "econ"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['14']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/group_delete
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_delete",
+        "success": true, "result": null}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['107']
+      content-type: [application/json;charset=utf-8]
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
+      keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
     body: '{}'
     headers:
       Accept: ['*/*']
@@ -12,14 +36,48 @@ interactions:
     uri: http://localhost:8080/api/action/group_list
   response:
     body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_list",
-        "success": true, "result": ["econ", "just"]}'}
+        "success": true, "result": ["just"]}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
-      content-length: ['117']
+      content-length: ['109']
       content-type: [application/json;charset=utf-8]
-      date: ['Mon, 26 Feb 2018 20:00:38 GMT']
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
       keep-alive: ['timeout=5, max=100']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"name": "econ"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['16']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/group_create
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_create",
+        "success": true, "result": {"users": [{"email_hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "about": null, "capacity": "admin", "name": "admin", "created": "2018-02-23T14:31:24.316235",
+        "openid": null, "sysadmin": true, "activity_streams_email_notifications":
+        false, "state": "active", "number_of_edits": 412, "display_name": "admin",
+        "fullname": null, "id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8", "number_created_packages":
+        0}], "display_name": "econ", "description": "", "image_display_url": "", "package_count":
+        0, "created": "2018-02-26T20:00:41.616048", "name": "econ", "is_organization":
+        false, "state": "active", "extras": [], "image_url": "", "groups": [], "type":
+        "group", "title": "", "revision_id": "3ab5052d-4612-40ba-91cf-f6eb005ac17d",
+        "num_followers": 0, "id": "fe8e1b6b-656c-4273-8196-dce7291380ea", "tags":
+        [], "approval_status": "approved"}}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['932']
+      content-type: [application/json;charset=utf-8]
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
+      keep-alive: ['timeout=5, max=99']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
@@ -111,8 +169,8 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['5727']
       content-type: [application/json;charset=utf-8]
-      date: ['Mon, 26 Feb 2018 20:00:38 GMT']
-      keep-alive: ['timeout=5, max=99']
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
+      keep-alive: ['timeout=5, max=98']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
@@ -182,8 +240,8 @@ interactions:
       connection: [Keep-Alive]
       content-length: ['195']
       content-type: [application/json;charset=utf-8]
-      date: ['Mon, 26 Feb 2018 20:00:38 GMT']
-      keep-alive: ['timeout=5, max=98']
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
+      keep-alive: ['timeout=5, max=97']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
@@ -251,7 +309,7 @@ interactions:
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-26T20:00:38.567406", "metadata_modified": "2018-02-26T20:00:38.578833",
+        "metadata_created": "2018-02-26T20:00:41.709885", "metadata_modified": "2018-02-26T20:00:41.720782",
         "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
         "state": "active", "version": null, "creator_user_id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
@@ -288,7 +346,7 @@ interactions:
         "Convocatorias abiertas durante el a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640",
         "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
         "webstore_url": null, "last_modified": "2016-04-19T22:48:05.433640", "position":
-        0, "revision_id": "23a0df00-dbe7-440c-b047-d99918af2042", "resource_type":
+        0, "revision_id": "1c4c5114-d488-46d5-bb31-da9c0632daaf", "resource_type":
         null}], "num_resources": 1, "tags": [{"vocabulary_id": null, "state": "active",
         "display_name": "bienes", "id": "bb725157-9733-40b9-a761-f71946df9479", "name":
         "bienes"}, {"vocabulary_id": null, "state": "active", "display_name": "compras",
@@ -297,7 +355,7 @@ interactions:
         "name": "contrataciones"}, {"vocabulary_id": null, "state": "active", "display_name":
         "convocatorias", "id": "6a3fb177-cb1e-4f76-86f3-9b1863670e8a", "name": "convocatorias"}],
         "groups": [{"display_name": "econ", "description": "", "image_display_url":
-        "", "title": "", "id": "b20281ad-b6b1-4418-ad9d-73ad1f7c83a5", "name": "econ"}],
+        "", "title": "", "id": "fe8e1b6b-656c-4273-8196-dce7291380ea", "name": "econ"}],
         "license_id": "notspecified", "relationships_as_subject": [], "organization":
         {"description": "", "created": "2018-02-23T14:33:58.015891", "title": "oficina-de-muestra",
         "name": "oficina-de-muestra", "is_organization": true, "state": "active",
@@ -313,14 +371,14 @@ interactions:
         {"key": "source", "value": "Ministerio de modernizacion"}, {"key": "spatial",
         "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"}, {"key": "temporal",
         "value": "2015-01-01/2015-12-31"}], "title": "Sistema de contrataciones electr\u00f3nicas",
-        "revision_id": "23a0df00-dbe7-440c-b047-d99918af2042"}}'}
+        "revision_id": "1c4c5114-d488-46d5-bb31-da9c0632daaf"}}'}
     headers:
       cache-control: [no-cache]
       connection: [Keep-Alive]
       content-length: ['6005']
       content-type: [application/json;charset=utf-8]
-      date: ['Mon, 26 Feb 2018 20:00:38 GMT']
-      keep-alive: ['timeout=5, max=97']
+      date: ['Mon, 26 Feb 2018 20:00:41 GMT']
+      keep-alive: ['timeout=5, max=96']
       pragma: [no-cache]
       server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
@@ -339,12 +397,94 @@ interactions:
     body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_list",
         "success": true, "result": ["econ", "just"]}'}
     headers:
+      cache-control: [no-cache]
+      connection: [Keep-Alive]
+      content-length: ['117']
+      content-type: [application/json;charset=utf-8]
+      date: ['Mon, 26 Feb 2018 20:00:42 GMT']
+      keep-alive: ['timeout=5, max=99']
+      pragma: [no-cache]
+      server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"id": "econ"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['14']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/group_delete
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_delete",
+        "success": true, "result": null}'}
+    headers:
       Cache-Control: [no-cache]
       Connection: [Keep-Alive]
-      Content-Length: ['117']
+      Content-Length: ['107']
       Content-Type: [application/json;charset=utf-8]
-      Date: ['Mon, 26 Feb 2018 20:01:37 GMT']
+      Date: ['Mon, 26 Feb 2018 20:01:41 GMT']
       Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/group_list
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_list",
+        "success": true, "result": ["just"]}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['109']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:41 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"name": "econ"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['16']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/group_create
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_create",
+        "success": true, "result": {"users": [{"email_hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "about": null, "capacity": "admin", "name": "admin", "created": "2018-02-23T14:31:24.316235",
+        "openid": null, "sysadmin": true, "activity_streams_email_notifications":
+        false, "state": "active", "number_of_edits": 471, "display_name": "admin",
+        "fullname": null, "id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8", "number_created_packages":
+        0}], "display_name": "econ", "description": "", "image_display_url": "", "package_count":
+        0, "created": "2018-02-26T20:01:41.246995", "name": "econ", "is_organization":
+        false, "state": "active", "extras": [], "image_url": "", "groups": [], "type":
+        "group", "title": "", "revision_id": "52ba8531-6dd9-4e03-9a87-fad8b0199071",
+        "num_followers": 0, "id": "6f5f82a7-d4c9-435f-9e97-b23c02f79903", "tags":
+        [], "approval_status": "approved"}}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['932']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:41 GMT']
+      Keep-Alive: ['timeout=5, max=99']
       Pragma: [no-cache]
       Server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
@@ -436,8 +576,8 @@ interactions:
       Connection: [Keep-Alive]
       Content-Length: ['5727']
       Content-Type: [application/json;charset=utf-8]
-      Date: ['Mon, 26 Feb 2018 20:01:37 GMT']
-      Keep-Alive: ['timeout=5, max=99']
+      Date: ['Mon, 26 Feb 2018 20:01:41 GMT']
+      Keep-Alive: ['timeout=5, max=98']
       Pragma: [no-cache]
       Server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}
@@ -506,8 +646,8 @@ interactions:
       Connection: [Keep-Alive]
       Content-Length: ['195']
       Content-Type: [application/json;charset=utf-8]
-      Date: ['Mon, 26 Feb 2018 20:01:37 GMT']
-      Keep-Alive: ['timeout=5, max=98']
+      Date: ['Mon, 26 Feb 2018 20:01:41 GMT']
+      Keep-Alive: ['timeout=5, max=97']
       Pragma: [no-cache]
       Server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 404, message: Not Found}
@@ -574,7 +714,7 @@ interactions:
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
         Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
         "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 4, "id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8_99db6631-d1c9-470b-a73e-c62daa32c777",
-        "metadata_created": "2018-02-26T20:01:37.914594", "metadata_modified": "2018-02-26T20:01:37.925466",
+        "metadata_created": "2018-02-26T20:01:41.338598", "metadata_modified": "2018-02-26T20:01:41.349974",
         "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
         "state": "active", "version": null, "creator_user_id": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8",
@@ -611,7 +751,7 @@ interactions:
         "Convocatorias abiertas durante el a\u00f1o 2015", "created": "2016-04-14T22:48:05.433640",
         "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
         "webstore_url": null, "last_modified": "2016-04-19T22:48:05.433640", "position":
-        0, "revision_id": "b9f7cf61-153b-4d2d-8f6f-d8ae9ba5b60a", "resource_type":
+        0, "revision_id": "4cd95553-a016-4bab-832a-461b2c3fad72", "resource_type":
         null}], "num_resources": 1, "tags": [{"vocabulary_id": null, "state": "active",
         "display_name": "bienes", "id": "bb725157-9733-40b9-a761-f71946df9479", "name":
         "bienes"}, {"vocabulary_id": null, "state": "active", "display_name": "compras",
@@ -620,7 +760,7 @@ interactions:
         "name": "contrataciones"}, {"vocabulary_id": null, "state": "active", "display_name":
         "convocatorias", "id": "6a3fb177-cb1e-4f76-86f3-9b1863670e8a", "name": "convocatorias"}],
         "groups": [{"display_name": "econ", "description": "", "image_display_url":
-        "", "title": "", "id": "fe8e1b6b-656c-4273-8196-dce7291380ea", "name": "econ"}],
+        "", "title": "", "id": "6f5f82a7-d4c9-435f-9e97-b23c02f79903", "name": "econ"}],
         "license_id": "notspecified", "relationships_as_subject": [], "organization":
         {"description": "", "created": "2018-02-23T14:33:58.015891", "title": "oficina-de-muestra",
         "name": "oficina-de-muestra", "is_organization": true, "state": "active",
@@ -636,14 +776,38 @@ interactions:
         {"key": "source", "value": "Ministerio de modernizacion"}, {"key": "spatial",
         "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"}, {"key": "temporal",
         "value": "2015-01-01/2015-12-31"}], "title": "Sistema de contrataciones electr\u00f3nicas",
-        "revision_id": "b9f7cf61-153b-4d2d-8f6f-d8ae9ba5b60a"}}'}
+        "revision_id": "4cd95553-a016-4bab-832a-461b2c3fad72"}}'}
     headers:
       Cache-Control: [no-cache]
       Connection: [Keep-Alive]
       Content-Length: ['6005']
       Content-Type: [application/json;charset=utf-8]
-      Date: ['Mon, 26 Feb 2018 20:01:37 GMT']
-      Keep-Alive: ['timeout=5, max=97']
+      Date: ['Mon, 26 Feb 2018 20:01:41 GMT']
+      Keep-Alive: ['timeout=5, max=96']
+      Pragma: [no-cache]
+      Server: [Apache/2.4.7 (Ubuntu)]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+    method: POST
+    uri: http://localhost:8080/api/action/group_list
+  response:
+    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=group_list",
+        "success": true, "result": ["econ", "just"]}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [Keep-Alive]
+      Content-Length: ['117']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Mon, 26 Feb 2018 20:01:42 GMT']
+      Keep-Alive: ['timeout=5, max=99']
       Pragma: [no-cache]
       Server: [Apache/2.4.7 (Ubuntu)]
     status: {code: 200, message: OK}

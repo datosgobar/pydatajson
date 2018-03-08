@@ -525,7 +525,7 @@ def _count_fields_recursive(dataset, fields):
 
 
 def datasets_equal(dataset, other, fields_dataset=None,
-                   fields_distribution=None, return_diff=False):
+                   fields_distribution=None):
     """Función de igualdad de dos datasets: se consideran iguales si
     los valores de los campos 'title', 'publisher.name',
     'accrualPeriodicity' e 'issued' son iguales en ambos.
@@ -537,8 +537,6 @@ def datasets_equal(dataset, other, fields_dataset=None,
     Returns:
         bool: True si son iguales, False en caso contrario
     """
-    dataset_is_equal = True
-    dataset_diff = []
 
     # Campos a comparar. Si es un campo anidado escribirlo como lista
     if not fields_dataset:
@@ -556,21 +554,14 @@ def datasets_equal(dataset, other, fields_dataset=None,
             other_value = other.get(field_dataset)
 
         if value != other_value:
-            dataset_diff.append({
-                "error_location": field_dataset,
-                "dataset_value": value,
-                "other_value": other_value
-            })
-            dataset_is_equal = False
+            return False
 
     if fields_distribution:
         dataset_distributions = dataset.get("distribution")
         other_distributions = other.get("distribution")
 
         if len(dataset_distributions) != len(other_distributions):
-            print("{} distribuciones en origen y {} en destino".format(
-                len(dataset_distributions), len(other_distributions)))
-            dataset_is_equal = False
+            return False
 
         distributions_equal = True
         for dataset_distribution, other_distribution in zip(
@@ -587,23 +578,16 @@ def datasets_equal(dataset, other, fields_dataset=None,
                     other_value = other_distribution.get(field_distribution)
 
                 if value != other_value:
-                    dataset_diff.append({
-                        "error_location": "{} ({})".format(
-                            field_distribution,
-                            dataset_distribution.get("title")
-                        ),
-                        "dataset_value": value,
-                        "other_value": other_value
-                    })
+                    print("{} ({}) es distinto de \n{} ({})".format(
+                        value, dataset_distribution.get("title"),
+                        other_value, other_distribution.get("title")
+                    ))
                     distributions_equal = False
 
         if not distributions_equal:
-            dataset_is_equal = False
+            return False
 
-    if return_diff:
-        return dataset_diff
-    else:
-        return dataset_is_equal
+    return True
 
 
 def _filter_by_likely_publisher(central_datasets, catalog_datasets):

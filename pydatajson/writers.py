@@ -416,8 +416,6 @@ def _generate_field_table(catalog):
             field, "field", ["dataset", "distribution"])
         tab_field["dataset_title"] = catalog.get_dataset(
             tab_field["dataset_identifier"]).get("title")
-        tab_field["distribution_title"] = catalog.get_distribution(
-            tab_field["distribution_identifier"]).get("title")
         fields.append(tab_field)
 
         # agrega todas las keys nuevas que no estén trackeadas

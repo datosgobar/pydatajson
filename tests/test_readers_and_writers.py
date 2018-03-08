@@ -158,19 +158,6 @@ revíselo manualmente""".format(temp_filename)
 
         self.assertDictEqual(actual_catalog, expected_catalog)
 
-    def test_read_written_xlsx_catalog(self):
-        """read_catalog puede leer XLSX creado por write_xlsx_catalog"""
-        original_catalog = pydatajson.DataJson(
-            os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json"))
-
-        tmp_xlsx = os.path.join(self.TEMP_DIR, "xlsx_catalog.xlsx")
-        pydatajson.writers.write_xlsx_catalog(original_catalog, tmp_xlsx)
-
-        try:
-            pydatajson.readers.read_xlsx_catalog(tmp_xlsx)
-        except:
-            self.fail("No se pudo leer archivo XLSX")
-
     def test_read_local_xlsx_catalog_with_defaults(self):
         """read_catalog puede leer con valores default."""
         expected_catalog = pydatajson.readers.read_catalog(

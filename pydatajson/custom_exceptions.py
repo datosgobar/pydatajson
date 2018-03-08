@@ -76,20 +76,6 @@ class DownloadURLRepetitionError(BaseValidationError):
             validator, message, validator_value, path)
 
 
-class FileNameExtensionError(BaseValidationError):
-
-    def __init__(self, dataset_idx, distribution_idx, distribution):
-
-        validator = 'mismatchedValue'
-        message = "distribution '{}' tiene distintas extensiones: format ('{}') y fileName ('{}')".format(
-            distribution['identifier'], distribution['format'], distribution['fileName'].split('.')[-1])
-        validator_value = 'Chequea format y la extension del fileName'
-        path = ['dataset', dataset_idx, 'distribution', distribution_idx]
-
-        super(FileNameExtensionError, self).__init__(
-            validator, message, validator_value, path)
-
-
 class BaseUnexpectedValue(ValueError):
 
     """El id de una entidad está repetido en el catálogo."""
@@ -325,3 +311,12 @@ class ThemeTaxonomyNonExistentError(Exception):
     def __init__(self, dataset_id):
         msg = "Catalogo no tiene themeTaxonomy"
         super(ThemeTaxonomyNonExistentError, self).__init__(msg)
+
+
+class FileNameExtensionError(Exception):
+
+    def __init__(self, distribution_id, format_extension, fileName_extension):
+        tmpl = "distribution '{}' tiene distintas extensiones: format ('{}') y fileName ('{}')"
+        msg = tmpl.format(distribution_id, format_extension,
+                          fileName_extension)
+        super(FileNameExtensionError, self).__init__(msg)
