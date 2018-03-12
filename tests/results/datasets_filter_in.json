@@ -27,6 +27,7 @@
             "contrataciones"
         ],
         "accrualPeriodicity": "R/P1Y",
+        "source": "Ministerio de modernizacion",
         "spatial": "ARG",
         "license": "Open Data Commons Open Database License 1.0",
         "contactPoint": {
@@ -41,7 +42,9 @@
                 "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
                 "license": "Open Data Commons Open Database License 1.0",
                 "title": "Convocatorias abiertas durante el año 2015",
+                "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
                 "byteSize": 5120,
+                "fileName": "convocatoriasabiertasduranteelao.csv",
                 "format": "CSV",
                 "mediaType": "text/csv",
                 "modified": "2016-04-19T19:48:05.433640-03:00",

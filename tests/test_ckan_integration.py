@@ -54,7 +54,7 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_dataset_is_created_correctly(self):
         catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', title_to_name(catalog['title']))
+        catalog_id = title_to_name(catalog['title'])
         dataset = catalog.datasets[0]
         dataset_id = dataset['identifier']
         return_id = push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
@@ -64,7 +64,7 @@ class PushTestCase(unittest.TestCase):
     @CKAN_VCR.use_cassette()
     def test_dataset_is_updated_correctly(self):
         catalog = self.full_catalog
-        catalog_id = catalog.get('identifier', title_to_name(catalog['title']))
+        catalog_id = title_to_name(catalog['title'])
         dataset_id = catalog.datasets[0]['identifier']
         push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
                              self.portal_url, self.apikey)
