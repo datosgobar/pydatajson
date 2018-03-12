@@ -58,6 +58,22 @@ class DatasetConversionTestCase(unittest.TestCase):
         except AttributeError:
             self.assertCountEqual(keywords, tags)
 
+    def test_superThemes_dont_impact_groups_if_not_demoted(self):
+        package = map_dataset_to_package(self.dataset, self.catalog_id, demote_superThemes=False)
+
+        groups = [group['name'] for group in package.get('groups', [])]
+        tags = [tag['name'] for tag in package['tags']]
+        keywords = self.dataset.get('keyword', [])
+
+        try:
+            self.assertItemsEqual([], groups)
+        except AttributeError:
+            self.assertCountEqual([], groups)
+        try:
+            self.assertItemsEqual(keywords, tags)
+        except AttributeError:
+            self.assertCountEqual(keywords, tags)
+
     def test_dataset_extra_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id)
 #       extras are included in dataset
