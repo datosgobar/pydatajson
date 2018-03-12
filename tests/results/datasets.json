@@ -34,6 +34,7 @@
             "fn": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones. Dirección de Compras Electrónicas."
         },
         "identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
+        "source": "Ministerio de modernizacion",
         "distribution": [
             {
                 "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
@@ -41,8 +42,10 @@
                 "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
                 "license": "Open Data Commons Open Database License 1.0",
                 "title": "Convocatorias abiertas durante el año 2015",
+                "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c777",
                 "byteSize": 5120,
                 "format": "CSV",
+                "fileName": "convocatoriasabiertasduranteelao.csv",
                 "mediaType": "text/csv",
                 "modified": "2016-04-19T19:48:05.433640-03:00",
                 "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
@@ -144,6 +147,7 @@
             "fn": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones. Dirección de Compras Electrónicas."
         },
         "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+        "source": "Ministerio de modernizacion",
         "distribution": [
             {
                 "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
@@ -156,7 +160,10 @@
                 "mediaType": "application/pdf",
                 "modified": "2016-04-19T19:48:05.433640-03:00",
                 "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.pdf",
-                "issued": "2016-04-14T19:48:05.433640-03:00"
+                "issued": "2016-04-14T19:48:05.433640-03:00",
+                "dataset_identifier": "99db6631-d1c9-470b-a73e-c62daa32c420",
+                "fileName": "convocatoriasabiertasduranteelao.pdf",
+                "identifier": "d_7d4d816f-3a40-476e-ab71-d48a3f0eb3c8"
             }
         ]
     }
