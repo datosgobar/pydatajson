@@ -94,8 +94,8 @@ Toma los siguientes parámetros:
   - **portal_url**: URL del portal de CKAN de destino.
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
   organización pasada como parámetro.
-  - **demote_themes** (opcional): Si está en true, los labels de los themes del dataset, se escriben como tags de CKAN.
-  Sino,se pasan como grupo.
+  - **demote_themes** (opcional, default: True): Si está en true, los labels de los themes del dataset, se escriben como
+  tags de CKAN; sino,se pasan como grupo.
   
   Retorna el id en el nodo de destino del dataset federado.
   
