@@ -139,7 +139,7 @@ class DatasetConversionTestCase(unittest.TestCase):
     def test_dataset_extra_attributes_are_complete(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id, 'owner', self.catalog.themes)
 #       dataset attributes are included in extras
-        extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial']
+        extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial', 'superTheme']
         for key in extra_attrs:
             value = self.dataset.get(key)
             if value:
@@ -147,9 +147,6 @@ class DatasetConversionTestCase(unittest.TestCase):
                     value = json.dumps(value)
                 resulting_dict = {'key': key, 'value': value}
                 self.assertTrue(resulting_dict in package['extras'])
-
-        self.assertTrue({'key': 'superTheme', 'value': json.dumps(self.dataset['superTheme'])}
-                        in package['extras'])
 
     def test_resources_replicated_attributes_stay_the_same(self):
         resources = map_distributions_to_resources(self.distributions, self.catalog_id+'_'+self.dataset_id)
