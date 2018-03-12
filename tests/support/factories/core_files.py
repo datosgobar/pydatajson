@@ -63,6 +63,8 @@ TEST_FROM_RESULT_FILE = {
     'empty_optional_string': None,
     # El format y extension de fileName de las distribuciones deben coincidir si estan los campos presentes
     'mismatched_fileName_and_format': None,
+    # El format y extension de downloadURL de las distribuciones deben coincidir si estan los campos presentes
+    'mismatched_downloadURL_and_format': None,
 }
 
 TEST_FROM_GENERATED_RESULT = {

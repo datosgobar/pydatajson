@@ -7,6 +7,10 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 import os
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 
 class BaseValidationError(object):
@@ -76,17 +80,19 @@ class DownloadURLRepetitionError(BaseValidationError):
             validator, message, validator_value, path)
 
 
-class FileNameExtensionError(BaseValidationError):
+class ExtensionError(BaseValidationError):
 
-    def __init__(self, dataset_idx, distribution_idx, distribution):
+    def __init__(self, dataset_idx, distribution_idx, distribution, attribute):
 
         validator = 'mismatchedValue'
-        message = "distribution '{}' tiene distintas extensiones: format ('{}') y fileName ('{}')".format(
-            distribution['identifier'], distribution['format'], distribution['fileName'].split('.')[-1])
-        validator_value = 'Chequea format y la extension del fileName'
+        template = "distribution '{}' tiene distintas extensiones: format ('{}') y " + attribute + " ('{}')"
+        extension = os.path.splitext(urlparse(distribution[attribute]).path)[-1].lower()
+        message = template.format(
+            distribution['identifier'], distribution['format'], extension)
+        validator_value = 'Chequea format y la extension del ' + attribute
         path = ['dataset', dataset_idx, 'distribution', distribution_idx]
 
-        super(FileNameExtensionError, self).__init__(
+        super(ExtensionError, self).__init__(
             validator, message, validator_value, path)
 
 

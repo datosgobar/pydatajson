@@ -1,0 +1,80 @@
+{
+    "status": "ERROR", 
+    "error": {
+        "catalog": {
+            "status": "OK", 
+            "errors": [], 
+            "title": "Datos Argentina"
+        }, 
+        "dataset": [
+            {
+                "status": "ERROR", 
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c777", 
+                "list_index": 0, 
+                "errors": [
+                    {
+                        "instance": null, 
+                        "validator": "mismatchedValue", 
+                        "path": [
+                            "dataset", 
+                            0, 
+                            "distribution", 
+                            0
+                        ], 
+                        "message": "distribution '1.1' tiene distintas extensiones: format ('text/csv') y downloadURL ('.pdf')", 
+                        "error_code": 2, 
+                        "validator_value": "Chequea format y la extension del downloadURL"
+                    }
+                ], 
+                "title": "Sistema de contrataciones electr\u00f3nicas"
+            }, 
+            {
+                "status": "ERROR", 
+                "identifier": "99db6631-d1c9-470b-a73e-c62daa32c420", 
+                "list_index": 1, 
+                "errors": [
+                    {
+                        "instance": null, 
+                        "validator": "mismatchedValue", 
+                        "path": [
+                            "dataset", 
+                            1, 
+                            "distribution", 
+                            1
+                        ], 
+                        "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3c9' tiene distintas extensiones: format ('application/vnd.ms-excel') y downloadURL ('.xlsx')", 
+                        "error_code": 2, 
+                        "validator_value": "Chequea format y la extension del downloadURL"
+                    }, 
+                    {
+                        "instance": null, 
+                        "validator": "mismatchedValue", 
+                        "path": [
+                            "dataset", 
+                            1, 
+                            "distribution", 
+                            2
+                        ], 
+                        "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3ca' tiene distintas extensiones: format ('CSV') y downloadURL ('.puntos')", 
+                        "error_code": 2, 
+                        "validator_value": "Chequea format y la extension del downloadURL"
+                    }, 
+                    {
+                        "instance": null, 
+                        "validator": "mismatchedValue", 
+                        "path": [
+                            "dataset", 
+                            1, 
+                            "distribution", 
+                            2
+                        ], 
+                        "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3ca' tiene distintas extensiones: format ('CSV') y fileName ('.xls')", 
+                        "error_code": 2, 
+                        "validator_value": "Chequea format y la extension del fileName"
+                    }
+                ], 
+                "title": "Sistema de contrataciones electr\u00f3nicas (sin datos)"
+            }
+        ]
+    }
+}
