@@ -9,7 +9,8 @@ from .ckan_utils import map_dataset_to_package
 from .search import get_datasets
 
 
-def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifier, portal_url, apikey):
+def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifier, portal_url, apikey,
+                         demote_themes=True):
     """Escribe la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -19,15 +20,17 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
             dataset_origin_identifier (str): El id del dataset que se va a federar.
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+            demote_themes(bool): Si está en true, los labels de los themes del dataset, pasan a ser tags. Sino,
+            se pasan como grupo.
 
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
     dataset = catalog.get_dataset(dataset_origin_identifier)
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    theme_taxonomy = catalog.themes
 
-    package = map_dataset_to_package(dataset, catalog_id)
-    package['owner_org'] = owner_org
+    package = map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy, demote_themes=demote_themes)
 
     # Get license id
     if dataset.get('license'):
@@ -41,15 +44,6 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
             package['license_id'] = 'notspecified'
     else:
         package['license_id'] = 'notspecified'
-
-    # Move themes to keywords
-    themes = dataset.get('theme')
-    if themes:
-        package['tags'] = package.get('tags') or []
-        theme_taxonomy = catalog.themes
-        for theme in themes:
-            label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
-            package['tags'].append({'name': label})
 
     try:
         pushed_package = ckan_portal.call_action(
