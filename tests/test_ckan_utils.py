@@ -67,8 +67,8 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords + theme_labels, tags)
 
     def test_themes_are_preserved_if_not_demoted(self):
-        package = map_dataset_to_package(self.dataset, self.catalog_id, 'owner', self.catalog.themes,
-                                         demote_themes=False)
+        package = map_dataset_to_package(self.dataset, self.catalog_id, 'owner',
+                                         self.catalog.themes, demote_themes=False)
         groups = [group['name'] for group in package.get('groups', [])]
         super_themes = [title_to_name(s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
         themes = self.dataset.get('theme', [])
@@ -84,15 +84,48 @@ class DatasetConversionTestCase(unittest.TestCase):
         except AttributeError:
             self.assertCountEqual(keywords, tags)
 
+    def test_superThemes_dont_impact_groups_if_not_demoted(self):
+        package = map_dataset_to_package(self.dataset, self.catalog_id, 'owner',
+                                         self.catalog.themes, demote_superThemes=False)
+        groups = [group['name'] for group in package.get('groups', [])]
+        tags = [tag['name'] for tag in package['tags']]
+        keywords = self.dataset.get('keyword', [])
+        themes = self.dataset.get('theme', [])
+        theme_labels = []
+        for theme in themes:
+            label = next(x['label'] for x in self.catalog.themes if x['id'] == theme)
+            theme_labels.append(label)
+        try:
+            self.assertItemsEqual([], groups)
+        except AttributeError:
+            self.assertCountEqual([], groups)
+        try:
+            self.assertItemsEqual(keywords + theme_labels, tags)
+        except AttributeError:
+            self.assertCountEqual(keywords + theme_labels, tags)
+
+    def test_preserve_themes_and_superThemes(self):
+        package = map_dataset_to_package(self.dataset, self.catalog_id, 'owner',
+                                         self.catalog.themes, False, False)
+        groups = [group['name'] for group in package.get('groups', [])]
+        tags = [tag['name'] for tag in package['tags']]
+        keywords = self.dataset.get('keyword', [])
+        themes = self.dataset.get('theme', [])
+        try:
+            self.assertItemsEqual(themes, groups)
+        except AttributeError:
+            self.assertCountEqual(themes, groups)
+        try:
+            self.assertItemsEqual(keywords, tags)
+        except AttributeError:
+            self.assertCountEqual(keywords, tags)
+
     def test_dataset_extra_attributes_are_correct(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id, 'owner', self.catalog.themes)
 #       extras are included in dataset
         if package['extras']:
             for extra in package['extras']:
-                if extra['key'] == 'super_theme':
-                    dataset_value = self.dataset['superTheme']
-                else:
-                    dataset_value = self.dataset[extra['key']]
+                dataset_value = self.dataset[extra['key']]
                 if type(dataset_value) is list:
                     extra_value = json.loads(extra['value'])
                     try:
@@ -106,7 +139,7 @@ class DatasetConversionTestCase(unittest.TestCase):
     def test_dataset_extra_attributes_are_complete(self):
         package = map_dataset_to_package(self.dataset, self.catalog_id, 'owner', self.catalog.themes)
 #       dataset attributes are included in extras
-        extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial']
+        extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial', 'superTheme']
         for key in extra_attrs:
             value = self.dataset.get(key)
             if value:
@@ -114,8 +147,6 @@ class DatasetConversionTestCase(unittest.TestCase):
                     value = json.dumps(value)
                 resulting_dict = {'key': key, 'value': value}
                 self.assertTrue(resulting_dict in package['extras'])
-
-        self.assertTrue({'key': 'super_theme', 'value': json.dumps(self.dataset['superTheme'])})
 
     def test_resources_replicated_attributes_stay_the_same(self):
         resources = map_distributions_to_resources(self.distributions, self.catalog_id+'_'+self.dataset_id)

@@ -14,7 +14,8 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         package['extras'].append({'key': attribute, 'value': value})
 
 
-def map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy, demote_themes=True):
+def map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy,
+                           demote_superThemes=True, demote_themes=True):
     package = dict()
     package['extras'] = []
 #   Obligatorios
@@ -33,8 +34,10 @@ def map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy, demot
     package['resources'] = map_distributions_to_resources(distributions, catalog_id)
 
     super_themes = dataset['superTheme']
-    package['groups'] = [{'name': title_to_name(super_theme, decode=False)} for super_theme in super_themes]
     append_attribute_to_extra(package, dataset, 'superTheme', serialize=True)
+    if demote_superThemes:
+        package['groups'] = [{'name': title_to_name(super_theme, decode=False)} for super_theme in super_themes]
+
 
 #   Recomendados y opcionales
     package['url'] = dataset.get('landingPage')
@@ -66,7 +69,8 @@ def map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy, demot
             label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
             package['tags'].append({'name': label})
     else:
-        package['groups'] += [{'name': title_to_name(theme, decode=False)} for theme in themes]
+        package['groups'] = package.get('groups', []) + [{'name': title_to_name(theme, decode=False)}
+                                                         for theme in themes]
 
     return package
 

@@ -10,7 +10,7 @@ from .search import get_datasets
 
 
 def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifier, portal_url, apikey,
-                         demote_themes=True):
+                         demote_superThemes=True, demote_themes=True):
     """Escribe la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -20,6 +20,7 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
             dataset_origin_identifier (str): El id del dataset que se va a federar.
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+            demote_superThemes(bool): Si está en true, los ids de los super themes del dataset, se propagan como grupo.
             demote_themes(bool): Si está en true, los labels de los themes del dataset, pasan a ser tags. Sino,
             se pasan como grupo.
 
@@ -30,7 +31,8 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
     theme_taxonomy = catalog.themes
 
-    package = map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy, demote_themes=demote_themes)
+    package = map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy,
+                                     demote_superThemes, demote_themes)
 
     # Get license id
     if dataset.get('license'):
