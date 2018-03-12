@@ -14,7 +14,8 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         package['extras'].append({'key': attribute, 'value': value})
 
 
-def map_dataset_to_package(dataset, catalog_id, demote_superThemes=True):
+def map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy,
+                           demote_superThemes=True, demote_themes=True):
     package = dict()
     package['extras'] = []
 #   Obligatorios
@@ -24,6 +25,7 @@ def map_dataset_to_package(dataset, catalog_id, demote_superThemes=True):
     package['private'] = False
     package['notes'] = dataset['description']
     package['author'] = dataset['publisher']['name']
+    package['owner_org'] = owner_org
 
     append_attribute_to_extra(package, dataset, 'issued')
     append_attribute_to_extra(package, dataset, 'accrualPeriodicity')
@@ -46,7 +48,6 @@ def map_dataset_to_package(dataset, catalog_id, demote_superThemes=True):
     append_attribute_to_extra(package, dataset, 'language', serialize=True)
 
     spatial = dataset.get('spatial')
-
     if spatial:
         serializable = type(spatial) is list
         append_attribute_to_extra(package, dataset, 'spatial', serializable)
@@ -59,6 +60,16 @@ def map_dataset_to_package(dataset, catalog_id, demote_superThemes=True):
     keywords = dataset.get('keyword')
     if keywords:
         package['tags'] = [{'name': keyword} for keyword in keywords]
+
+    # Move themes to keywords
+    themes = dataset.get('theme', [])
+    if themes and demote_themes:
+        package['tags'] = package.get('tags', [])
+        for theme in themes:
+            label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
+            package['tags'].append({'name': label})
+    else:
+        package['groups'] += [{'name': title_to_name(theme, decode=False)} for theme in themes]
 
     return package
 

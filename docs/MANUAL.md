@@ -96,6 +96,9 @@ Toma los siguientes parámetros:
   organización pasada como parámetro.
   - **demote_superThemes** (opcional, default: True):Si está en true, los ids de los themes del dataset, se escriben
   como groups de CKAN.
+  - **demote_themes** (opcional, default: True): Si está en true, los labels de los themes del dataset, se escriben como
+  tags de CKAN; sino,se pasan como grupo.
+
   
   Retorna el id en el nodo de destino del dataset federado.
   
