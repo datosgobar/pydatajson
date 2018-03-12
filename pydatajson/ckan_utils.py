@@ -14,7 +14,7 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         package['extras'].append({'key': attribute, 'value': value})
 
 
-def map_dataset_to_package(dataset, catalog_id):
+def map_dataset_to_package(dataset, catalog_id, demote_superThemes=True):
     package = dict()
     package['extras'] = []
 #   Obligatorios
@@ -32,8 +32,10 @@ def map_dataset_to_package(dataset, catalog_id):
     package['resources'] = map_distributions_to_resources(distributions, catalog_id)
 
     super_themes = dataset['superTheme']
-    package['groups'] = [{'name': title_to_name(super_theme, decode=False)} for super_theme in super_themes]
     append_attribute_to_extra(package, dataset, 'superTheme', serialize=True)
+    if demote_superThemes:
+        package['groups'] = [{'name': title_to_name(super_theme, decode=False)} for super_theme in super_themes]
+
 
 #   Recomendados y opcionales
     package['url'] = dataset.get('landingPage')

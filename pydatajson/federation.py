@@ -9,7 +9,8 @@ from .ckan_utils import map_dataset_to_package
 from .search import get_datasets
 
 
-def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifier, portal_url, apikey):
+def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifier, portal_url, apikey,
+                         demote_superThemes=True):
     """Escribe la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -26,7 +27,7 @@ def push_dataset_to_ckan(catalog, catalog_id, owner_org, dataset_origin_identifi
     dataset = catalog.get_dataset(dataset_origin_identifier)
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
 
-    package = map_dataset_to_package(dataset, catalog_id)
+    package = map_dataset_to_package(dataset, catalog_id, demote_superThemes)
     package['owner_org'] = owner_org
 
     # Get license id
