@@ -66,7 +66,7 @@ def map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy, demot
             label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
             package['tags'].append({'name': label})
     else:
-        package['groups'] += themes
+        package['groups'] += [{'name': title_to_name(theme, decode=False)} for theme in themes]
 
     return package
 
