@@ -14,12 +14,12 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         package['extras'].append({'key': attribute, 'value': value})
 
 
-def map_dataset_to_package(dataset, catalog_id, owner_org, theme_taxonomy,
+def map_dataset_to_package(dataset, owner_org, theme_taxonomy, catalog_id=None,
                            demote_superThemes=True, demote_themes=True):
     package = dict()
     package['extras'] = []
 #   Obligatorios
-    package['id'] = catalog_id+'_'+dataset['identifier']
+    package['id'] = catalog_id+'_'+dataset['identifier'] if catalog_id else dataset['identifier']
     package['name'] = title_to_name(dataset['title'], decode=False)
     package['title'] = dataset['title']
     package['private'] = False
@@ -88,12 +88,12 @@ def convert_iso_string_to_utc(date_string):
     return utc_date_time.isoformat()
 
 
-def map_distributions_to_resources(distributions, catalog_id):
+def map_distributions_to_resources(distributions, catalog_id=None):
     resources = []
     for distribution in distributions:
         resource = dict()
 #       Obligatorios
-        resource['id'] = catalog_id + '_' + distribution['identifier']
+        resource['id'] = catalog_id + '_' + distribution['identifier'] if catalog_id else distribution['identifier']
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
         resource['created'] = convert_iso_string_to_utc(distribution['issued'])
