@@ -87,13 +87,14 @@ Existen dos métodos, cuyos reportes se incluyen diariamente entre los archivos 
 ### Métodos para federación de datasets
 
 - **pydatajson.DataJson.push_dataset_to_ckan()**: Copia la metadata de un dataset y la escribe en un portal de CKAN.
-Toma los siguientes parámetros:
-  - **catalog_id**: El prefijo que va a preceder el id del dataset en el portal destino. 
+Toma los siguientes parámetros: 
   - **owner_org**: La organización a la que pertence el dataset. Debe encontrarse en el portal de destino.
   - **dataset_origin_identifier**: Identificador del dataset en el catálogo de origen.
   - **portal_url**: URL del portal de CKAN de destino.
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
   organización pasada como parámetro.
+  - **catalog_id** (opcional, default: None): El prefijo que va a preceder el id del dataset en el portal destino,
+  separado por un guión bajo.
   - **demote_superThemes** (opcional, default: True):Si está en true, los ids de los themes del dataset, se escriben
   como groups de CKAN.
   - **demote_themes** (opcional, default: True): Si está en true, los labels de los themes del dataset, se escriben como
