@@ -57,8 +57,8 @@ class PushTestCase(unittest.TestCase):
         catalog_id = title_to_name(catalog['title'])
         dataset = catalog.datasets[0]
         dataset_id = dataset['identifier']
-        return_id = push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                                         self.portal_url, self.apikey)
+        return_id = push_dataset_to_ckan(catalog, "oficina-de-muestra", dataset_id,
+                                         self.portal_url, self.apikey, catalog_id=catalog_id,)
         self.assertEqual(return_id, catalog_id + '_' + dataset_id)
 
     @CKAN_VCR.use_cassette()
@@ -66,12 +66,12 @@ class PushTestCase(unittest.TestCase):
         catalog = self.full_catalog
         catalog_id = title_to_name(catalog['title'])
         dataset_id = catalog.datasets[0]['identifier']
-        push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                             self.portal_url, self.apikey)
+        push_dataset_to_ckan(catalog, "oficina-de-muestra", dataset_id,
+                             self.portal_url, self.apikey, catalog_id=catalog_id,)
 
         catalog.datasets[0]['description'] = 'updated description'
-        return_id = push_dataset_to_ckan(catalog, catalog_id, "oficina-de-muestra", dataset_id,
-                                         self.portal_url, self.apikey)
+        return_id = push_dataset_to_ckan(catalog, "oficina-de-muestra", dataset_id,
+                                         self.portal_url, self.apikey, catalog_id=catalog_id,)
 
         data_dict = {'id': catalog_id + '_' + dataset_id}
         package = self.portal.call_action('package_show', data_dict=data_dict)
@@ -83,21 +83,22 @@ class PushTestCase(unittest.TestCase):
         catalog_id = 'same-catalog-id'
         full_dataset = self.full_catalog.datasets[0]
         full_dataset_id = full_dataset['identifier']
-        push_dataset_to_ckan(self.full_catalog, catalog_id, 'oficina-de-muestra', full_dataset_id,
-                             self.portal_url, self.apikey)
+        push_dataset_to_ckan(self.full_catalog, 'oficina-de-muestra', full_dataset_id,
+                             self.portal_url, self.apikey, catalog_id=catalog_id,)
 
         justice_dataset = self.justice_catalog.datasets[0]
         justice_dataset_id = justice_dataset['identifier']
-        push_dataset_to_ckan(self.justice_catalog, catalog_id, 'oficina-de-muestra', justice_dataset_id,
-                             self.portal_url, self.apikey)
+        push_dataset_to_ckan(self.justice_catalog, 'oficina-de-muestra', justice_dataset_id,
+                             self.portal_url, self.apikey, catalog_id=catalog_id,)
         # Switch them and update
         full_dataset['distribution'], justice_dataset['distribution'] = \
             justice_dataset['distribution'], full_dataset['distribution']
 
-        full_package_id = push_dataset_to_ckan(self.full_catalog, catalog_id, 'oficina-de-muestra', full_dataset_id,
-                                               self.portal_url, self.apikey)
-        justice_package_id = push_dataset_to_ckan(self.justice_catalog, catalog_id, 'oficina-de-muestra',
-                                                  justice_dataset_id, self.portal_url, self.apikey)
+        full_package_id = push_dataset_to_ckan(self.full_catalog,'oficina-de-muestra', full_dataset_id,
+                                               self.portal_url, self.apikey, catalog_id=catalog_id,)
+        justice_package_id = push_dataset_to_ckan(self.justice_catalog, 'oficina-de-muestra',
+                                                  justice_dataset_id, self.portal_url,
+                                                  self.apikey, catalog_id=catalog_id,)
         # Switch them back
         full_dataset['distribution'], justice_dataset['distribution'] = \
             justice_dataset['distribution'], full_dataset['distribution']

@@ -47,8 +47,8 @@ class PushDatasetTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
-                                      self.dataset['identifier'], 'portal', 'key')
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+                                      'portal', 'key', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
@@ -61,9 +61,24 @@ class PushDatasetTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
-                                      self.dataset['identifier'], 'portal', 'key')
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+                                      'portal', 'key', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_dataset_id_is_preserved_if_catalog_id_is_not_passed(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return {'id': data_dict['id']}
+            if action == 'package_create':
+                self.fail('should not be called')
+            else:
+                return []
+
+        mock_portal.return_value.call_action = mock_call_action
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+                                      'portal', 'key')
+        self.assertEqual(self.dataset_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_tags_are_passed_correctly(self, mock_portal):
@@ -87,8 +102,8 @@ class PushDatasetTestCase(unittest.TestCase):
                 return []
 
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
-                                      self.dataset['identifier'], 'portal', 'key')
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+                                      'portal', 'key', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
@@ -103,8 +118,8 @@ class PushDatasetTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.catalog, self.catalog_id, 'owner',
-                             self.dataset['identifier'], 'portal', 'key')
+        push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+                             'portal', 'key', catalog_id=self.catalog_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_dataset_without_license_sets_notspecified(self, mock_portal):
@@ -119,8 +134,8 @@ class PushDatasetTestCase(unittest.TestCase):
                 return []
 
         mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.minimum_catalog, self.minimum_catalog_id, 'owner',
-                             self.minimum_dataset['identifier'], 'portal', 'key')
+        push_dataset_to_ckan(self.minimum_catalog, 'owner', self.minimum_dataset['identifier'],
+                             'portal', 'key', catalog_id=self.minimum_catalog_id)
 
 
 class RemoveDatasetTestCase(unittest.TestCase):
