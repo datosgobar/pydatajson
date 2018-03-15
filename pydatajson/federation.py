@@ -29,9 +29,8 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_u
     """
     dataset = catalog.get_dataset(dataset_origin_identifier)
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
-    theme_taxonomy = catalog.themes
 
-    package = map_dataset_to_package(dataset, owner_org, theme_taxonomy, catalog_id,
+    package = map_dataset_to_package(catalog, dataset, owner_org, catalog_id,
                                      demote_superThemes, demote_themes)
 
     # Get license id
