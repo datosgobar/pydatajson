@@ -280,7 +280,7 @@ def get_theme(catalog, identifier=None, label=None):
 
     # filtra por id (preferentemente) o label
     if identifier:
-        filtered_themes = [theme for theme in themes if theme["id"] == identifier]
+        filtered_themes = [theme for theme in themes if theme["id"].lower() == identifier.lower()]
         if len(filtered_themes) > 1:
             raise ThemeIdRepeated([x["id"] for x in filtered_themes])
 
