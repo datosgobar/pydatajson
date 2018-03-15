@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import unittest
 import os
 import json
+import re
 from dateutil import parser, tz
 from .context import pydatajson
 from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources, convert_iso_string_to_utc
@@ -23,15 +26,15 @@ class DatasetConversionTestCase(unittest.TestCase):
         cls.distributions = cls.dataset['distribution']
 
     def test_catalog_id_is_prepended_to_dataset_id_if_passed(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes, catalog_id=self.catalog_id)
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, package['id'])
 
     def test_dataset_id_is_preserved_if_catlog_id_is_not_passed(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes)
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner')
         self.assertEqual(self.dataset_id, package['id'])
 
     def test_replicated_plain_attributes_are_corrext(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes, catalog_id=self.catalog_id)
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
         plain_replicated_attributes = [('title', 'title'),
                                        ('notes', 'description'),
                                        ('url', 'landingPage')]
@@ -40,7 +43,7 @@ class DatasetConversionTestCase(unittest.TestCase):
         self.assertEqual('owner', package['owner_org'])
 
     def test_dataset_nested_replicated_attributes_stay_the_same(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes, catalog_id=self.catalog_id)
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
         contact_point_nested = [('maintainer', 'fn'),
                                 ('maintainer_email', 'hasEmail')]
         for fst, snd in contact_point_nested:
@@ -51,7 +54,7 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertEqual(self.dataset.get('publisher').get(snd), package.get(fst))
 
     def test_dataset_array_attributes_are_correct(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes, catalog_id=self.catalog_id)
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
         groups = [group['name'] for group in package.get('groups', [])]
         super_themes = [title_to_name(s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
         try:
@@ -66,6 +69,7 @@ class DatasetConversionTestCase(unittest.TestCase):
         theme_labels = []
         for theme in themes:
             label = next(x['label'] for x in self.catalog.themes if x['id'] == theme)
+            label = re.sub(r'[^\wá-úÁ-Ú .-]+', '', label)
             theme_labels.append(label)
 
         try:
@@ -74,7 +78,7 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords + theme_labels, tags)
 
     def test_themes_are_preserved_if_not_demoted(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes,
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner',
                                          catalog_id=self.catalog_id, demote_themes=False)
         groups = [group['name'] for group in package.get('groups', [])]
         super_themes = [title_to_name(s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
@@ -92,7 +96,7 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords, tags)
 
     def test_superThemes_dont_impact_groups_if_not_demoted(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes,
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner',
                                          catalog_id=self.catalog_id, demote_superThemes=False)
         groups = [group['name'] for group in package.get('groups', [])]
         tags = [tag['name'] for tag in package['tags']]
@@ -112,7 +116,7 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords + theme_labels, tags)
 
     def test_preserve_themes_and_superThemes(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes,
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner',
                                          self.catalog_id, False, False)
         groups = [group['name'] for group in package.get('groups', [])]
         tags = [tag['name'] for tag in package['tags']]
@@ -128,7 +132,7 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords, tags)
 
     def test_dataset_extra_attributes_are_correct(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes, catalog_id=self.catalog_id)
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
 #       extras are included in dataset
         if package['extras']:
             for extra in package['extras']:
@@ -144,7 +148,7 @@ class DatasetConversionTestCase(unittest.TestCase):
                     self.assertEqual(dataset_value, extra_value)
 
     def test_dataset_extra_attributes_are_complete(self):
-        package = map_dataset_to_package(self.dataset, 'owner', self.catalog.themes, catalog_id=self.catalog_id)
+        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
 #       dataset attributes are included in extras
         extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial', 'superTheme']
         for key in extra_attrs:
