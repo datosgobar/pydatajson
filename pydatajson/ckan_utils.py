@@ -69,7 +69,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
         package['tags'] = package.get('tags', [])
         for theme in themes:
             label = catalog.get_theme(identifier=theme)['label']
-            if sys.version_info < (3, 0):
+            if sys.version_info < (3, 0) and not isinstance(label, str):
                 label = label.encode('utf8')
             label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '', label)
             package['tags'].append({'name': label})
