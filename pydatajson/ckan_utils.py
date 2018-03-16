@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import json
 import re
+import sys
 from datetime import time
 from dateutil import parser, tz
 from .helpers import title_to_name
@@ -68,7 +69,9 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
         package['tags'] = package.get('tags', [])
         for theme in themes:
             label = catalog.get_theme(identifier=theme)['label']
-            label = re.sub(r'[^\wá-úÁ-Ú .-]+', '', label)
+            if sys.version_info < (3, 0):
+                label = label.encode('utf8')
+            label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '', label)
             package['tags'].append({'name': label})
     else:
         package['groups'] = package.get('groups', []) + [{'name': title_to_name(theme, decode=False)}
