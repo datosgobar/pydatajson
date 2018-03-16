@@ -193,7 +193,7 @@
             "id": "convocatorias"
         },
         {
-            "label": "Compras",
+            "label": "Adquisición",
             "description": "Datasets sobre compras realizadas.",
             "id": "compras"
         },
@@ -213,7 +213,7 @@
             "id": "normativa"
         },
         {
-            "label": "Proveedores",
+            "label": "Proveeduría",
             "description": "Datasets sobre proveedores del Estado.",
             "id": "proveedores"
         }

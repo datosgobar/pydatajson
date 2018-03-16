@@ -4,6 +4,7 @@ import unittest
 import os
 import json
 import re
+import sys
 from dateutil import parser, tz
 from .context import pydatajson
 from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources, convert_iso_string_to_utc
@@ -68,7 +69,9 @@ class DatasetConversionTestCase(unittest.TestCase):
         themes = self.dataset.get('theme', [])
         theme_labels = []
         for theme in themes:
-            label = next(x['label'] for x in self.catalog.themes if x['id'] == theme)
+            label = self.catalog.get_theme(identifier=theme)['label']
+            if sys.version_info < (3, 0) and not isinstance(label, str):
+                label = label.encode('utf8')
             label = re.sub(r'[^\wá-úÁ-Ú .-]+', '', label)
             theme_labels.append(label)
 
@@ -104,7 +107,10 @@ class DatasetConversionTestCase(unittest.TestCase):
         themes = self.dataset.get('theme', [])
         theme_labels = []
         for theme in themes:
-            label = next(x['label'] for x in self.catalog.themes if x['id'] == theme)
+            label = self.catalog.get_theme(identifier=theme)['label']
+            if sys.version_info < (3, 0) and not isinstance(label, str):
+                label = label.encode('utf8')
+            label = re.sub(r'[^\wá-úÁ-Ú .-]+', '', label)
             theme_labels.append(label)
         try:
             self.assertItemsEqual([], groups)
