@@ -70,9 +70,7 @@ class DatasetConversionTestCase(unittest.TestCase):
         theme_labels = []
         for theme in themes:
             label = self.catalog.get_theme(identifier=theme)['label']
-            if sys.version_info < (3, 0) and not isinstance(label, str):
-                label = label.encode('utf8')
-            label = re.sub(r'[^\wá-úÁ-Ú .-]+', '', label)
+            label = re.sub(r'[^\w .-]+', '', label, flags=re.UNICODE)
             theme_labels.append(label)
 
         try:
@@ -108,9 +106,7 @@ class DatasetConversionTestCase(unittest.TestCase):
         theme_labels = []
         for theme in themes:
             label = self.catalog.get_theme(identifier=theme)['label']
-            if sys.version_info < (3, 0) and not isinstance(label, str):
-                label = label.encode('utf8')
-            label = re.sub(r'[^\wá-úÁ-Ú .-]+', '', label)
+            label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '', label, flags=re.UNICODE)
             theme_labels.append(label)
         try:
             self.assertItemsEqual([], groups)
