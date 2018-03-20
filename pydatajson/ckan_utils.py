@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
+import re
+import sys
 from datetime import time
 from dateutil import parser, tz
 from .helpers import title_to_name
@@ -14,7 +16,7 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         package['extras'].append({'key': attribute, 'value': value})
 
 
-def map_dataset_to_package(dataset, owner_org, theme_taxonomy, catalog_id=None,
+def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
                            demote_superThemes=True, demote_themes=True):
     package = dict()
     package['extras'] = []
@@ -66,7 +68,8 @@ def map_dataset_to_package(dataset, owner_org, theme_taxonomy, catalog_id=None,
     if themes and demote_themes:
         package['tags'] = package.get('tags', [])
         for theme in themes:
-            label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
+            label = catalog.get_theme(identifier=theme)['label']
+            label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '', label, flags=re.UNICODE)
             package['tags'].append({'name': label})
     else:
         package['groups'] = package.get('groups', []) + [{'name': title_to_name(theme, decode=False)}

@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import unittest
 import os
 import re
+import sys
 try:
     from mock import patch, MagicMock
 except ImportError:
@@ -83,10 +86,10 @@ class PushDatasetTestCase(unittest.TestCase):
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_tags_are_passed_correctly(self, mock_portal):
         themes = self.dataset['theme']
-        theme_taxonomy = self.catalog.themes
         keywords = [kw for kw in self.dataset['keyword']]
         for theme in themes:
-            label = next(x['label'] for x in theme_taxonomy if x['id'] == theme)
+            label = self.catalog.get_theme(identifier=theme)['label']
+            label = re.sub(r'[^\w .-]+', '', label, flags=re.UNICODE)
             keywords.append(label)
 
         def mock_call_action(action, data_dict=None):
