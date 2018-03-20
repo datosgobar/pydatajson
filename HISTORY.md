@@ -1,6 +1,17 @@
 Versiones
 =======
 
+0.4.1 (2018-02-16)
+-------------------
+
+* `datasets_equal()` permite especificar los campos a tener en cuenta para la comparación, como un parámetro.
+
+0.4.0 (2018-02-08)
+-------------------
+
+* Incorpora métodos para federar un dataset de un catálogo a un CKAN o un Andino: `push_dataset_to_ckan()`.
+* Actualiza validaciones y esquema de metadatos al Perfil Nacional de Metadatos versión 1.1.
+
 0.3.21 (2017-12-22)
 -------------------
 
