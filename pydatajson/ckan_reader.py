@@ -55,11 +55,21 @@ def read_ckan_catalog(portal_url):
         groups_list = portal.call_action(
             'group_list', requests_kwargs={"verify": False})
 
-        packages = [portal.call_action(
-            'package_show', {'name_or_id': pkg},
-            requests_kwargs={"verify": False})
-            for pkg in packages_list]
+        # itera leyendo todos los datasets del portal
+        packages = []
+        num_packages = len(packages_list)
+        for index, pkg in enumerate(packages_list):
+            # progreso (necesario cuando son muchos)
+            msg = "Leyendo dataset {} de {}".format(index + 1, num_packages)
+            print(msg, end="\r")
 
+            # agrega un nuevo dataset a la lista
+            packages.append(portal.call_action(
+                'package_show', {'name_or_id': pkg},
+                requests_kwargs={"verify": False}
+            ))
+
+        # itera leyendo todos los temas del portal
         groups = [portal.call_action(
             'group_show', {'id': grp},
             requests_kwargs={"verify": False})
