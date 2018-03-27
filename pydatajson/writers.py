@@ -139,18 +139,18 @@ def _apply_styles_to_ws(ws, column_styles=None, cell_styles=None):
 
                 for cell_style in cell_styles:
                     match_all = (
-                            "col" not in cell_style and
-                            "row" not in cell_style
+                        "col" not in cell_style and
+                        "row" not in cell_style
                     )
                     match_row = (
-                            "row" in cell_style and
-                            cell_style["row"] == i
+                        "row" in cell_style and
+                        cell_style["row"] == i
                     )
                     match_col = (
-                            "col" in cell_style and
-                            column_index_from_string(
-                                headers_cols.get(cell_style["col"],
-                                                 cell_style["col"])) == j
+                        "col" in cell_style and
+                        column_index_from_string(
+                            headers_cols.get(cell_style["col"],
+                                             cell_style["col"])) == j
                     )
                     if match_all or match_row or match_col:
                         for prop_name, prop_value in iteritems(cell_style):
@@ -328,7 +328,8 @@ XLSX_FIELDS = {
 }
 
 
-def _tabulate_nested_dict(nested_dict_row, field_root="dataset", parents_roots=[]):
+def _tabulate_nested_dict(nested_dict_row, field_root="dataset",
+                          parents_roots=[]):
     table_dict_row = {}
 
     for key, value in nested_dict_row.items():
@@ -477,5 +478,3 @@ def write_xlsx_catalog(catalog, path, xlsx_fields=None):
         catalog_dict, path, tables_fields=xlsx_fields,
         tables_names=["catalog", "dataset", "distribution", "field", "theme"]
     )
-
-    return catalog_dict

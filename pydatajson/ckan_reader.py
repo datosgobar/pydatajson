@@ -42,7 +42,7 @@ def read_ckan_catalog(portal_url):
 
     Returns:
         dict: Representación interna de un catálogo para uso en las funciones
-        de esta librería.
+            de esta librería.
     """
     portal = RemoteCKAN(portal_url)
     catalog = {}
