@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import json
 import re
-import sys
 from datetime import time
 from dateutil import parser, tz
 from .helpers import title_to_name
@@ -109,10 +108,27 @@ def map_distributions_to_resources(distributions, catalog_id=None):
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
         resource['accessURL'] = distribution.get('accessURL')
-        resource['fileName'] = distribution.get('fileName')
+        fileName = distribution.get('fileName')
+        if fileName:
+            resource['fileName'] = fileName
         dist_fields = distribution.get('field')
         if dist_fields:
             resource['attributesDescription'] = json.dumps(dist_fields)
         resources.append(resource)
 
     return resources
+
+
+def map_theme_to_group(theme):
+    group = dict()
+
+    identifier = theme.get('id')
+    if identifier:
+        group['name'] = title_to_name(identifier)
+    else:
+        # Si no tiene id, seguro tiene label
+        group['name'] = title_to_name(theme['label'])
+
+    group['title'] = theme.get('label')
+    group['description'] = theme.get('description')
+    return group

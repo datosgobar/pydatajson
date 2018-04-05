@@ -5,7 +5,7 @@
 from __future__ import print_function
 from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound
-from .ckan_utils import map_dataset_to_package
+from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
 
 
@@ -103,3 +103,11 @@ def remove_datasets_from_ckan(portal_url, apikey, filter_in=None, filter_out=Non
 
     for identifier in identifiers:
         ckan_portal.call_action('dataset_purge', data_dict={'id': identifier})
+
+
+def push_theme_to_ckan(catalog, portal_url, apikey, identifier=None, label=None):
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    theme = catalog.get_theme(identifier=identifier, label=label)
+    group = map_theme_to_group(theme)
+    pushed_group = ckan_portal.call_action('group_create', data_dict=group)
+    return pushed_group['name']
