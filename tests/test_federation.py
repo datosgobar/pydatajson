@@ -10,7 +10,7 @@ except ImportError:
     from unittest.mock import patch, MagicMock
 
 from .context import pydatajson
-from pydatajson.federation import push_dataset_to_ckan, remove_datasets_from_ckan, push_theme_to_ckan
+from pydatajson.federation import *
 from ckanapi.errors import NotFound
 
 SAMPLES_DIR = os.path.join("tests", "samples")
@@ -50,7 +50,7 @@ class PushDatasetTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
                                       'portal', 'key', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
@@ -64,7 +64,7 @@ class PushDatasetTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
                                       'portal', 'key', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
@@ -79,7 +79,7 @@ class PushDatasetTestCase(unittest.TestCase):
                 return []
 
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
                                       'portal', 'key')
         self.assertEqual(self.dataset_id, res_id)
 
@@ -105,7 +105,7 @@ class PushDatasetTestCase(unittest.TestCase):
                 return []
 
         mock_portal.return_value.call_action = mock_call_action
-        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+        res_id = push_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
                                       'portal', 'key', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
@@ -121,7 +121,7 @@ class PushDatasetTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        push_dataset_to_ckan(self.catalog, 'owner', self.dataset['identifier'],
+        push_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
                              'portal', 'key', catalog_id=self.catalog_id)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
@@ -139,6 +139,21 @@ class PushDatasetTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = mock_call_action
         push_dataset_to_ckan(self.minimum_catalog, 'owner', self.minimum_dataset['identifier'],
                              'portal', 'key', catalog_id=self.minimum_catalog_id)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_dataset_level_wrappers(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return {'id': data_dict['id']}
+            else:
+                return []
+        mock_portal.return_value.call_action = mock_call_action
+        restored_id = restore_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
+                                              'portal', 'key')
+        harvested_id = harvest_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
+                                               'portal', 'key', self.catalog_id)
+        self.assertEqual(self.dataset_id, restored_id)
+        self.assertEqual(self.catalog_id+'_'+self.dataset_id, harvested_id)
 
 
 class RemoveDatasetTestCase(unittest.TestCase):
