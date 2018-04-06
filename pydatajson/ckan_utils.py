@@ -120,13 +120,9 @@ def map_distributions_to_resources(distributions, catalog_id=None):
 
 
 def map_theme_to_group(theme):
-    group = dict()
-    identifier = theme.get('id')
-    if identifier:
-        group['name'] = title_to_name(identifier)
-    else:
-        # Si no tiene id, seguro tiene label
-        group['name'] = title_to_name(theme['label'])
-    group['title'] = theme.get('label')
-    group['description'] = theme.get('description')
-    return group
+
+    return {
+        "name": title_to_name(theme.get('id') or theme['label']),
+        "title": theme.get('label'),
+        "description": theme.get('description'),
+    }
