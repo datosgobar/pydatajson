@@ -121,3 +121,16 @@ def push_theme_to_ckan(catalog, portal_url, apikey, identifier=None, label=None)
     group = map_theme_to_group(theme)
     pushed_group = ckan_portal.call_action('group_create', data_dict=group)
     return pushed_group['name']
+
+
+def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_url, apikey):
+
+    return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
+                                portal_url, apikey, None, False, False)
+
+
+def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_url, apikey, catalog_id):
+
+    return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
+                                portal_url, apikey, catalog_id=catalog_id)
+
