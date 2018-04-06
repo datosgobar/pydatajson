@@ -2,12 +2,8 @@
 
 import unittest
 import os
-import json
-import re
-import sys
-from dateutil import parser, tz
 from .context import pydatajson
-from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources, convert_iso_string_to_utc
+from pydatajson.ckan_utils import *
 from pydatajson.helpers import title_to_name
 SAMPLES_DIR = os.path.join("tests", "samples")
 
@@ -214,6 +210,57 @@ class DatasetConversionTestCase(unittest.TestCase):
                     self.assertDictEqual(dist_field, res_field)
             else:
                 self.assertIsNone(resource.get('attributesDescription'))
+
+
+class ThemeConversionTests(unittest.TestCase):
+
+    @classmethod
+    def get_sample(cls, sample_filename):
+        return os.path.join(SAMPLES_DIR, sample_filename)
+
+    @classmethod
+    def setUpClass(cls):
+        catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
+        cls.theme = catalog.get_theme(identifier='adjudicaciones')
+
+    def test_all_attributes_are_replicated_if_present(self):
+        group = map_theme_to_group(self.theme)
+        self.assertEqual('adjudicaciones', group['name'])
+        self.assertEqual('Adjudicaciones', group['title'])
+        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
+
+    def test_label_is_used_as_name_if_id_not_present(self):
+        missing_id = dict(self.theme)
+        missing_id['label'] = u'#Will be used as name#'
+        missing_id.pop('id')
+        group = map_theme_to_group(missing_id)
+        self.assertEqual('will-be-used-as-name', group['name'])
+        self.assertEqual('#Will be used as name#', group['title'])
+        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
+
+    def test_theme_missing_label(self):
+        missing_label = dict(self.theme)
+        missing_label.pop('label')
+        group = map_theme_to_group(missing_label)
+        self.assertEqual('adjudicaciones', group['name'])
+        self.assertIsNone(group.get('title'))
+        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
+
+    def test_theme_missing_description(self):
+        missing_description = dict(self.theme)
+        missing_description.pop('description')
+        group = map_theme_to_group(missing_description)
+        self.assertEqual('adjudicaciones', group['name'])
+        self.assertEqual('Adjudicaciones', group['title'])
+        self.assertIsNone(group['description'])
+
+    def test_id_special_characters_are_removed(self):
+        special_char_id = dict(self.theme)
+        special_char_id['id'] = u'#Théme& $id?'
+        group = map_theme_to_group(special_char_id)
+        self.assertEqual('theme-id', group['name'])
+        self.assertEqual('Adjudicaciones', group['title'])
+        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
 
 
 class DatetimeConversionTests(unittest.TestCase):

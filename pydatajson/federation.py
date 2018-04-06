@@ -5,7 +5,7 @@
 from __future__ import print_function
 from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound
-from .ckan_utils import map_dataset_to_package
+from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
 
 
@@ -23,7 +23,6 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_u
             demote_superThemes(bool): Si está en true, los ids de los super themes del dataset, se propagan como grupo.
             demote_themes(bool): Si está en true, los labels de los themes del dataset, pasan a ser tags. Sino,
             se pasan como grupo.
-
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
@@ -103,3 +102,22 @@ def remove_datasets_from_ckan(portal_url, apikey, filter_in=None, filter_out=Non
 
     for identifier in identifiers:
         ckan_portal.call_action('dataset_purge', data_dict={'id': identifier})
+
+
+def push_theme_to_ckan(catalog, portal_url, apikey, identifier=None, label=None):
+    """Escribe la metadata de un theme en el portal pasado por parámetro.
+
+            Args:
+                catalog (DataJson): El catálogo de origen que contiene el theme.
+                portal_url (str): La URL del portal CKAN de destino.
+                apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+                identifier (str): El identificador para buscar el theme en la taxonomia.
+                label (str): El label para buscar el theme en la taxonomia.
+            Returns:
+                str: El name del theme en el catálogo de destino.
+        """
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    theme = catalog.get_theme(identifier=identifier, label=label)
+    group = map_theme_to_group(theme)
+    pushed_group = ckan_portal.call_action('group_create', data_dict=group)
+    return pushed_group['name']

@@ -107,7 +107,7 @@ Toma los siguientes parámetros:
   mantener una consistencia más estricta dentro del catálogo a federar, es necesario validar los datos antes de pasarlos
   a la función. 
 
-- **pydatajson.DataJson.remove_dataset_from_ckan()**: Hace un borrado físico de un dataset en un portal de CKAN.
+- **pydatajson.federation.remove_dataset_from_ckan()**: Hace un borrado físico de un dataset en un portal de CKAN.
 Toma los siguientes parámetros:
     - **portal_url**: La URL del portal CKAN. Debe implementar la funcionalidad de `/data.json`.
     - **apikey**: La apikey de un usuario con los permisos que le permitan borrar el dataset.
@@ -120,6 +120,16 @@ Toma los siguientes parámetros:
     
     En caso de pasar más de un parámetro opcional, la función `remove_dataset_from_ckan()` borra aquellos datasets que
     cumplan con todas las condiciones.
+
+- **pydatajson.DataJson.push_theme_to_ckan()**: Crea un tema en el portal de destino
+Toma los siguientes parámetros:
+    - **portal_url**: La URL del portal CKAN. Debe implementar la funcionalidad de `/data.json`.
+    - **apikey**: La apikey de un usuario con los permisos que le permitan borrar el dataset.
+    - **identifier** (opcional, default: None): Id del `theme` que se quiere federar, en el catálogo de origen.
+    - **label** (opcional, default: None): label del `theme` que se quiere federar, en el catálogo de origen.
+
+    Debe pasarse por lo menos uno de los 2 parámetros opcionales. En caso de que se provean los 2, se prioriza el
+    identifier sobre el label.
 
 ## Uso
     

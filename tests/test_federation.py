@@ -3,14 +3,14 @@
 import unittest
 import os
 import re
-import sys
+
 try:
     from mock import patch, MagicMock
 except ImportError:
     from unittest.mock import patch, MagicMock
 
 from .context import pydatajson
-from pydatajson.federation import push_dataset_to_ckan, remove_datasets_from_ckan
+from pydatajson.federation import push_dataset_to_ckan, remove_datasets_from_ckan, push_theme_to_ckan
 from ckanapi.errors import NotFound
 
 SAMPLES_DIR = os.path.join("tests", "samples")
@@ -215,3 +215,40 @@ class RemoveDatasetTestCase(unittest.TestCase):
             'portal', 'key', only_time_series=True, organization='some_org')
         mock_portal.return_value.call_action.assert_called_with(
             'dataset_purge', data_dict={'id': 'id_2'})
+
+
+class PushThemeTestCase(unittest.TestCase):
+
+    @classmethod
+    def get_sample(cls, sample_filename):
+        return os.path.join(SAMPLES_DIR, sample_filename)
+
+    @classmethod
+    def setUpClass(cls):
+        cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_empty_theme_search_raises_exception(self, mock_portal):
+        with self.assertRaises(AssertionError):
+            push_theme_to_ckan(self.catalog, 'portal_url', 'apikey')
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_function_pushes_theme_by_identifier(self, mock_portal):
+        mock_portal.return_value.call_action = MagicMock(return_value={'name': 'group_name'})
+        result = push_theme_to_ckan(self.catalog, 'portal_url', 'apikey', identifier='compras')
+        self.assertEqual('group_name', result)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_function_pushes_theme_by_label(self, mock_portal):
+        mock_portal.return_value.call_action = MagicMock(return_value={'name': 'other_name'})
+        result = push_theme_to_ckan(self.catalog, 'portal_url', 'apikey', label='Adjudicaciones')
+        self.assertEqual('other_name', result)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_ckan_portal_is_called_with_correct_parametres(self, mock_portal):
+        mock_portal.return_value.call_action = MagicMock(return_value={'name': u'contrataciones'})
+        group = {'name': u'contrataciones',
+                 'title': u'Contrataciones',
+                 'description': u'Datasets sobre contrataciones.'}
+        push_theme_to_ckan(self.catalog, 'portal_url', 'apikey', identifier='contrataciones')
+        mock_portal.return_value.call_action.assert_called_once_with('group_create', data_dict=group)
