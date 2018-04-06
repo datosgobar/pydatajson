@@ -134,3 +134,24 @@ def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, porta
     return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                                 portal_url, apikey, catalog_id=catalog_id)
 
+
+def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey, dataset_list=None):
+    push_new_themes(catalog, portal_url, apikey)
+    dataset_list = dataset_list or [ds['identifier'] for ds in catalog.datasets]
+    for dataset_id in dataset_list:
+        restore_dataset_to_ckan(catalog, owner_org, dataset_id, portal_url, apikey)
+
+
+def harvest_catalog_to_ckan(catalog, owner_org, portal_url, apikey, catalog_id, dataset_list=None):
+    dataset_list = dataset_list or [ds['identifier'] for ds in catalog.datasets]
+    for dataset_id in dataset_list:
+        harvest_dataset_to_ckan(catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
+
+
+def push_new_themes(catalog, portal_url, apikey):
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    existing_themes = ckan_portal.call_action('group_list')
+    new_themes = [theme['id'] for theme in catalog['themes'] if theme['id'] not in existing_themes]
+    for new_theme in new_themes:
+        push_theme_to_ckan(catalog, portal_url, apikey, identifier=new_theme)
+    return new_themes
