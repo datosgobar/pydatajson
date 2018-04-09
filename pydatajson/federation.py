@@ -215,7 +215,9 @@ def push_new_themes(catalog, portal_url, apikey):
     """
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
     existing_themes = ckan_portal.call_action('group_list')
-    new_themes = [theme['id'] for theme in catalog['themes'] if theme['id'] not in existing_themes]
+    new_themes = [theme['id'] for theme in catalog['themeTaxonomy'] if theme['id'] not in existing_themes]
+    pushed_names = []
     for new_theme in new_themes:
-        push_theme_to_ckan(catalog, portal_url, apikey, identifier=new_theme)
-    return new_themes
+        name = push_theme_to_ckan(catalog, portal_url, apikey, identifier=new_theme)
+        pushed_names.append(name)
+    return pushed_names

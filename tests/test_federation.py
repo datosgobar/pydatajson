@@ -267,3 +267,62 @@ class PushThemeTestCase(unittest.TestCase):
                  'description': u'Datasets sobre contrataciones.'}
         push_theme_to_ckan(self.catalog, 'portal_url', 'apikey', identifier='contrataciones')
         mock_portal.return_value.call_action.assert_called_once_with('group_create', data_dict=group)
+
+
+class PushCatalogThemesTestCase(unittest.TestCase):
+    @classmethod
+    def get_sample(cls, sample_filename):
+        return os.path.join(SAMPLES_DIR, sample_filename)
+
+    @classmethod
+    def setUpClass(cls):
+        cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_empty_portal_pushes_every_theme(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'group_list':
+                return []
+            elif action == 'group_create':
+                return {'name': data_dict['name']}
+            else:
+                self.fail('should not be called')
+
+        mock_portal.return_value.call_action = mock_call_action
+        res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
+        try:
+            self.assertItemsEqual([theme['id'] for theme in self.catalog['themeTaxonomy']], res_names)
+        except AttributeError:
+            self.assertCountEqual([theme['id'] for theme in self.catalog['themeTaxonomy']], res_names)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_full_portal_pushes_nothing(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'group_list':
+                return [theme['id'] for theme in self.catalog['themeTaxonomy']]
+            else:
+                self.fail('should not be called')
+
+        mock_portal.return_value.call_action = mock_call_action
+        res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
+        try:
+            self.assertItemsEqual([], res_names)
+        except AttributeError:
+            self.assertCountEqual([], res_names)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_non_empty_intersection_pushes_missing_themes(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'group_list':
+                return [theme['id'] for theme in self.catalog['themeTaxonomy']][0:2]
+            elif action == 'group_create':
+                return {'name': data_dict['name']}
+            else:
+                self.fail('should not be called')
+
+        mock_portal.return_value.call_action = mock_call_action
+        res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
+        try:
+            self.assertItemsEqual([theme['id'] for theme in self.catalog['themeTaxonomy']][2:], res_names)
+        except AttributeError:
+            self.assertCountEqual([theme['id'] for theme in self.catalog['themeTaxonomy']][2:], res_names)
