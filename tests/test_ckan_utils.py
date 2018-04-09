@@ -22,18 +22,19 @@ class DatasetConversionTestCase(unittest.TestCase):
         cls.dataset_id = cls.dataset.get('identifier')
         cls.distributions = cls.dataset['distribution']
 
-    def test_catalog_id_is_prepended_to_dataset_id_if_passed(self):
+    def test_catalog_id_is_prepended_to_dataset_id_and_name_if_passed(self):
         package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, package['id'])
+        self.assertEqual(title_to_name(self.catalog_id + '-' + self.dataset['title']), package['name'])
 
-    def test_dataset_id_is_preserved_if_catlog_id_is_not_passed(self):
+    def test_dataset_id_and_name_are_preserved_if_catalog_id_is_not_passed(self):
         package = map_dataset_to_package(self.catalog, self.dataset, 'owner')
         self.assertEqual(self.dataset_id, package['id'])
+        self.assertEqual(title_to_name(self.dataset['title']), package['name'])
 
     def test_replicated_plain_attributes_are_corrext(self):
         package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
-        plain_replicated_attributes = [('title', 'title'),
-                                       ('notes', 'description'),
+        plain_replicated_attributes = [('notes', 'description'),
                                        ('url', 'landingPage')]
         for fst, snd in plain_replicated_attributes:
             self.assertEqual(self.dataset.get(snd), package.get(fst))
