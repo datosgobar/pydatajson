@@ -19,7 +19,7 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_u
             dataset_origin_identifier (str): El id del dataset que se va a federar.
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
-            catalog_id (str): El prefijo con el que va a preceder el id del dataset en catálogo destino.
+            catalog_id (str): El prefijo con el que va a preceder el id y name del dataset en catálogo destino.
             demote_superThemes(bool): Si está en true, los ids de los super themes del dataset, se propagan como grupo.
             demote_themes(bool): Si está en true, los labels de los themes del dataset, pasan a ser tags. Sino,
             se pasan como grupo.
@@ -124,16 +124,53 @@ def push_theme_to_ckan(catalog, portal_url, apikey, identifier=None, label=None)
 
 
 def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_url, apikey):
+    """Restaura la metadata de un dataset en el portal pasado por parámetro.
+
+        Args:
+            catalog (DataJson): El catálogo de origen que contiene el dataset.
+            owner_org (str): La organización a la cual pertence el dataset.
+            dataset_origin_identifier (str): El id del dataset que se va a restaurar.
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+        Returns:
+            str: El id del dataset restaurado.
+    """
     return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                                 portal_url, apikey, None, False, False)
 
 
 def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_url, apikey, catalog_id):
+    """Federa la metadata de un dataset en el portal pasado por parámetro.
+
+        Args:
+            catalog (DataJson): El catálogo de origen que contiene el dataset.
+            owner_org (str): La organización a la cual pertence el dataset.
+            dataset_origin_identifier (str): El id del dataset que se va a restaurar.
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+            catalog_id(str): El id que prep
+        Returns:
+            str: El id del dataset restaurado.
+    """
+
     return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                                 portal_url, apikey, catalog_id=catalog_id)
 
 
 def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey, dataset_list=None):
+    """Restaura los datasets de un catálogo al portal pasado por parámetro. Si hay temas presentes en el DataJson que
+       no están en el portal de CKAN, los genera.
+
+        Args:
+            catalog (DataJson): El catálogo de origen que se restaura.
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+            dataset_list(list(str)): Los ids de los datasets a restaurar. Si no se pasa una lista, todos los datasests se
+            restauran.
+            owner_org (str): La organización a la cual pertencen los datasets. Si no se pasa, se utiliza el catalog_id.
+        Returns:
+            str: El id del dataset en el catálogo de destino.
+    """
     push_new_themes(catalog, portal_url, apikey)
     dataset_list = dataset_list or [ds['identifier'] for ds in catalog.datasets]
     restored = []
@@ -143,8 +180,22 @@ def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey, dataset_list
     return restored
 
 
-def harvest_catalog_to_ckan(catalog, owner_org, portal_url, apikey, catalog_id, dataset_list=None):
+def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id, dataset_list=None, owner_org=None):
+    """Federa los datasets de un catálogo al portal pasado por parámetro.
+
+        Args:
+            catalog (DataJson): El catálogo de origen que se federa.
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+            catalog_id (str): El prefijo con el que va a preceder el id del dataset en catálogo destino.
+            dataset_list(list(str)): Los ids de los datasets a federar. Si no se pasa una lista, todos los datasests se
+            federan.
+            owner_org (str): La organización a la cual pertencen los datasets. Si no se pasa, se utiliza el catalog_id.
+        Returns:
+            str: El id del dataset en el catálogo de destino.
+    """
     dataset_list = dataset_list or [ds['identifier'] for ds in catalog.datasets]
+    owner_org = owner_org or catalog_id
     harvested = []
     for dataset_id in dataset_list:
         harvested_id = harvest_dataset_to_ckan(catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
@@ -153,6 +204,15 @@ def harvest_catalog_to_ckan(catalog, owner_org, portal_url, apikey, catalog_id, 
 
 
 def push_new_themes(catalog, portal_url, apikey):
+    """Toma un catálogo y escribe los temas de la taxonomía que no están presentes.
+
+        Args:
+            catalog (DataJson): El catálogo de origen que contiene la taxonomía.
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+        Returns:
+            str: Los ids de los temas creados.
+    """
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
     existing_themes = ckan_portal.call_action('group_list')
     new_themes = [theme['id'] for theme in catalog['themes'] if theme['id'] not in existing_themes]
