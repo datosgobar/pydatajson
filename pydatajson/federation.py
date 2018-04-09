@@ -124,13 +124,11 @@ def push_theme_to_ckan(catalog, portal_url, apikey, identifier=None, label=None)
 
 
 def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_url, apikey):
-
     return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                                 portal_url, apikey, None, False, False)
 
 
 def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, portal_url, apikey, catalog_id):
-
     return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                                 portal_url, apikey, catalog_id=catalog_id)
 
@@ -138,14 +136,20 @@ def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier, porta
 def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey, dataset_list=None):
     push_new_themes(catalog, portal_url, apikey)
     dataset_list = dataset_list or [ds['identifier'] for ds in catalog.datasets]
+    restored = []
     for dataset_id in dataset_list:
-        restore_dataset_to_ckan(catalog, owner_org, dataset_id, portal_url, apikey)
+        restored_id = restore_dataset_to_ckan(catalog, owner_org, dataset_id, portal_url, apikey)
+        restored.append(restored_id)
+    return restored
 
 
 def harvest_catalog_to_ckan(catalog, owner_org, portal_url, apikey, catalog_id, dataset_list=None):
     dataset_list = dataset_list or [ds['identifier'] for ds in catalog.datasets]
+    harvested = []
     for dataset_id in dataset_list:
-        harvest_dataset_to_ckan(catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
+        harvested_id = harvest_dataset_to_ckan(catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
+        harvested.append(harvested_id)
+    return harvested
 
 
 def push_new_themes(catalog, portal_url, apikey):
