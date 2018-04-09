@@ -93,8 +93,8 @@ Toma los siguientes parámetros:
   - **portal_url**: URL del portal de CKAN de destino.
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
   organización pasada como parámetro.
-  - **catalog_id** (opcional, default: None): El prefijo que va a preceder el id del dataset en el portal destino,
-  separado por un guión bajo.
+  - **catalog_id** (opcional, default: None): El prefijo que va a preceder el id y name del dataset en el portal
+  destino, separado por un guión.
   - **demote_superThemes** (opcional, default: True):Si está en true, los ids de los themes del dataset, se escriben
   como groups de CKAN.
   - **demote_themes** (opcional, default: True): Si está en true, los labels de los themes del dataset, se escriben como
