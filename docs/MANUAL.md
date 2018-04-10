@@ -87,7 +87,7 @@ Existen dos métodos, cuyos reportes se incluyen diariamente entre los archivos 
 ### Métodos para federación de datasets
 
 - **pydatajson.DataJson.push_dataset_to_ckan()**: Copia la metadata de un dataset y la escribe en un portal de CKAN.
-Toma los siguientes parámetros: 
+Toma los siguientes parámetros:
   - **owner_org**: La organización a la que pertence el dataset. Debe encontrarse en el portal de destino.
   - **dataset_origin_identifier**: Identificador del dataset en el catálogo de origen.
   - **portal_url**: URL del portal de CKAN de destino.
@@ -100,7 +100,7 @@ Toma los siguientes parámetros:
   - **demote_themes** (opcional, default: True): Si está en true, los labels de los themes del dataset, se escriben como
   tags de CKAN; sino,se pasan como grupo.
 
-  
+
   Retorna el id en el nodo de destino del dataset federado.
   
   **Advertencia**: La función `push_dataset_to_ckan()` sólo garantiza consistencia con los estándares de CKAN. Para
@@ -123,13 +123,62 @@ Toma los siguientes parámetros:
 
 - **pydatajson.DataJson.push_theme_to_ckan()**: Crea un tema en el portal de destino
 Toma los siguientes parámetros:
-    - **portal_url**: La URL del portal CKAN. Debe implementar la funcionalidad de `/data.json`.
-    - **apikey**: La apikey de un usuario con los permisos que le permitan borrar el dataset.
+    - **portal_url**: La URL del portal CKAN.
+    - **apikey**: La apikey de un usuario con los permisos que le permitan crear un grupo.
     - **identifier** (opcional, default: None): Id del `theme` que se quiere federar, en el catálogo de origen.
     - **label** (opcional, default: None): label del `theme` que se quiere federar, en el catálogo de origen.
 
     Debe pasarse por lo menos uno de los 2 parámetros opcionales. En caso de que se provean los 2, se prioriza el
     identifier sobre el label.
+
+- **pydatajson.DataJson.push_new_themes()**: Toma los temas de la taxonomía de un DataJson y los crea en el catálogo de
+    destino si no existen.
+Toma los siguientes parámetros:
+    - **portal_url**: La URL del portal CKAN adonde se escribiran los temas.
+    - **apikey**: La apikey de un usuario con los permisos que le permitan crear los grupos.
+
+
+Hay también funciones que facilitan el uso de `push_dataset_to_ckan()`:
+
+- **pydatajson.DataJson.harvest_dataset_to_ckan()**: Federa la metadata de un dataset en un portal de CKAN.
+Toma los siguientes parámetros:
+  - **owner_org**: La organización a la que pertence el dataset. Debe encontrarse en el portal de destino.
+  - **dataset_origin_identifier**: Identificador del dataset en el catálogo de origen.
+  - **portal_url**: URL del portal de CKAN de destino.
+  - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
+  organización pasada como parámetro.
+  - **catalog_id**: El prefijo que va a preceder el id y name del dataset en el portal
+  destino, separado por un guión.
+
+
+  Retorna el id en el nodo de destino del dataset federado.
+
+- **pydatajson.DataJson.restore_dataset_to_ckan()**: Restaura la metadata de un dataset en un portal de CKAN.
+Toma los siguientes parámetros:
+  - **owner_org**: La organización a la que pertence el dataset. Debe encontrarse en el portal de destino.
+  - **dataset_origin_identifier**: Identificador del dataset en el catálogo de origen.
+  - **portal_url**: URL del portal de CKAN de destino.
+  - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
+  organización pasada como parámetro.
+
+
+  Retorna el id del dataset restaurado.
+
+- **pydatajson.DataJson.harvest_catalog_to_ckan()**: Federa los datasets de un catálogo al portal pasado por parámetro.
+Toma los siguientes parámetros:
+  - **dataset_origin_identifier**: Identificador del dataset en el catálogo de origen.
+  - **portal_url**: URL del portal de CKAN de destino.
+  - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset.
+  - **catalog_id**: El prefijo que va a preceder el id y name del dataset en el portal
+  destino, separado por un guión.
+  - **dataset_list** (opcional, default: None): Lista de ids de los datasets a federar. Si no se pasa, se federan todos
+  los datasets del catálogo.
+  - **owner_org** (opcional, default: None): La organización a la que pertence el dataset. Debe encontrarse en el
+  portal de destino. Si no se pasa, se toma como organización el catalog_id
+
+
+  Retorna el id en el nodo de destino de los datasets federados.
+
 
 ## Uso
     

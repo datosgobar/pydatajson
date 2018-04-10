@@ -46,7 +46,7 @@ class PushDatasetTestCase(unittest.TestCase):
             if action == 'package_update':
                 raise NotFound
             if action == 'package_create':
-                return {'id': data_dict['id']}
+                return data_dict
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
@@ -58,7 +58,7 @@ class PushDatasetTestCase(unittest.TestCase):
     def test_id_is_updated_correctly(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
-                return {'id': data_dict['id']}
+                return data_dict
             if action == 'package_create':
                 self.fail('should not be called')
             else:
@@ -72,7 +72,7 @@ class PushDatasetTestCase(unittest.TestCase):
     def test_dataset_id_is_preserved_if_catalog_id_is_not_passed(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
-                return {'id': data_dict['id']}
+                return data_dict
             if action == 'package_create':
                 self.fail('should not be called')
             else:
@@ -98,7 +98,7 @@ class PushDatasetTestCase(unittest.TestCase):
                     self.assertItemsEqual(keywords, [tag['name'] for tag in data_dict['tags']])
                 except AttributeError:
                     self.assertCountEqual(keywords, [tag['name'] for tag in data_dict['tags']])
-                return {'id': data_dict['id']}
+                return data_dict
             if action == 'package_create':
                 self.fail('should not be called')
             else:
@@ -117,7 +117,7 @@ class PushDatasetTestCase(unittest.TestCase):
                         {'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
             elif action == 'package_update':
                 self.assertEqual('notspecified', data_dict['license_id'])
-                return {'id': data_dict['id']}
+                return data_dict
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
@@ -132,7 +132,7 @@ class PushDatasetTestCase(unittest.TestCase):
                         {'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
             elif action == 'package_update':
                 self.assertEqual('notspecified', data_dict['license_id'])
-                return {'id': data_dict['id']}
+                return data_dict
             else:
                 return []
 
@@ -144,7 +144,7 @@ class PushDatasetTestCase(unittest.TestCase):
     def test_dataset_level_wrappers(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
-                return {'id': data_dict['id']}
+                return data_dict
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
@@ -154,6 +154,74 @@ class PushDatasetTestCase(unittest.TestCase):
                                                'portal', 'key', self.catalog_id)
         self.assertEqual(self.dataset_id, restored_id)
         self.assertEqual(self.catalog_id+'_'+self.dataset_id, harvested_id)
+    
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_harvest_catalog_with_no_optional_parametres(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                self.assertTrue(data_dict['id'].startswith(self.catalog_id+'_'))
+                self.assertTrue(data_dict['name'].startswith(self.catalog_id+'-'))
+                self.assertEqual(self.catalog_id, data_dict['owner_org'])
+                return data_dict
+            else:
+                return []
+        mock_portal.return_value.call_action = mock_call_action
+        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id)
+        try:
+            self.assertItemsEqual([self.catalog_id+'_'+ds['identifier'] for ds in self.catalog.datasets],
+                                  harvested_ids)
+        except AttributeError:
+            self.assertCountEqual([self.catalog_id+'_'+ds['identifier'] for ds in self.catalog.datasets],
+                                  harvested_ids)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_harvest_catalog_with_dataset_list(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return data_dict
+            else:
+                return []
+
+        mock_portal.return_value.call_action = mock_call_action
+
+        dataset_list = [ds['identifier'] for ds in self.catalog.datasets[:1]]
+        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+                                                dataset_list=dataset_list)
+        try:
+            self.assertItemsEqual([self.catalog_id+'_'+ds_id for ds_id in dataset_list],
+                                  harvested_ids)
+        except AttributeError:
+            self.assertCountEqual([self.catalog_id+'_'+ds_id for ds_id in dataset_list],
+                                  harvested_ids)
+
+        dataset_list = [ds['identifier'] for ds in self.catalog.datasets]
+        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+                                                dataset_list=dataset_list)
+        try:
+            self.assertItemsEqual([self.catalog_id+'_'+ds_id for ds_id in dataset_list],
+                                  harvested_ids)
+        except AttributeError:
+            self.assertCountEqual([self.catalog_id+'_'+ds_id for ds_id in dataset_list],
+                                  harvested_ids)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_harvest_catalog_with_owner_org(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                self.assertEqual('owner', data_dict['owner_org'])
+                return data_dict
+            else:
+                return []
+
+        mock_portal.return_value.call_action = mock_call_action
+        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+                                                owner_org='owner')
+        try:
+            self.assertItemsEqual([self.catalog_id+'_'+ds['identifier'] for ds in self.catalog.datasets],
+                                  harvested_ids)
+        except AttributeError:
+            self.assertCountEqual([self.catalog_id+'_'+ds['identifier'] for ds in self.catalog.datasets],
+                                  harvested_ids)
 
 
 class RemoveDatasetTestCase(unittest.TestCase):
@@ -267,3 +335,62 @@ class PushThemeTestCase(unittest.TestCase):
                  'description': u'Datasets sobre contrataciones.'}
         push_theme_to_ckan(self.catalog, 'portal_url', 'apikey', identifier='contrataciones')
         mock_portal.return_value.call_action.assert_called_once_with('group_create', data_dict=group)
+
+
+class PushCatalogThemesTestCase(unittest.TestCase):
+    @classmethod
+    def get_sample(cls, sample_filename):
+        return os.path.join(SAMPLES_DIR, sample_filename)
+
+    @classmethod
+    def setUpClass(cls):
+        cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_empty_portal_pushes_every_theme(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'group_list':
+                return []
+            elif action == 'group_create':
+                return {'name': data_dict['name']}
+            else:
+                self.fail('should not be called')
+
+        mock_portal.return_value.call_action = mock_call_action
+        res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
+        try:
+            self.assertItemsEqual([theme['id'] for theme in self.catalog['themeTaxonomy']], res_names)
+        except AttributeError:
+            self.assertCountEqual([theme['id'] for theme in self.catalog['themeTaxonomy']], res_names)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_full_portal_pushes_nothing(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'group_list':
+                return [theme['id'] for theme in self.catalog['themeTaxonomy']]
+            else:
+                self.fail('should not be called')
+
+        mock_portal.return_value.call_action = mock_call_action
+        res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
+        try:
+            self.assertItemsEqual([], res_names)
+        except AttributeError:
+            self.assertCountEqual([], res_names)
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_non_empty_intersection_pushes_missing_themes(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'group_list':
+                return [theme['id'] for theme in self.catalog['themeTaxonomy']][0:2]
+            elif action == 'group_create':
+                return {'name': data_dict['name']}
+            else:
+                self.fail('should not be called')
+
+        mock_portal.return_value.call_action = mock_call_action
+        res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
+        try:
+            self.assertItemsEqual([theme['id'] for theme in self.catalog['themeTaxonomy']][2:], res_names)
+        except AttributeError:
+            self.assertCountEqual([theme['id'] for theme in self.catalog['themeTaxonomy']][2:], res_names)
