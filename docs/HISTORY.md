@@ -1,5 +1,161 @@
-History
-=======
+Versiones
+=========
+
+0.4.4 (2018-04-09)
+-------------------
+
+* Agrega wrappers para `push_dataset_to_ckan()`
+
+0.4.3 (2018-03-20)
+-------------------
+
+* Mejora el manejo de themes para recrear un catálogo
+
+0.4.2 (2018-03-13)
+-------------------
+
+* Agrega funciones auxiliares para la administración de un CKAN vía API para facilitar la administración de la federación de datasets
+    - `remove_dataset_to_ckan()`
+* Incorpora nuevas validaciones (formatos y fileNames)
+* Agrega flags opcionales para que `push_dataset_to_ckan()` sea un método que transforma opcionalmente la metadata de un dataset
+
+0.4.1 (2018-02-16)
+-------------------
+
+* `datasets_equal()` permite especificar los campos a tener en cuenta para la comparación, como un parámetro.
+
+0.4.0 (2018-02-08)
+-------------------
+
+* Incorpora métodos para federar un dataset de un catálogo a un CKAN o un Andino: `push_dataset_to_ckan()`.
+* Actualiza validaciones y esquema de metadatos al Perfil Nacional de Metadatos versión 1.1.
+
+0.3.21 (2017-12-22)
+-------------------
+
+* Agrega soporte para Python 3.6
+
+0.3.20 (2017-11-16)
+-------------------
+
+* Agrego método `get_theme()` para devolver un tema de la taxonomía específica del catálogo según su `id` o `label`.
+
+0.3.19 (2017-10-31)
+-------------------
+
+* Agrego métodos de búsqueda de series de tiempo en un catálogo (`get_time_series()`) y un parámetro `only_time_series=True or False` para filtrar datasets y distribuciones en sus métodos de búsqueda (`get_datasets(only_time_series=True)` devuelve sólo aquellos datasets que tengan alguna serie de tiempo).
+
+0.3.18 (2017-10-19)
+-------------------
+
+* Agrego posibilidad de pasar un logger desde afuera a la función de lectura de catálogos en Excel.
+
+0.3.15 (2017-10-09)
+-------------------
+
+* Agrega filtro por series de tiempo en `get_datasets()` y `get_distributions()`. Tienen un parámetro `only_time_series` que devuelve sólo aquellos que tengan o sean distribuciones con series de tiempo.
+
+0.3.12 (2017-09-21)
+-------------------
+
+* Agrega función para escribir un catálogo en Excel.
+* Agrega funciones para remover datasets o distribuciones de un catálogo.
+
+0.3.11 (2017-09-13)
+-------------------
+
+* Incorpora parámetro para excluir campos de metadatos en la devolución de la búsqueda de datasets y distribuciones.
+
+0.3.10 (2017-09-11)
+-------------------
+
+* Agregar referencia interna a los ids de las entidades padre de otras (distribuciones y fields.)
+
+0.3.9 (2017-09-05)
+-------------------
+
+* Flexibiliza lectura de extras en ckan to datajson.
+* Flexibiliza longitud mínima de campos para recomendar su federación o no.
+* Agrega método para devolver los metadatos a nivel de catálogo.
+* Resuelve la escritura de objetos python como texto en excel.
+
+0.3.8 (2017-08-25)
+-------------------
+
+* Agrega stop words a `helpers.title_to_name()`
+
+0.3.4 (2017-08-21)
+-------------------
+
+* Agrega método para buscar la localización de un `field` en un catálogo.
+
+0.3.3 (2017-08-20)
+-------------------
+
+* Agrega método para convertir el título de un dataset o distribución en un nombre normalizado para la creación de URLs.
+
+0.3.2 (2017-08-16)
+-------------------
+
+* Amplía reporte de federación en markdown.
+
+0.3.0 (2017-08-14)
+-------------------
+
+* Agrega métodos para navegar un catálogo desde el objeto DataJson.
+
+0.2.27 (2017-08-11)
+-------------------
+
+* Agrega validacion de que el campo `superTheme` sólo contenga ids en mayúsculas o minúsculas de alguno de los 13 temas de la taxonomía temática de datos.gob.ar.
+* Agrega validación limitando a 60 caracteres los nombres de los campos `field_title`.
+* Mejoras al reporte de asistencia a la federación.
+
+0.2.26 (2017-08-04)
+-------------------
+
+* Agrega validación de que no haya ids repetidos en la lista de temas de `themeTaxonomy`.
+* Agrega traducción de ckan del campo extra `Cobertura temporal` a `temporal`.
+
+0.2.24 (2017-08-03)
+-------------------
+* Mejoras en los reportes de errores y análisis de datasets para federación
+* Métodos `DataJson.validate_catalog()` y `DataJson.generate_datasets_report()` tienen nuevas opciones para mejorar los reportes, especialmente en excel.
+
+0.2.23 (2017-08-02)
+-------------------
+
+* Bug fixes
+
+0.2.22 (2017-08-02)
+-------------------
+
+* Agrega estilo y formato al reporte de datasets
+* Agrega nuevos campos al reporte de datasets
+* Agrega un campo identificador del catálogo en el archivo de configuración de federación
+
+0.2.21 (2017-08-02)
+-------------------
+
+* Tolera el caso de intentar escribir un reporte de datasets sobre un catálogo que no tiene datasets. Loggea un warning en lugar de levantar una excepción.
+
+0.2.20 (2017-08-01)
+-------------------
+
+* Elimina la verificación de SSL en las requests de ckan_reader.
+
+0.2.19 (2017-08-01)
+-------------------
+
+* Elimina la verificación de SSL en las requests.
+
+0.2.18 (2017-07-25)
+-------------------
+
+* Mejora la validación del campo `temporal`
+* Agrega formas de reporte de errores para el método `DataJson.validate_catalog()`:
+    - Devuelve sólo errores con  `only_errors=True`
+    - Devuelve una lista de errores lista para ser convertida en tabla con `fmt="list"`
 
 0.2.17 (2017-07-18)
 -------------------

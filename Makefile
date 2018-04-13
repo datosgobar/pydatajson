@@ -64,6 +64,11 @@ coverage: ## check code coverage quickly with the default Python
 		coverage html
 		$(BROWSER) htmlcov/index.html
 
+# TEST
+profiling_test:
+	python -m tests.profiling
+
+# DOCUMENTACIÓN Y RELEASES
 docs: ## generate Sphinx HTML documentation, including API docs
 	cp README.md docs/README.md
 	cp HISTORY.md docs/HISTORY.md
@@ -96,4 +101,7 @@ pypi: ## register the package to PyPi get travis ready to deploy to pip
 
 doctoc: ## generate table of contents, doctoc command line tool required
         ## https://github.com/thlorenz/doctoc
-	doctoc --title "## Indice" README.md
+	doctoc --github --title " " README.md
+	bash fix_github_links.sh README.md
+	doctoc --github --title " " docs/MANUAL.md
+	bash fix_github_links.sh docs/MANUAL.md

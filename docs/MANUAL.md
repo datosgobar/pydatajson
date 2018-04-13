@@ -1,28 +1,273 @@
+Manual de uso
+=============
 
-Manual de uso del módulo `pydatajson`
-=====================================
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+ 
+
+- [Contexto](#contexto)
+- [Glosario](#glosario)
+- [Funcionalidades](#funcionalidades)
+  - [Métodos de validación de metadatos](#metodos-de-validacion-de-metadatos)
+  - [Métodos de transformación de formatos de metadatos](#metodos-de-transformacion-de-formatos-de-metadatos)
+  - [Métodos de generación de reportes](#metodos-de-generacion-de-reportes)
+    - [Para federación de datasets](#para-federacion-de-datasets)
+  - [Para presentación de catálogos y datasets](#para-presentacion-de-catalogos-y-datasets)
+  - [Métodos para federación de datasets](#metodos-para-federacion-de-datasets)
+- [Uso](#uso)
+  - [Setup](#setup)
+  - [Validación de catálogos](#validacion-de-catalogos)
+  - [Transformación de `catalog.xlsx` a `data.json`](#transformacion-de-catalogxlsx-a-datajson)
+  - [Generación de reportes](#generacion-de-reportes)
+    - [Crear un archivo de configuración eligiendo manualmente los datasets a federar](#crear-un-archivo-de-configuracion-eligiendo-manualmente-los-datasets-a-federar)
+    - [Crear un archivo de configuración que incluya únicamente los datasets con metadata válida](#crear-un-archivo-de-configuracion-que-incluya-unicamente-los-datasets-con-metadata-valida)
+    - [Modificar catálogos para conservar únicamente los datasets válidos](#modificar-catalogos-para-conservar-unicamente-los-datasets-v%C3%A1lidos)
+- [Anexo I: Estructura de respuestas](#anexo-i-estructura-de-respuestas)
+  - [validate_catalog()](#validate_catalog)
+  - [generate_datasets_report()](#generate_datasets_report)
+  - [generate_harvester_config()](#generate_harvester_config)
+  - [generate_datasets_summary()](#generate_datasets_summary)
+  - [generate_catalog_readme()](#generate_catalog_readme)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Contexto
 
-En el marco de la política de Datos Abiertos, y el Decreto 117/2016, *"Plan de Apertura de Datos”*, pretendemos que todos los conjuntos de datos (*datasets*) publicados por organismos de la Administración Pública Nacional sean descubribles desde el Portal Nacional de Datos, http://datos.gob.ar/. A tal fin, se decidió que todo portal de datos de la APN cuente en su raíz con un archivo `data.json`, que especifica sus propiedades y los contenidos disponibles.
+La política de Datos Abiertos de la República Argentina que nace con el Decreto 117/2016 (*"Plan de Apertura de Datos”*) se basa en un esquema descentralizado donde se conforma una red de nodos publicadores de datos y un nodo central o indexador.
 
-Para facilitar y automatizar la validación, manipulación y transformación de archivos `data.json`, se creó el módulo `pydatajson`
+El pilar fundamental de este esquema es el cumplimiento de un Perfil Nacional de Metadatos común a todos los nodos, en el que cada organismo de la APN que publique un archivo `data.json` o formato alternativo compatible.
 
-Para aquellos organismos que por distintos motivos no cuenten con un archivo de metadatos en formato estándar (JSON) describiendo el catálogo de datasets presente en su portal, se creó una [plantilla en formato XLSX](samples/plantilla_data.xlsx) que facilita la carga de metadatos, y cuyo contenido puede ser programáticamente convertido por este módulo al formato JSON que los estándares especifican.
+Esto posibilita que todos los conjuntos de datos (*datasets*) publicados por organismos de la Administración Pública Nacional se puedan encontrar en el Portal Nacional de Datos: http://datos.gob.ar/.
 
 ## Glosario
 
-Un Portal de datos consiste en un *catálogo*, compuesto por *datasets*, que a su vez son cada uno un conjunto de *distribuciones*. De la "Guía para el uso y la publicación de metadatos".
+Un *catálogo* de datos abiertos está compuesto por *datasets*, que a su vez son cada uno un conjunto de *distribuciones* (archivos descargables). Ver la  [Guía para el uso y la publicación de metadatos](http://paquete-apertura-datos.readthedocs.io/es/stable/guia_metadatos.html) para más información.
 
-* **Catálogo de datos**: Es un directorio de conjuntos de datos, que recopila y organiza metadatos descriptivos, de los datos que produce una organización. Un portal de datos es un catálogo.
+* **Catálogo de datos**: Directorio de conjuntos de datos que recopila y organiza metadatos descriptivos de los datos que produce una organización. Un portal de datos es una implementación posible de un catálogo. También lo es un archivo Excel, un JSON u otras.
 
-* **Dataset**: También llamado conjunto de datos, es la pieza principal en todo catálogo. Se trata de un activo de datos que agrupa recursos referidos a un mismo tema, que respetan una estructura de la información. Los recursos que lo componen pueden diferir en el formato en que se los presenta (por ejemplo: .csv, .json, .xls, etc.), la fecha a la que se refieren, el área geográfica cubierta o estar separados bajo algún otro criterio. 
+* **Dataset**: También llamado conjunto de datos. Pieza principal en todo catálogo. Se trata de un activo de datos que agrupa recursos referidos a un mismo tema, que respetan una estructura de la información. Los recursos que lo componen pueden diferir en el formato en que se los presenta (por ejemplo: .csv, .json, .xls, etc.), la fecha a la que se refieren, el área geográfica cubierta o estar separados bajo algún otro criterio.
 
 * **Distribución o recurso**: Es la unidad mínima de un catálogo de datos. Se trata de los activos de datos que se publican allí y que pueden ser descargados y re-utilizados por un usuario como archivos. Los recursos pueden tener diversos formatos (.csv, .shp, etc.). Están acompañados de información contextual asociada (“metadata”) que describe el tipo de información que se publica, el proceso por el cual se obtiene, la descripción de los campos del recurso y cualquier información extra que facilite su interpretación, procesamiento y lectura.
 
-* **data.json y data.xlsx**: Son las dos _representaciones externas_ de los metadatos de un catálogo que `pydatajson` comprende. Para poder ser analizados programáticamente, los metadatos de un catálogo deben estar representados en un formato estandarizado: el PAD establece el archivo `data.json` para tal fin, y para extender la cobertura del programa hemos incluido una plantilla XLSX que denominamos `data.xlsx`.
+* **data.json y catalog.xlsx**: Son las dos _representaciones externas_ de los metadatos de un catálogo que `pydatajson` comprende. Para poder ser analizados programáticamente, los metadatos de un catálogo deben estar representados en un formato estandarizado: el PAD establece el archivo `data.json` para tal fin, y `pydatajson` permite leer una versión en XLSX equivalente.
 
-* **diccionario de metadatos**: Es la _representación interna_ que la librería tiene de los metadatos de un catálogo. Todas las rutinas de la librería `pydatajson` que manipulan catálogos, toman como entrada una _representación externa_ (`data.json` o `data.xlsx`) del catálogo, y lo primero que hacen es "leerla" y generar una _representación interna_ de la información que la rutina sea capaz de manipular. En Python, la clase `dict` ("diccionario") nos provee la flexibilidad justa para esta tarea.
+* **diccionario de metadatos**: Es la _representación interna_ que la librería tiene de los metadatos de un catálogo. Todas las rutinas de la librería `pydatajson` que manipulan catálogos, toman como entrada una _representación externa_ (`data.json` o `catalog.xlsx`) del catálogo, y lo primero que hacen es "leerla" y generar una _representación interna_ de la información que la rutina sea capaz de manipular.
+
+## Uso
+
+### Setup
+
+`DataJson` valida catálogos contra un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos](http://paquete-apertura-datos.readthedocs.io/es/stable/guia_metadatos.html) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos).
+
+```python
+from pydatajson import DataJson
+
+catalog = DataJson("http://datos.gob.ar/data.json")
+```
+
+Si se desea utilizar un esquema alternativo, se debe especificar un **directorio absoluto** donde se almacenan los esquemas (`schema_dir`) y un nombre de esquema de validación (`schema_filename`), relativo al directorio  de los esquemas. Por ejemplo, si nuestro esquema alternativo se encuentra en `/home/datosgobar/metadatos-portal/esquema_de_validacion.json`, especificaremos:
+
+```python
+from pydatajson import DataJson
+
+catalog = DataJson("http://datos.gob.ar/data.json",
+                   schema_filename="esquema_de_validacion.json",
+                   schema_dir="/home/datosgobar/metadatos-portal")
+```
+
+### Lectura
+
+`pydatajson` puede leer un catálogo en JSON, XLSX, CKAN o `dict` de python:
+
+```python
+from pydatajson.ckan_reader import read_ckan_catalog
+import requests
+
+# data.json
+catalog = DataJson("http://datos.gob.ar/data.json")
+catalog = DataJson("local/path/data.json")
+
+# catalog.xlsx
+catalog = DataJson("http://datos.gob.ar/catalog.xlsx")
+catalog = DataJson("local/path/catalog.xlsx")
+
+# CKAN
+catalog = DataJson(read_ckan_catalog("http://datos.gob.ar"))
+
+# diccionario de python
+catalog_dict = requests.get("http://datos.gob.ar/data.json").json()
+catalog = DataJson(catalog_dict)
+```
+
+### Escritura
+
+### Validación
+
+Los métodos de validación de catálogos procesan un catálogo por llamada. En el siguiente ejemplo, `catalogs` contiene las cinco representaciones de un catálogo que DataJson entiende:
+```python
+from pydatajson import DataJson
+
+catalog = DataJson()
+catalogs = [
+    "tests/samples/full_data.json", # archivo JSON local
+    "http://181.209.63.71/data.json", # archivo JSON remoto
+    "tests/samples/catalogo_justicia.xlsx", # archivo XLSX local
+    "https://raw.githubusercontent.com/datosgobar/pydatajson/master/tests/samples/catalogo_justicia.xlsx", # archivo XLSX remoto
+    {
+        "title": "Catálogo del Portal Nacional",
+  "description" "Datasets abiertos para el ciudadano."
+        "dataset": [...],
+  (...)
+    } # diccionario de Python
+]
+
+for catalog in catalogs:
+    validation_result = catalog.is_valid_catalog(catalog)
+    validation_report = catalog.validate_catalog(catalog)
+```
+Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en el **Anexo I: Estructura de respuestas**.
+
+### Federación y restauración
+
+`pydatajson` permite federar o restaurar fácilmente un dataset de un catálogo hacia un Portal Andino (usa todo el perfil de metadatos) o CKAN (sólo usa campos de metadatos de CKAN), utilizando la API de CKAN.
+
+#### Federar un dataset
+
+Incluye la transformación de algunos metadatos, para adaptar un dataset de un nodo original a cómo debe documentarse en un nodo indexador.
+
+```python
+catalog_origin = DataJson("https://datos.agroindustria.gob.ar/data.json")
+
+catalog_origin.harvest_dataset_to_ckan(
+    owner_org="ministerio-de-agroindustria",
+    dataset_origin_identifier="8109e9e8-f8e9-41d1-978a-d20fcd2fe5f5",
+    portal_url="http://datos.gob.ar",
+    apikey="apikey",
+    catalog_id="agroindustria"
+)
+```
+
+La organización del nodo de destino debe estar previamente creada.
+
+#### Restaurar un dataset
+
+Los metadatos no sufren transformaciones: se escribe el dataset en el nodo de destino tal cual está en el nodo original.
+
+```python
+catalog_origin = DataJson("datosgobar/backup/2018-01-01/data.json")
+
+catalog_origin.restore_dataset_to_ckan(
+    owner_org="ministerio-de-agroindustria",
+    dataset_origin_identifier="8109e9e8-f8e9-41d1-978a-d20fcd2fe5f5",
+    portal_url="http://datos.gob.ar",
+    apikey="apikey"
+)
+```
+
+La organización del nodo de destino debe estar previamente creada. En este caso no hace falta `catalog_id` porque el `dataset_identifier` no sufre ninguna transformación.
+
+### Transformación de `catalog.xlsx` a `data.json`
+
+La lectura de un archivo de metadatos por parte de `pydatajson.readers.read_catalog` **no realiza ningún tipo de verificación sobre la validez de los metadatos leídos**. Por ende, si se quiere generar un archivo en formato JSON estándar únicamente en caso de que los metadatos de archivo XLSX sean válidos, se deberá realizar la validación por separado.
+
+El siguiente código, por ejemplo, escribe a disco un catálogos de metadatos en formato JSONO sí y sólo sí los metadatos del XLSX leído son válidos:
+```python
+from pydatajson.readers import read_catalog
+from pydatajson.writers import write_json
+from pydatajson import DataJson
+
+catalog = DataJson()
+catalogo_xlsx = "tests/samples/catalogo_justicia.xlsx"
+
+catalogo = read_catalog(catalogo_xlsx)
+if catalog.is_valid_catalog(catalogo):
+    write_json(obj=catalogo, path="tests/temp/catalogo_justicia.json")
+else:
+    print "Se encontraron metadatos inválidos. Operación de escritura cancelada."
+```
+
+Para más información y una versión más detallada de esta rutina en Jupyter Notebook, dirigirse [aquí](samples/caso-uso-1-pydatajson-xlsx-justicia-valido.ipynb) (metadatos válidos) y [aquí](samples/caso-uso-2-pydatajson-xlsx-justicia-no-valido.ipynb) (metadatos inválidos).
+
+### Generación de reportes
+
+El objetivo final de los métodos `generate_datasets_report`, `generate_harvester_config` y `generate_harvestable_catalogs`,  es proveer la configuración que Harvester necesita para cosechar datasets. Todos ellos devuelven una "tabla", que consiste en una lista de diccionarios que comparten las mismas claves (consultar ejemplos en el **Anexo I: Estructura de respuestas**). A continuación, se proveen algunos ejemplos de uso comunes:
+
+#### Crear un archivo de configuración eligiendo manualmente los datasets a federar
+
+```python
+catalogs = ["tests/samples/full_data.json", "http://181.209.63.71/data.json"]
+report_path = "path/to/report.xlsx"
+catalog.generate_datasets_report(
+    catalogs=catalogs,
+    harvest='none', # El reporte generado tendrá `harvest==0` para todos los datasets
+    export_path=report_path
+)
+# A continuación, se debe editar el archivo de Excel 'path/to/report.xlsx', cambiando a '1' el campo 'harvest' para aquellos datasets que se quieran cosechar.
+
+config_path = 'path/to/config.csv'
+catalog.generate_harvester_config(
+    harvest='report',
+    report=report_path,
+    export_path=config_path
+)
+```
+El archivo `config_path` puede ser provisto a Harvester para federar los datasets elegidos al editar el reporte intermedio `report_path`.
+
+Alternativamente, el output de `generate_datasets_report()` se puede editar en un intérprete de python:
+```python
+# Asigno el resultado a una variable en lugar de exportarlo
+datasets_report = catalog.generate_datasets_report(
+    catalogs=catalogs,
+    harvest='none', # El reporte generado tendrá `harvest==0` para todos los datasets
+)
+# Imaginemos que sólo se desea federar el primer dataset del reporte:
+datasets_report[0]["harvest"] = 1
+
+config_path = 'path/to/config.csv'
+catalog.generate_harvester_config(
+    harvest='report',
+    report=datasets_report,
+    export_path=config_path
+)
+```
+
+#### Crear un archivo de configuración que incluya únicamente los datasets con metadata válida
+Conservando las variables anteriores:
+```python
+catalog.generate_harvester_config(
+    catalogs=catalogs,
+    harvest='valid'
+    export_path='path/to/config.csv'
+)
+```
+Para fines ilustrativos, se incluye el siguiente bloque de código que produce los mismos resultados, pero genera el reporte intermedio sobre datasets:
+```python
+datasets_report = catalog.generate_datasets_report(
+    catalogs=catalogs,
+    harvest='valid'
+)
+
+# Como el reporte ya contiene la información necesaria sobre los datasets que se pretende cosechar, el argumento `catalogs` es innecesario.
+catalog.generate_harvester_config(
+    harvest='report'
+    report=datasets_report
+    export_path='path/to/config.csv'
+)
+```
+
+#### Modificar catálogos para conservar únicamente los datasets válidos
+
+```python
+# Creamos un directorio donde guardar los catálogos
+output_dir = "catalogos_limpios"
+import os; os.mkdir(output_dir)
+
+catalog.generate_harvestable_catalogs(
+    catalogs,
+    harvest='valid',
+    export_path=output_dir
+)
+```
 
 ## Funcionalidades
 
@@ -131,155 +376,6 @@ Toma los siguientes parámetros:
     Debe pasarse por lo menos uno de los 2 parámetros opcionales. En caso de que se provean los 2, se prioriza el
     identifier sobre el label.
 
-## Uso
-    
-### Setup
-
-`DataJson` valida catálogos contra un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos (v0.1)](https://github.com/datosgobar/paquete-apertura-datos/raw/master/docs/Gu%C3%ADa%20para%20el%20uso%20y%20la%20publicaci%C3%B3n%20de%20metadatos%20(v0.1).pdf) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos). El setup por default cubre la enorme mayoría de los casos:
-
-```python
-from pydatajson import DataJson
-
-dj = DataJson()
-```
-
-Si se desea utilizar un esquema alternativo, se debe especificar un **directorio absoluto** donde se almacenan los esquemas (`schema_dir`) y un nombre de esquema de validación (`schema_filename`), relativo al directorio  de los esquemas. Por ejemplo, si nuestro esquema alternativo se encuentra en `/home/datosgobar/metadatos-portal/esquema_de_validacion.json`, especificaremos:
-
-```python
-from pydatajson import DataJson
-
-dj = DataJson(schema_filename="esquema_de_validacion.json",
-              schema_dir="/home/datosgobar/metadatos-portal")
-```
-
-### Validación de catálogos
-
-Los métodos de validación de catálogos procesan un catálogo por llamada. En el siguiente ejemplo, `catalogs` contiene las cinco representaciones de un catálogo que DataJson entiende:
-```python
-from pydatajson import DataJson
-
-dj = DataJson()
-catalogs = [
-    "tests/samples/full_data.json", # archivo JSON local
-    "http://181.209.63.71/data.json", # archivo JSON remoto
-    "tests/samples/catalogo_justicia.xlsx", # archivo XLSX local
-    "https://raw.githubusercontent.com/datosgobar/pydatajson/master/tests/samples/catalogo_justicia.xlsx", # archivo XLSX remoto
-    {
-        "title": "Catálogo del Portal Nacional",
-	"description" "Datasets abiertos para el ciudadano."
-        "dataset": [...],
-	(...)
-    } # diccionario de Python
-]
-
-for catalog in catalogs:
-    validation_result = dj.is_valid_catalog(catalog)
-    validation_report = dj.validate_catalog(catalog)
-```
-Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en el **Anexo I: Estructura de respuestas**.
-
-### Transformación de `data.xlsx` a `data.json`
-
-La lectura de un archivo de metadatos por parte de `pydatajson.readers.read_catalog` **no realiza ningún tipo de verificación sobre la validez de los metadatos leídos**. Por ende, si se quiere generar un archivo en formato JSON estándar únicamente en caso de que los metadatos de archivo XLSX sean válidos, se deberá realizar la validación por separado.
-
-El siguiente código, por ejemplo, escribe a disco un catálogos de metadatos en formato JSONO sí y sólo sí los metadatos del XLSX leído son válidos:
-```python
-from pydatajson.readers import read_catalog
-from pydatajson.writers import write_json
-from pydatajson import DataJson
-
-dj = DataJson()
-catalogo_xlsx = "tests/samples/catalogo_justicia.xlsx"
-
-catalogo = read_catalog(catalogo_xlsx)
-if dj.is_valid_catalog(catalogo):
-    write_json(obj=catalogo, path="tests/temp/catalogo_justicia.json")
-else:
-    print "Se encontraron metadatos inválidos. Operación de escritura cancelada."
-```
-
-Para más información y una versión más detallada de esta rutina en Jupyter Notebook, dirigirse [aquí](samples/caso-uso-1-pydatajson-xlsx-justicia-valido.ipynb) (metadatos válidos) y [aquí](samples/caso-uso-2-pydatajson-xlsx-justicia-no-valido.ipynb) (metadatos inválidos).
-
-### Generación de reportes
-
-El objetivo final de los métodos `generate_datasets_report`, `generate_harvester_config` y `generate_harvestable_catalogs`,  es proveer la configuración que Harvester necesita para cosechar datasets. Todos ellos devuelven una "tabla", que consiste en una lista de diccionarios que comparten las mismas claves (consultar ejemplos en el **Anexo I: Estructura de respuestas**). A continuación, se proveen algunos ejemplos de uso comunes:
-
-#### Crear un archivo de configuración eligiendo manualmente los datasets a federar
-
-```python
-catalogs = ["tests/samples/full_data.json", "http://181.209.63.71/data.json"]
-report_path = "path/to/report.xlsx"
-dj.generate_datasets_report(
-    catalogs=catalogs,
-    harvest='none', # El reporte generado tendrá `harvest==0` para todos los datasets
-    export_path=report_path
-)
-# A continuación, se debe editar el archivo de Excel 'path/to/report.xlsx', cambiando a '1' el campo 'harvest' para aquellos datasets que se quieran cosechar.
-
-config_path = 'path/to/config.csv'
-dj.generate_harvester_config(
-    harvest='report',
-    report=report_path,
-    export_path=config_path
-)
-```
-El archivo `config_path` puede ser provisto a Harvester para federar los datasets elegidos al editar el reporte intermedio `report_path`.
-
-Alternativamente, el output de `generate_datasets_report()` se puede editar en un intérprete de python:
-```python
-# Asigno el resultado a una variable en lugar de exportarlo
-datasets_report = dj.generate_datasets_report(
-    catalogs=catalogs,
-    harvest='none', # El reporte generado tendrá `harvest==0` para todos los datasets
-)
-# Imaginemos que sólo se desea federar el primer dataset del reporte:
-datasets_report[0]["harvest"] = 1
-
-config_path = 'path/to/config.csv'
-dj.generate_harvester_config(
-    harvest='report',
-    report=datasets_report,
-    export_path=config_path
-)
-```
-
-#### Crear un archivo de configuración que incluya únicamente los datasets con metadata válida
-Conservando las variables anteriores:
-```python
-dj.generate_harvester_config(
-    catalogs=catalogs,
-    harvest='valid'
-    export_path='path/to/config.csv'
-)
-```
-Para fines ilustrativos, se incluye el siguiente bloque de código que produce los mismos resultados, pero genera el reporte intermedio sobre datasets:
-```python
-datasets_report = dj.generate_datasets_report(
-    catalogs=catalogs,
-    harvest='valid'
-)
-
-# Como el reporte ya contiene la información necesaria sobre los datasets que se pretende cosechar, el argumento `catalogs` es innecesario.
-dj.generate_harvester_config(
-    harvest='report'
-    report=datasets_report
-    export_path='path/to/config.csv'
-)
-```
-
-#### Modificar catálogos para conservar únicamente los datasets válidos
-
-```python
-# Creamos un directorio donde guardar los catálogos
-output_dir = "catalogos_limpios"
-import os; os.mkdir(output_dir)
-
-dj.generate_harvestable_catalogs(
-    catalogs,
-    harvest='valid',
-    export_path=output_dir
-)
-```
 
 ## Anexo I: Estructura de respuestas
 
@@ -480,7 +576,7 @@ A continuación, el resultado de este método al aplicarlo sobre el Catálogo de
 ## Estado de los metadatos y cantidad de recursos
 
 Estado metadatos globales | Estado metadatos catálogo | # de Datasets | # de Distribuciones
---------------------------|---------------------------|---------------|--------------------
+----------------|---------------------------|---------------|--------------------
 OK | OK | 16 | 56
 
 ## Datasets incluidos

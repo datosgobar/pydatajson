@@ -1,5 +1,23 @@
 Versiones
-=======
+=========
+
+0.4.4 (2018-04-09)
+-------------------
+
+* Agrega wrappers para `push_dataset_to_ckan()`
+
+0.4.3 (2018-03-20)
+-------------------
+
+* Mejora el manejo de themes para recrear un catálogo
+
+0.4.2 (2018-03-13)
+-------------------
+
+* Agrega funciones auxiliares para la administración de un CKAN vía API para facilitar la administración de la federación de datasets
+    - `remove_dataset_to_ckan()`
+* Incorpora nuevas validaciones (formatos y fileNames)
+* Agrega flags opcionales para que `push_dataset_to_ckan()` sea un método que transforma opcionalmente la metadata de un dataset
 
 0.4.1 (2018-02-16)
 -------------------

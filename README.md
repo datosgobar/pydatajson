@@ -15,20 +15,22 @@ Paquete en python con herramientas para manipular y validar metadatos de catálo
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+ 
 
-## Indice
-
-- [Instalación](#instalaci%C3%B3n)
-- [Uso](#uso)
+- [Instalación](#instalacion)
+- [Usos](#usos)
   - [Setup](#setup)
-  - [Posibles validaciones de catálogos](#posibles-validaciones-de-cat%C3%A1logos)
-  - [Ubicación del catálogo a validar](#ubicaci%C3%B3n-del-cat%C3%A1logo-a-validar)
-  - [Ejemplos](#ejemplos)
+  - [Validación de metadatos de catálogos](#validacion-de-metadatos-de-catalogos)
     - [Archivo data.json local](#archivo-datajson-local)
-    - [Archivo data.json remoto](#archivo-datajson-remoto)
-    - [Diccionario (data.json deserializado)](#diccionario-datajson-deserializado)
+    - [Otros formatos](#otros-formatos)
+  - [Generación de reportes y configuraciones del Harvester](#generacion-de-reportes-y-configuraciones-del-harvester)
+    - [Crear un archivo de configuración eligiendo manualmente los datasets a federar](#crear-un-archivo-de-configuracion-eligiendo-manualmente-los-datasets-a-federar)
+    - [Crear un archivo de configuración que incluya únicamente los datasets con metadata válida](#crear-un-archivo-de-configuracion-que-incluya-unicamente-los-datasets-con-metadata-valida)
+  - [Transformación de un archivo de metados XLSX al estándar JSON](#transformacion-de-un-archivo-de-metados-xlsx-al-estandar-json)
+  - [Generación de indicadores de monitoreo de catálogos](#generacion-de-indicadores-de-monitoreo-de-catalogos)
 - [Tests](#tests)
-- [Créditos](#cr%C3%A9ditos)
+- [Recursos de interés](#recursos-de-interes)
+- [Créditos](#creditos)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -61,7 +63,7 @@ A continuación se proveen ejemplos de cada uno de estas acciones. Si desea anal
 
 ### Setup
 
-`DataJson` utiliza un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos (v0.1)](https://github.com/datosgobar/paquete-apertura-datos/raw/master/docs/Gu%C3%ADa%20para%20el%20uso%20y%20la%20publicaci%C3%B3n%20de%20metadatos%20(v0.1).pdf) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos).
+`DataJson` utiliza un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos (v0.1)](https://github.com/datosgobar/paquete-apertura-datos/raw/master/docs/Guia%20para%20el%20uso%20y%20la%20publicacion%20de%20metadatos%20(v0.1).pdf) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos).
 
 ```python
 from pydatajson import DataJson
