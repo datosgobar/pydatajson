@@ -25,6 +25,9 @@ from unidecode import unidecode
 from . import custom_exceptions as ce
 from . import helpers
 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 global_logger = logging.getLogger()
 
 
@@ -49,7 +52,8 @@ def read_catalog(catalog, default_values=None):
     unknown_catalog_repr_msg = """
 No se pudo inferir una representación válida de un catálogo del parámetro
 provisto: {}.""".format(catalog)
-    assert isinstance(catalog, string_types + (dict,)), unknown_catalog_repr_msg
+    assert isinstance(catalog, string_types + (dict,)
+                      ), unknown_catalog_repr_msg
 
     if isinstance(catalog, dict):
         catalog_dict = catalog
@@ -62,10 +66,11 @@ provisto: {}.""".format(catalog)
 
         if suffix == "json":
             catalog_dict = read_json(catalog)
-        else:
+        elif suffix == "xlsx":
             # El archivo está en formato XLSX
             catalog_dict = read_xlsx_catalog(catalog)
-
+        else:
+            raise Exception("Formato no reconocido {}".format(suffix))
     # si se pasaron valores default, los aplica al catálogo leído
     if default_values:
         apply_default_values(catalog_dict, default_values)
@@ -368,7 +373,8 @@ El archivo a leer debe tener extensión XLSX."""
 
     # Me aseguro que los identificadores de dataset se guarden como cadenas
     for dataset in catalog["catalog_dataset"]:
-        dataset["dataset_identifier"] = text_type(dataset["dataset_identifier"])
+        dataset["dataset_identifier"] = text_type(
+            dataset["dataset_identifier"])
 
     catalog["catalog_themeTaxonomy"] = (
         helpers.sheet_to_table(ws_theme))

@@ -425,7 +425,8 @@ def _days_from_last_update(catalog, date_field="modified"):
     # si no está pasamos
     if isinstance(date_modified, string_types):
         date = helpers.parse_date_string(date_modified)
-        dias_ultima_actualizacion = (datetime.now() - date).days
+        dias_ultima_actualizacion = (
+            datetime.now() - date).days if date else None
 
     for dataset in catalog.get('dataset', []):
         date = helpers.parse_date_string(dataset.get(date_field, ""))
