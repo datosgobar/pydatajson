@@ -32,6 +32,7 @@ from . import search
 from . import validation
 from . import writers
 from . import federation
+from . import backup
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -105,6 +106,9 @@ class DataJson(dict):
     # metodos para guardar el catálogo en otros formatos
     to_xlsx = writers.write_xlsx_catalog
     to_json = writers.write_json_catalog
+
+    # metodos para hacer backups
+    make_catalog_backup = backup.make_catalog_backup
 
     # Metodos para interactuar con un portal de CKAN
     push_dataset_to_ckan = federation.push_dataset_to_ckan

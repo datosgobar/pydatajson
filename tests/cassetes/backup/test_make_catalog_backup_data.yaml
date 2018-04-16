@@ -1,0 +1,202 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://github.com/datosgobar/pydatajson/raw/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv
+  response:
+    body: {string: !!python/unicode '<html><body>You are being <a href="https://raw.githubusercontent.com/datosgobar/pydatajson/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv">redirected</a>.</body></html>'}
+    headers:
+      access-control-allow-origin: ['https://render.githubusercontent.com']
+      age: ['0']
+      cache-control: [no-cache]
+      content-length: ['195']
+      content-security-policy: ['default-src ''none''; base-uri ''self''; block-all-mixed-content;
+          child-src render.githubusercontent.com; connect-src ''self'' uploads.github.com
+          status.github.com collector.githubapp.com api.github.com www.google-analytics.com
+          github-cloud.s3.amazonaws.com github-production-repository-file-5c1aeb.s3.amazonaws.com
+          github-production-upload-manifest-file-7fdce7.s3.amazonaws.com github-production-user-asset-6210df.s3.amazonaws.com
+          wss://live.github.com; font-src assets-cdn.github.com; form-action ''self''
+          github.com gist.github.com; frame-ancestors ''none''; img-src ''self'' data:
+          assets-cdn.github.com identicons.github.com collector.githubapp.com github-cloud.s3.amazonaws.com
+          *.githubusercontent.com; manifest-src ''self''; media-src ''none''; script-src
+          assets-cdn.github.com; style-src ''unsafe-inline'' assets-cdn.github.com']
+      content-type: [text/html; charset=utf-8]
+      date: ['Mon, 16 Apr 2018 20:54:50 GMT']
+      expect-ct: ['max-age=2592000, report-uri="https://api.github.com/_private/browser/errors"']
+      location: ['https://raw.githubusercontent.com/datosgobar/pydatajson/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv']
+      server: [GitHub.com]
+      status: [302 Found]
+      strict-transport-security: [max-age=31536000; includeSubdomains; preload]
+      vary: [X-PJAX]
+      x-content-type-options: [nosniff]
+      x-frame-options: [deny]
+      x-github-request-id: ['CE11:6644:21A326F:400302D:5AD50D9A']
+      x-ratelimit-limit: ['100']
+      x-ratelimit-remaining: ['100']
+      x-runtime: ['0.056349']
+      x-runtime-rack: ['0.061856']
+      x-xss-protection: [1; mode=block]
+    status: {code: 302, message: Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://raw.githubusercontent.com/datosgobar/pydatajson/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA1VW2W4jOQx8n2/pBSQeIvU1QQ4PYGBjB4lnMZ8/VTo6s0HQcMoqkUUW2bne3q6v
+        l6fH9fL+cT/uPy+fj+enx/3x/O9TK8fH9WX98fHOv684hAOv1/vt8kXg7fL+fHv7i/F6v339er+P
+        w7f/Lp9fOPr08vkLt15vj8vn7ZlfXX7//54ftUf5p1T8HtVD+lFN3Y6q4Rso5n6oazlqmC2GDUaI
+        Fx4zxbPEBqrhqa3ZIVXbYsRgtN5xpVs2PKtugFEPDQOaNSejlhmjWOIsfpBb1w2QeGh25Ir8yKhb
+        R1PDEyH4XeQGalVFjMbvLBdj6sjqiNzMx/W6ASlmh6ngnshYjKkjxSC0OTNuTGIC4ohktQky1hVj
+        6YAuoC0byqTVNyA4fZgINWonQ7aOKOyENypXVmkCtSOGMhAbtBhLh2pnDJbJRjEHIJBzaE8yTBdj
+        6WiCJKLyYmu5AS3FmBXIqPFkbB1dk07osmMMQDL6YU2JyqiVnjpyZOU8pt+AqKGD0YMV1MWYOnqp
+        zCo6L662AXUkZKUk+9oWY+lI5cWtoFYisQE1gROTjFZsMpaO3pNyrQbreAJWEjE0Wfk6YtjWkTaU
+        CydBSm5ANQNun13ajKED/uGxXshQOHEB1hpd4ux55mLEZCiFZtKEXssGYGOH8t44nzIZU4dAGM52
+        Rx2llLYB6xaHjXvSh3LfOnprPhwd47kBS4jWYLlLi8WYOmopSKILl0KgugtwF3gXHWJrfDFmP/qM
+        LHS7a9sADIMZRDzWY2V19oNjnU7vKqdvAlYqauVjJ+VgtO9+IDzyYa8qV9AE1KAG/aB3iyyGbeWs
+        LhYWNLLbE8AwobrwCj3ni7F0BHuX2kYHywYUpUZWOtOcjK0jmGs67SeiG5DEtI/Gi9SRVZw6kj4P
+        FzoodANS0H/jkMjaDHH2o/ahZuxdHpiABMYPPWmH1jlRsX1VnRum98KthY8LgLnycKdtcuqI7auS
+        Nns+dlDfgDboH7uV80tGnjrQC26fHOvANoDUfO5dsTkfec5HYUmT5gbDNyAFHrPoGF1IX4w9H6xS
+        du5k+wawPxP9gKPR/ToZW4d1HOjTpRCzAMUyQYyAcm1jBvvSIcVZpUxONN4JG1CBVxADQ9lOxtSB
+        HSW8mPsy8FabAKoLTS5YkhiruhhTh5iM5Dt5oE0AktBNLxxEyRVj6RC+hnEWxRS+aybAiQLDiCK1
+        H5yzrQO7nPYzHjY4cQHKtepYKYf08a7Ncuoozp5zdYrICajjeuxIpJknY+nA57HW8HR+HAAux/vK
+        uS+kF5+MrYNrBo3GnEv0DeDfB2wUZAVG4M35BzheK/gfCQAA
+    headers:
+      accept-ranges: [bytes]
+      access-control-allow-origin: ['*']
+      cache-control: [max-age=300]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-length: ['1005']
+      content-security-policy: [default-src 'none'; style-src 'unsafe-inline'; sandbox]
+      content-type: [text/plain; charset=utf-8]
+      date: ['Mon, 16 Apr 2018 20:54:50 GMT']
+      etag: ['"9c9ada5d7dd76e0eadff705cebb90e5287139270"']
+      expires: ['Mon, 16 Apr 2018 20:59:50 GMT']
+      source-age: ['245']
+      strict-transport-security: [max-age=31536000]
+      vary: ['Authorization,Accept-Encoding']
+      via: [1.1 varnish]
+      x-cache: [HIT]
+      x-cache-hits: ['1']
+      x-content-type-options: [nosniff]
+      x-fastly-request-id: [4725712516e25c58540d8838ce9777e6d79ac384]
+      x-frame-options: [deny]
+      x-geo-block-list: ['']
+      x-github-request-id: ['508C:6B0A:56EF3F:5A8A93:5AD50CA4']
+      x-served-by: [cache-scl19421-SCL]
+      x-timer: ['S1523912091.968672,VS0,VE1']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://github.com/datosgobar/pydatajson/raw/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv
+  response:
+    body: {string: !!python/unicode '<html><body>You are being <a href="https://raw.githubusercontent.com/datosgobar/pydatajson/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv">redirected</a>.</body></html>'}
+    headers:
+      access-control-allow-origin: ['https://render.githubusercontent.com']
+      age: ['0']
+      cache-control: [no-cache]
+      content-length: ['195']
+      content-security-policy: ['default-src ''none''; base-uri ''self''; block-all-mixed-content;
+          child-src render.githubusercontent.com; connect-src ''self'' uploads.github.com
+          status.github.com collector.githubapp.com api.github.com www.google-analytics.com
+          github-cloud.s3.amazonaws.com github-production-repository-file-5c1aeb.s3.amazonaws.com
+          github-production-upload-manifest-file-7fdce7.s3.amazonaws.com github-production-user-asset-6210df.s3.amazonaws.com
+          wss://live.github.com; font-src assets-cdn.github.com; form-action ''self''
+          github.com gist.github.com; frame-ancestors ''none''; img-src ''self'' data:
+          assets-cdn.github.com identicons.github.com collector.githubapp.com github-cloud.s3.amazonaws.com
+          *.githubusercontent.com; manifest-src ''self''; media-src ''none''; script-src
+          assets-cdn.github.com; style-src ''unsafe-inline'' assets-cdn.github.com']
+      content-type: [text/html; charset=utf-8]
+      date: ['Mon, 16 Apr 2018 20:54:51 GMT']
+      expect-ct: ['max-age=2592000, report-uri="https://api.github.com/_private/browser/errors"']
+      location: ['https://raw.githubusercontent.com/datosgobar/pydatajson/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv']
+      server: [GitHub.com]
+      status: [302 Found]
+      strict-transport-security: [max-age=31536000; includeSubdomains; preload]
+      vary: [X-PJAX]
+      x-content-type-options: [nosniff]
+      x-frame-options: [deny]
+      x-github-request-id: ['CE13:6644:21A32D5:40030E3:5AD50D9B']
+      x-ratelimit-limit: ['100']
+      x-ratelimit-remaining: ['100']
+      x-runtime: ['0.043556']
+      x-runtime-rack: ['0.048162']
+      x-xss-protection: [1; mode=block]
+    status: {code: 302, message: Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://raw.githubusercontent.com/datosgobar/pydatajson/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA1VW2W4jOQx8n2/pBSQeIvU1QQ4PYGBjB4lnMZ8/VTo6s0HQcMoqkUUW2bne3q6v
+        l6fH9fL+cT/uPy+fj+enx/3x/O9TK8fH9WX98fHOv684hAOv1/vt8kXg7fL+fHv7i/F6v339er+P
+        w7f/Lp9fOPr08vkLt15vj8vn7ZlfXX7//54ftUf5p1T8HtVD+lFN3Y6q4Rso5n6oazlqmC2GDUaI
+        Fx4zxbPEBqrhqa3ZIVXbYsRgtN5xpVs2PKtugFEPDQOaNSejlhmjWOIsfpBb1w2QeGh25Ir8yKhb
+        R1PDEyH4XeQGalVFjMbvLBdj6sjqiNzMx/W6ASlmh6ngnshYjKkjxSC0OTNuTGIC4ohktQky1hVj
+        6YAuoC0byqTVNyA4fZgINWonQ7aOKOyENypXVmkCtSOGMhAbtBhLh2pnDJbJRjEHIJBzaE8yTBdj
+        6WiCJKLyYmu5AS3FmBXIqPFkbB1dk07osmMMQDL6YU2JyqiVnjpyZOU8pt+AqKGD0YMV1MWYOnqp
+        zCo6L662AXUkZKUk+9oWY+lI5cWtoFYisQE1gROTjFZsMpaO3pNyrQbreAJWEjE0Wfk6YtjWkTaU
+        CydBSm5ANQNun13ajKED/uGxXshQOHEB1hpd4ux55mLEZCiFZtKEXssGYGOH8t44nzIZU4dAGM52
+        Rx2llLYB6xaHjXvSh3LfOnprPhwd47kBS4jWYLlLi8WYOmopSKILl0KgugtwF3gXHWJrfDFmP/qM
+        LHS7a9sADIMZRDzWY2V19oNjnU7vKqdvAlYqauVjJ+VgtO9+IDzyYa8qV9AE1KAG/aB3iyyGbeWs
+        LhYWNLLbE8AwobrwCj3ni7F0BHuX2kYHywYUpUZWOtOcjK0jmGs67SeiG5DEtI/Gi9SRVZw6kj4P
+        FzoodANS0H/jkMjaDHH2o/ahZuxdHpiABMYPPWmH1jlRsX1VnRum98KthY8LgLnycKdtcuqI7auS
+        Nns+dlDfgDboH7uV80tGnjrQC26fHOvANoDUfO5dsTkfec5HYUmT5gbDNyAFHrPoGF1IX4w9H6xS
+        du5k+wawPxP9gKPR/ToZW4d1HOjTpRCzAMUyQYyAcm1jBvvSIcVZpUxONN4JG1CBVxADQ9lOxtSB
+        HSW8mPsy8FabAKoLTS5YkhiruhhTh5iM5Dt5oE0AktBNLxxEyRVj6RC+hnEWxRS+aybAiQLDiCK1
+        H5yzrQO7nPYzHjY4cQHKtepYKYf08a7Ncuoozp5zdYrICajjeuxIpJknY+nA57HW8HR+HAAux/vK
+        uS+kF5+MrYNrBo3GnEv0DeDfB2wUZAVG4M35BzheK/gfCQAA
+    headers:
+      accept-ranges: [bytes]
+      access-control-allow-origin: ['*']
+      cache-control: [max-age=300]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-length: ['1005']
+      content-security-policy: [default-src 'none'; style-src 'unsafe-inline'; sandbox]
+      content-type: [text/plain; charset=utf-8]
+      date: ['Mon, 16 Apr 2018 20:54:51 GMT']
+      etag: ['"9c9ada5d7dd76e0eadff705cebb90e5287139270"']
+      expires: ['Mon, 16 Apr 2018 20:59:51 GMT']
+      source-age: ['246']
+      strict-transport-security: [max-age=31536000]
+      vary: ['Authorization,Accept-Encoding']
+      via: [1.1 varnish]
+      x-cache: [HIT]
+      x-cache-hits: ['2']
+      x-content-type-options: [nosniff]
+      x-fastly-request-id: [e4dd3322950e5fc170e25b0c2be2a8e11ca1a12c]
+      x-frame-options: [deny]
+      x-geo-block-list: ['']
+      x-github-request-id: ['508C:6B0A:56EF3F:5A8A93:5AD50CA4']
+      x-served-by: [cache-scl19421-SCL]
+      x-timer: ['S1523912092.872041,VS0,VE0']
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

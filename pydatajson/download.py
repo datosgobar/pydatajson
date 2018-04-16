@@ -10,6 +10,7 @@ from __future__ import absolute_import
 
 import requests
 import time
+import sys
 
 DEFAULT_TRIES = 1
 RETRY_DELAY = 1
@@ -29,7 +30,7 @@ def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY,
         proxies (dict): Proxies a utilizar. El diccionario debe contener los
             valores 'http' y 'https', cada uno asociados a la URL del proxy
             correspondiente.
-        
+
     Returns:
         bytes: Contenido del archivo
     """
@@ -60,3 +61,7 @@ def download_to_file(url, file_path, **kwargs):
     content = download(url, **kwargs)
     with open(file_path, "wb") as f:
         f.write(content)
+
+
+if __name__ == '__main__':
+    download_to_file(sys.argv[1], sys.argv[2])

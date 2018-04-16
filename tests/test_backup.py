@@ -14,6 +14,7 @@ import nose
 import os
 import io
 import json
+import vcr
 
 from six import text_type
 
@@ -21,6 +22,10 @@ from .context import pydatajson
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 RESULTS_DIR = os.path.join("tests", "results")
+
+VCR = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+              cassette_library_dir=os.path.join("tests", "cassetes", "backup"),
+              record_mode='once')
 
 
 class BackupTestCase(unittest.TestCase):
@@ -41,7 +46,8 @@ class BackupTestCase(unittest.TestCase):
 
     @classmethod
     def tearDown(cls):
-        del (cls.catalog)
+        del (cls.catalog_meta)
+        del (cls.catalog_data)
 
     def test_make_catalog_backup_metadata(self):
         json_path = os.path.join(
@@ -60,11 +66,13 @@ class BackupTestCase(unittest.TestCase):
         self.assertTrue(os.path.exists(json_path))
         self.assertTrue(os.path.exists(xlsx_path))
 
+    @VCR.use_cassette()
     def test_make_catalog_backup_data(self):
-        distribution_path = os.path.join(
+        distribution_path = os.path.abspath(os.path.join(
             RESULTS_DIR, "catalog", "example_ts", "dataset", "1",
             "distribution", "1.2", "download",
-            "odg-total-millones-pesos-1960-trimestral.csv")
+            "oferta-demanda-globales-datos-desestacionalizados-valores-trimestrales-base-1993.csv"
+        ))
 
         os.remove(distribution_path) if os.path.exists(
             distribution_path) else None
@@ -74,6 +82,26 @@ class BackupTestCase(unittest.TestCase):
             catalog_id="example_ts", local_catalogs_dir=RESULTS_DIR,
             include_metadata=True, include_data=True)
 
+        print(distribution_path)
+        self.assertTrue(os.path.exists(distribution_path))
+
+    @VCR.use_cassette()
+    def test_make_catalog_backup_data_without_file_name(self):
+        distribution_path = os.path.abspath(os.path.join(
+            RESULTS_DIR, "catalog", "example_ts", "dataset", "1",
+            "distribution", "1.2.b", "download",
+            "odg-total-millones-pesos-1960-trimestral.csv"
+        ))
+
+        os.remove(distribution_path) if os.path.exists(
+            distribution_path) else None
+
+        pydatajson.backup.make_catalog_backup(
+            self.catalog_data,
+            catalog_id="example_ts", local_catalogs_dir=RESULTS_DIR,
+            include_metadata=True, include_data=True)
+
+        print(distribution_path)
         self.assertTrue(os.path.exists(distribution_path))
 
 
