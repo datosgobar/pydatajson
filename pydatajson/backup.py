@@ -1,0 +1,108 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""Módulo con funciones auxiliares para hacer backups de catálogos."""
+
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import with_statement
+import os
+
+from .helpers import ensure_dir_exists
+from pydatajson import DataJson
+from download import download_to_file
+
+CATALOGS_DIR = "."
+
+
+def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir=".",
+                        include_metadata=True, include_data=True):
+    """Realiza una copia local de los datos y metadatos de un catálogo.
+
+    Args:
+        catalog (dict or str): Representación externa/interna de un catálogo.
+            Una representación _externa_ es un path local o una URL remota a un
+            archivo con la metadata de un catálogo, en formato JSON o XLSX. La
+            representación _interna_ de un catálogo es un diccionario.
+        catalog_id (str): Si se especifica, se usa este identificador para el
+            backup. Si no se espedifica, se usa catalog["identifier"].
+        local_catalogs_dir (str): Directorio local en el cual se va a crear
+            la carpeta "catalog/..." con todos los catálogos.
+        include_metadata (bool): Si es verdadero, se generan los archivos
+            data.json y catalog.xlsx.
+        include_data (bool): Si es verdadero, se descargan todas las
+            distribuciones de todos los catálogos.
+
+    Return:
+        None
+    """
+
+    catalog = DataJson(catalog)
+    catalog_identifier = catalog_id if catalog_id else catalog["identifier"]
+
+    if include_metadata:
+        # catálogo en json
+        catalog_path = get_catalog_path(catalog_identifier, local_catalogs_dir)
+        ensure_dir_exists(os.path.dirname(catalog_path))
+        catalog.to_json(catalog_path)
+
+        # catálogo en xlsx
+        catalog_path = get_catalog_path(catalog_identifier, local_catalogs_dir,
+                                        fmt="xlsx")
+        ensure_dir_exists(os.path.dirname(catalog_path))
+        catalog.to_xlsx(catalog_path)
+
+    if include_data:
+        for distribution in catalog.distributions:
+
+            # genera el path local donde descargar el archivo
+            dataset_id = distribution["dataset_identifier"]
+            distribution_id = distribution["identifier"]
+            distribution_file_name = distribution.get("fileName")
+            file_path = get_distribution_path(
+                catalog_id, dataset_id, distribution_id,
+                distribution_file_name)
+            ensure_dir_exists(os.path.dirname(file_path))
+
+            # decarga el archivo
+            distribution_download_url = distribution["downloadURL"]
+            download_to_file(distribution_download_url, file_path)
+
+
+def get_distribution_dir(catalog_id, dataset_id, distribution_id,
+                         catalogs_dir=CATALOGS_DIR):
+    """Genera el path estándar de un catálogo en un filesystem."""
+
+    catalog_path = os.path.join(catalogs_dir, "catalog", catalog_id)
+    dataset_path = os.path.join(catalog_path, "dataset", dataset_id)
+    distribution_dir = os.path.join(dataset_path, "distribution",
+                                    distribution_id)
+    distribution_file_path = os.path.join(
+        distribution_dir, "download", distribution_file_name)
+
+    return distribution_dir
+
+
+def get_distribution_path(catalog_id, dataset_id, distribution_id,
+                          distribution_file_name, catalogs_dir=CATALOGS_DIR):
+    """Genera el path estándar de un catálogo en un filesystem."""
+
+    distribution_dir = get_distribution_dir(
+        catalog_id, dataset_id, distribution_id, catalogs_dir)
+    distribution_file_path = os.path.join(
+        distribution_dir, "download", distribution_file_name)
+
+    return distribution_dir
+
+
+def get_catalog_path(catalog_id, catalogs_dir=CATALOGS_DIR, fmt="json"):
+    """Genera el path estándar de un catálogo en un filesystem."""
+
+    base_path = os.path.join(catalogs_dir, "catalog", catalog_id)
+    if fmt == "json":
+        return os.path.join(base_path, "data.json")
+    elif fmt == "xlsx":
+        return os.path.join(base_path, "catalog.xlsx")
+    else:
+        raise NotImplementedError("El formato {} no está implementado.".format(
+            fmt))

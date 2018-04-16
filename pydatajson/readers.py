@@ -41,9 +41,9 @@ def read_catalog(catalog, default_values=None):
 
     Args:
         catalog (dict or str): Representación externa/interna de un catálogo.
-        Una representación _externa_ es un path local o una URL remota a un
-        archivo con la metadata de un catálogo, en formato JSON o XLSX. La
-        representación _interna_ de un catálogo es un diccionario.
+            Una representación _externa_ es un path local o una URL remota a un
+            archivo con la metadata de un catálogo, en formato JSON o XLSX. La
+            representación _interna_ de un catálogo es un diccionario.
 
     Returns:
         dict: Representación interna de un catálogo para uso en las funciones

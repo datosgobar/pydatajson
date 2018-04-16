@@ -39,7 +39,8 @@ def title_to_name(title, decode=True):
     filtered_title = re.sub(r'[^a-z0-9- ]+', '', title)
 
     # remueve stop words y espacios y une palabras sólo con un "-"
-    normalized_title = '-'.join([word for word in filtered_title.split() if word not in STOP_WORDS])
+    normalized_title = '-'.join([word for word in filtered_title.split()
+                                 if word not in STOP_WORDS])
 
     return normalized_title
 
@@ -334,3 +335,10 @@ def find_ws_name(wb, name):
             return sheetname
 
     raise Exception("No existe la hoja {}".format(name))
+
+
+def pprint(result):
+    print(text_type(json.dumps(
+        result, indent=4, separators=(",", ": "),
+        ensure_ascii=False
+    )))
