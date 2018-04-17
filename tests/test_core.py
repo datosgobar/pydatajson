@@ -10,7 +10,7 @@ from pprint import pprint
 
 import nose
 import vcr
-from nose.tools import assert_true, assert_false, assert_equal,
+from nose.tools import assert_true, assert_false, assert_equal
 from nose.tools import assert_list_equal, assert_raises
 from six import iteritems
 
