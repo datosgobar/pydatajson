@@ -10,7 +10,8 @@ from pprint import pprint
 
 import nose
 import vcr
-from nose.tools import assert_true, assert_false, assert_equal, assert_list_equal, assert_raises
+from nose.tools import assert_true, assert_false, assert_equal,
+from nose.tools import assert_list_equal, assert_raises
 from six import iteritems
 
 
@@ -346,15 +347,15 @@ class TestDataJsonTestCase(object):
                 "catalog_metadata_url": 2,
                 "dataset_title": 2,
                 "dataset_accrualPeriodicity": 2,
-                "dataset_owner_org": "organizacion-en-ckan",
-                "job_name": "organismo",
+                "dataset_organization": "organizacion-en-ckan",
+                "catalog_id": "organismo",
             },
             {
                 "catalog_metadata_url": 3,
                 "dataset_title": 3,
                 "dataset_accrualPeriodicity": 3,
-                "dataset_owner_org": "organizacion-en-ckan",
-                "job_name": "organismo",
+                "dataset_organization": "organizacion-en-ckan",
+                "catalog_id": "organismo",
             }
         ]
 
@@ -362,7 +363,7 @@ class TestDataJsonTestCase(object):
             return_value=datasets_report)
 
         actual_config = self.dj.generate_harvester_config(
-            catalogs="un catalogo", harvest='valid', frequency=None)
+            catalogs="un catalogo", harvest='valid')
 
         assert_list_equal(actual_config, expected_config)
 
@@ -405,16 +406,14 @@ class TestDataJsonTestCase(object):
             {
                 "catalog_metadata_url": 2,
                 "dataset_title": 2,
-                "dataset_accrualPeriodicity": "R/P1D",
-                "dataset_owner_org": "organizacion-en-ckan",
-                "job_name": "organismo",
+                "dataset_organization": "organizacion-en-ckan",
+                "catalog_id": "organismo",
             },
             {
                 "catalog_metadata_url": 3,
                 "dataset_title": 3,
-                "dataset_accrualPeriodicity": "R/P1D",
-                "dataset_owner_org": "organizacion-en-ckan",
-                "job_name": "organismo",
+                "dataset_organization": "organizacion-en-ckan",
+                "catalog_id": "organismo",
             }
         ]
 
