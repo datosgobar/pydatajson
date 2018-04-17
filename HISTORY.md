@@ -1,6 +1,13 @@
 Versiones
 =========
 
+0.4.6 (2018-04-17)
+-------------------
+
+* Re-estructura el archivo de configuración para federación (nueva versión simplificada)
+* Agrega módulo para hacer backups de datos y metadatos de un catálogo
+* Mejora la performance de guardar catálogos en Excel
+
 0.4.4 (2018-04-09)
 -------------------
 

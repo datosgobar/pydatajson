@@ -18,7 +18,7 @@ with open(os.path.abspath("requirements_dev.txt")) as f:
 
 setup(
     name='pydatajson',
-    version='0.4.5',
+    version='0.4.6',
     description="Paquete en python con herramientas para generar y validar metadatos de catálogos de datos en formato data.json.",
     long_description=readme + '\n\n' + history,
     author="Datos Argentina",
