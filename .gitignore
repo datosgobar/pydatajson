@@ -78,3 +78,4 @@ tests/temp/*
 samples/archivos-generados/*
 .DS_Store
 .idea/
+profiling_test.png

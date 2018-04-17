@@ -7,7 +7,8 @@ Contiene los métodos auxiliares para leer archivos con información tabular y
 catálogos de metadatos, en distintos fomatos.
 """
 
-from __future__ import unicode_literals, print_function, with_statement, absolute_import
+from __future__ import unicode_literals, print_function
+from __future__ import with_statement, absolute_import
 
 import io
 import json
@@ -22,6 +23,7 @@ from six import string_types, text_type, iteritems
 from six.moves.urllib_parse import urlparse
 from unidecode import unidecode
 
+import pydatajson
 from . import custom_exceptions as ce
 from . import helpers
 
@@ -29,6 +31,16 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 global_logger = logging.getLogger()
+
+
+def read_catalog_obj(catalog):
+    try:
+        if getattr(catalog, "has_catalog"):
+            return catalog
+        else:
+            return pydatajson.DataJson(catalog)
+    except:
+        return pydatajson.DataJson(catalog)
 
 
 def read_catalog(catalog, default_values=None):
@@ -57,6 +69,7 @@ provisto: {}.""".format(catalog)
 
     if isinstance(catalog, dict):
         catalog_dict = catalog
+
     else:
         # catalog es una URL remota o un path local
         suffix = catalog.split(".")[-1].strip("/")

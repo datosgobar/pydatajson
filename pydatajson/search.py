@@ -7,18 +7,19 @@ Contiene los métodos para navegar un data.json iterando y buscando entidades de
 un catálogo.
 """
 
-from __future__ import unicode_literals, print_function, with_statement, absolute_import
+from __future__ import with_statement, absolute_import
+from __future__ import unicode_literals, print_function
 
 from six import iteritems
-
 from pydatajson.custom_exceptions import ThemeIdRepeated, ThemeLabelRepeated
 from . import custom_exceptions as ce
-from .readers import read_catalog
-from .time_series import distribution_has_time_index, dataset_has_time_series, field_is_time_series
+from .readers import read_catalog_obj
+from .time_series import distribution_has_time_index
+from .time_series import dataset_has_time_series, field_is_time_series
 
 
 def get_themes(catalog):
-    catalog = read_catalog(catalog)
+    catalog = read_catalog_obj(catalog)
     return catalog.get("themeTaxonomy")
 
 
@@ -26,19 +27,23 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
                  exclude_meta_fields=None, only_time_series=False):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
-    catalog = read_catalog(catalog)
+    catalog = read_catalog_obj(catalog)
 
     filtered_datasets = [
         dataset for dataset in catalog["dataset"] if
-        _filter_dictionary(dataset, filter_in.get("dataset"), filter_out.get("dataset"))
+        _filter_dictionary(dataset, filter_in.get(
+            "dataset"), filter_out.get("dataset"))
     ]
 
     # realiza filtros especiales
     if only_time_series:
-        filtered_datasets = [dataset for dataset in filtered_datasets if dataset_has_time_series(dataset)]
+        filtered_datasets = [
+            dataset for dataset in filtered_datasets
+            if dataset_has_time_series(dataset)]
 
     if meta_field:
-        return [dataset[meta_field] for dataset in filtered_datasets if meta_field in dataset]
+        return [dataset[meta_field] for dataset in filtered_datasets
+                if meta_field in dataset]
 
     if exclude_meta_fields:
         meta_filtered_datasets = []
@@ -59,7 +64,7 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
                       only_time_series=False):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
-    catalog = read_catalog(catalog)
+    catalog = read_catalog_obj(catalog)
 
     distributions = []
     for dataset in get_datasets(catalog, filter_in, filter_out):
@@ -102,7 +107,7 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
                only_time_series=False):
     filter_in = filter_in or {}
     filter_out = filter_out or {}
-    catalog = read_catalog(catalog)
+    catalog = read_catalog_obj(catalog)
 
     fields = []
     for distribution in get_distributions(catalog, filter_in, filter_out,
@@ -137,7 +142,7 @@ def get_time_series(catalog, **kwargs):
 def get_dataset(catalog, identifier=None, title=None):
     msg = "Se requiere un 'identifier' o 'title' para buscar el dataset."
     assert identifier or title, msg
-    catalog = read_catalog(catalog)
+    catalog = read_catalog_obj(catalog)
 
     if identifier:
         filtered_datasets = get_datasets(
@@ -163,7 +168,7 @@ def get_distribution(catalog, identifier=None, title=None,
                      dataset_identifier=None):
     msg = "Se requiere un 'identifier' o 'title' para buscar el distribution."
     assert identifier or title, msg
-    catalog = read_catalog(catalog)
+    catalog = read_catalog_obj(catalog)
 
     # 1. BUSCA las distribuciones en el catálogo
     # toma la distribution que tenga el id único
@@ -203,7 +208,7 @@ def get_distribution(catalog, identifier=None, title=None,
 
 def get_field_location(catalog, identifier=None, title=None,
                        distribution_identifier=None):
-    catalog = read_catalog(catalog)
+    catalog = read_catalog_obj(catalog)
 
     field_location = None
 
@@ -280,12 +285,14 @@ def get_theme(catalog, identifier=None, label=None):
 
     # filtra por id (preferentemente) o label
     if identifier:
-        filtered_themes = [theme for theme in themes if theme["id"].lower() == identifier.lower()]
+        filtered_themes = [theme for theme in themes if theme[
+            "id"].lower() == identifier.lower()]
         if len(filtered_themes) > 1:
             raise ThemeIdRepeated([x["id"] for x in filtered_themes])
 
     elif label:
-        filtered_themes = [theme for theme in themes if theme["label"] == label]
+        filtered_themes = [
+            theme for theme in themes if theme["label"] == label]
         if len(filtered_themes) > 1:
             raise ThemeLabelRepeated([x["label"] for x in filtered_themes])
 
