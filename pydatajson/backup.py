@@ -178,3 +178,7 @@ def get_catalog_path(catalog_id, catalogs_dir=CATALOGS_DIR, fmt="json"):
     else:
         raise NotImplementedError("El formato {} no está implementado.".format(
             fmt))
+
+
+if __name__ == '__main__':
+    make_catalog_backup(sys.argv[1], sys.argv[2])
