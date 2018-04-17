@@ -122,8 +122,8 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
                     field["dataset_identifier"] = distribution[
                         "dataset_identifier"]
                     # agrega el id de la distribución
-                    field["distribution_identifier"] = distribution[
-                        "identifier"]
+                    field["distribution_identifier"] = distribution.get(
+                        "identifier")
 
                     fields.append(field)
 

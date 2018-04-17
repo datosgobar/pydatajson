@@ -137,10 +137,11 @@ class DataJson(dict):
     def _build_distributions_index(self):
         distributions_index = {}
         for index, distribution in enumerate(self.distributions):
-            distributions_index[distribution["identifier"]] = {
-                "index": index,
-                "dataset_identifier": distribution["dataset_identifier"]
-            }
+            if "identifier" in distribution:
+                distributions_index[distribution["identifier"]] = {
+                    "index": index,
+                    "dataset_identifier": distribution["dataset_identifier"]
+                }
         setattr(self, "_distributions_index", distributions_index)
 
     def _build_fields_index(self):
@@ -150,7 +151,8 @@ class DataJson(dict):
                 fields_index[field["id"]] = {
                     "index": index,
                     "dataset_identifier": field["dataset_identifier"],
-                    "distribution_identifier": field["distribution_identifier"]
+                    "distribution_identifier": field.get(
+                        "distribution_identifier")
                 }
         setattr(self, "_fields_index", fields_index)
 

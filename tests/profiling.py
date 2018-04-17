@@ -66,7 +66,7 @@ def main():
     #     os.path.join(SAMPLES_DIR, "catalogo_justicia.json"))
 
     # ejemplo grande
-    datasets_cant = 20
+    datasets_cant = 100
     original_catalog = pydatajson.DataJson(
         "http://infra.datos.gob.ar/catalog/sspm/data.json")
     original_catalog["dataset"] = original_catalog["dataset"][:datasets_cant]

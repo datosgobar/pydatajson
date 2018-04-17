@@ -12,4 +12,4 @@ from . import helpers
 
 __author__ = """Datos Argentina"""
 __email__ = 'datos@modernizacion.gob.ar'
-__version__ = '0.4.6'
+__version__ = '0.4.7'
