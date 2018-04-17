@@ -67,11 +67,20 @@ class DataJson(dict):
         """
         # se construye el objeto DataJson con la interfaz de un dicconario
         if catalog:
+
+            # lee representaciones de un catálogo hacia un diccionario
             catalog = readers.read_catalog(catalog,
                                            default_values=default_values)
+
+            # copia todos los atributos del diccionario hacia el objeto
             for key, value in iteritems(catalog):
                 self[key] = value
+
             self.has_catalog = True
+
+            # indexa los ids de datasets, distribuciones y fields
+            self._build_index()
+
         else:
             self.has_catalog = False
 
@@ -112,6 +121,38 @@ class DataJson(dict):
 
     # Metodos para interactuar con un portal de CKAN
     push_dataset_to_ckan = federation.push_dataset_to_ckan
+
+    # indices para performar búsquedas más rápidas
+    def _build_index(self):
+        self._build_datasets_index()
+        self._build_distributions_index()
+        self._build_fields_index()
+
+    def _build_datasets_index(self):
+        datasets_index = {}
+        for index, dataset in enumerate(self.datasets):
+            datasets_index[dataset["identifier"]] = {"index": index}
+        setattr(self, "_datasets_index", datasets_index)
+
+    def _build_distributions_index(self):
+        distributions_index = {}
+        for index, distribution in enumerate(self.distributions):
+            distributions_index[distribution["identifier"]] = {
+                "index": index,
+                "dataset_identifier": distribution["dataset_identifier"]
+            }
+        setattr(self, "_distributions_index", distributions_index)
+
+    def _build_fields_index(self):
+        fields_index = {}
+        for index, field in enumerate(self.fields):
+            if "id" in field:
+                fields_index[field["id"]] = {
+                    "index": index,
+                    "dataset_identifier": field["dataset_identifier"],
+                    "distribution_identifier": field["distribution_identifier"]
+                }
+        setattr(self, "_fields_index", fields_index)
 
     def remove_dataset(self, identifier):
         for index, dataset in enumerate(self["dataset"]):
@@ -478,6 +519,10 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         # Si se pasa un único catálogo, genero una lista que lo contenga
         if isinstance(catalogs, string_types + (dict,)):
             catalogs = [catalogs]
+
+        # convierto los catalogos a objetos DataJson
+        catalogs = map(readers.read_catalog_obj, catalogs)
+
         if not catalog_ids:
             catalog_ids = []
             for catalog in catalogs:

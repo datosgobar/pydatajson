@@ -274,7 +274,8 @@ class TestDataJsonTestCase(object):
         return_value = [{"ckan": "in a box", "portal": "andino", "capo": "si"}]
         self.dj.catalog_report = mock.MagicMock(return_value=return_value)
 
-        catalogs = ["catalogo A", "catalogo B", "catalogo C"]
+        catalogs = [pydatajson.DataJson(), pydatajson.DataJson(),
+                    pydatajson.DataJson()]
         actual = self.dj.generate_datasets_report(catalogs)
 
         expected = []
@@ -313,7 +314,7 @@ class TestDataJsonTestCase(object):
         datasets_report = [
             {
                 "catalog_metadata_url": 1,
-                "dataset_title": 1,
+                "dataset_identifier": 1,
                 "dataset_accrualPeriodicity": 1,
                 "otra key": 1,
                 "catalog_federation_org": "organizacion-en-ckan",
@@ -322,7 +323,7 @@ class TestDataJsonTestCase(object):
             },
             {
                 "catalog_metadata_url": 2,
-                "dataset_title": 2,
+                "dataset_identifier": 2,
                 "dataset_accrualPeriodicity": 2,
                 "otra key": 2,
                 "catalog_federation_org": "organizacion-en-ckan",
@@ -332,7 +333,7 @@ class TestDataJsonTestCase(object):
             },
             {
                 "catalog_metadata_url": 3,
-                "dataset_title": 3,
+                "dataset_identifier": 3,
                 "dataset_accrualPeriodicity": 3,
                 "otra key": 3,
                 "catalog_federation_org": "organizacion-en-ckan",
@@ -344,16 +345,12 @@ class TestDataJsonTestCase(object):
 
         expected_config = [
             {
-                "catalog_metadata_url": 2,
-                "dataset_title": 2,
-                "dataset_accrualPeriodicity": 2,
+                "dataset_identifier": 2,
                 "dataset_organization": "organizacion-en-ckan",
                 "catalog_id": "organismo",
             },
             {
-                "catalog_metadata_url": 3,
-                "dataset_title": 3,
-                "dataset_accrualPeriodicity": 3,
+                "dataset_identifier": 3,
                 "dataset_organization": "organizacion-en-ckan",
                 "catalog_id": "organismo",
             }
@@ -375,7 +372,7 @@ class TestDataJsonTestCase(object):
         datasets_report = [
             {
                 "catalog_metadata_url": 1,
-                "dataset_title": 1,
+                "dataset_identifier": 1,
                 "dataset_accrualPeriodicity": 1,
                 "catalog_federation_org": "organizacion-en-ckan",
                 "catalog_federation_id": "organismo",
@@ -384,7 +381,7 @@ class TestDataJsonTestCase(object):
             },
             {
                 "catalog_metadata_url": 2,
-                "dataset_title": 2,
+                "dataset_identifier": 2,
                 "dataset_accrualPeriodicity": 2,
                 "catalog_federation_org": "organizacion-en-ckan",
                 "catalog_federation_id": "organismo",
@@ -393,7 +390,7 @@ class TestDataJsonTestCase(object):
             },
             {
                 "catalog_metadata_url": 3,
-                "dataset_title": 3,
+                "dataset_identifier": 3,
                 "dataset_accrualPeriodicity": 3,
                 "catalog_federation_org": "organizacion-en-ckan",
                 "catalog_federation_id": "organismo",
@@ -404,14 +401,12 @@ class TestDataJsonTestCase(object):
 
         expected_config = [
             {
-                "catalog_metadata_url": 2,
-                "dataset_title": 2,
+                "dataset_identifier": 2,
                 "dataset_organization": "organizacion-en-ckan",
                 "catalog_id": "organismo",
             },
             {
-                "catalog_metadata_url": 3,
-                "dataset_title": 3,
+                "dataset_identifier": 3,
                 "dataset_organization": "organizacion-en-ckan",
                 "catalog_id": "organismo",
             }
@@ -888,11 +883,13 @@ revíselo manualmente""".format(actual_filename)
 
     def test_DataJson_constructor(self):
         for key, value in iteritems(self.catalog):
-            assert_equal(self.dj[key], value)
+            if key != "dataset":
+                assert_equal(self.dj[key], value)
 
     def test_datasets_property(self):
         """La propiedad datasets equivale a clave 'dataset' de un catalog."""
-        assert_equal(self.dj.datasets, self.catalog["dataset"])
+        assert_equal(self.dj.datasets,
+                     pydatajson.DataJson(self.catalog)["dataset"])
         assert_equal(self.dj.datasets, self.dj["dataset"])
 
     @load_expected_result()
@@ -916,19 +913,8 @@ revíselo manualmente""".format(actual_filename)
 
     def test_distributions_property(self):
         """La propiedad distributions equivale a clave 'distribution' de un catalog."""
-        distributions = []
-        for dataset in self.catalog["dataset"]:
-            for distribution in dataset["distribution"]:
-                distribution["dataset_identifier"] = dataset["identifier"]
-                distributions.append(distribution)
-        assert_equal(self.dj.distributions, distributions)
-
-        distributions = []
-        for dataset in self.dj["dataset"]:
-            for distribution in dataset["distribution"]:
-                distribution["dataset_identifier"] = dataset["identifier"]
-                distributions.append(distribution)
-        assert_equal(self.dj.distributions, distributions)
+        assert_equal(self.dj.distributions,
+                     pydatajson.DataJson(self.catalog).get_distributions())
 
     @load_expected_result()
     def test_distributions(self, expected_result):

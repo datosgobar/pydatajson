@@ -68,7 +68,7 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
 
     distributions = []
     for dataset in get_datasets(catalog, filter_in, filter_out):
-        for distribution in dataset["distribution"]:
+        for distribution in dataset.get("distribution", []):
             # agrega el id del dataset
             distribution["dataset_identifier"] = dataset["identifier"]
             distributions.append(distribution)
@@ -112,8 +112,10 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
     fields = []
     for distribution in get_distributions(catalog, filter_in, filter_out,
                                           only_time_series=only_time_series):
-        if "field" in distribution and isinstance(distribution["field"], list):
-            for field in distribution["field"]:
+
+        distribution_fields = distribution.get("field", [])
+        if isinstance(distribution_fields, list):
+            for field in distribution_fields:
                 if not only_time_series or field_is_time_series(field,
                                                                 distribution):
                     # agrega el id del dataset
@@ -122,6 +124,7 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
                     # agrega el id de la distribución
                     field["distribution_identifier"] = distribution[
                         "identifier"]
+
                     fields.append(field)
 
     filtered_fields = [field for field in fields if
@@ -144,9 +147,21 @@ def get_dataset(catalog, identifier=None, title=None):
     assert identifier or title, msg
     catalog = read_catalog_obj(catalog)
 
+    # búsqueda optimizada por identificador
     if identifier:
-        filtered_datasets = get_datasets(
-            catalog, {"dataset": {"identifier": identifier}})
+        try:
+            index = catalog._datasets_index[identifier]["index"]
+            dataset = catalog.datasets[index]
+            assert dataset["identifier"] == identifier
+            return dataset
+        except:
+            catalog._build_datasets_index()
+            index = catalog._datasets_index[identifier]["index"]
+            dataset = catalog.datasets[index]
+            assert dataset["identifier"] == identifier
+            return dataset
+        # filtered_datasets = get_datasets(
+        #     catalog, {"dataset": {"identifier": identifier}})
     elif title:  # TODO: is this required?
         filtered_datasets = get_datasets(
             catalog, {"dataset": {"title": title}})
@@ -172,9 +187,26 @@ def get_distribution(catalog, identifier=None, title=None,
 
     # 1. BUSCA las distribuciones en el catálogo
     # toma la distribution que tenga el id único
+    # búsqueda optimizada por identificador
     if identifier:
-        filtered_distributions = get_distributions(
-            catalog, {"distribution": {"identifier": identifier}})
+        try:
+            index = catalog._distributions_index[identifier]["index"]
+            distribution = catalog.distributions[index]
+            assert distribution["identifier"] == identifier
+            distribution["dataset_identifier"] = catalog._distributions_index[
+                identifier]["dataset_identifier"]
+            return distribution
+        except:
+            catalog._build_distributions_index()
+            index = catalog._distributions_index[identifier]["index"]
+            distribution = catalog.distributions[index]
+            assert distribution["identifier"] == identifier
+            distribution["dataset_identifier"] = catalog._distributions_index[
+                identifier]["dataset_identifier"]
+            return distribution
+
+        # filtered_distributions = get_distributions(
+        #     catalog, {"distribution": {"identifier": identifier}})
     # toma la distribution que tenga el título único, dentro de un dataset
     elif title and dataset_identifier:
         filtered_distributions = get_distributions(
@@ -242,9 +274,30 @@ def get_field(catalog, identifier=None, title=None,
     assert identifier or title, msg
 
     # 1. BUSCA los fields en el catálogo
+    # búsqueda optimizada por identificador
     if identifier:
-        filtered_fields = get_fields(
-            catalog, {"field": {"id": identifier}})
+        try:
+            index = catalog._fields_index[identifier]["index"]
+            field = catalog.fields[index]
+            assert field["id"] == identifier
+            field["dataset_identifier"] = catalog._fields_index[
+                identifier]["dataset_identifier"]
+            field["distribution_identifier"] = catalog._fields_index[
+                identifier]["distribution_identifier"]
+            return field
+        except:
+            catalog._build_fields_index()
+            index = catalog._fields_index[identifier]["index"]
+            field = catalog.fields[index]
+            assert field["id"] == identifier
+            field["dataset_identifier"] = catalog._fields_index[
+                identifier]["dataset_identifier"]
+            field["distribution_identifier"] = catalog._fields_index[
+                identifier]["distribution_identifier"]
+            return field
+
+        # filtered_fields = get_fields(
+        #     catalog, {"field": {"id": identifier}})
     elif title and distribution_identifier:
         filtered_fields = get_fields(
             catalog, {
