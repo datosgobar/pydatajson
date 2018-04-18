@@ -162,10 +162,12 @@ def get_dataset(catalog, identifier=None, title=None):
         try:
             return _get_dataset_by_identifier(catalog, identifier)
         except:
-            catalog._build_index()
-            return _get_dataset_by_identifier(catalog, identifier)
-        # filtered_datasets = get_datasets(
-        #     catalog, {"dataset": {"identifier": identifier}})
+            try:
+                catalog._build_index()
+                return _get_dataset_by_identifier(catalog, identifier)
+            except:
+                filtered_datasets = get_datasets(
+                    catalog, {"dataset": {"identifier": identifier}})
     elif title:  # TODO: is this required?
         filtered_datasets = get_datasets(
             catalog, {"dataset": {"title": title}})
@@ -207,11 +209,12 @@ def get_distribution(catalog, identifier=None, title=None,
         try:
             return _get_distribution_by_identifier(catalog, identifier)
         except:
-            catalog._build_index()
-            return _get_distribution_by_identifier(catalog, identifier)
-
-        # filtered_distributions = get_distributions(
-        #     catalog, {"distribution": {"identifier": identifier}})
+            try:
+                catalog._build_index()
+                return _get_distribution_by_identifier(catalog, identifier)
+            except:
+                filtered_distributions = get_distributions(
+                    catalog, {"distribution": {"identifier": identifier}})
     # toma la distribution que tenga el título único, dentro de un dataset
     elif title and dataset_identifier:
         filtered_distributions = get_distributions(
@@ -294,11 +297,12 @@ def get_field(catalog, identifier=None, title=None,
         try:
             return _get_field_by_identifier(catalog, identifier)
         except:
-            catalog._build_index()
-            return _get_field_by_identifier(catalog, identifier)
-
-        # filtered_fields = get_fields(
-        #     catalog, {"field": {"id": identifier}})
+            try:
+                catalog._build_index()
+                return _get_field_by_identifier(catalog, identifier)
+            except:
+                filtered_fields = get_fields(
+                    catalog, {"field": {"id": identifier}})
     elif title and distribution_identifier:
         filtered_fields = get_fields(
             catalog, {

@@ -1,6 +1,12 @@
 Versiones
 =========
 
+0.4.8 (2018-04-18)
+-------------------
+
+* Mejoro manejo de errores de los métodos optimizados de búsqueda
+
+
 0.4.7 (2018-04-17)
 -------------------
 
