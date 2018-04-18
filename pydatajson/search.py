@@ -29,11 +29,14 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
     filter_out = filter_out or {}
     catalog = read_catalog_obj(catalog)
 
-    filtered_datasets = [
-        dataset for dataset in catalog["dataset"] if
-        _filter_dictionary(dataset, filter_in.get(
-            "dataset"), filter_out.get("dataset"))
-    ]
+    if filter_in or filter_out:
+        filtered_datasets = [
+            dataset for dataset in catalog["dataset"] if
+            _filter_dictionary(dataset, filter_in.get(
+                "dataset"), filter_out.get("dataset"))
+        ]
+    else:
+        filtered_datasets = catalog["dataset"]
 
     # realiza filtros especiales
     if only_time_series:
