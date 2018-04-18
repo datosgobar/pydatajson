@@ -122,38 +122,40 @@ class DataJson(dict):
     # Metodos para interactuar con un portal de CKAN
     push_dataset_to_ckan = federation.push_dataset_to_ckan
 
-    # indices para performar búsquedas más rápidas
     def _build_index(self):
-        self._build_datasets_index()
-        self._build_distributions_index()
-        self._build_fields_index()
+        """Itera todos los datasets, distribucioens y fields indexandolos."""
 
-    def _build_datasets_index(self):
         datasets_index = {}
-        for index, dataset in enumerate(self.datasets):
-            datasets_index[dataset["identifier"]] = {"index": index}
-        setattr(self, "_datasets_index", datasets_index)
-
-    def _build_distributions_index(self):
         distributions_index = {}
-        for index, distribution in enumerate(self.distributions):
-            if "identifier" in distribution:
-                distributions_index[distribution["identifier"]] = {
-                    "index": index,
-                    "dataset_identifier": distribution["dataset_identifier"]
-                }
-        setattr(self, "_distributions_index", distributions_index)
-
-    def _build_fields_index(self):
         fields_index = {}
-        for index, field in enumerate(self.fields):
-            if "id" in field:
-                fields_index[field["id"]] = {
-                    "index": index,
-                    "dataset_identifier": field["dataset_identifier"],
-                    "distribution_identifier": field.get(
-                        "distribution_identifier")
+
+        # recorre todos los datasets
+        for dataset_index, dataset in enumerate(self.datasets):
+            if "identifier" in dataset:
+                datasets_index[dataset["identifier"]] = {
+                    "dataset_index": dataset_index
                 }
+                # recorre las distribuciones del dataset
+                for distribution_index, distribution in enumerate(
+                        dataset.get("distribution", [])):
+                    if "identifier" in distribution:
+                        distributions_index[distribution["identifier"]] = {
+                            "distribution_index": distribution_index,
+                            "dataset_identifier": dataset["identifier"]
+                        }
+                        # recorre los fields de la distribucion
+                        for field_index, field in enumerate(
+                                distribution.get("field", [])):
+                            if "id" in field:
+                                fields_index[field["id"]] = {
+                                    "field_index": field_index,
+                                    "dataset_identifier": dataset["identifier"],
+                                    "distribution_identifier": distribution[
+                                        "identifier"]
+                                }
+
+        setattr(self, "_distributions_index", distributions_index)
+        setattr(self, "_datasets_index", datasets_index)
         setattr(self, "_fields_index", fields_index)
 
     def remove_dataset(self, identifier):

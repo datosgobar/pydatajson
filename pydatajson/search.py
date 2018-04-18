@@ -142,6 +142,13 @@ def get_time_series(catalog, **kwargs):
     return get_fields(catalog, **kwargs)
 
 
+def _get_dataset_by_identifier(catalog, identifier):
+    dataset_index = catalog._datasets_index[identifier]["dataset_index"]
+    dataset = catalog.datasets[dataset_index]
+    assert dataset["identifier"] == identifier
+    return dataset
+
+
 def get_dataset(catalog, identifier=None, title=None):
     msg = "Se requiere un 'identifier' o 'title' para buscar el dataset."
     assert identifier or title, msg
@@ -150,16 +157,10 @@ def get_dataset(catalog, identifier=None, title=None):
     # búsqueda optimizada por identificador
     if identifier:
         try:
-            index = catalog._datasets_index[identifier]["index"]
-            dataset = catalog.datasets[index]
-            assert dataset["identifier"] == identifier
-            return dataset
+            return _get_dataset_by_identifier(catalog, identifier)
         except:
-            catalog._build_datasets_index()
-            index = catalog._datasets_index[identifier]["index"]
-            dataset = catalog.datasets[index]
-            assert dataset["identifier"] == identifier
-            return dataset
+            catalog._build_index()
+            return _get_dataset_by_identifier(catalog, identifier)
         # filtered_datasets = get_datasets(
         #     catalog, {"dataset": {"identifier": identifier}})
     elif title:  # TODO: is this required?
@@ -179,6 +180,17 @@ def get_dataset(catalog, identifier=None, title=None):
         return filtered_datasets[0]
 
 
+def _get_distribution_by_identifier(catalog, identifier):
+    dataset_identifier = catalog._distributions_index[
+        identifier]["dataset_identifier"]
+    distribution_index = catalog._distributions_index[
+        identifier]["distribution_index"]
+    distribution = _get_dataset_by_identifier(catalog, dataset_identifier)[
+        "distribution"][distribution_index]
+    assert distribution["identifier"] == identifier
+    return distribution
+
+
 def get_distribution(catalog, identifier=None, title=None,
                      dataset_identifier=None):
     msg = "Se requiere un 'identifier' o 'title' para buscar el distribution."
@@ -190,20 +202,10 @@ def get_distribution(catalog, identifier=None, title=None,
     # búsqueda optimizada por identificador
     if identifier:
         try:
-            index = catalog._distributions_index[identifier]["index"]
-            distribution = catalog.distributions[index]
-            assert distribution["identifier"] == identifier
-            distribution["dataset_identifier"] = catalog._distributions_index[
-                identifier]["dataset_identifier"]
-            return distribution
+            return _get_distribution_by_identifier(catalog, identifier)
         except:
-            catalog._build_distributions_index()
-            index = catalog._distributions_index[identifier]["index"]
-            distribution = catalog.distributions[index]
-            assert distribution["identifier"] == identifier
-            distribution["dataset_identifier"] = catalog._distributions_index[
-                identifier]["dataset_identifier"]
-            return distribution
+            catalog._build_index()
+            return _get_distribution_by_identifier(catalog, identifier)
 
         # filtered_distributions = get_distributions(
         #     catalog, {"distribution": {"identifier": identifier}})
@@ -268,6 +270,16 @@ def get_field_location(catalog, identifier=None, title=None,
     return field_location
 
 
+def _get_field_by_identifier(catalog, identifier):
+    distribution_identifier = catalog._fields_index[
+        identifier]["distribution_identifier"]
+    field_index = catalog._fields_index[identifier]["field_index"]
+    field = _get_distribution_by_identifier(catalog, distribution_identifier)[
+        "field"][field_index]
+    assert field["id"] == identifier
+    return field
+
+
 def get_field(catalog, identifier=None, title=None,
               distribution_identifier=None):
     msg = "Se requiere un 'id' o 'title' para buscar el field."
@@ -277,24 +289,10 @@ def get_field(catalog, identifier=None, title=None,
     # búsqueda optimizada por identificador
     if identifier:
         try:
-            index = catalog._fields_index[identifier]["index"]
-            field = catalog.fields[index]
-            assert field["id"] == identifier
-            field["dataset_identifier"] = catalog._fields_index[
-                identifier]["dataset_identifier"]
-            field["distribution_identifier"] = catalog._fields_index[
-                identifier]["distribution_identifier"]
-            return field
+            return _get_field_by_identifier(catalog, identifier)
         except:
-            catalog._build_fields_index()
-            index = catalog._fields_index[identifier]["index"]
-            field = catalog.fields[index]
-            assert field["id"] == identifier
-            field["dataset_identifier"] = catalog._fields_index[
-                identifier]["dataset_identifier"]
-            field["distribution_identifier"] = catalog._fields_index[
-                identifier]["distribution_identifier"]
-            return field
+            catalog._build_index()
+            return _get_field_by_identifier(catalog, identifier)
 
         # filtered_fields = get_fields(
         #     catalog, {"field": {"id": identifier}})

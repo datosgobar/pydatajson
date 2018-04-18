@@ -31,7 +31,6 @@
                     "accessURL": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
                     "description": "Oferta y Demanda Globales por componente, a precios de comprador, en millones de pesos de 1993 y valores trimestrales desestacionalizados.",
                     "format": "CSV",
-                    "dataset_identifier": "1",
                     "issued": "2017-09-28",
                     "title": "Oferta y Demanda Global. Precios constantes desestacionalizados. Base 1993. Valores trimestrales.",
                     "modified": "2018-03-02T00:00:02.345747-03:00",
@@ -39,67 +38,53 @@
                     "downloadURL": "https://github.com/datosgobar/pydatajson/raw/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv",
                     "field": [
                         {
-                            "distribution_identifier": "1.2",
-                            "specialTypeDetail": "R/P3M",
-                            "dataset_identifier": "1",
-                            "title": "indice_tiempo",
                             "specialType": "time_index",
+                            "specialTypeDetail": "R/P3M",
                             "type": "date",
-                            "id": "1.2_IT_D_1993_T_13"
+                            "id": "1.2_IT_D_1993_T_13",
+                            "title": "indice_tiempo"
                         },
                         {
-                            "distribution_identifier": "1.2",
+                            "id": "1.2_OGP_D_1993_T_17",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "PIB a precios de comprador, en millones de pesos de 1993 y valores anuales.",
-                            "title": "oferta_global_pib",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_OGP_D_1993_T_17"
+                            "title": "oferta_global_pib"
                         },
                         {
-                            "distribution_identifier": "1.2",
+                            "id": "1.2_OGI_D_1993_T_25",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Importación a precios de comprador, en millones de pesos de 1993 y valores anuales.",
-                            "title": "oferta_global_importacion",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_OGI_D_1993_T_25"
+                            "title": "oferta_global_importacion"
                         },
                         {
-                            "distribution_identifier": "1.2",
+                            "id": "1.2_DGE_D_1993_T_26",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Oferta global total a precios de comprador, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_exportacion",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_DGE_D_1993_T_26"
+                            "title": "demanda_global_exportacion"
                         },
                         {
-                            "distribution_identifier": "1.2",
+                            "id": "1.2_DGI_D_1993_T_19",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Consumo privado, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_ibif",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_DGI_D_1993_T_19"
+                            "title": "demanda_global_ibif"
                         },
                         {
-                            "distribution_identifier": "1.2",
+                            "id": "1.2_DGCP_D_1993_T_27",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Consumo publico, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_consumo_priv",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_DGCP_D_1993_T_27"
+                            "title": "demanda_global_consumo_priv"
                         },
                         {
-                            "distribution_identifier": "1.2",
-                            "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_consumo_publico",
-                            "dataset_identifier": "1",
+                            "id": "1.2_DGCP_D_1993_T_30",
                             "units": "Millones de pesos a precios de 1993",
                             "type": "number",
-                            "id": "1.2_DGCP_D_1993_T_30"
+                            "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_consumo_publico"
                         }
                     ],
                     "identifier": "1.2"
@@ -108,74 +93,59 @@
                     "accessURL": "https://www.minhacienda.gob.ar/secretarias/politica-economica/programacion-macroeconomica/",
                     "description": "Oferta y Demanda Globales por componente, a precios de comprador, en millones de pesos de 1993 y valores trimestrales desestacionalizados.",
                     "format": "CSV",
-                    "dataset_identifier": "1",
                     "issued": "2017-09-28",
                     "title": "Oferta y Demanda Global. Precios constantes desestacionalizados. Base 1993. Valores trimestrales.",
                     "modified": "2018-03-02T00:00:02.345747-03:00",
                     "downloadURL": "https://github.com/datosgobar/pydatajson/raw/master/samples/series-tiempo/odg-total-millones-pesos-1960-trimestral.csv",
                     "field": [
                         {
-                            "distribution_identifier": "1.2.b",
-                            "specialTypeDetail": "R/P3M",
-                            "dataset_identifier": "1",
-                            "title": "indice_tiempo",
                             "specialType": "time_index",
+                            "specialTypeDetail": "R/P3M",
                             "type": "date",
-                            "id": "1.2_IT_D_1993_T_13"
+                            "id": "1.2_IT_D_1993_T_13",
+                            "title": "indice_tiempo"
                         },
                         {
-                            "distribution_identifier": "1.2.b",
+                            "id": "1.2_OGP_D_1993_T_17",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "PIB a precios de comprador, en millones de pesos de 1993 y valores anuales.",
-                            "title": "oferta_global_pib",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_OGP_D_1993_T_17"
+                            "title": "oferta_global_pib"
                         },
                         {
-                            "distribution_identifier": "1.2.b",
+                            "id": "1.2_OGI_D_1993_T_25",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Importación a precios de comprador, en millones de pesos de 1993 y valores anuales.",
-                            "title": "oferta_global_importacion",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_OGI_D_1993_T_25"
+                            "title": "oferta_global_importacion"
                         },
                         {
-                            "distribution_identifier": "1.2.b",
+                            "id": "1.2_DGE_D_1993_T_26",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Oferta global total a precios de comprador, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_exportacion",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_DGE_D_1993_T_26"
+                            "title": "demanda_global_exportacion"
                         },
                         {
-                            "distribution_identifier": "1.2.b",
+                            "id": "1.2_DGI_D_1993_T_19",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Consumo privado, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_ibif",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_DGI_D_1993_T_19"
+                            "title": "demanda_global_ibif"
                         },
                         {
-                            "distribution_identifier": "1.2.b",
+                            "id": "1.2_DGCP_D_1993_T_27",
+                            "units": "Millones de pesos a precios de 1993",
+                            "type": "number",
                             "description": "Consumo publico, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_consumo_priv",
-                            "dataset_identifier": "1",
-                            "units": "Millones de pesos a precios de 1993",
-                            "type": "number",
-                            "id": "1.2_DGCP_D_1993_T_27"
+                            "title": "demanda_global_consumo_priv"
                         },
                         {
-                            "distribution_identifier": "1.2.b",
-                            "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
-                            "title": "demanda_global_consumo_publico",
-                            "dataset_identifier": "1",
+                            "id": "1.2_DGCP_D_1993_T_30",
                             "units": "Millones de pesos a precios de 1993",
                             "type": "number",
-                            "id": "1.2_DGCP_D_1993_T_30"
+                            "description": "Inversion bruta interna fija, en millones de pesos de 1993 y valores anuales.",
+                            "title": "demanda_global_consumo_publico"
                         }
                     ],
                     "identifier": "1.2.b"
