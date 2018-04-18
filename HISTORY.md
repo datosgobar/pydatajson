@@ -5,6 +5,7 @@ Versiones
 -------------------
 
 * Flexibiliza métodos de búsqueda optimizados para aceptar data.json's versión 1.0
+* Mejora la performance de los métodos de búsqueda optimizados
 
 0.4.6 (2018-04-17)
 -------------------
