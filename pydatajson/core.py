@@ -525,7 +525,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             catalogs = [catalogs]
 
         # convierto los catalogos a objetos DataJson
-        catalogs = map(readers.read_catalog_obj, catalogs)
+        catalogs = list(map(readers.read_catalog_obj, catalogs))
 
         if not catalog_ids:
             catalog_ids = []
