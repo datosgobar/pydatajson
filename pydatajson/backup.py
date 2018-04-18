@@ -10,7 +10,7 @@ import os
 
 import pydatajson
 from .helpers import ensure_dir_exists
-from download import download_to_file
+from .download import download_to_file
 from pprint import pprint
 
 CATALOGS_DIR = ""
