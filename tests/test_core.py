@@ -651,6 +651,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             assert_equal(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_field_indicators_on_min_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
 
@@ -665,6 +666,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             assert_equal(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_field_indicators_on_full_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
@@ -679,6 +681,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             assert_equal(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_federation_indicators_same_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
@@ -695,6 +698,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             assert_equal(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_federation_indicators_no_datasets(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
@@ -714,6 +718,7 @@ revíselo manualmente""".format(actual_filename)
         for k, v in expected.items():
             assert_equal(indicators[k], v)
 
+    @my_vcr.use_cassette()
     def test_federation_indicators_removed_datasets(self):
 
         # CASO 1
@@ -871,6 +876,7 @@ revíselo manualmente""".format(actual_filename)
         dataset = "Declaración Jurada Patrimonial Integral de carácter público"
         assert_true(self.dj.dataset_is_updated(catalog, dataset))
 
+    @my_vcr.use_cassette()
     def test_date_network_indicators_empty_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "invalid_catalog_empty.json")
         indics, network_indics = self.dj.generate_catalogs_indicators(
