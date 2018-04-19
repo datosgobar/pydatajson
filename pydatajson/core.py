@@ -32,6 +32,7 @@ from . import search
 from . import validation
 from . import writers
 from . import federation
+from . import transformation
 from . import backup
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -111,6 +112,9 @@ class DataJson(dict):
     get_theme = search.get_theme
     get_field_location = search.get_field_location
     get_catalog_metadata = search.get_catalog_metadata
+
+    # metodos para realizar operaciones de transformación de metadatos
+    generate_distribution_ids = transformation.generate_distribution_ids
 
     # metodos para guardar el catálogo en otros formatos
     to_xlsx = writers.write_xlsx_catalog
