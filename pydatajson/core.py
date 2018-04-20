@@ -129,6 +129,8 @@ class DataJson(dict):
     restore_dataset_to_ckan = federation.restore_dataset_to_ckan
     harvest_catalog_to_ckan = federation.harvest_catalog_to_ckan
     restore_catalog_to_ckan = federation.restore_catalog_to_ckan
+    push_theme_to_ckan = federation.push_theme_to_ckan
+    push_new_themes = federation.push_new_themes
 
     def _build_index(self):
         """Itera todos los datasets, distribucioens y fields indexandolos."""
