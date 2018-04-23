@@ -70,6 +70,24 @@ def remove_dataset_from_ckan(identifier, portal_url, apikey):
     ckan_portal.call_action('dataset_purge', data_dict={'id': identifier})
 
 
+def remove_harvested_ds_from_ckan(catalog, portal_url, apikey,
+                                  catalog_id=None, original_ids=None):
+    catalog_id = catalog_id or catalog.get("identifier")
+    assert catalog_id, "Necesita un identificador de catálogo."
+
+    if not original_ids:
+        original_ids = catalog.get_datasets(meta_field="identifier")
+    harvested_ids = ["_".join([catalog_id, original_id])
+                     for original_id in original_ids]
+
+    for harvested_id in harvested_ids:
+        try:
+            remove_dataset_from_ckan(harvested_id, portal_url, apikey)
+            print("{} eliminado de {}".format(harvested_id, catalog_id))
+        except:
+            print("{} de {} no existe.".format(harvested_id, catalog_id))
+
+
 def remove_datasets_from_ckan(portal_url, apikey, filter_in=None,
                               filter_out=None, only_time_series=False,
                               organization=None):
@@ -102,7 +120,7 @@ def remove_datasets_from_ckan(portal_url, apikey, filter_in=None,
     if organization:
         query = 'organization:"' + organization + '"'
         search_result = ckan_portal.call_action('package_search', data_dict={
-                                                'q': query, 'rows': 500, 'start': 0})
+            'q': query, 'rows': 500, 'start': 0})
         org_identifiers = [dataset['id']
                            for dataset in search_result['results']]
         start = 500
