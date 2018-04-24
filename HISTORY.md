@@ -1,6 +1,11 @@
 Versiones
 =========
 
+0.4.10 (2018-04-24)
+-------------------
+
+* Mejora manejo de errores de las funciones para federar catálogos completos.
+
 0.4.9 (2018-04-24)
 -------------------
 
