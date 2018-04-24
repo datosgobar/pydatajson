@@ -28,7 +28,7 @@ STOP_WORDS = [
 ]
 
 
-def title_to_name(title, decode=True):
+def title_to_name(title, decode=True, max_len=None, use_complete_words=True):
     """Convierte un título en un nombre normalizado para generar urls."""
     # decodifica y pasa a minúsculas
     if decode:
@@ -41,6 +41,18 @@ def title_to_name(title, decode=True):
     # remueve stop words y espacios y une palabras sólo con un "-"
     normalized_title = '-'.join([word for word in filtered_title.split()
                                  if word not in STOP_WORDS])
+
+    # recorto el titulo normalizado si excede la longitud máxima
+    if max_len and len(normalized_title) > max_len:
+
+        # busco la última palabra completa
+        if use_complete_words:
+            last_word_index = normalized_title.rindex("-", 0, max_len)
+            normalized_title = normalized_title[:last_word_index]
+
+        # corto en el último caracter
+        else:
+            normalized_title = normalized_title[:max_len]
 
     return normalized_title
 
