@@ -223,6 +223,13 @@ class PushDatasetTestCase(unittest.TestCase):
             self.assertCountEqual([self.catalog_id+'_'+ds['identifier'] for ds in self.catalog.datasets],
                                   harvested_ids)
 
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_harvest_catalog_with_empty_list(self, mock_portal):
+        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+                                                owner_org='owner', dataset_list=[])
+        mock_portal.assert_not_called()
+        self.assertEqual([], harvested_ids)
+
 
 class RemoveDatasetTestCase(unittest.TestCase):
 
