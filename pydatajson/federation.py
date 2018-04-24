@@ -263,6 +263,7 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
                 catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
             harvested.append(harvested_id)
         except (NotAuthorized, NotFound, KeyError, TypeError) as e:
+            logger.error("Error federando catalogo:"+catalog_id+", dataset:"+dataset_id + "al portal: "+portal_url)
             logger.error(str(e))
 
     return harvested
