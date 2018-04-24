@@ -28,7 +28,7 @@ from . import writers
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
-EXTENSIONS_EXCEPTIONS = ["zip", "php"]
+EXTENSIONS_EXCEPTIONS = ["zip", "php", "asp", "aspx"]
 
 
 def create_validator(schema_filename=None, schema_dir=None):
@@ -277,6 +277,12 @@ def iter_custom_errors(catalog):
             if len(dups) > 0:
                 yield ce.ThemeIdRepeated(dups)
 
+        # chequea que un dataset no use un theme que no exista en la taxonomía
+        # TODO: hay que implementarlo
+
+        # chequea que un dataset no use theme con id esté repetido en taxonomía
+        # TODO: hay que implementarlo
+
         # chequea que la extensión de fileName, downloadURL y format sean
         # consistentes
         for dataset_idx, dataset in enumerate(catalog["dataset"]):
@@ -291,7 +297,8 @@ def iter_custom_errors(catalog):
         # distribuciones
         urls = []
         for dataset in catalog["dataset"]:
-            urls += [distribution['downloadURL'] for distribution in dataset['distribution']
+            urls += [distribution['downloadURL']
+                     for distribution in dataset['distribution']
                      if distribution.get('downloadURL')]
         dups = _find_dups(urls)
         if len(dups) > 0:
