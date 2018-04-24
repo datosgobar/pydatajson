@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 import json
 import re
 from datetime import time
@@ -76,12 +78,13 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     if themes and demote_themes:
         package['tags'] = package.get('tags', [])
         for theme in themes:
+            # si falla continúa sin agregar ese theme a los tags del dataset
             try:
-                label = catalog.get_theme(identifier=theme)['label']
-            except:
-                label = catalog.get_theme(label=theme)['label']
-            label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '', label, flags=re.UNICODE)
-            package['tags'].append({'name': label})
+                label = _get_theme_label(catalog, theme)
+                package['tags'].append({'name': label})
+            except Exception as e:
+                print(e)
+                continue
     else:
         package['groups'] = package.get('groups', []) + [
             {'name': title_to_name(theme, decode=False)}
@@ -89,6 +92,18 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
         ]
 
     return package
+
+
+def _get_theme_label(catalog, theme):
+    """Intenta conseguir el theme por id o por label."""
+    try:
+        label = catalog.get_theme(identifier=theme)['label']
+    except:
+        label = catalog.get_theme(label=theme)['label']
+
+    label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '',
+                   label, flags=re.UNICODE)
+    return label
 
 
 def convert_iso_string_to_utc(date_string):
