@@ -28,6 +28,7 @@ from . import writers
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
+EXTENSIONS_EXCEPTIONS = ["zip", "php"]
 
 
 def create_validator(schema_filename=None, schema_dir=None):
@@ -275,14 +276,19 @@ def iter_custom_errors(catalog):
             dups = _find_dups(theme_ids)
             if len(dups) > 0:
                 yield ce.ThemeIdRepeated(dups)
-        # chequea que la extensión de fileName, downloadURL y format sean consistentes
+
+        # chequea que la extensión de fileName, downloadURL y format sean
+        # consistentes
         for dataset_idx, dataset in enumerate(catalog["dataset"]):
-            for distribution_idx, distribution in enumerate(dataset["distribution"]):
+            for distribution_idx, distribution in enumerate(
+                    dataset["distribution"]):
                 for attribute in ['downloadURL', 'fileName']:
                     if not format_matches_extension(distribution, attribute):
-                        yield ce.ExtensionError(dataset_idx, distribution_idx, distribution, attribute)
+                        yield ce.ExtensionError(dataset_idx, distribution_idx,
+                                                distribution, attribute)
 
-        # chequea que no haya duplicados en los downloadURL de las distribuciones
+        # chequea que no haya duplicados en los downloadURL de las
+        # distribuciones
         urls = []
         for dataset in catalog["dataset"]:
             urls += [distribution['downloadURL'] for distribution in dataset['distribution']
@@ -385,9 +391,12 @@ def _catalog_validation_to_list(response):
 
 
 def format_matches_extension(distribution, attribute):
+    """Chequea si una extensión podría corresponder a un formato dado."""
+
     if attribute in distribution and "format" in distribution:
         if "/" in distribution['format']:
-            possible_format_extensions = mimetypes.guess_all_extensions(distribution['format'])
+            possible_format_extensions = mimetypes.guess_all_extensions(
+                distribution['format'])
         else:
             possible_format_extensions = ['.' + distribution['format'].lower()]
 
@@ -395,6 +404,10 @@ def format_matches_extension(distribution, attribute):
         extension = os.path.splitext(file_name)[-1].lower()
 
         if attribute == 'downloadURL' and not extension:
+            return True
+
+        # hay extensiones exceptuadas porque enmascaran otros formatos
+        if extension.lower().replace(".", "") in EXTENSIONS_EXCEPTIONS:
             return True
 
         if extension not in possible_format_extensions:
