@@ -7,11 +7,12 @@ de la API de CKAN.
 from __future__ import print_function
 import logging
 from ckanapi import RemoteCKAN
-from ckanapi.errors import NotFound, NotAuthorized
+from ckanapi.errors import NotFound, NotAuthorized, ValidationError
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
 
 logger = logging.getLogger(__name__)
+
 
 def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                          portal_url, apikey, catalog_id=None,
@@ -262,7 +263,7 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
             harvested_id = harvest_dataset_to_ckan(
                 catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
             harvested.append(harvested_id)
-        except (NotAuthorized, NotFound, KeyError, TypeError) as e:
+        except (ValidationError, NotAuthorized, NotFound, KeyError, TypeError) as e:
             logger.error("Error federando catalogo:"+catalog_id+", dataset:"+dataset_id + "al portal: "+portal_url)
             logger.error(str(e))
 
