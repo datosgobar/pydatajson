@@ -1,6 +1,44 @@
 Versiones
 =========
 
+0.4.11 (2018-04-25)
+-------------------
+
+* Corrige bug de `harvest_catalog_ot_ckan` para manejar excepciones de validación de los datasets
+
+
+0.4.10 (2018-04-24)
+-------------------
+
+* Mejora manejo de errores de las funciones para federar catálogos completos.
+
+0.4.9 (2018-04-24)
+-------------------
+
+* Agrego función para generar ids de distribuciones en catálogos que nos los tienen (compatibilidad con perfil 1.0)
+* Agrega función para eliminar todos los datastets federados de un catálogo que se encuentren en un CKAN
+* Implemento fallback que busca un theme por identifier primero o por label después (si falla)
+* Agrego excepciones a los chequeos de formato vs. extensión
+* Agrego paramétros a la función title_to_name() para establecer una longitud máxima del resultado de la transformación en caracteres
+
+0.4.8 (2018-04-18)
+-------------------
+
+* Mejoro manejo de errores de los métodos optimizados de búsqueda
+
+0.4.7 (2018-04-17)
+-------------------
+
+* Flexibiliza métodos de búsqueda optimizados para aceptar data.json's versión 1.0
+* Mejora la performance de los métodos de búsqueda optimizados
+
+0.4.6 (2018-04-17)
+-------------------
+
+* Re-estructura el archivo de configuración para federación (nueva versión simplificada)
+* Agrega módulo para hacer backups de datos y metadatos de un catálogo
+* Mejora la performance de guardar catálogos en Excel
+
 0.4.4 (2018-04-09)
 -------------------
 

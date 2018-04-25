@@ -1,6 +1,12 @@
 Versiones
 =========
 
+0.4.11 (2018-04-25)
+-------------------
+
+* Corrige bug de `harvest_catalog_ot_ckan` para manejar excepciones de validación de los datasets
+
+
 0.4.10 (2018-04-24)
 -------------------
 

@@ -4,6 +4,14 @@ pydatajson package
 Submodules
 ----------
 
+pydatajson.backup module
+------------------------
+
+.. automodule:: pydatajson.backup
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pydatajson.ckan_reader module
 -----------------------------
 
@@ -104,6 +112,14 @@ pydatajson.time_series module
 -----------------------------
 
 .. automodule:: pydatajson.time_series
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pydatajson.transformation module
+--------------------------------
+
+.. automodule:: pydatajson.transformation
     :members:
     :undoc-members:
     :show-inheritance:
