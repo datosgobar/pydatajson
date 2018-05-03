@@ -48,7 +48,8 @@
             "anyOf" : [
                 {"type": "string", "pattern": "^R/P\\d+(\\.\\d+)?[Y|M|W|D]$"},
                 {"type": "string", "pattern": "^R/PT\\d+(\\.\\d+)?[H|M|S]$"},
-                {"type": "string", "pattern": "^eventual$"}
+                {"type": "string", "pattern": "^eventual$"},
+                {"type": "string", "pattern": "^EVENTUAL$"}
             ]
         },
         "contactPoint": {
