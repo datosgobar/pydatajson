@@ -85,8 +85,10 @@ class ExtensionError(BaseValidationError):
     def __init__(self, dataset_idx, distribution_idx, distribution, attribute):
 
         validator = 'mismatchedValue'
-        template = "distribution '{}' tiene distintas extensiones: format ('{}') y " + attribute + " ('{}')"
-        extension = os.path.splitext(urlparse(distribution[attribute]).path)[-1].lower()
+        template = "distribution '{}' tiene distintas extensiones: format ('{}') y " + \
+            attribute + " ('{}')"
+        extension = os.path.splitext(
+            urlparse(distribution[attribute]).path)[-1].lower()
         message = template.format(
             distribution['identifier'], distribution['format'], extension)
         validator_value = 'Chequea format y la extension del ' + attribute
@@ -151,6 +153,14 @@ class BaseNonExistentError(ValueError):
     def get_msg(self, entity_name, entity_type, entity_id, extra_msg=""):
         return "No hay {} con {} {} {}".format(
             entity_name, entity_type, entity_id, extra_msg)
+
+
+class DistributionTimeIndexNonExistentError(BaseNonExistentError):
+
+    def __init__(self, distribution_title, dataset_id, extra_msg=""):
+        msg = self.get_msg("distribucion", "titulo", distribution_title,
+                           extra_msg)
+        super(DistributionTimeIndexNonExistentError, self).__init__(msg)
 
 
 class DistributionTitleNonExistentError(BaseNonExistentError):
@@ -331,3 +341,10 @@ class ThemeTaxonomyNonExistentError(Exception):
     def __init__(self, dataset_id):
         msg = "Catalogo no tiene themeTaxonomy"
         super(ThemeTaxonomyNonExistentError, self).__init__(msg)
+
+
+class ThemeNonExistentError(Exception):
+
+    def __init__(self, theme):
+        msg = "{} no existe en la themeTaxonomy como id ni como label."
+        super(ThemeNonExistentError, self).__init__(msg)

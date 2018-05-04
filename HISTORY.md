@@ -1,6 +1,11 @@
 Versiones
 =========
 
+0.4.12 (2018-05-04)
+-------------------
+
+* Agrega función `get_distribution_time_index()` que devuelve el `title` del `field` marcado como time_index en una distribución de series de tiempo, si este lo tiene.
+
 0.4.11 (2018-04-25)
 -------------------
 
