@@ -7,11 +7,12 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 import os
+import traceback
+from pprint import pprint
 
 import pydatajson
 from .helpers import ensure_dir_exists
 from .download import download_to_file
-from pprint import pprint
 
 CATALOGS_DIR = ""
 
@@ -56,7 +57,7 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     include_data=include_data)
             except Exception as e:
                 print("ERROR en {}".format(catalog))
-                print(e)
+                traceback.print_exc()
 
     elif isinstance(catalogs, dict):
         for catalog_id, catalog in catalogs.iteritems():
@@ -69,7 +70,7 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     include_data=include_data)
             except Exception as e:
                 print("ERROR en {} ({})".format(catalog, catalog_id))
-                print(e)
+                traceback.print_exc()
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
@@ -135,7 +136,7 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
 
             # genera el path local donde descargar el archivo
             file_path = get_distribution_path(
-                catalog_id, dataset_id, distribution_id,
+                catalog_identifier, dataset_id, distribution_id,
                 distribution_file_name, local_catalogs_dir)
             ensure_dir_exists(os.path.dirname(file_path))
 
@@ -146,7 +147,6 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
 def get_distribution_dir(catalog_id, dataset_id, distribution_id,
                          catalogs_dir=CATALOGS_DIR):
     """Genera el path estándar de un catálogo en un filesystem."""
-
     catalog_path = os.path.join(catalogs_dir, "catalog", catalog_id)
     dataset_path = os.path.join(catalog_path, "dataset", dataset_id)
     distribution_dir = os.path.join(dataset_path, "distribution",
@@ -180,5 +180,17 @@ def get_catalog_path(catalog_id, catalogs_dir=CATALOGS_DIR, fmt="json"):
             fmt))
 
 
+def main(catalogs, include_data=True):
+    """Permite hacer backups de uno o más catálogos por línea de comandos.
+
+    Args:
+        catalogs (str): Lista de catálogos separados por coma (URLs o paths
+            locales) para hacer backups.
+    """
+    include_data = bool(int(include_data))
+    make_catalogs_backup(catalogs.split(","), include_data=include_data)
+
+
 if __name__ == '__main__':
-    make_catalog_backup(sys.argv[1], sys.argv[2])
+    args = sys.argv[1:] if len(sys.argv > 1) else []
+    main(*args)
