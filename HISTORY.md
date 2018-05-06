@@ -1,6 +1,11 @@
 Versiones
 =========
 
+0.4.13 (2018-05-06)
+-------------------
+
+* Agrega una primer interfaz sencilla por línea de comandos. Cualquier módulo puede ser usado como `pydatajson module_name arg1 arg2 arg3` siempre que defina un método `main()` a nivel del módulo que procese los parámetros.
+
 0.4.12 (2018-05-04)
 -------------------
 
