@@ -18,9 +18,10 @@ with open(os.path.abspath("requirements_dev.txt")) as f:
 
 setup(
     name='pydatajson',
-    version='0.4.11',
+    version='0.4.13',
     description="Paquete en python con herramientas para generar y validar metadatos de catálogos de datos en formato data.json.",
     long_description=readme + '\n\n' + history,
+    long_description_content_type='text/markdown',
     author="Datos Argentina",
     author_email='datos@modernizacion.gob.ar',
     url='https://github.com/datosgobar/pydatajson',
@@ -45,5 +46,10 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    entry_points={
+        'console_scripts': [
+            'pydatajson = pydatajson.__main__:main'
+        ]
+    }
 )

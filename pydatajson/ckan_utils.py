@@ -7,6 +7,7 @@ import re
 from datetime import time
 from dateutil import parser, tz
 from .helpers import title_to_name
+from . import custom_exceptions as ce
 
 
 def append_attribute_to_extra(package, dataset, attribute, serialize=False):
@@ -99,7 +100,10 @@ def _get_theme_label(catalog, theme):
     try:
         label = catalog.get_theme(identifier=theme)['label']
     except:
-        label = catalog.get_theme(label=theme)['label']
+        try:
+            label = catalog.get_theme(label=theme)['label']
+        except:
+            raise ce.ThemeNonExistentError(theme)
 
     label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '',
                    label, flags=re.UNICODE)

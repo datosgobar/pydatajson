@@ -29,6 +29,7 @@ from . import helpers
 from . import indicators
 from . import readers
 from . import search
+from . import time_series
 from . import validation
 from . import writers
 from . import federation
@@ -168,6 +169,14 @@ class DataJson(dict):
         setattr(self, "_distributions_index", distributions_index)
         setattr(self, "_datasets_index", datasets_index)
         setattr(self, "_fields_index", fields_index)
+
+    def get_distribution_time_index(self, distribution):
+        if isinstance(distribution, dict):
+            distribution = distribution
+        else:
+            distribution = self.get_distribution(distribution)
+
+        return time_series.get_distribution_time_index(distribution)
 
     def remove_dataset(self, identifier):
         for index, dataset in enumerate(self["dataset"]):
