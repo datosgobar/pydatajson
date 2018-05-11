@@ -7,7 +7,7 @@ import os.path
 import re
 
 import vcr
-from nose.tools import assert_true, assert_false, assert_dict_equal, assert_regexp_matches
+from nose.tools import assert_true, assert_false, assert_dict_equal, assert_regexp_matches, nottest
 from six import iteritems, text_type
 
 from tests.support.factories.core_files import TEST_FILE_RESPONSES
@@ -78,6 +78,7 @@ class TestDataJsonTestCase(object):
     # Tests de CAMPOS REQUERIDOS
 
     # Tests de inputs válidos
+    @nottest
     def test_validity(self):
         for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
             yield self.run_case, filename, value_or_none
