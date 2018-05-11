@@ -1,6 +1,12 @@
 Versiones
 =========
 
+0.4.14 (2018-05-11)
+-------------------
+
+* `harvest_catalog_to_ckan()` atrapa todas las excepciones de un dataset y no detiene la ejecución.
+
+
 0.4.13 (2018-05-06)
 -------------------
 

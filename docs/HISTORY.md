@@ -1,6 +1,22 @@
 Versiones
 =========
 
+0.4.14 (2018-05-11)
+-------------------
+
+* `harvest_catalog_to_ckan()` atrapa todas las excepciones de un dataset y no detiene la ejecución.
+
+
+0.4.13 (2018-05-06)
+-------------------
+
+* Agrega una primer interfaz sencilla por línea de comandos. Cualquier módulo puede ser usado como `pydatajson module_name arg1 arg2 arg3` siempre que defina un método `main()` a nivel del módulo que procese los parámetros.
+
+0.4.12 (2018-05-04)
+-------------------
+
+* Agrega función `get_distribution_time_index()` que devuelve el `title` del `field` marcado como time_index en una distribución de series de tiempo, si este lo tiene.
+
 0.4.11 (2018-04-25)
 -------------------
 
