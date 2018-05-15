@@ -16,6 +16,9 @@ with open(os.path.abspath("requirements.txt")) as f:
 with open(os.path.abspath("requirements_dev.txt")) as f:
     test_requirements = [req.strip() for req in f.readlines()]
 
+with open(os.path.abspath("requirements_2.7.txt")) as f:
+    backport_requirements = [req.strip() for req in f.readlines()]
+
 setup(
     name='pydatajson',
     version='0.4.14',
@@ -47,6 +50,9 @@ setup(
     ],
     test_suite='tests',
     tests_require=test_requirements,
+    extras_require={
+        ':python_version=="2.7"': backport_requirements
+    },
     entry_points={
         'console_scripts': [
             'pydatajson = pydatajson.__main__:main'
