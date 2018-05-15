@@ -1,6 +1,12 @@
 Versiones
 =========
 
+0.4.15 (2018-05-15)
+-------------------
+
+* Cambios en los requerimientos y `setup.py` para definir los environment markers de manera que soporte setuptools.
+
+
 0.4.14 (2018-05-11)
 -------------------
 
