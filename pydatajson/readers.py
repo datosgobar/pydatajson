@@ -466,53 +466,28 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 dataset[field] = helpers.string_to_list(dataset[field])
 
     # Elimino los prefijos de los campos a nivel catálogo
-    for old_key in list(catalog.keys()):
-        if old_key.startswith("catalog_"):
-            new_key = old_key.replace("catalog_", "")
-            catalog[new_key] = catalog.pop(old_key)
-        else:
-            catalog.pop(old_key)
+    _erase_prefix(catalog, 'catalog_')
 
     # Elimino los prefijos de los campos a nivel tema
     for theme in catalog["themeTaxonomy"]:
-        for old_key in theme.keys():
-            if old_key.startswith("theme_"):
-                new_key = old_key.replace("theme_", "")
-                theme[new_key] = theme.pop(old_key)
-            else:
-                theme.pop(old_key)
+        _erase_prefix(theme, 'theme_')
 
     # Elimino los prefijos de los campos a nivel dataset
     for dataset in catalog["dataset"]:
-        for old_key in list(dataset.keys()):
-            if old_key.startswith("dataset_"):
-                new_key = old_key.replace("dataset_", "")
-                dataset[new_key] = dataset.pop(old_key)
-            else:
-                dataset.pop(old_key)
+        _erase_prefix(dataset, 'dataset_')
 
     # Elimino los campos auxiliares y los prefijos de los campos a nivel
     # distribución
     for dataset in catalog["dataset"]:
         for distribution in dataset["distribution"]:
-            for old_key in list(distribution.keys()):
-                if old_key.startswith("distribution_"):
-                    new_key = old_key.replace("distribution_", "")
-                    distribution[new_key] = distribution.pop(old_key)
-                else:
-                    distribution.pop(old_key)
+            _erase_prefix(distribution, 'distribution_')
 
     # Elimino campos auxiliares y los prefijos de los campos a nivel "campo"
     for dataset in catalog["dataset"]:
         for distribution in dataset["distribution"]:
             if "field" in distribution:
                 for field in distribution["field"]:
-                    for old_key in list(field.keys()):
-                        if old_key.startswith("field_"):
-                            new_key = old_key.replace("field_", "")
-                            field[new_key] = field.pop(old_key)
-                        else:
-                            field.pop(old_key)
+                    _erase_prefix(field, "field_")
 
     # Agrupo las claves de "publisher" y "contactPoint" en sendos diccionarios
     catalog = _make_publisher(catalog)
@@ -578,3 +553,12 @@ def _read_xlsx_table(path):
     table = helpers.sheet_to_table(worksheet)
 
     return table
+
+
+def _erase_prefix(dictionary, prefix):
+    for old_key in list(dictionary):
+        if old_key.startswith(prefix):
+            new_key = old_key.replace(prefix, "")
+            dictionary[new_key] = dictionary.pop(old_key)
+        else:
+            dictionary.pop(old_key)
