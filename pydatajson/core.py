@@ -17,6 +17,7 @@ import os.path
 import re
 import sys
 import warnings
+import logging
 from collections import OrderedDict
 from datetime import datetime
 
@@ -35,6 +36,9 @@ from . import writers
 from . import federation
 from . import transformation
 from . import backup
+
+logger = logging.getLogger('pydatajson')
+
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -182,11 +186,11 @@ class DataJson(dict):
         for index, dataset in enumerate(self["dataset"]):
             if dataset["identifier"] == identifier:
                 self["dataset"].pop(index)
-                print("Dataset {} en posicion {} fue eliminado.".format(
+                logger.info("Dataset {} en posicion {} fue eliminado.".format(
                     identifier, index))
                 return
 
-        print("No se encontro el dataset {}.".format(identifier))
+        logger.warning("No se encontro el dataset {}.".format(identifier))
 
     def remove_distribution(self, identifier, dataset_identifier=None):
         for dataset in self["dataset"]:
@@ -195,11 +199,11 @@ class DataJson(dict):
                         (not dataset_identifier or
                          dataset["identifier"] == dataset_identifier)):
                     dataset["distribution"].pop(index)
-                    print("Distribution {} del dataset {} en posicion {} fue eliminada.".format(
+                    logger.info("Distribution {} del dataset {} en posicion {} fue eliminada.".format(
                         identifier, dataset["identifier"], index))
                     return
 
-        print("No se encontro la distribucion {}.".format(identifier))
+        logger.warning("No se encontro la distribucion {}.".format(identifier))
 
     def is_valid_catalog(self, catalog=None):
         catalog = catalog or self
@@ -1157,13 +1161,13 @@ def main():
         full_res = dj_instance.validate_catalog(datajson_file)
         pretty_full_res = json.dumps(
             full_res, indent=4, separators=(",", ": "))
-        print(bool_res)
-        print(pretty_full_res)
+        logger.info(bool_res)
+        logger.info(pretty_full_res)
     except IndexError as errmsg:
         format_str = """
 {}: pydatajson.py fue ejecutado como script sin proveer un argumento
 """
-        print(format_str.format(errmsg))
+        logger.error(format_str.format(errmsg))
 
 
 if __name__ == '__main__':

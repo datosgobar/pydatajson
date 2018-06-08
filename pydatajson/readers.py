@@ -30,7 +30,7 @@ from . import helpers
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-global_logger = logging.getLogger()
+pydj_logger = logging.getLogger('pydatajson.readers')
 
 
 def read_catalog_obj(catalog):
@@ -217,7 +217,7 @@ def read_xlsx_catalog(xlsx_path_or_url, logger=None):
         dict: El diccionario que resulta de procesar xlsx_path_or_url.
 
     """
-    logger = logger or global_logger
+    logger = logger or pydj_logger
     assert isinstance(xlsx_path_or_url, string_types)
 
     parsed_url = urlparse(xlsx_path_or_url)
@@ -271,7 +271,7 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title,
                        logger=None):
     """Devuelve el índice de un dataset en el catálogo en función de su
     identificador"""
-    logger = logger or global_logger
+    logger = logger or pydj_logger
     matching_datasets = []
 
     for idx, dataset in enumerate(catalog["catalog_dataset"]):
@@ -293,10 +293,10 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title,
     many_dsets_msg = "Hay mas de un dataset con el identifier {}: {}".format(
         dataset_identifier, matching_datasets)
     if len(matching_datasets) == 0:
-        print(no_dsets_msg)
+        logger.error(no_dsets_msg)
         return None
     elif len(matching_datasets) > 1:
-        print(many_dsets_msg)
+        logger.error(many_dsets_msg)
         return None
     else:
         return matching_datasets[0]
@@ -308,7 +308,7 @@ def _get_distribution_indexes(catalog, dataset_identifier, dataset_title,
     """Devuelve el índice de una distribución en su dataset en función de su
     título, junto con el índice de su dataset padre en el catálogo, en
     función de su identificador"""
-    logger = logger or global_logger
+    logger = logger or pydj_logger
     dataset_index = _get_dataset_index(
         catalog, dataset_identifier, dataset_title)
     if dataset_index is None:
@@ -361,7 +361,7 @@ def read_local_xlsx_catalog(xlsx_path, logger=None):
     Returns:
         dict: Diccionario con los metadatos de un catálogo.
     """
-    logger = logger or global_logger
+    logger = logger or pydj_logger
     assert xlsx_path.endswith(".xlsx"), """
 El archivo a leer debe tener extensión XLSX."""
 
@@ -409,7 +409,7 @@ El archivo a leer debe tener extensión XLSX."""
             catalog, distribution["dataset_identifier"],
             distribution["dataset_title"], logger)
         if dataset_index is None:
-            print("""La distribucion con ID '{}' y titulo '{}' no se
+            logger.error("""La distribucion con ID '{}' y titulo '{}' no se
 pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 distribution["distribution_identifier"],
                 distribution["distribution_title"]))
@@ -431,14 +431,14 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
             logger)
 
         if dataset_index is None:
-            print("""No se encontro el dataset '{}' especificado para el campo
+            logger.error("""No se encontro el dataset '{}' especificado para el campo
 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
                 unidecode(field["dataset_title"]),
                 unidecode(field["field_title"]),
                 idx + 2))
 
         elif distribution_index is None:
-            print("""No se encontro la distribucion '{}' especificada para el campo
+            logger.error("""No se encontro la distribucion '{}' especificada para el campo
 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
                 unidecode(field["distribution_title"]),
                 unidecode(field["field_title"]),

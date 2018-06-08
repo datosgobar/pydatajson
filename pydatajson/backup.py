@@ -8,13 +8,15 @@ from __future__ import print_function
 from __future__ import with_statement
 import os
 import traceback
-from pprint import pprint
+import logging
 
 import pydatajson
 from .helpers import ensure_dir_exists
 from .download import download_to_file
 
 CATALOGS_DIR = ""
+
+logger = logging.getLogger('pydatajson')
 
 
 def make_catalogs_backup(catalogs, local_catalogs_dir="",
@@ -55,9 +57,8 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     include_metadata=include_metadata,
                     include_metadata_xlsx=include_metadata_xlsx,
                     include_data=include_data)
-            except Exception as e:
-                print("ERROR en {}".format(catalog))
-                traceback.print_exc()
+            except Exception:
+                logger.exception("ERROR en {}".format(catalog))
 
     elif isinstance(catalogs, dict):
         for catalog_id, catalog in catalogs.iteritems():
@@ -68,9 +69,9 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     include_metadata=include_metadata,
                     include_metadata_xlsx=include_metadata_xlsx,
                     include_data=include_data)
-            except Exception as e:
-                print("ERROR en {} ({})".format(catalog, catalog_id))
-                traceback.print_exc()
+            except Exception:
+                logger.exception(
+                    "ERROR en {} ({})".format(catalog, catalog_id))
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
@@ -100,8 +101,9 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
     catalog_identifier = catalog_id if catalog_id else catalog["identifier"]
 
     if include_metadata:
-        print("Descargando catálogo {}".format(catalog_identifier.ljust(30)),
-              end="\r")
+        logger.info(
+            "Descargando catálogo {}".format(
+                catalog_identifier.ljust(30)))
 
         # catálogo en json
         catalog_path = get_catalog_path(catalog_identifier, local_catalogs_dir)
@@ -120,8 +122,8 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
         distributions_num = len(distributions)
 
         for index, distribution in enumerate(distributions):
-            print("Descargando distribución {} de {} ({})".format(
-                index + 1, distributions_num, catalog_identifier), end="\r")
+            logger.info("Descargando distribución {} de {} ({})".format(
+                index + 1, distributions_num, catalog_identifier))
 
             dataset_id = distribution["dataset_identifier"]
             distribution_id = distribution["identifier"]
