@@ -252,7 +252,12 @@ def write_json(obj, path):
 
 
 def write_json_catalog(catalog, path):
-    """Función de compatibilidad con releases anteriores."""
+    """Escribe el catálogo en JSON.
+
+    Args:
+        catalog (DataJson): Catálogo de datos.
+        path (str): Directorio absoluto donde se crea el archivo XLSX.
+    """
     write_json(catalog, path)
 
 
@@ -459,7 +464,14 @@ def _generate_theme_table(catalog):
 
 
 def write_xlsx_catalog(catalog, path, xlsx_fields=None):
-    """Función de compatibilidad con releases anteriores."""
+    """Escribe el catálogo en Excel.
+
+    Args:
+        catalog (DataJson): Catálogo de datos.
+        path (str): Directorio absoluto donde se crea el archivo XLSX.
+        xlsx_fields (dict): Orden en que los campos del perfil de metadatos
+            se escriben en cada hoja del Excel.
+    """
 
     xlsx_fields = xlsx_fields or XLSX_FIELDS
     catalog_dict = {}

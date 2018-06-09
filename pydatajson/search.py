@@ -19,12 +19,48 @@ from .time_series import dataset_has_time_series, field_is_time_series
 
 
 def get_themes(catalog):
+    """Devuelve la lista de temas del catálogo (taxonomía temática)."""
     catalog = read_catalog_obj(catalog)
     return catalog.get("themeTaxonomy")
 
 
 def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
                  exclude_meta_fields=None, only_time_series=False):
+    """Devuelve una lista de datasets del catálogo o de uno de sus metadatos.
+
+    Args:
+        catalog (dict, str or DataJson): Representación externa/interna de un
+            catálogo. Una representación _externa_ es un path local o una
+            URL remota a un archivo con la metadata de un catálogo, en
+            formato JSON o XLSX. La representación _interna_ de un catálogo
+            es un diccionario. Ejemplos: http://datos.gob.ar/data.json,
+            http://www.ign.gob.ar/descargas/geodatos/catalog.xlsx,
+            "/energia/catalog.xlsx".
+        filter_in (dict): Devuelve los datasets cuyos atributos coinciden con
+            los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán los datasets de ese publisher_name.
+        filter_out (dict): Devuelve los datasets cuyos atributos no coinciden
+            con los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán los datasets que no sean de ese publisher_name.
+        meta_field (str): Nombre de un metadato de Dataset. En lugar de
+            devolver los objetos completos "Dataset", devuelve una lista de
+            valores para ese metadato presentes en el catálogo.
+        exclude_meta_fields (list): Metadatos de Dataset que se quieren excluir
+            de los objetos Dataset devueltos.
+        only_time_series (bool): Si es verdadero, sólo devuelve datasets que
+            tengan por lo menos una distribución de series de tiempo.
+    """
+
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog_obj(catalog)

@@ -86,12 +86,12 @@ provisto: {}.""".format(catalog)
             raise Exception("Formato no reconocido {}".format(suffix))
     # si se pasaron valores default, los aplica al catálogo leído
     if default_values:
-        apply_default_values(catalog_dict, default_values)
+        _apply_default_values(catalog_dict, default_values)
 
     return catalog_dict
 
 
-def apply_default_values(catalog, default_values):
+def _apply_default_values(catalog, default_values):
     """Aplica valores default a los campos de un catálogo.
 
     Si el campo está vacío, aplica el default. Si tiene un valor, deja el valor
