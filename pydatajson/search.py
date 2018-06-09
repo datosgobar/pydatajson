@@ -101,6 +101,43 @@ def get_datasets(catalog, filter_in=None, filter_out=None, meta_field=None,
 def get_distributions(catalog, filter_in=None, filter_out=None,
                       meta_field=None, exclude_meta_fields=None,
                       only_time_series=False):
+    """Devuelve lista de distribuciones del catálogo o de uno de sus metadatos.
+
+    Args:
+        catalog (dict, str or DataJson): Representación externa/interna de un
+            catálogo. Una representación _externa_ es un path local o una
+            URL remota a un archivo con la metadata de un catálogo, en
+            formato JSON o XLSX. La representación _interna_ de un catálogo
+            es un diccionario. Ejemplos: http://datos.gob.ar/data.json,
+            http://www.ign.gob.ar/descargas/geodatos/catalog.xlsx,
+            "/energia/catalog.xlsx".
+        filter_in (dict): Devuelve los distribuciones cuyos atributos
+            coinciden con los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán los distribuciones que pertenezcan a un dataset
+            de ese publisher_name.
+        filter_out (dict): Devuelve los distribuciones cuyos atributos no
+            coinciden con los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán los distribuciones que no pertenezcan a un
+            dataset de ese publisher_name.
+        meta_field (str): Nombre de un metadato de Distribution. En lugar de
+            devolver los objetos completos "Distribution", devuelve una lista de
+            valores para ese metadato presentes en el catálogo.
+        exclude_meta_fields (list): Metadatos de Distribution que se quieren
+            excluir de los objetos Distribution devueltos.
+        only_time_series (bool): Si es verdadero, sólo devuelve distribuciones
+            que sean distribuciones de series de tiempo.
+    """
+
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog_obj(catalog)
@@ -144,6 +181,43 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
 
 def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
                only_time_series=False):
+    """Devuelve lista de campos del catálogo o de uno de sus metadatos.
+
+    Args:
+        catalog (dict, str or DataJson): Representación externa/interna de un
+            catálogo. Una representación _externa_ es un path local o una
+            URL remota a un archivo con la metadata de un catálogo, en
+            formato JSON o XLSX. La representación _interna_ de un catálogo
+            es un diccionario. Ejemplos: http://datos.gob.ar/data.json,
+            http://www.ign.gob.ar/descargas/geodatos/catalog.xlsx,
+            "/energia/catalog.xlsx".
+        filter_in (dict): Devuelve los campos cuyos atributos
+            coinciden con los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán los campos que pertenezcan a un dataset
+            de ese publisher_name.
+        filter_out (dict): Devuelve los campos cuyos atributos no
+            coinciden con los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán los campos que no pertenezcan a un
+            dataset de ese publisher_name.
+        meta_field (str): Nombre de un metadato de Field. En lugar de
+            devolver los objetos completos "Field", devuelve una lista de
+            valores para ese metadato presentes en el catálogo.
+        exclude_meta_fields (list): Metadatos de Field que se quieren
+            excluir de los objetos Field devueltos.
+        only_time_series (bool): Si es verdadero, sólo devuelve campos
+            que sean series de tiempo.
+    """
+
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog_obj(catalog)
@@ -167,7 +241,8 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
                     fields.append(field)
 
     filtered_fields = [field for field in fields if
-                       _filter_dictionary(field, filter_in.get("field"), filter_out.get("field"))]
+                       _filter_dictionary(field, filter_in.get("field"),
+                                          filter_out.get("field"))]
 
     if meta_field:
         return [field[meta_field] for field in filtered_fields
@@ -177,6 +252,41 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
 
 
 def get_time_series(catalog, **kwargs):
+    """Devuelve lista de series de tiempo del catálogo o uno de sus metadatos.
+
+    Args:
+        catalog (dict, str or DataJson): Representación externa/interna de un
+            catálogo. Una representación _externa_ es un path local o una
+            URL remota a un archivo con la metadata de un catálogo, en
+            formato JSON o XLSX. La representación _interna_ de un catálogo
+            es un diccionario. Ejemplos: http://datos.gob.ar/data.json,
+            http://www.ign.gob.ar/descargas/geodatos/catalog.xlsx,
+            "/energia/catalog.xlsx".
+        filter_in (dict): Devuelve las series cuyos atributos
+            coinciden con los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán las series que pertenezcan a un dataset
+            de ese publisher_name.
+        filter_out (dict): Devuelve las series cuyos atributos no
+            coinciden con los pasados en este diccionario. Ejemplo::
+                {
+                    "dataset": {
+                        "publisher": {"name": "Ministerio de Ambiente"}
+                    }
+                }
+            Sólo se devolverán las series que no pertenezcan a un
+            dataset de ese publisher_name.
+        meta_field (str): Nombre de un metadato de Field. En lugar de
+            devolver los objetos completos "Field", devuelve una lista de
+            valores para ese metadato presentes en el catálogo.
+        exclude_meta_fields (list): Metadatos de Field que se quieren excluir
+            de los objetos Field devueltos.
+    """
+
     kwargs["only_time_series"] = True
     return get_fields(catalog, **kwargs)
 
@@ -189,6 +299,8 @@ def _get_dataset_by_identifier(catalog, identifier):
 
 
 def get_dataset(catalog, identifier=None, title=None):
+    """Devuelve un Dataset del catálogo."""
+
     msg = "Se requiere un 'identifier' o 'title' para buscar el dataset."
     assert identifier or title, msg
     catalog = read_catalog_obj(catalog)
@@ -234,6 +346,8 @@ def _get_distribution_by_identifier(catalog, identifier):
 
 def get_distribution(catalog, identifier=None, title=None,
                      dataset_identifier=None):
+    """Devuelve una Distribution del catálogo."""
+
     msg = "Se requiere un 'identifier' o 'title' para buscar el distribution."
     assert identifier or title, msg
     catalog = read_catalog_obj(catalog)
@@ -324,6 +438,8 @@ def _get_field_by_identifier(catalog, identifier):
 
 def get_field(catalog, identifier=None, title=None,
               distribution_identifier=None):
+    """Devuelve un Field del catálogo."""
+
     msg = "Se requiere un 'id' o 'title' para buscar el field."
     assert identifier or title, msg
 
