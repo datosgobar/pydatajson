@@ -166,7 +166,7 @@ class PushDatasetTestCase(unittest.TestCase):
             else:
                 return []
         mock_portal.return_value.call_action = mock_call_action
-        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id)
+        harvested_ids, _ = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id)
         try:
             self.assertItemsEqual([self.catalog_id+'_'+ds['identifier'] for ds in self.catalog.datasets],
                                   harvested_ids)
@@ -185,8 +185,8 @@ class PushDatasetTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = mock_call_action
 
         dataset_list = [ds['identifier'] for ds in self.catalog.datasets[:1]]
-        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
-                                                dataset_list=dataset_list)
+        harvested_ids, _ = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+                                                   dataset_list=dataset_list)
         try:
             self.assertItemsEqual([self.catalog_id+'_'+ds_id for ds_id in dataset_list],
                                   harvested_ids)
@@ -195,7 +195,7 @@ class PushDatasetTestCase(unittest.TestCase):
                                   harvested_ids)
 
         dataset_list = [ds['identifier'] for ds in self.catalog.datasets]
-        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+        harvested_ids, _ = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
                                                 dataset_list=dataset_list)
         try:
             self.assertItemsEqual([self.catalog_id+'_'+ds_id for ds_id in dataset_list],
@@ -214,8 +214,8 @@ class PushDatasetTestCase(unittest.TestCase):
                 return []
 
         mock_portal.return_value.call_action = mock_call_action
-        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
-                                                owner_org='owner')
+        harvested_ids, _ = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+                                                   owner_org='owner')
         try:
             self.assertItemsEqual([self.catalog_id+'_'+ds['identifier'] for ds in self.catalog.datasets],
                                   harvested_ids)
@@ -224,8 +224,25 @@ class PushDatasetTestCase(unittest.TestCase):
                                   harvested_ids)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
+    def test_harvest_catalog_with_errors(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                if data_dict['id'][-3:] == '777':
+                    return data_dict
+                else:
+                    raise Exception('some message')
+            else:
+                return []
+
+        mock_portal.return_value.call_action = mock_call_action
+        _, errors = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+                                            owner_org='owner')
+        self.assertDictEqual({self.catalog.datasets[1]['identifier']: "Exception('some message',)"}, errors)
+
+
+    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_empty_list(self, mock_portal):
-        harvested_ids = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
+        harvested_ids, _ = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
                                                 owner_org='owner', dataset_list=[])
         mock_portal.assert_not_called()
         self.assertEqual([], harvested_ids)

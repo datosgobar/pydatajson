@@ -258,16 +258,19 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
         dataset_list = [ds['identifier'] for ds in catalog.datasets]
     owner_org = owner_org or catalog_id
     harvested = []
+    errors = {}
     for dataset_id in dataset_list:
         try:
             harvested_id = harvest_dataset_to_ckan(
                 catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
             harvested.append(harvested_id)
         except Exception as e:
-            logger.error("Error federando catalogo:"+catalog_id+", dataset:"+dataset_id + "al portal: "+portal_url)
-            logger.error(str(e))
+            msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n" % (catalog_id, dataset_id, portal_url)
+            msg += repr(e)
+            logger.error(msg)
+            errors[dataset_id] = repr(e)
 
-    return harvested
+    return harvested, errors
 
 
 def push_new_themes(catalog, portal_url, apikey):
