@@ -6,10 +6,12 @@
 Contiene los métodos para validar el perfil de metadatos de un catálogo.
 """
 
-from __future__ import unicode_literals, print_function, with_statement, absolute_import
+from __future__ import unicode_literals, print_function
+from __future__ import with_statement, absolute_import
 
 import os
 import platform
+import requests
 import mimetypes
 from collections import Counter
 
@@ -303,6 +305,15 @@ def iter_custom_errors(catalog):
         dups = _find_dups(urls)
         if len(dups) > 0:
             yield ce.DownloadURLRepetitionError(dups)
+
+        # chequea que las URLs de las distribuciones estén operativas
+        # hay que revisar
+        # for distribution in catalog.distributions:
+        #     url = distribution.get("downloadURL")
+        #     status_code = requests.head(url).status_code
+        #     if status_code != 200:
+        #         yield ce.DownloadURLBrokenError(
+        #             distribution.get("identifier"), url, status_code)
 
     except Exception as e:
         print(e)

@@ -336,15 +336,23 @@ class DatasetIdNonExistentError(BaseNonExistentError):
         super(DatasetIdNonExistentError, self).__init__(msg)
 
 
-class ThemeTaxonomyNonExistentError(Exception):
+class ThemeTaxonomyNonExistentError(BaseNonExistentError):
 
     def __init__(self, dataset_id):
         msg = "Catalogo no tiene themeTaxonomy"
         super(ThemeTaxonomyNonExistentError, self).__init__(msg)
 
 
-class ThemeNonExistentError(Exception):
+class ThemeNonExistentError(BaseNonExistentError):
 
     def __init__(self, theme):
         msg = "{} no existe en la themeTaxonomy como id ni como label."
         super(ThemeNonExistentError, self).__init__(msg)
+
+
+class DownloadURLBrokenError(BaseNonExistentError):
+
+    def __init__(self, distribution_id, distribution_downloadURL, status_code):
+        msg = "Distribution ({}) con URL descarga ({}) inválida ({})"
+        super(DownloadURLBrokenError, self).__init__(msg.format(
+            distribution_id, distribution_downloadURL, status_code))
