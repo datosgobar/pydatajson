@@ -23,6 +23,8 @@ from six import string_types, text_type, moves, iteritems
 
 from . import helpers
 
+logger = logging.getLogger('pydatajson')
+
 
 def write_tables(tables, path, column_styles=None, cell_styles=None,
                  tables_fields=None, tables_names=None):
@@ -79,7 +81,7 @@ def write_table(table, path, column_styles=None, cell_styles=None):
 
     # si la tabla está vacía, no escribe nada
     if len(table) == 0:
-        logging.warning("Tabla vacia: no se genera ninguna archivo.")
+        logger.warning("Tabla vacia: no se genera ninguna archivo.")
         return
 
     # Sólo sabe escribir listas de diccionarios con información tabular
@@ -100,7 +102,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
 def _write_csv_table(table, path):
     if len(table) == 0:
-        print("No se puede crear un CSV con una tabla vacía.")
+        logger.error("No se puede crear un CSV con una tabla vacía.")
         return
 
     headers = table[0].keys()
@@ -201,7 +203,7 @@ def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None,
 def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
                       cell_styles=None, fields=None):
     if len(table) == 0 and not fields:
-        print("No se puede crear una hoja Excel con una tabla vacía.")
+        logger.error("No se puede crear una hoja Excel con una tabla vacía.")
         return
     elif len(table) == 0 and fields:
         # la primer fila de la tabla está vacía
@@ -252,7 +254,12 @@ def write_json(obj, path):
 
 
 def write_json_catalog(catalog, path):
-    """Función de compatibilidad con releases anteriores."""
+    """Escribe el catálogo en JSON.
+
+    Args:
+        catalog (DataJson): Catálogo de datos.
+        path (str): Directorio absoluto donde se crea el archivo XLSX.
+    """
     write_json(catalog, path)
 
 
@@ -459,7 +466,14 @@ def _generate_theme_table(catalog):
 
 
 def write_xlsx_catalog(catalog, path, xlsx_fields=None):
-    """Función de compatibilidad con releases anteriores."""
+    """Escribe el catálogo en Excel.
+
+    Args:
+        catalog (DataJson): Catálogo de datos.
+        path (str): Directorio absoluto donde se crea el archivo XLSX.
+        xlsx_fields (dict): Orden en que los campos del perfil de metadatos
+            se escriben en cada hoja del Excel.
+    """
 
     xlsx_fields = xlsx_fields or XLSX_FIELDS
     catalog_dict = {}

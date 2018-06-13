@@ -55,6 +55,10 @@ Un *catálogo* de datos abiertos está compuesto por *datasets*, que a su vez so
 
 ## Uso
 
+.. autofunction:: pydatajson.backup.main
+
+"ñalksdj"
+
 ### Setup
 
 `DataJson` valida catálogos contra un esquema default que cumple con el perfil de metadatos recomendado en la [Guía para el uso y la publicación de metadatos](http://paquete-apertura-datos.readthedocs.io/es/stable/guia_metadatos.html) del [Paquete de Apertura de Datos](https://github.com/datosgobar/paquete-apertura-datos).

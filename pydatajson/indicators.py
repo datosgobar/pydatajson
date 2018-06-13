@@ -7,8 +7,10 @@ Contiene los métodos para monitorear y generar indicadores de un catálogo o de
 una red de catálogos.
 """
 
-from __future__ import print_function, absolute_import, unicode_literals, with_statement
+from __future__ import print_function, absolute_import
+from __future__ import unicode_literals, with_statement
 
+import logging
 import json
 import os
 from datetime import datetime
@@ -22,6 +24,18 @@ from .reporting import generate_datasets_summary
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
+
+logger = logging.getLogger('pydatajson')
+
+
+def generate_indicators(catalog, validator=None, only_numeric=False):
+    return _generate_indicators(catalog, validator=validator,
+                                only_numeric=only_numeric)[1]
+
+
+def generate_numeric_indicators(catalog, validator=None):
+    return _generate_indicators(catalog, validator=validator,
+                                only_numeric=True)[1]
 
 
 def generate_catalogs_indicators(catalogs, central_catalog=None,
@@ -85,7 +99,7 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
     return indicators_list, network_indicators
 
 
-def _generate_indicators(catalog, validator=None):
+def _generate_indicators(catalog, validator=None, only_numeric=False):
     """Genera los indicadores de un catálogo individual.
 
     Args:
@@ -98,12 +112,14 @@ def _generate_indicators(catalog, validator=None):
     # Obtengo summary para los indicadores del estado de los metadatos
     result.update(_generate_status_indicators(catalog, validator=validator))
     # Genero los indicadores relacionados con fechas, y los agrego
-    result.update(_generate_date_indicators(catalog))
+    result.update(
+        _generate_date_indicators(catalog, only_numeric=only_numeric))
     # Agrego la cuenta de los formatos de las distribuciones
-    count = _count_distribution_formats(catalog)
-    result.update({
-        'distribuciones_formatos_cant': count
-    })
+    if not only_numeric:
+        count = _count_distribution_formats(catalog)
+        result.update({
+            'distribuciones_formatos_cant': count
+        })
     # Agrego porcentaje de campos recomendados/optativos usados
     fields_count = _count_required_and_optional_fields(catalog)
     recomendados_pct = 100 * float(fields_count['recomendado']) / \
@@ -280,7 +296,7 @@ def _generate_status_indicators(catalog, validator=None):
     return result
 
 
-def _generate_date_indicators(catalog, tolerance=0.2):
+def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
     """Genera indicadores relacionados a las fechas de publicación
     y actualización del catálogo pasado por parámetro. La evaluación de si
     un catálogo se encuentra actualizado o no tiene un porcentaje de
@@ -355,9 +371,12 @@ def _generate_date_indicators(catalog, tolerance=0.2):
     result.update({
         'datasets_desactualizados_cant': desactualizados,
         'datasets_actualizados_cant': actualizados,
-        'datasets_actualizados_pct': 100 * round(actualizados_pct, 2),
-        'datasets_frecuencia_cant': periodicity_amount
+        'datasets_actualizados_pct': 100 * round(actualizados_pct, 2)
     })
+    if not only_numeric:
+        result.update({
+            'datasets_frecuencia_cant': periodicity_amount
+        })
     return result
 
 
@@ -569,7 +588,7 @@ def datasets_equal(dataset, other, fields_dataset=None,
         other_distributions = other.get("distribution")
 
         if len(dataset_distributions) != len(other_distributions):
-            print("{} distribuciones en origen y {} en destino".format(
+            logger.info("{} distribuciones en origen y {} en destino".format(
                 len(dataset_distributions), len(other_distributions)))
             dataset_is_equal = False
 

@@ -13,6 +13,7 @@ import os
 import platform
 import requests
 import mimetypes
+import logging
 from collections import Counter
 
 try:
@@ -31,6 +32,8 @@ ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 EXTENSIONS_EXCEPTIONS = ["zip", "php", "asp", "aspx"]
+
+logger = logging.getLogger('pydatajson')
 
 
 def create_validator(schema_filename=None, schema_dir=None):
@@ -315,8 +318,8 @@ def iter_custom_errors(catalog):
         #         yield ce.DownloadURLBrokenError(
         #             distribution.get("identifier"), url, status_code)
 
-    except Exception as e:
-        print(e)
+    except Exception:
+        logger.exception("Error de validación.")
 
 
 def _find_dups(elements):

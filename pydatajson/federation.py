@@ -11,7 +11,7 @@ from ckanapi.errors import NotFound, NotAuthorized, ValidationError
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('pydatajson.federation')
 
 
 def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
@@ -86,9 +86,9 @@ def remove_harvested_ds_from_ckan(catalog, portal_url, apikey,
     for harvested_id in harvested_ids:
         try:
             remove_dataset_from_ckan(harvested_id, portal_url, apikey)
-            print("{} eliminado de {}".format(harvested_id, catalog_id))
-        except:
-            print("{} de {} no existe.".format(harvested_id, catalog_id))
+            logger.info("{} eliminado de {}".format(harvested_id, catalog_id))
+        except Exception:
+            logger.exception("{} de {} no existe.".format(harvested_id, catalog_id))
 
 
 def remove_datasets_from_ckan(portal_url, apikey, filter_in=None,

@@ -17,6 +17,7 @@ import os.path
 import re
 import sys
 import warnings
+import logging
 from collections import OrderedDict
 from datetime import datetime
 
@@ -36,6 +37,9 @@ from . import federation
 from . import transformation
 from . import backup
 
+logger = logging.getLogger('pydatajson')
+
+
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 DATA_FORMATS = [
@@ -49,23 +53,36 @@ MIN_DATASET_DESCRIPTION = 20
 
 
 class DataJson(dict):
-    """Métodos para trabajar con archivos data.json."""
+    """Objeto que representa un catálogo de activos de datos."""
 
     # Variables por default
     CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
     def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
                  default_values=None):
-        """Crea un manipulador de `data.json`s.
+        """Lee un catálogo y crea un objeto con funciones para manipularlo.
 
-        Salvo que se indique lo contrario, el validador de esquemas asociado
-        es el definido por default en las constantes de clase.
+        Salvo que se indique lo contrario, se utiliza como default el schema
+        de la versión 1.1 del Perfil de Metadatos de Argentina.
 
         Args:
+            catalog (dict or str): Representación externa/interna de un
+                catálogo. Una representación _externa_ es un path local o una
+                URL remota a un archivo con la metadata de un catálogo, en
+                formato JSON o XLSX. La representación _interna_ de un catálogo
+                es un diccionario. Ejemplos: http://datos.gob.ar/data.json,
+                http://www.ign.gob.ar/descargas/geodatos/catalog.xlsx,
+                "/energia/catalog.xlsx".
             schema_filename (str): Nombre del archivo que contiene el esquema
                 validador.
             schema_dir (str): Directorio (absoluto) donde se encuentra el
                 esquema validador (y sus referencias, de tenerlas).
+            default_values (dict): Valores default para algunos de los campos
+                del catálogo::
+                    {
+                        "dataset_issued": "2017-06-22",
+                        "distribution_issued": "2017-06-22"
+                    }
         """
         # se construye el objeto DataJson con la interfaz de un dicconario
         if catalog:
@@ -120,6 +137,9 @@ class DataJson(dict):
     # metodos para guardar el catálogo en otros formatos
     to_xlsx = writers.write_xlsx_catalog
     to_json = writers.write_json_catalog
+
+    # metodos para generar indicadores
+    generate_indicators = indicators.generate_indicators
 
     # metodos para hacer backups
     make_catalog_backup = backup.make_catalog_backup
@@ -182,11 +202,11 @@ class DataJson(dict):
         for index, dataset in enumerate(self["dataset"]):
             if dataset["identifier"] == identifier:
                 self["dataset"].pop(index)
-                print("Dataset {} en posicion {} fue eliminado.".format(
+                logger.info("Dataset {} en posicion {} fue eliminado.".format(
                     identifier, index))
                 return
 
-        print("No se encontro el dataset {}.".format(identifier))
+        logger.warning("No se encontro el dataset {}.".format(identifier))
 
     def remove_distribution(self, identifier, dataset_identifier=None):
         for dataset in self["dataset"]:
@@ -195,13 +215,26 @@ class DataJson(dict):
                         (not dataset_identifier or
                          dataset["identifier"] == dataset_identifier)):
                     dataset["distribution"].pop(index)
-                    print("Distribution {} del dataset {} en posicion {} fue eliminada.".format(
+                    logger.info("Distribution {} del dataset {} en posicion {} fue eliminada.".format(
                         identifier, dataset["identifier"], index))
                     return
 
-        print("No se encontro la distribucion {}.".format(identifier))
+        logger.warning("No se encontro la distribucion {}.".format(identifier))
 
     def is_valid_catalog(self, catalog=None):
+        """Valida que un archivo `data.json` cumpla con el schema definido.
+
+        Chequea que el data.json tiene todos los campos obligatorios y que
+        tanto los campos obligatorios como los opcionales siguen la estructura
+        definida en el schema.
+
+        Args:
+            catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
+                Si no se pasa, valida este catálogo.
+
+        Returns:
+            bool: True si el data.json cumple con el schema, sino False.
+        """
         catalog = catalog or self
         return validation.is_valid_catalog(catalog, validator=self.validator)
 
@@ -244,6 +277,55 @@ class DataJson(dict):
 
     def validate_catalog(self, catalog=None, only_errors=False, fmt="dict",
                          export_path=None):
+        """Analiza un data.json registrando los errores que encuentra.
+
+        Chequea que el data.json tiene todos los campos obligatorios y que
+        tanto los campos obligatorios como los opcionales siguen la estructura
+        definida en el schema.
+
+        Args:
+            catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
+                Si no se pasa, valida este catálogo.
+            only_errors (bool): Si es True sólo se reportan los errores.
+            fmt (str): Indica el formato en el que se desea el reporte.
+                "dict" es el reporte más verborrágico respetando la
+                    estructura del data.json.
+                "list" devuelve un dict con listas de errores formateados para
+                    generar tablas.
+            export_path (str): Path donde exportar el reporte generado (en
+                formato XLSX o CSV). Si se especifica, el método no devolverá
+                nada, a pesar de que se pase algún argumento en `fmt`.
+
+        Returns:
+            dict: Diccionario resumen de los errores encontrados::
+
+                {
+                    "status": "OK",  # resultado de la validación global
+                    "error": {
+                        "catalog": {
+                            "status": "OK",
+                            "errors": []
+                            "title": "Título Catalog"},
+                        "dataset": [
+                            {
+                                "status": "OK",
+                                "errors": [],
+                                "title": "Titulo Dataset 1"
+                            },
+                            {
+                                "status": "ERROR",
+                                "errors": [error1_info, error2_info, ...],
+                                "title": "Titulo Dataset 2"
+                            }
+                        ]
+                    }
+                }
+
+            Donde errorN_info es un dict con la información del N-ésimo
+            error encontrado, con las siguientes claves: "path", "instance",
+            "message", "validator", "validator_value", "error_code".
+
+        """
         catalog = catalog or self
         return validation.validate_catalog(
             catalog, only_errors, fmt, export_path, validator=self.validator)
@@ -1157,13 +1239,13 @@ def main():
         full_res = dj_instance.validate_catalog(datajson_file)
         pretty_full_res = json.dumps(
             full_res, indent=4, separators=(",", ": "))
-        print(bool_res)
-        print(pretty_full_res)
+        logger.info(bool_res)
+        logger.info(pretty_full_res)
     except IndexError as errmsg:
         format_str = """
 {}: pydatajson.py fue ejecutado como script sin proveer un argumento
 """
-        print(format_str.format(errmsg))
+        logger.error(format_str.format(errmsg))
 
 
 if __name__ == '__main__':

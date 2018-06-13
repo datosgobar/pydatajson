@@ -5,6 +5,7 @@ Documentación de pydatajson: librería con funcionalidades para gestionar los m
 
 Podés colaborar `cargando un nuevo issue <https://github.com/datosgobar/pydatajson/issues/new>`_, o `respondiendo a un issue ya existente <https://github.com/datosgobar/pydatajson/issues>`_. Lo mismo te invitamos a hacer en el `Paquete de Apertura de Datos <https://quete-apertura-datos.readthedocs.io>`_.
 
+
 Indice
 ------
 
@@ -13,9 +14,15 @@ Indice
 
    README.md
    MANUAL.md
+   quick_reference.rst
 
-Documentación automática
-------------------------
+Referencia
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   reference.rst
 
 * :ref:`modindex`
 * :ref:`genindex`
