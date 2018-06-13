@@ -78,7 +78,6 @@ class TestDataJsonTestCase(object):
     # Tests de CAMPOS REQUERIDOS
 
     # Tests de inputs válidos
-    @nottest
     def test_validity(self):
         for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
             yield self.run_case, filename, value_or_none
