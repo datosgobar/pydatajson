@@ -10,6 +10,7 @@ una red de catálogos.
 from __future__ import print_function, absolute_import
 from __future__ import unicode_literals, with_statement
 
+import logging
 import json
 import os
 from datetime import datetime
@@ -23,6 +24,8 @@ from .reporting import generate_datasets_summary
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
+
+logger = logging.getLogger('pydatajson')
 
 
 def generate_indicators(catalog, validator=None, only_numeric=False):
@@ -585,7 +588,7 @@ def datasets_equal(dataset, other, fields_dataset=None,
         other_distributions = other.get("distribution")
 
         if len(dataset_distributions) != len(other_distributions):
-            print("{} distribuciones en origen y {} en destino".format(
+            logger.info("{} distribuciones en origen y {} en destino".format(
                 len(dataset_distributions), len(other_distributions)))
             dataset_is_equal = False
 

@@ -4,10 +4,13 @@ from __future__ import print_function
 
 import json
 import re
+import logging
 from datetime import time
 from dateutil import parser, tz
 from .helpers import title_to_name
 from . import custom_exceptions as ce
+
+logger = logging.getLogger('pydatajson')
 
 
 def append_attribute_to_extra(package, dataset, attribute, serialize=False):
@@ -83,8 +86,8 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
             try:
                 label = _get_theme_label(catalog, theme)
                 package['tags'].append({'name': label})
-            except Exception as e:
-                print(e)
+            except Exception:
+                logger.exception('Theme no presente en catálogo.')
                 continue
     else:
         package['groups'] = package.get('groups', []) + [

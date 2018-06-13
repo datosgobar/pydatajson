@@ -528,7 +528,6 @@ def get_catalog_metadata(catalog, exclude_meta_fields=None):
 
 
 def _filter_dictionary(dictionary, filter_in=None, filter_out=None):
-    # print(filter_in, filter_out)
     if filter_in:
         # chequea que el objeto tenga las propiedades de filtro positivo
         for key, value in iteritems(filter_in):

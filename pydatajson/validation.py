@@ -11,6 +11,7 @@ from __future__ import unicode_literals, print_function, with_statement, absolut
 import os
 import platform
 import mimetypes
+import logging
 from collections import Counter
 
 try:
@@ -29,6 +30,8 @@ ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
 EXTENSIONS_EXCEPTIONS = ["zip", "php", "asp", "aspx"]
+
+logger = logging.getLogger('pydatajson')
 
 
 def create_validator(schema_filename=None, schema_dir=None):
@@ -304,8 +307,8 @@ def iter_custom_errors(catalog):
         if len(dups) > 0:
             yield ce.DownloadURLRepetitionError(dups)
 
-    except Exception as e:
-        print(e)
+    except Exception:
+        logger.exception("Error de validación.")
 
 
 def _find_dups(elements):
