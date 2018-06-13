@@ -478,7 +478,7 @@ def write_xlsx_catalog(catalog, path, xlsx_fields=None):
 
     catalog_dict["catalog"] = [
         _tabulate_nested_dict(catalog.get_catalog_metadata(
-            exclude_meta_fields=["superThemeTaxonomy", "themeTaxonomy"]),
+            exclude_meta_fields=["themeTaxonomy"]),
             "catalog")
     ]
     catalog_dict["dataset"] = _generate_dataset_table(catalog)

@@ -212,6 +212,33 @@ revíselo manualmente""".format(temp_filename)
 
         pydatajson.writers.write_json.assert_called_once_with(obj, path)
 
+    def test_read_write_both_formats_yields_the_same(self):
+        for suffix in ['xlsx', 'json']:
+            catalog = pydatajson.core.DataJson(
+                os.path.join(self.SAMPLES_DIR,
+                             "catalogo_justicia." + suffix))
+            catalog.to_json(os.path.join(self.TEMP_DIR,
+                            "saved_catalog.json"))
+            catalog.to_xlsx(os.path.join(self.TEMP_DIR,
+                            "saved_catalog.xlsx"))
+            catalog_json = pydatajson.core.DataJson(
+                os.path.join(self.TEMP_DIR,
+                             "saved_catalog.xlsx"))
+            catalog_xlsx = pydatajson.core.DataJson(
+                os.path.join(self.TEMP_DIR,
+                             "saved_catalog.xlsx"))
+            self.assertEqual(catalog_json, catalog_xlsx)
+
+            # la llamada to_xlsx() genera los indices en el catalogo original
+            # aplicarla a los catalogos generados debería dejarlos igual al original
+            catalog_xlsx.to_xlsx(os.path.join(self.TEMP_DIR,
+                                 "otro.xlsx"))
+            catalog_json.to_xlsx(os.path.join(self.TEMP_DIR,
+                                              "otro.xlsx"))
+
+            self.assertEqual(catalog_json, catalog)
+            self.assertEqual(catalog_xlsx, catalog)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
