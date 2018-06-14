@@ -30,7 +30,11 @@ def dataset_error(options=None):
             {
                 "pattern": "^eventual$",
                 "type": "string"
-            }
+            },
+            {
+                "pattern": "^EVENTUAL$",
+                "type": "string"
+            },
         ]
     }
     if options is not None:
