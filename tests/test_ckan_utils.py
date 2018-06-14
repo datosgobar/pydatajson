@@ -179,7 +179,8 @@ class DatasetConversionTestCase(unittest.TestCase):
                                      ('description', 'description'),
                                      ('format', 'format'),
                                      ('size', 'byteSize'),
-                                     ('fileName', 'fileName')]
+                                     ('fileName', 'fileName'),
+                                     ('resource_type', 'type')]
             for fst, snd in replicated_attributes:
                 if distribution.get(snd):
                     self.assertEqual(distribution.get(snd), resource.get(fst))
