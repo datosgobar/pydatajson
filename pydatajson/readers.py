@@ -466,28 +466,28 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 dataset[field] = helpers.string_to_list(dataset[field])
 
     # Elimino los prefijos de los campos a nivel catálogo
-    _erase_prefix(catalog, 'catalog_')
+    _remove_prefixes_and_unprefixed_fields(catalog, 'catalog_')
 
     # Elimino los prefijos de los campos a nivel tema
     for theme in catalog["themeTaxonomy"]:
-        _erase_prefix(theme, 'theme_')
+        _remove_prefixes_and_unprefixed_fields(theme, 'theme_')
 
     # Elimino los prefijos de los campos a nivel dataset
     for dataset in catalog["dataset"]:
-        _erase_prefix(dataset, 'dataset_')
+        _remove_prefixes_and_unprefixed_fields(dataset, 'dataset_')
 
     # Elimino los campos auxiliares y los prefijos de los campos a nivel
     # distribución
     for dataset in catalog["dataset"]:
         for distribution in dataset["distribution"]:
-            _erase_prefix(distribution, 'distribution_')
+            _remove_prefixes_and_unprefixed_fields(distribution, 'distribution_')
 
     # Elimino campos auxiliares y los prefijos de los campos a nivel "campo"
     for dataset in catalog["dataset"]:
         for distribution in dataset["distribution"]:
             if "field" in distribution:
                 for field in distribution["field"]:
-                    _erase_prefix(field, "field_")
+                    _remove_prefixes_and_unprefixed_fields(field, "field_")
 
     # Agrupo las claves de "publisher" y "contactPoint" en sendos diccionarios
     catalog = _make_publisher(catalog)
