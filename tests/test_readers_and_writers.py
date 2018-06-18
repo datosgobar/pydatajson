@@ -190,6 +190,17 @@ revíselo manualmente""".format(temp_filename)
 
         self.assertDictEqual(actual_catalog, expected_catalog)
 
+    def test_read_local_xlsx_catalog_extra_columns(self):
+        """read_catalog ignora las columnas extras."""
+        expected_catalog = pydatajson.readers.read_catalog(
+            os.path.join(self.SAMPLES_DIR,
+                         "catalogo_justicia.json"))
+        actual_catalog = pydatajson.readers.read_catalog(
+            os.path.join(self.SAMPLES_DIR,
+                         "catalogo_justicia_extra_columns.xlsx"))
+
+        self.assertDictEqual(actual_catalog, expected_catalog)
+
     @my_vcr.use_cassette()
     def test_read_remote_xlsx_catalog(self):
         """read_catalog puede leer XLSX remotos."""
