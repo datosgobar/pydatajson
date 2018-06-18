@@ -555,7 +555,7 @@ def _read_xlsx_table(path):
     return table
 
 
-def _erase_prefix(dictionary, prefix):
+def _remove_prefixes_and_unprefixed_fields(dictionary, prefix):
     for old_key in list(dictionary):
         if old_key.startswith(prefix):
             new_key = old_key.replace(prefix, "")
