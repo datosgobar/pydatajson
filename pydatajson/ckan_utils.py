@@ -147,6 +147,7 @@ def map_distributions_to_resources(distributions, catalog_id=None):
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
         resource['accessURL'] = distribution.get('accessURL')
+        resource['resource_type'] = distribution.get('type')
         fileName = distribution.get('fileName')
         if fileName:
             resource['fileName'] = fileName
