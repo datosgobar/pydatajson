@@ -1,6 +1,15 @@
 Versiones
 =========
 
+0.4.16 (2018-06-19)
+-------------------
+
+* Bugfix en la escritura y lectura de catálogos xlsx.
+* Federar campo `type` en distribuciones.
+* Refactor del logging del módulo. Todos los eventos se escriben en el logger `pydatajson`.
+* Reestructuración de la respuesta de `harvest_catalog_to_ckan()`, devuelve adicionalmente los datasets con errores de federación.
+
+
 0.4.15 (2018-05-15)
 -------------------
 

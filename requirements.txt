@@ -1,5 +1,5 @@
 jsonschema==2.6.0
-requests==2.18.4
+requests
 # Para validar fechas y horas acorde a ISO 8601
 isodate==0.6.0
 # Para validar URIs
