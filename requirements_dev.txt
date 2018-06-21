@@ -2,7 +2,7 @@ bumpversion==0.5.3
 watchdog==0.8.3
 flake8==2.6.0
 coverage==4.1
-Sphinx==1.5.2
+sphinx==1.7.5
 cryptography==2.1.4
 PyYAML==3.11
 nose>=1.3
