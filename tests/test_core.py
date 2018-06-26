@@ -887,6 +887,80 @@ revíselo manualmente""".format(actual_filename)
         for k, v in network_indics.items():
             assert_true(v is not None)
 
+    def test_unreachable_catalogs(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
+        indics, network_indics = self.dj.generate_catalogs_indicators(
+            [catalog,
+             catalog]
+        )
+        assert_equal([], indics)
+        assert_equal({}, network_indics)
+
+    def test_valid_and_unreachable_catalogs(self):
+        valid = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        unreachable = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
+
+        indicators = self.dj.generate_catalogs_indicators([valid, unreachable])[0][0]
+
+        # El resultado ignora el catálogo inaccesible
+        expected = {
+            'datasets_cant': 3,
+            'distribuciones_cant': 6,
+            'datasets_meta_ok_cant': 2,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+        }
+
+        for k, v in expected.items():
+            assert_true(indicators[k], v)
+
+    def test_unreachable_central_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        unreachable = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
+        indics = self.dj.generate_catalogs_indicators(catalog, central_catalog=unreachable)[0][0]
+        expected = {
+            'datasets_cant': 3,
+            'distribuciones_cant': 6,
+            'datasets_meta_ok_cant': 2,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+            'datasets_federados_cant': None,
+            'datasets_no_federados_cant': None,
+            'datasets_no_federados': None,
+            'datasets_federados_pct': None
+        }
+        for k, v in expected.items():
+            assert_equal(indics[k], v)
+
+    @mock.patch('pydatajson.indicators.generate_datasets_summary', autospec=True)
+    def test_bad_summary(self, mock_summary):
+        mock_summary.side_effect = Exception('bad summary')
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        indics = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        expected = {
+            'datasets_cant': None,
+            'distribuciones_cant': None,
+            'datasets_meta_ok_cant': None,
+            'datasets_meta_error_cant': None,
+            'datasets_meta_ok_pct': None
+        }
+        for k, v in expected.items():
+            assert_equal(indics[k], v)
+
+    def test_bad_date_indicators(self):
+        catalog = self.dj
+        catalog['issued'] = catalog['modified'] = 'invalid_date'
+        indics = self.dj.generate_catalogs_indicators()[0][0]
+        expected = {
+            'datasets_desactualizados_cant': None,
+            'datasets_actualizados_cant': None,
+            'datasets_actualizados_pct': None,
+            'catalogo_ultima_actualizacion_dias': None,
+            'datasets_frecuencia_cant': None
+        }
+        for k, v in expected.items():
+            assert_equal(indics[k], v)
+
     def test_DataJson_constructor(self):
         for key, value in iteritems(self.catalog):
             if key != "dataset":
