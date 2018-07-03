@@ -21,6 +21,7 @@ from six import string_types
 from . import helpers
 from . import readers
 from .reporting import generate_datasets_summary
+from .search import get_datasets, get_distributions
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -125,8 +126,8 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
         _generate_date_indicators(catalog, only_numeric=only_numeric))
     # Agrego la cuenta de los formatos de las distribuciones
     if not only_numeric:
-        format_count = count_fields(catalog.distributions, 'format')
-        license_count = count_fields(catalog.datasets, 'license')
+        format_count = count_fields(get_distributions(catalog), 'format')
+        license_count = count_fields(get_datasets(catalog), 'license')
         result.update({
             'distribuciones_formatos_cant': format_count,
             'datasets_licencias_cant': license_count,
