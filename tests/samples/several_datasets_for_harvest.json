@@ -8,6 +8,7 @@
     "title": "Cosechando Datos Argentina",
     "dataset": [
         {
+            "identifier": "1",
             "publisher": {},
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "superTheme": [
@@ -47,6 +48,7 @@
             ]
         },
         {
+            "identifier": "2",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
             },
@@ -68,6 +70,7 @@
             ]
         },
         {
+            "identifier": "3",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
             },
