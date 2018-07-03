@@ -14,6 +14,7 @@ import logging
 import json
 import os
 from datetime import datetime
+from collections import Counter
 
 from six import string_types
 
@@ -124,9 +125,11 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
         _generate_date_indicators(catalog, only_numeric=only_numeric))
     # Agrego la cuenta de los formatos de las distribuciones
     if not only_numeric:
-        count = _count_distribution_formats(catalog)
+        format_count = count_fields(catalog.distributions, 'format')
+        license_count = count_fields(catalog.datasets, 'license')
         result.update({
-            'distribuciones_formatos_cant': count
+            'distribuciones_formatos_cant': format_count,
+            'datasets_licencias_cant': license_count,
         })
     # Agrego porcentaje de campos recomendados/optativos usados
     fields_count = _count_required_and_optional_fields(catalog)
@@ -439,49 +442,6 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
     return result
 
 
-def _count_distribution_formats(catalog):
-    """Cuenta los formatos especificados por el campo 'format' de cada
-    distribución de un catálogo o de un dataset.
-
-    Args:
-        catalog (str o dict): path a un catálogo, o un dict de python que
-
-    Returns:
-        dict: diccionario con los formatos de las distribuciones
-        encontradas como claves, con la cantidad de ellos en sus valores.
-    """
-
-    # Leo catálogo
-    catalog = readers.read_catalog(catalog)
-    catalog_formats = {}
-
-    for dataset in catalog.get('dataset', []):
-        dataset_formats = _count_distribution_formats_dataset(dataset)
-
-        for distribution_format in dataset_formats:
-            count_catalog = catalog_formats.get(distribution_format, 0)
-            count_dataset = dataset_formats.get(distribution_format, 0)
-            catalog_formats[
-                distribution_format] = count_catalog + count_dataset
-
-    return catalog_formats
-
-
-def _count_distribution_formats_dataset(dataset):
-    formats = {}
-    for distribution in dataset['distribution']:
-        # 'format' es recomendado, no obligatorio. Puede no estar.
-        distribution_format = distribution.get('format', None)
-
-        if distribution_format:
-            # Si no está en el diccionario, devuelvo 0
-            count = formats.get(distribution_format, 0)
-
-            formats[distribution_format] = count + 1
-
-    return formats
-
-
 def _days_from_last_update(catalog, date_field="modified"):
     """Calcula días desde la última actualización del catálogo.
 
@@ -699,3 +659,8 @@ def _filter_by_likely_publisher(central_datasets, catalog_datasets):
             filtered_central_datasets.append(central_dataset)
 
     return filtered_central_datasets
+
+
+def count_fields(targets, field):
+    """Cuenta la cantidad de values en el key especificado de una lista de  diccionarios"""
+    return Counter([target[field] for target in targets if field in target])
