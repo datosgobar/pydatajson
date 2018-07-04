@@ -9,6 +9,8 @@
     "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "dataset": [
         {
+            "identifier": "1",
+            "license": "Creative Commons Attribution",
             "publisher": {},
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "superTheme": [
@@ -50,6 +52,8 @@
             ]
         },
         {
+            "identifier": "2",
+            "license": "Open Data Commons Open Database License (ODbL)",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
             },
@@ -73,6 +77,7 @@
             ]
         },
         {
+            "identifier": "3",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
             },

@@ -9,6 +9,7 @@
     "dataset": [
         {
             "title": "Sistema de contrataciones electrónicas",
+            "identifier": "1",
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
