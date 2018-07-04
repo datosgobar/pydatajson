@@ -261,7 +261,9 @@ class TestIndicatorsTestCase(object):
                 'PDF': 2
             },
             'datasets_licencias_cant': {
-
+                'Open Data Commons Open Database License 1.0': 2,
+                'Creative Commons Attribution': 1,
+                'Open Data Commons Open Database License (ODbL)': 1
             },
             'campos_optativos_pct': 32.56,
             'campos_recomendados_pct': 52.17,
