@@ -158,7 +158,8 @@ def _federation_indicators(catalog, central_catalog):
         'datasets_federados_eliminados': None,
         'datasets_no_federados': None,
         'datasets_federados': None,
-        'datasets_federados_pct': None
+        'datasets_federados_pct': None,
+        'distribuciones_federadas_cant': None
     }
     try:
         central_catalog = readers.read_catalog(central_catalog)
@@ -169,6 +170,7 @@ def _federation_indicators(catalog, central_catalog):
 
     federados = 0  # En ambos catálogos
     no_federados = 0
+    dist_federadas = 0
     datasets_federados_eliminados_cant = 0
     datasets_federados = []
     datasets_no_federados = []
@@ -183,6 +185,7 @@ def _federation_indicators(catalog, central_catalog):
                 federados += 1
                 datasets_federados.append((dataset.get('title'),
                                            dataset.get('landingPage')))
+                dist_federadas += len(dataset.get('distribution', []))
                 break
         if not found:
             no_federados += 1
@@ -221,7 +224,8 @@ def _federation_indicators(catalog, central_catalog):
         'datasets_federados_eliminados': datasets_federados_eliminados,
         'datasets_no_federados': datasets_no_federados,
         'datasets_federados': datasets_federados,
-        'datasets_federados_pct': round(federados_pct, 2)
+        'datasets_federados_pct': round(federados_pct, 2),
+        'distribuciones_federadas-cant': dist_federadas
     })
     return result
 
