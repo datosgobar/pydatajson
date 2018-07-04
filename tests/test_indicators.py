@@ -103,7 +103,7 @@ class TestIndicatorsTestCase(object):
 
     @my_vcr.use_cassette()
     def test_license_indicators(self):
-        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_licenses.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
@@ -262,11 +262,9 @@ class TestIndicatorsTestCase(object):
             },
             'datasets_licencias_cant': {
                 'Open Data Commons Open Database License 1.0': 2,
-                'Creative Commons Attribution': 1,
-                'Open Data Commons Open Database License (ODbL)': 1
             },
             'campos_optativos_pct': 32.56,
-            'campos_recomendados_pct': 52.17,
+            'campos_recomendados_pct': 50.72,
         }
 
         for k, v in expected.items():
