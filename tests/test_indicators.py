@@ -22,7 +22,7 @@ my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  record_mode='once')
 
 
-class IndicatorsTestCase(object):
+class TestIndicatorsTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
@@ -142,7 +142,8 @@ class IndicatorsTestCase(object):
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 0,
             'datasets_no_federados': [],
-            'datasets_federados_pct': 100
+            'datasets_federados_pct': 100,
+            'distribuciones_federadas_cant': 6
         }
 
         for k, v in expected.items():
@@ -162,7 +163,8 @@ class IndicatorsTestCase(object):
                 ('Sistema de contrataciones electrónicas UNO', None),
                 ('Sistema de contrataciones electrónicas DOS', None),
                 ('Sistema de contrataciones electrónicas TRES', None)],
-            'datasets_federados_pct': 0
+            'datasets_federados_pct': 0,
+            'distribuciones_federadas_cant': 0
         }
 
         for k, v in expected.items():
