@@ -126,12 +126,17 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
         _generate_date_indicators(catalog, only_numeric=only_numeric))
     # Agrego la cuenta de los formatos de las distribuciones
     if not only_numeric:
-        format_count = count_fields(get_distributions(catalog), 'format')
-        license_count = count_fields(get_datasets(catalog), 'license')
+        if 'dataset' in catalog:
+            format_count = count_fields(get_distributions(catalog), 'format')
+            license_count = count_fields(get_datasets(catalog), 'license')
+        else:
+            format_count = license_count = {}
+
         result.update({
             'distribuciones_formatos_cant': format_count,
             'datasets_licencias_cant': license_count,
         })
+
     # Agrego porcentaje de campos recomendados/optativos usados
     fields_count = _count_required_and_optional_fields(catalog)
     recomendados_pct = 100 * float(fields_count['recomendado']) / \
