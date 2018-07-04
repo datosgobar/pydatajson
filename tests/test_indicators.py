@@ -22,7 +22,7 @@ my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  record_mode='once')
 
 
-class IndicatorsTestCase(object):
+class TestIndicatorsTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
@@ -59,7 +59,7 @@ class IndicatorsTestCase(object):
         }
 
         for k, v in expected.items():
-            assert_true(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
     def test_date_indicators(self):
@@ -100,6 +100,29 @@ class IndicatorsTestCase(object):
 
         for k, v in expected.items():
             assert_equal(indicators[k], v)
+
+    @my_vcr.use_cassette()
+    def test_license_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'datasets_licencias_cant': {
+                'Open Data Commons Open Database License (ODbL)': 1,
+                'Creative Commons Attribution': 1,
+            }
+        }
+
+        for k, v in expected.items():
+            assert_equal(indicators[k], v)
+
+    @my_vcr.use_cassette()
+    def test_no_licenses_indicators(self):
+        # No tienen licencias
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_for_harvest.json")
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        assert_equal(indicators['datasets_licencias_cant'], {})
 
     @my_vcr.use_cassette()
     def test_field_indicators_on_min_catalog(self):
@@ -237,8 +260,11 @@ class IndicatorsTestCase(object):
                 'XLSX': 1,
                 'PDF': 2
             },
-            'campos_optativos_pct': 33.33,
-            'campos_recomendados_pct': 50.72,
+            'datasets_licencias_cant': {
+
+            },
+            'campos_optativos_pct': 32.56,
+            'campos_recomendados_pct': 52.17,
         }
 
         for k, v in expected.items():
@@ -293,6 +319,7 @@ class IndicatorsTestCase(object):
             'datasets_desactualizados_cant': 0,
             'datasets_actualizados_pct': 0,
             'distribuciones_formatos_cant': {},
+            'datasets_licencias_cant': {},
             'datasets_frecuencia_cant': {}
         }
 
