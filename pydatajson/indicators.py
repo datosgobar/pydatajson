@@ -225,7 +225,7 @@ def _federation_indicators(catalog, central_catalog):
         'datasets_no_federados': datasets_no_federados,
         'datasets_federados': datasets_federados,
         'datasets_federados_pct': round(federados_pct, 2),
-        'distribuciones_federadas-cant': dist_federadas
+        'distribuciones_federadas_cant': dist_federadas
     })
     return result
 
