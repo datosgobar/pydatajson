@@ -247,6 +247,27 @@ class TestIndicatorsTestCase(object):
             assert_equal(network_indicators[k], v)
 
     @my_vcr.use_cassette()
+    def test_network_federation_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+        central = one_catalog
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
+            one_catalog,
+            other_catalog
+        ], central)
+
+        # Esperado: Los datasets de several estan federados y los de full, no
+        expected = {
+            'datasets_federados_cant': 3,
+            'datasets_no_federados_cant': 2,
+            'datasets_federados_pct': 60.0,
+            'distribuciones_federadas_cant': 6
+        }
+
+        for k, v in expected.items():
+            assert_equal(network_indicators[k], v)
+
+    @my_vcr.use_cassette()
     def test_indicators_invalid_periodicity(self):
         catalog = os.path.join(self.SAMPLES_DIR,
                                "malformed_accrualperiodicity.json")
