@@ -109,7 +109,7 @@ class TestIndicatorsTestCase(object):
 
         expected = {
             'datasets_licencias_cant': {
-                'Open Data Commons Open Database License (ODbL)': 1,
+                'Open Data Commons Open Database License 1.0': 1,
                 'Creative Commons Attribution': 1,
             }
         }
@@ -265,6 +265,31 @@ class TestIndicatorsTestCase(object):
             },
             'campos_optativos_pct': 32.56,
             'campos_recomendados_pct': 50.72,
+        }
+
+        for k, v in expected.items():
+            assert_equal(network_indicators[k], v)
+
+    @my_vcr.use_cassette()
+    def test_network_license_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_licenses.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
+            one_catalog,
+            other_catalog
+        ])
+
+        # Esperado: 2 ODbL en full, 1 en several
+        # 1 Creative Commons en several
+        # 1 Dataset en several sin licencias
+        expected = {
+            'catalogos_cant': 2,
+            'datasets_cant': 5,
+            'datasets_licencias_cant': {
+                'Open Data Commons Open Database License 1.0': 3,
+                'Creative Commons Attribution': 1,
+            },
         }
 
         for k, v in expected.items():
