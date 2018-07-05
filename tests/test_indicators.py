@@ -22,7 +22,7 @@ my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  record_mode='once')
 
 
-class IndicatorsTestCase(object):
+class TestIndicatorsTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
@@ -142,7 +142,8 @@ class IndicatorsTestCase(object):
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 0,
             'datasets_no_federados': [],
-            'datasets_federados_pct': 100
+            'datasets_federados_pct': 100,
+            'distribuciones_federadas_cant': 6
         }
 
         for k, v in expected.items():
@@ -162,7 +163,8 @@ class IndicatorsTestCase(object):
                 ('Sistema de contrataciones electrónicas UNO', None),
                 ('Sistema de contrataciones electrónicas DOS', None),
                 ('Sistema de contrataciones electrónicas TRES', None)],
-            'datasets_federados_pct': 0
+            'datasets_federados_pct': 0,
+            'distribuciones_federadas_cant': 0
         }
 
         for k, v in expected.items():
@@ -239,6 +241,27 @@ class IndicatorsTestCase(object):
             },
             'campos_optativos_pct': 33.33,
             'campos_recomendados_pct': 50.72,
+        }
+
+        for k, v in expected.items():
+            assert_equal(network_indicators[k], v)
+
+    @my_vcr.use_cassette()
+    def test_network_federation_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+        central = one_catalog
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
+            one_catalog,
+            other_catalog
+        ], central)
+
+        # Esperado: Los datasets de several estan federados y los de full, no
+        expected = {
+            'datasets_federados_cant': 3,
+            'datasets_no_federados_cant': 2,
+            'datasets_federados_pct': 60.0,
+            'distribuciones_federadas_cant': 6
         }
 
         for k, v in expected.items():
