@@ -128,14 +128,12 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
     if not only_numeric:
         if 'dataset' in catalog:
             format_count = count_fields(get_distributions(catalog), 'format')
-            type_count = count_fields(get_distributions(catalog), 'type')
             license_count = count_fields(get_datasets(catalog), 'license')
         else:
-            format_count = license_count = type_count = {}
+            format_count = license_count = {}
 
         result.update({
             'distribuciones_formatos_cant': format_count,
-            'distribuciones_tipos_cant': type_count,
             'datasets_licencias_cant': license_count,
         })
 

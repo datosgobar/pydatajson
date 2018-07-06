@@ -118,24 +118,6 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    def test_types_indicators(self):
-        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_types.json")
-
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
-
-        expected = {
-            'distribuciones_tipos_cant': {
-                "file": 1,
-                "file.upload": 1,
-                "documentation": 1,
-                "api": 2
-            }
-        }
-
-        for k, v in expected.items():
-            assert_equal(indicators[k], v)
-
-    @my_vcr.use_cassette()
     def test_no_licenses_indicators(self):
         # No tienen licencias
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_for_harvest.json")
@@ -280,10 +262,6 @@ class TestIndicatorsTestCase(object):
                 'XLSX': 1,
                 'PDF': 2
             },
-            'distribuciones_tipos_cant': {
-                'file': 1,
-                'documentation': 1
-            },
             'datasets_licencias_cant': {
                 'Open Data Commons Open Database License 1.0': 2,
             },
@@ -316,36 +294,7 @@ class TestIndicatorsTestCase(object):
         }
 
         for k, v in expected.items():
-            assert_equal(network_indicators[k], v, k)
-
-    @my_vcr.use_cassette()
-    def test_network_license_indicators(self):
-        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_types.json")
-        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
-
-        indicators, network_indicators = self.dj.generate_catalogs_indicators([
-            one_catalog,
-            other_catalog
-        ])
-        # Esperado: 1 file en full, 1 en several
-        # 1 file.upload en several
-        # 1 documentation en full, 1 en several
-        # 2 api en several
-        # 1 distribucion en several sin tipo
-        expected = {
-            'catalogos_cant': 2,
-            'distribuciones_cant': 8,
-            'distribuciones_tipos_cant': {
-                "file": 2,
-                "file.upload": 1,
-                "documentation": 2,
-                "api": 2
-            }
-        }
-
-        for k, v in expected.items():
-            assert_equal(network_indicators[k], v, k)
-
+            assert_equal(network_indicators[k], v)
 
     def test_network_federation_indicators(self):
         one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
