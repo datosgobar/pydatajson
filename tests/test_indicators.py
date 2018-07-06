@@ -59,7 +59,7 @@ class TestIndicatorsTestCase(object):
         }
 
         for k, v in expected.items():
-            assert_true(indicators[k], v)
+            assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
     def test_date_indicators(self):
@@ -100,6 +100,29 @@ class TestIndicatorsTestCase(object):
 
         for k, v in expected.items():
             assert_equal(indicators[k], v)
+
+    @my_vcr.use_cassette()
+    def test_license_indicators(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_licenses.json")
+
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+
+        expected = {
+            'datasets_licencias_cant': {
+                'Open Data Commons Open Database License 1.0': 1,
+                'Creative Commons Attribution': 1,
+            }
+        }
+
+        for k, v in expected.items():
+            assert_equal(indicators[k], v)
+
+    @my_vcr.use_cassette()
+    def test_no_licenses_indicators(self):
+        # No tienen licencias
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_for_harvest.json")
+        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        assert_equal(indicators['datasets_licencias_cant'], {})
 
     @my_vcr.use_cassette()
     def test_field_indicators_on_min_catalog(self):
@@ -239,7 +262,10 @@ class TestIndicatorsTestCase(object):
                 'XLSX': 1,
                 'PDF': 2
             },
-            'campos_optativos_pct': 33.33,
+            'datasets_licencias_cant': {
+                'Open Data Commons Open Database License 1.0': 2,
+            },
+            'campos_optativos_pct': 32.56,
             'campos_recomendados_pct': 50.72,
         }
 
@@ -247,6 +273,29 @@ class TestIndicatorsTestCase(object):
             assert_equal(network_indicators[k], v)
 
     @my_vcr.use_cassette()
+    def test_network_license_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_licenses.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
+            one_catalog,
+            other_catalog
+        ])
+        # Esperado: 2 ODbL en full, 1 en several
+        # 1 Creative Commons en several
+        # 1 Dataset en several sin licencias
+        expected = {
+            'catalogos_cant': 2,
+            'datasets_cant': 5,
+            'datasets_licencias_cant': {
+                'Open Data Commons Open Database License 1.0': 3,
+                'Creative Commons Attribution': 1,
+            },
+        }
+
+        for k, v in expected.items():
+            assert_equal(network_indicators[k], v)
+
     def test_network_federation_indicators(self):
         one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
@@ -263,7 +312,6 @@ class TestIndicatorsTestCase(object):
             'datasets_federados_pct': 60.0,
             'distribuciones_federadas_cant': 6
         }
-
         for k, v in expected.items():
             assert_equal(network_indicators[k], v)
 
@@ -316,6 +364,7 @@ class TestIndicatorsTestCase(object):
             'datasets_desactualizados_cant': 0,
             'datasets_actualizados_pct': 0,
             'distribuciones_formatos_cant': {},
+            'datasets_licencias_cant': {},
             'datasets_frecuencia_cant': {}
         }
 

@@ -9,7 +9,7 @@
         "dataset": [
             {
                 "status": "OK",
-                "identifier": null,
+                "identifier": "1",
                 "list_index": 0,
                 "errors": [],
                 "title": "Sistema de contrataciones electrónicas"
