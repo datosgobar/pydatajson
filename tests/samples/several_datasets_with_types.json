@@ -1,0 +1,110 @@
+{
+    "publisher": {
+        "mbox": "datos@modernizacion.gob.ar",
+        "name": "Ministerio de Modernización"
+    },
+    "description": "Datasets para reporte pre cosecha",
+    "title": "Cosechando Datos Argentina",
+    "issued": "2016-04-14T19:48:05.433640-03:00",
+    "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
+    "dataset": [
+        {
+            "identifier": "1",
+            "license": "Creative Commons Attribution",
+            "publisher": {},
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
+            "superTheme": [
+                "ECON",
+                "HEAL"
+            ],
+            "title": "Sistema de contrataciones electrónicas UNO",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
+            "modified": "2016-04-14T19:48:05.433640-03:00",
+            "source": "Ministerio de modernizacion",
+            "accrualPeriodicity": "R/P1W",
+            "distribution": [
+                {
+                    "accessURL": "http://datos.gob.ar/dataset1.csv",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "title": "Convocatorias 2015"
+                },
+                {
+                    "accessURL": "http://datos.gob.ar",
+                    "downloadURL": [
+                        "http://186.33.211.253/dataset2.csv"
+                    ],
+                    "title": "Convocatorias 2016",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "type": "file"
+                },
+                {
+                    "accessURL": "http://datos.gob.ar",
+                    "downloadURL": 444444,
+                    "title": "Convocatorias 2017",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "type": "api"
+                },
+                {
+                    "accessURL": "http://datos.gob.ar",
+                    "downloadURL": "http://186.33.211.253/dataset3.csv",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "format": "XLSX",
+                    "type": "file.upload"
+                }
+            ]
+        },
+        {
+            "identifier": "2",
+            "license": "Open Data Commons Open Database License 1.0",
+            "publisher": {
+                "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
+            },
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
+            "superTheme": [
+                "ECON"
+            ],
+            "title": "Sistema de contrataciones electrónicas DOS",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
+            "modified": "2016-04-14T19:48:05.433640-03:00",
+            "source": "Ministerio de modernizacion",
+            "accrualPeriodicity": "eventual",
+            "distribution": [
+                {
+                    "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "format": "PDF",
+                    "type": "documentation"
+                }
+            ]
+        },
+        {
+            "identifier": "3",
+            "publisher": {
+                "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
+            },
+            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
+            "superTheme": [
+                "ECON"
+            ],
+            "title": "Sistema de contrataciones electrónicas TRES",
+            "issued": "2016-04-14T19:48:05.433640-03:00",
+            "modified": "2016-04-14T19:48:05.433640-03:00",
+            "source": "Ministerio de modernizacion",
+            "accrualPeriodicity": "R/P1M",
+            "distribution": [
+                {
+                    "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+                    "downloadURL": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+                    "title": "Convocatorias abiertas durante el año 2015",
+                    "issued": "2016-04-14T19:48:05.433640-03:00",
+                    "type": "api"
+                }
+            ]
+        }
+    ],
+    "version": "1.1",
+    "identifier": "7d4d816f-3a40-476e-ab71-d48a3f0eb3c8"
+}
