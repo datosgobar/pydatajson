@@ -83,25 +83,25 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
         if central_catalog:
             result.update(_federation_indicators(catalog,
                                                  central_catalog))
-
-        indicators_list.append(result)
+        if not indicators_list:
+            # La primera iteracion solo copio el primer resultado
+            indicators_total = result.copy()
+        else:
+            indicators_total = helpers.add_dicts(indicators_total,
+                                                 result)
         # Sumo a la cuenta total de campos usados/totales
         fields = helpers.add_dicts(fields_count, fields)
-
-    # Indicadores de la red entera
-    network_indicators = {
-        'catalogos_cant': catalogs_cant
-    }
+        result['identifier'] = catalog.get('identifier', 'no-id')
+        indicators_list.append(result)
 
     if not indicators_list:
         # No se pudo leer ningún catálogo
         return [], {}
 
-    # Sumo los indicadores individuales al total
-    indicators_total = indicators_list[0].copy()
-    for i in range(1, len(indicators_list)):
-        indicators_total = helpers.add_dicts(indicators_total,
-                                             indicators_list[i])
+    # Indicadores de la red entera
+    network_indicators = {
+        'catalogos_cant': catalogs_cant
+    }
     network_indicators.update(indicators_total)
     # Genero los indicadores de la red entera,
     _network_indicator_percentages(fields, network_indicators)
