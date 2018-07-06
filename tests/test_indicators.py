@@ -165,7 +165,8 @@ class TestIndicatorsTestCase(object):
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 0,
             'datasets_no_federados': [],
-            'datasets_federados_pct': 100
+            'datasets_federados_pct': 100,
+            'distribuciones_federadas_cant': 6
         }
 
         for k, v in expected.items():
@@ -185,7 +186,8 @@ class TestIndicatorsTestCase(object):
                 ('Sistema de contrataciones electrónicas UNO', None),
                 ('Sistema de contrataciones electrónicas DOS', None),
                 ('Sistema de contrataciones electrónicas TRES', None)],
-            'datasets_federados_pct': 0
+            'datasets_federados_pct': 0,
+            'distribuciones_federadas_cant': 0
         }
 
         for k, v in expected.items():
@@ -279,7 +281,6 @@ class TestIndicatorsTestCase(object):
             one_catalog,
             other_catalog
         ])
-
         # Esperado: 2 ODbL en full, 1 en several
         # 1 Creative Commons en several
         # 1 Dataset en several sin licencias
@@ -292,6 +293,25 @@ class TestIndicatorsTestCase(object):
             },
         }
 
+        for k, v in expected.items():
+            assert_equal(network_indicators[k], v)
+
+    def test_network_federation_indicators(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+        central = one_catalog
+        indicators, network_indicators = self.dj.generate_catalogs_indicators([
+            one_catalog,
+            other_catalog
+        ], central)
+
+        # Esperado: Los datasets de several estan federados y los de full, no
+        expected = {
+            'datasets_federados_cant': 3,
+            'datasets_no_federados_cant': 2,
+            'datasets_federados_pct': 60.0,
+            'distribuciones_federadas_cant': 6
+        }
         for k, v in expected.items():
             assert_equal(network_indicators[k], v)
 
