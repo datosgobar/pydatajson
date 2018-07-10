@@ -51,6 +51,8 @@ class TestIndicatorsTestCase(object):
 
         # Resultados esperados haciendo cuentas manuales sobre el catálogo
         expected = {
+            'identifier': '7d4d816f-3a40-476e-ab71-d48a3f0eb3c8',
+            'title': 'Cosechando Datos Argentina',
             'datasets_cant': 3,
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
@@ -535,3 +537,11 @@ class TestIndicatorsTestCase(object):
         }
         for k, v in expected.items():
             assert_equal(indics[k], v)
+
+    @my_vcr.use_cassette()
+    def test_no_title_nor_identifier_catalog(self):
+        catalog = pydatajson.DataJson(os.path.join(self.SAMPLES_DIR, "missing_catalog_title.json"))
+        del catalog['identifier']
+        indics = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        assert_equal(indics['title'], 'no-title')
+        assert_equal(indics['identifier'], 'no-id')
