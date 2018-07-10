@@ -91,6 +91,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
                                                  result)
         # Sumo a la cuenta total de campos usados/totales
         fields = helpers.add_dicts(fields_count, fields)
+
+        result['title'] = catalog.get('title', 'no-title')
         result['identifier'] = catalog.get('identifier', 'no-id')
         indicators_list.append(result)
 
