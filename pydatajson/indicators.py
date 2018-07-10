@@ -85,10 +85,10 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
                                                  central_catalog))
         if not indicators_list:
             # La primera iteracion solo copio el primer resultado
-            indicators_total = result.copy()
+            network_indicators = result.copy()
         else:
-            indicators_total = helpers.add_dicts(indicators_total,
-                                                 result)
+            network_indicators = helpers.add_dicts(network_indicators,
+                                                   result)
         # Sumo a la cuenta total de campos usados/totales
         fields = helpers.add_dicts(fields_count, fields)
 
@@ -101,10 +101,7 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
         return [], {}
 
     # Indicadores de la red entera
-    network_indicators = {
-        'catalogos_cant': catalogs_cant
-    }
-    network_indicators.update(indicators_total)
+    network_indicators['catalogos_cant'] = catalogs_cant
     # Genero los indicadores de la red entera,
     _network_indicator_percentages(fields, network_indicators)
 
