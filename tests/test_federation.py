@@ -237,7 +237,7 @@ class PushDatasetTestCase(unittest.TestCase):
         mock_portal.return_value.call_action = mock_call_action
         _, errors = harvest_catalog_to_ckan(self.catalog, 'portal', 'key', self.catalog_id,
                                             owner_org='owner')
-        self.assertDictEqual({self.catalog.datasets[1]['identifier']: "Exception('some message',)"}, errors)
+        self.assertDictEqual({self.catalog.datasets[1]['identifier']: "some message"}, errors)
 
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
