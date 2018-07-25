@@ -101,6 +101,13 @@ class TestDataJsonTestCase(object):
         regex = "%s is not valid under any of the given schemas" % jsonschema_str('contrataciones')
         self.validate_message_with_file(case_filename, expected_valid, path, regex)
 
+    def test_invalid_empty_super_theme_list(self):
+        case_filename = "empty_super_theme_list"
+        expected_valid = False
+        path = ['error', 'dataset', 0, 'errors', 0, 'message']
+        regex = "\[\] is too short"
+        self.validate_message_with_file(case_filename, expected_valid, path, regex)
+
     def test_several_assorted_errors(self):
         case_filename = "several_assorted_errors"
         expected_errors = [
@@ -119,6 +126,10 @@ class TestDataJsonTestCase(object):
             (
                 ['error', 'catalog', 'errors', ],
                 "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')
+            ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "\[%s, %s\] is not valid under any of the given schemas" % (jsonschema_str('spa'), jsonschema_str(''))
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
@@ -141,8 +152,21 @@ class TestDataJsonTestCase(object):
                 ['error', 'dataset', 0, 'errors', ],
                 "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')
             ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "\[%s, %s\] is not valid under any of the given schemas" % (jsonschema_str('spa'), jsonschema_str(''))
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "\[%s, %s, %s, %s] is not valid under any of the given schemas" %
+                tuple(map(jsonschema_str, ('bienes', 'compras', 'contrataciones', '')))
+            ),
+            (
+                ['error', 'dataset', 0, 'errors', ],
+                "\[%s, %s, %s, %s] is not valid under any of the given schemas" %
+                tuple(map(jsonschema_str, ('contrataciones', 'compras', 'convocatorias', '')))
+            ),
         ]
-
         for path, regex in expected_errors:
             yield self.validate_contains_message_with_file, case_filename, path, regex
 

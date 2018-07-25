@@ -20,9 +20,7 @@
             },
             "license": "Open Data Commons Open Database License 1.0",
             "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
-            "superTheme": [
-                "econ"
-            ],
+            "superTheme": [],
             "title": "Sistema de contrataciones electrónicas",
             "issued": "2016-04-14T19:48:05.433640-03:00",
             "temporal": "2015-01-01/2015-12-31",

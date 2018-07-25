@@ -6,7 +6,8 @@
     "license": "Open Data Commons Open Database License 1.0",
     "description": "Portal de Datos Abiertos del Gobierno de la República Argentina",
     "language": [
-        "spa"
+        "spa",
+        ""
     ],
     "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "issued": "2016-04-14T19:48:05.433640-03:00",
@@ -28,17 +29,20 @@
             "temporal": "2015-01-01/2015-12-31",
             "modified": "2016-04-19T19:48:05.433640-03:00",
             "language": [
-                "spa"
+                "spa",
+                ""
             ],
             "theme": [
                 "contrataciones",
                 "compras",
-                "convocatorias"
+                "convocatorias",
+                ""
             ],
             "keyword": [
                 "bienes",
                 "compras",
-                "contrataciones"
+                "contrataciones",
+                ""
             ],
             "accrualPeriodicity": "R/P1Y",
             "spatial": "ARG",
