@@ -38,7 +38,10 @@
     "nonEmptyString": { "type": "string", "minLength": 1},
     "arrayOrNull": {
         "anyOf": [
-            { "type": "array" },
+            {
+                "type": "array",
+                "items": {"$ref": "#/nonEmptyString"}
+            },
             { "type": "null" }
         ]
     },
