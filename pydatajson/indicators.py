@@ -14,12 +14,14 @@ import logging
 import json
 import os
 from datetime import datetime
+from collections import Counter
 
 from six import string_types
 
 from . import helpers
 from . import readers
 from .reporting import generate_datasets_summary
+from .search import get_datasets, get_distributions
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -63,36 +65,43 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
     if isinstance(catalogs, string_types + (dict,)):
         catalogs = [catalogs]
 
-    # Leo todos los catálogos
-    catalogs = [readers.read_catalog(catalog) for catalog in catalogs]
-
     indicators_list = []
     # Cuenta la cantidad de campos usados/recomendados a nivel global
     fields = {}
+    catalogs_cant = 0
     for catalog in catalogs:
-        catalog = readers.read_catalog(catalog)
+        try:
+            catalog = readers.read_catalog(catalog)
+            catalogs_cant += 1
+        except Exception as e:
+            msg = u'Error leyendo catálogo de la lista: {}'.format(str(e))
+            logger.error(msg)
+            continue
 
         fields_count, result = _generate_indicators(
             catalog, validator=validator)
         if central_catalog:
             result.update(_federation_indicators(catalog,
                                                  central_catalog))
-
-        indicators_list.append(result)
+        if not indicators_list:
+            # La primera iteracion solo copio el primer resultado
+            network_indicators = result.copy()
+        else:
+            network_indicators = helpers.add_dicts(network_indicators,
+                                                   result)
         # Sumo a la cuenta total de campos usados/totales
         fields = helpers.add_dicts(fields_count, fields)
 
-    # Indicadores de la red entera
-    network_indicators = {
-        'catalogos_cant': len(catalogs)
-    }
+        result['title'] = catalog.get('title', 'no-title')
+        result['identifier'] = catalog.get('identifier', 'no-id')
+        indicators_list.append(result)
 
-    # Sumo los indicadores individuales al total
-    indicators_total = indicators_list[0].copy()
-    for i in range(1, len(indicators_list)):
-        indicators_total = helpers.add_dicts(indicators_total,
-                                             indicators_list[i])
-    network_indicators.update(indicators_total)
+    if not indicators_list:
+        # No se pudo leer ningún catálogo
+        return [], {}
+
+    # Indicadores de la red entera
+    network_indicators['catalogos_cant'] = catalogs_cant
     # Genero los indicadores de la red entera,
     _network_indicator_percentages(fields, network_indicators)
 
@@ -116,10 +125,19 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
         _generate_date_indicators(catalog, only_numeric=only_numeric))
     # Agrego la cuenta de los formatos de las distribuciones
     if not only_numeric:
-        count = _count_distribution_formats(catalog)
+        if 'dataset' in catalog:
+            format_count = count_fields(get_distributions(catalog), 'format')
+            type_count = count_fields(get_distributions(catalog), 'type')
+            license_count = count_fields(get_datasets(catalog), 'license')
+        else:
+            format_count = type_count = license_count = {}
+
         result.update({
-            'distribuciones_formatos_cant': count
+            'distribuciones_formatos_cant': format_count,
+            'distribuciones_tipos_cant': type_count,
+            'datasets_licencias_cant': license_count,
         })
+
     # Agrego porcentaje de campos recomendados/optativos usados
     fields_count = _count_required_and_optional_fields(catalog)
     recomendados_pct = 100 * float(fields_count['recomendado']) / \
@@ -143,9 +161,26 @@ def _federation_indicators(catalog, central_catalog):
         central_catalog (str o dict): ruta a catálogo central, o un dict
             con el catálogo ya parseado
     """
-    central_catalog = readers.read_catalog(central_catalog)
+    result = {
+        'datasets_federados_cant': None,
+        'datasets_no_federados_cant': None,
+        'datasets_federados_eliminados_cant': None,
+        'datasets_federados_eliminados': None,
+        'datasets_no_federados': None,
+        'datasets_federados': None,
+        'datasets_federados_pct': None,
+        'distribuciones_federadas_cant': None
+    }
+    try:
+        central_catalog = readers.read_catalog(central_catalog)
+    except Exception as e:
+        msg = u'Error leyendo el catálogo central: {}'.format(str(e))
+        logger.error(msg)
+        return result
+
     federados = 0  # En ambos catálogos
     no_federados = 0
+    dist_federadas = 0
     datasets_federados_eliminados_cant = 0
     datasets_federados = []
     datasets_no_federados = []
@@ -160,6 +195,7 @@ def _federation_indicators(catalog, central_catalog):
                 federados += 1
                 datasets_federados.append((dataset.get('title'),
                                            dataset.get('landingPage')))
+                dist_federadas += len(dataset.get('distribution', []))
                 break
         if not found:
             no_federados += 1
@@ -191,15 +227,16 @@ def _federation_indicators(catalog, central_catalog):
     else:
         federados_pct = 0
 
-    result = {
+    result.update({
         'datasets_federados_cant': federados,
         'datasets_no_federados_cant': no_federados,
         'datasets_federados_eliminados_cant': datasets_federados_eliminados_cant,
         'datasets_federados_eliminados': datasets_federados_eliminados,
         'datasets_no_federados': datasets_no_federados,
         'datasets_federados': datasets_federados,
-        'datasets_federados_pct': round(federados_pct, 2)
-    }
+        'datasets_federados_pct': round(federados_pct, 2),
+        'distribuciones_federadas_cant': dist_federadas
+    })
     return result
 
 
@@ -229,7 +266,7 @@ def _network_indicator_percentages(fields, network_indicators):
         total_pct = 100 * float(meta_ok) / (meta_error + meta_ok)
     network_indicators['datasets_meta_ok_pct'] = round(total_pct, 2)
 
-    # % de campos recomendados y optativos utilizados en todo el catálogo
+    # % de campos recomendados y optativos utilizados en el catálogo entero
     if fields:  # 'fields' puede estar vacío si ningún campo es válido
         rec_pct = 100 * float(fields['recomendado']) / \
             fields['total_recomendado']
@@ -270,7 +307,20 @@ def _generate_status_indicators(catalog, validator=None):
         dict: indicadores básicos sobre el catálogo, tal como la cantidad
         de datasets, distribuciones y número de errores
     """
-    summary = generate_datasets_summary(catalog, validator=validator)
+    result = {
+        'datasets_cant': None,
+        'distribuciones_cant': None,
+        'datasets_meta_ok_cant': None,
+        'datasets_meta_error_cant': None,
+        'datasets_meta_ok_pct': None
+    }
+    try:
+        summary = generate_datasets_summary(catalog, validator=validator)
+    except Exception as e:
+        msg = u'Error generando resumen del catálogo {}: {}'.format(catalog['title'], str(e))
+        logger.error(msg)
+        return result
+
     cant_ok = 0
     cant_error = 0
     cant_distribuciones = 0
@@ -286,13 +336,13 @@ def _generate_status_indicators(catalog, validator=None):
     datasets_ok_pct = 0
     if datasets_total:
         datasets_ok_pct = round(100 * float(cant_ok) / datasets_total, 2)
-    result = {
+    result.update({
         'datasets_cant': datasets_total,
         'distribuciones_cant': cant_distribuciones,
         'datasets_meta_ok_cant': cant_ok,
         'datasets_meta_error_cant': cant_error,
         'datasets_meta_ok_pct': datasets_ok_pct
-    }
+    })
     return result
 
 
@@ -316,16 +366,31 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
     Returns:
         dict: diccionario con indicadores
     """
-    result = {}
+    result = {
+        'datasets_desactualizados_cant': None,
+        'datasets_actualizados_cant': None,
+        'datasets_actualizados_pct': None,
+        'catalogo_ultima_actualizacion_dias': None
+    }
+    if not only_numeric:
+        result.update({
+            'datasets_frecuencia_cant': None
+        })
 
-    dias_ultima_actualizacion = _days_from_last_update(
-        catalog, "modified")
-    if not dias_ultima_actualizacion:
+    try:
         dias_ultima_actualizacion = _days_from_last_update(
-            catalog, "issued")
+            catalog, "modified")
+        if not dias_ultima_actualizacion:
+            dias_ultima_actualizacion = _days_from_last_update(
+                catalog, "issued")
 
-    result['catalogo_ultima_actualizacion_dias'] = \
-        dias_ultima_actualizacion
+        result['catalogo_ultima_actualizacion_dias'] = \
+            dias_ultima_actualizacion
+
+    except Exception as e:
+        msg = u'Error generando indicadores de fecha del catálogo {}: {}'.format(catalog['title'], str(e))
+        logger.error(msg)
+        return result
 
     actualizados = 0
     desactualizados = 0
@@ -350,11 +415,19 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
             # Calculo el período de días que puede pasar sin actualizarse
             # Se parsea el período especificado por accrualPeriodicity,
             # cumple con el estándar ISO 8601 para tiempos con repetición
-            date = helpers.parse_date_string(dataset['modified'])
-            days_diff = float((datetime.now() - date).days)
-            interval = helpers.parse_repeating_time_interval(
-                periodicity) * \
-                (1 + tolerance)
+            try:
+                date = helpers.parse_date_string(dataset['modified'])
+                days_diff = float((datetime.now() - date).days)
+                interval = helpers.parse_repeating_time_interval(
+                    periodicity) * \
+                    (1 + tolerance)
+            except Exception as e:
+                msg = u'Error generando indicadores de fecha del dataset {} en {}: {}'
+                msg.format(dataset['identifier'], catalog['title'], str(e))
+                logger.error(msg)
+                # Asumo desactualizado
+                desactualizados += 1
+                continue
 
             if days_diff < interval:
                 actualizados += 1
@@ -378,49 +451,6 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
             'datasets_frecuencia_cant': periodicity_amount
         })
     return result
-
-
-def _count_distribution_formats(catalog):
-    """Cuenta los formatos especificados por el campo 'format' de cada
-    distribución de un catálogo o de un dataset.
-
-    Args:
-        catalog (str o dict): path a un catálogo, o un dict de python que
-
-    Returns:
-        dict: diccionario con los formatos de las distribuciones
-        encontradas como claves, con la cantidad de ellos en sus valores.
-    """
-
-    # Leo catálogo
-    catalog = readers.read_catalog(catalog)
-    catalog_formats = {}
-
-    for dataset in catalog.get('dataset', []):
-        dataset_formats = _count_distribution_formats_dataset(dataset)
-
-        for distribution_format in dataset_formats:
-            count_catalog = catalog_formats.get(distribution_format, 0)
-            count_dataset = dataset_formats.get(distribution_format, 0)
-            catalog_formats[
-                distribution_format] = count_catalog + count_dataset
-
-    return catalog_formats
-
-
-def _count_distribution_formats_dataset(dataset):
-    formats = {}
-    for distribution in dataset['distribution']:
-        # 'format' es recomendado, no obligatorio. Puede no estar.
-        distribution_format = distribution.get('format', None)
-
-        if distribution_format:
-            # Si no está en el diccionario, devuelvo 0
-            count = formats.get(distribution_format, 0)
-
-            formats[distribution_format] = count + 1
-
-    return formats
 
 
 def _days_from_last_update(catalog, date_field="modified"):
@@ -630,7 +660,7 @@ def _filter_by_likely_publisher(central_datasets, catalog_datasets):
     publisher_names = [
         catalog_dataset["publisher"]["name"]
         for catalog_dataset in catalog_datasets
-        if "name" in catalog_dataset["publisher"]
+        if "name" in catalog_dataset.get("publisher", {})
     ]
 
     filtered_central_datasets = []
@@ -640,3 +670,8 @@ def _filter_by_likely_publisher(central_datasets, catalog_datasets):
             filtered_central_datasets.append(central_dataset)
 
     return filtered_central_datasets
+
+
+def count_fields(targets, field):
+    """Cuenta la cantidad de values en el key especificado de una lista de  diccionarios"""
+    return Counter([target[field] for target in targets if field in target])

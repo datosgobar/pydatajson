@@ -266,9 +266,9 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
             harvested.append(harvested_id)
         except Exception as e:
             msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n" % (catalog_id, dataset_id, portal_url)
-            msg += repr(e)
+            msg += str(e)
             logger.error(msg)
-            errors[dataset_id] = repr(e)
+            errors[dataset_id] = str(e)
 
     return harvested, errors
 

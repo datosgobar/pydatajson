@@ -10,7 +10,8 @@ definidas según la extensión del perfil de metadatos para series de tiempo.
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
-import os
+
+from . import custom_exceptions as ce
 
 
 def field_is_time_series(field, distribution=None):
@@ -42,10 +43,10 @@ def get_distribution_time_index(distribution):
 
 
 def distribution_has_time_index(distribution):
-    for field in distribution.get('field', []):
-        if field.get('specialType') == 'time_index':
-            return True
-    return False
+    try:
+        return any([field.get('specialType') == 'time_index' for field in distribution.get('field', [])])
+    except AttributeError:
+        return False
 
 
 def dataset_has_time_series(dataset):

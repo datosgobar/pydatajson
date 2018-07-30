@@ -8,6 +8,7 @@
     "title": "Datos Argentina",
     "dataset": [
         {
+            "identifier": "1",
             "publisher": {
                 "name": "Ministerio de Modernización. Secretaría de Modernización Administrativa. Oficina Nacional de Contrataciones"
             },

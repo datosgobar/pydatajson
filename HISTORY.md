@@ -1,6 +1,13 @@
 Versiones
 =========
 
+0.4.17 (2018-07-10)
+-------------------
+
+* Agregados 3 indicadores `distribuciones_federadas`, `datasets_licencias_cant` y `distribuciones_tipos_cant`.
+* `harvest_catalog_to_ckan` devuelve el mensaje en lugar de las representaciones de las excepciones.
+
+
 0.4.16 (2018-06-19)
 -------------------
 
