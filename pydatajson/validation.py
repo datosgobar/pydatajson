@@ -15,6 +15,7 @@ import requests
 import mimetypes
 import logging
 from collections import Counter
+from pprint import pprint
 
 try:
     from urlparse import urlparse
@@ -435,3 +436,25 @@ def format_matches_extension(distribution, attribute):
             return False
 
     return True
+
+
+def main(catalog):
+    """Permite validar un catálogo por línea de comandos.
+
+    Args:
+        catalog (str): Path local o URL a un catálogo.
+    """
+    res = validate_catalog(catalog, only_errors=True, fmt="list",
+                           export_path=None, validator=None)
+    print("")
+    print("=== Errores a nivel de CATALOGO ===")
+    pprint(res["catalog"])
+
+    print("")
+    print("=== Errores a nivel de DATASET ===")
+    pprint(res["dataset"])
+
+
+if __name__ == '__main__':
+    args = sys.argv[1:] if len(sys.argv > 1) else []
+    main(*args)
