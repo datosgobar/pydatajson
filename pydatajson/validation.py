@@ -409,12 +409,12 @@ def _catalog_validation_to_list(response):
             rows_dataset.append(dataset_result)
 
         if len(dataset["errors"]) == 0:
-            dataset_error = dict(validation_result)
-            dataset_error.update({
+            dataset_result = dict(validation_result)
+            dataset_result.update({
                 "dataset_error_message": None,
                 "dataset_error_location": None
             })
-            rows_dataset.append(dataset_error)
+            rows_dataset.append(dataset_result)
 
     return {"catalog": rows_catalog, "dataset": rows_dataset}
 
