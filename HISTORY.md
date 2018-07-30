@@ -1,6 +1,11 @@
 Versiones
 =========
 
+0.4.18 (2018-07-30)
+-------------------
+
+* Agrega interfaz por línea de comandos para validar rápidamente un catálogo: `pydatajson validation http://datos.gob.ar/data.json`
+
 0.4.17 (2018-07-10)
 -------------------
 
