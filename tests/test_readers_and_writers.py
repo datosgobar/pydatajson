@@ -251,7 +251,7 @@ revíselo manualmente""".format(temp_filename)
             self.assertEqual(catalog_xlsx, catalog)
             
     def test_read_xlsx_lists_with_extra_commas(self):
-        # No hay valores vacíos a pesar que hay en las listas con comas
+        # No hay valores vacíos a pesar que hay listas con comas extras
         catalog = pydatajson.readers.read_catalog(self.get_sample("lists_extra_commas.xlsx"))
         self.assertTrue(catalog['language'])
         self.assertTrue(all(catalog['language']))
