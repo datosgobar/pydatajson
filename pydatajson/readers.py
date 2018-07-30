@@ -456,14 +456,14 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
     # Transformo campos de texto separado por comas en listas
     if "catalog_language" in catalog:
         catalog["catalog_language"] = helpers.string_to_list(
-            catalog["catalog_language"])
+            catalog["catalog_language"], filter_empty=True)
 
     for dataset in catalog["catalog_dataset"]:
         array_fields = ["dataset_superTheme", "dataset_theme", "dataset_tags",
                         "dataset_keyword", "dataset_language"]
         for field in array_fields:
             if field in dataset:
-                dataset[field] = helpers.string_to_list(dataset[field])
+                dataset[field] = helpers.string_to_list(dataset[field], filter_empty=True)
 
     # Elimino los prefijos de los campos a nivel catálogo
     _remove_prefixes_and_unprefixed_fields(catalog, 'catalog_')
