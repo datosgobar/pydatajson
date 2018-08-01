@@ -107,28 +107,30 @@ catalog = DataJson(catalog_dict)
 
 ### Validación
 
-Los métodos de validación de catálogos procesan un catálogo por llamada. En el siguiente ejemplo, `catalogs` contiene las cinco representaciones de un catálogo que DataJson entiende:
+Validar los metadatos de un catálogo y corregir errores.
+
 ```python
 from pydatajson import DataJson
 
-catalog = DataJson()
-catalogs = [
-    "tests/samples/full_data.json", # archivo JSON local
-    "http://181.209.63.71/data.json", # archivo JSON remoto
-    "tests/samples/catalogo_justicia.xlsx", # archivo XLSX local
-    "https://raw.githubusercontent.com/datosgobar/pydatajson/master/tests/samples/catalogo_justicia.xlsx", # archivo XLSX remoto
-    {
-        "title": "Catálogo del Portal Nacional",
-  "description" "Datasets abiertos para el ciudadano."
-        "dataset": [...],
-  (...)
-    } # diccionario de Python
-]
+catalog = DataJson("tests/samples/full_data.json")
 
-for catalog in catalogs:
-    validation_result = catalog.is_valid_catalog(catalog)
-    validation_report = catalog.validate_catalog(catalog)
+# es falso si existe por lo menos UN error / verdadero si no hay ningún error
+validation_result = catalog.is_valid_catalog(catalog)
+
+# objeto con los errores encontrados
+validation_report = catalog.validate_catalog(catalog, only_errors=True)
+
+# se puede tener el reporte en distintos formatos para transformar más fácilmente en un informe en CSV o Excel
+validation_report = catalog.validate_catalog(catalog, only_errors=True, fmt="list")
 ```
+
+También se puede correr desde la línea de comandos para ver un resultado rápido.
+
+```
+pydatajson validation "tests/samples/full_data.json"
+pydatajson validation http://datos.gob.ar/data.json
+```
+
 Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en el **Anexo I: Estructura de respuestas**.
 
 ### Federación y restauración
