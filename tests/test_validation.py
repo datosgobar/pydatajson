@@ -298,10 +298,8 @@ class TestDataJsonTestCase(object):
         report_list = catalog.validate_catalog(fmt='list')
         report_dict = catalog.validate_catalog()
 
-        assert_true(len(report_list['catalog']) == 4)
         for error in report_dict['error']['catalog']['errors']:
             assert_true(error['message'] in [reported['catalog_error_message'] for reported in report_list['catalog']])
 
-        assert_true(len(report_list['dataset']) == 5)
         for error in report_dict['error']['dataset'][0]['errors']:
             assert_true(error['message'] in [reported['dataset_error_message'] for reported in report_list['dataset']])
