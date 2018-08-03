@@ -233,9 +233,9 @@ def sheet_to_table(worksheet):
     return table
 
 
-def string_to_list(string, sep=","):
+def string_to_list(string, sep=",", filter_empty=False):
     """Transforma una string con elementos separados por `sep` en una lista."""
-    return [value.strip() for value in string.split(sep)]
+    return [value.strip() for value in string.split(sep) if (not filter_empty or value)]
 
 
 def add_dicts(one_dict, other_dict):
