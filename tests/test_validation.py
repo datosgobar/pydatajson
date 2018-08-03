@@ -284,3 +284,24 @@ class TestDataJsonTestCase(object):
             datajson["dataset"][0]["accrualPeriodicity"] = value
             res = self.dj.is_valid_catalog(datajson)
             assert_false(res, msg=value)
+
+    def test_valid_catalog_list_format(self):
+        report_list = self.dj.validate_catalog(fmt='list')
+        assert_true(len(report_list['catalog']) == 1)
+        assert_true(report_list['catalog'][0]['catalog_status'] == 'OK')
+        assert_true(len(report_list['dataset']) == 2)
+        for report in report_list['dataset']:
+            assert_true(report['dataset_status'] == 'OK')
+
+    def test_invalid_catalog_list_format(self):
+        catalog = pydatajson.DataJson(self.get_sample("several_assorted_errors.json"))
+        report_list = catalog.validate_catalog(fmt='list')
+        report_dict = catalog.validate_catalog()
+
+        assert_true(len(report_list['catalog']) == 4)
+        for error in report_dict['error']['catalog']['errors']:
+            assert_true(error['message'] in [reported['catalog_error_message'] for reported in report_list['catalog']])
+
+        assert_true(len(report_list['dataset']) == 5)
+        for error in report_dict['error']['dataset'][0]['errors']:
+            assert_true(error['message'] in [reported['dataset_error_message'] for reported in report_list['dataset']])

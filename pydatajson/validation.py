@@ -374,19 +374,23 @@ def _catalog_validation_to_list(response):
     rows_catalog = []
     validation_result = {
         "catalog_title": response["error"]["catalog"]["title"],
-        "catalog_status": response["error"]["catalog"]["status"]
+        "catalog_status": response["error"]["catalog"]["status"],
     }
     for error in response["error"]["catalog"]["errors"]:
-        validation_result[
-            "catalog_error_message"] = error["message"]
-        validation_result[
-            "catalog_error_location"] = ", ".join(error["path"])
-        rows_catalog.append(validation_result)
+        catalog_result = dict(validation_result)
+        catalog_result.update({
+            "catalog_error_message": error["message"],
+            "catalog_error_location": ", ".join(error["path"]),
+        })
+        rows_catalog.append(catalog_result)
 
     if len(response["error"]["catalog"]["errors"]) == 0:
-        validation_result["catalog_error_message"] = None
-        validation_result["catalog_error_location"] = None
-        rows_catalog.append(validation_result)
+        catalog_result = dict(validation_result)
+        catalog_result.update({
+            "catalog_error_message": None,
+            "catalog_error_location": None
+        })
+        rows_catalog.append(catalog_result)
 
     # crea una lista de dicts para volcarse en una tabla (dataset)
     rows_dataset = []
@@ -398,16 +402,20 @@ def _catalog_validation_to_list(response):
             "dataset_status": dataset["status"]
         }
         for error in dataset["errors"]:
-            validation_result[
-                "dataset_error_message"] = error["message"]
-            validation_result[
-                "dataset_error_location"] = error["path"][-1]
-            rows_dataset.append(validation_result)
+            dataset_result = dict(validation_result)
+            dataset_result.update({
+                "dataset_error_message": error["message"],
+                "dataset_error_location": error["path"][-1]
+            })
+            rows_dataset.append(dataset_result)
 
         if len(dataset["errors"]) == 0:
-            validation_result["dataset_error_message"] = None
-            validation_result["dataset_error_location"] = None
-            rows_dataset.append(validation_result)
+            dataset_result = dict(validation_result)
+            dataset_result.update({
+                "dataset_error_message": None,
+                "dataset_error_location": None
+            })
+            rows_dataset.append(dataset_result)
 
     return {"catalog": rows_catalog, "dataset": rows_dataset}
 
