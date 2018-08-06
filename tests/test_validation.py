@@ -108,16 +108,8 @@ class TestDataJsonTestCase(object):
         regex = "\[\] is too short"
         self.validate_message_with_file(case_filename, expected_valid, path, regex)
 
-    def test_invalid_themes(self):
-        case_filename = "invalid_themes_and_keywords"
-        expected_valid = False
-        path = ['error', 'dataset', 0, 'errors', 0, 'message']
-        regex = "\[%s, %s, %s\] is not valid under any of the given schemas"\
-                % (jsonschema_str('contrataciones!'), jsonschema_str('compras&'), jsonschema_str('(convocatorias@)'))
-        self.validate_message_with_file(case_filename, expected_valid, path, regex)
-
     def test_invalid_keywords(self):
-        case_filename = "invalid_themes_and_keywords"
+        case_filename = "invalid_keywords"
         expected_valid = False
         path = ['error', 'dataset', 1, 'errors', 0, 'message']
         regex = "\[%s, %s, %s\] is not valid under any of the given schemas"\

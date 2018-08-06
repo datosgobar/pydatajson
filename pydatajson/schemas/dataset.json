@@ -69,15 +69,7 @@
                 }
             }
         },
-        "theme": {
-            "allOf": [
-                { "$ref": "mixed-types.json#arrayOrNull" },
-                { "anyOf": [
-                    {"not": { "type": "array" }},
-                    {"items": { "pattern": "^[0-9a-zA-Z-._]+$" }}
-                ]}
-            ]
-        },
+        "theme": { "$ref": "mixed-types.json#arrayOrNull" },
         "keyword": {
             "allOf": [
                 { "$ref": "mixed-types.json#arrayOrNull" },
