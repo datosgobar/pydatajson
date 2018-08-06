@@ -70,7 +70,15 @@
             }
         },
         "theme": { "$ref": "mixed-types.json#arrayOrNull" },
-        "keyword": { "$ref": "mixed-types.json#arrayOrNull" },
+        "keyword": {
+            "allOf": [
+                { "$ref": "mixed-types.json#arrayOrNull" },
+                { "anyOf": [
+                    {"not": { "type": "array" }},
+                    {"items": { "pattern": "^[0-9a-zA-Z-._]+$" }}
+                ]}
+            ]
+        },
         "modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
         "identifier": { "$ref": "mixed-types.json#stringOrNull" },
         "language": { "$ref": "mixed-types.json#arrayOrNull" },
