@@ -21,8 +21,8 @@ os:
 sudo: false
 
 stages:
-  - test
-  - deploy
+  - name: test
+  - name: deploy
 
 jobs:
   include:
@@ -32,7 +32,9 @@ jobs:
   - python: '3.6'
     script: nosetests --with-coverage --cover-package=pydatajson
   - stage: deploy
-    script: nosetests
+    install: skip
+    script: skip
+    after_success: skip
     deploy:
       repo: datosgobar/pydatajson
       distributions: sdist bdist_wheel
