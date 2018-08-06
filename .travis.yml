@@ -32,6 +32,7 @@ jobs:
   - python: '3.6'
     script: nosetests --with-coverage --cover-package=pydatajson
   - stage: deploy
+    script: nosetests
     deploy:
       repo: datosgobar/pydatajson
       distributions: sdist bdist_wheel
