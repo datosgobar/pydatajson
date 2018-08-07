@@ -1,10 +1,20 @@
 Versiones
 =========
 
+0.4.19 (2018-08-07)
+-------------------
+
+* Validación de caracteres permitidos en los keywords.
+* Bugfix a la lectura de listas en xlsx con comas extras.
+* Bugfix en el cual se repetían los errores de validación si se pedía formato lista.
+
+
 0.4.18 (2018-07-30)
 -------------------
 
-* Agrega interfaz por línea de comandos para validar rápidamente un catálogo: `pydatajson validation http://datos.gob.ar/data.json`
+* Agrega interfaz por línea de comandos para validar rápidamente un catálogo: `pydatajson validation http://datos.gob.ar/data.json`.
+* Validación de keywords, themes, y lenguajes vacíos.
+* Bugfix en `distribution_has_time_index` para capturar excepciones en field inválidos.
 
 0.4.17 (2018-07-10)
 -------------------
