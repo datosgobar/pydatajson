@@ -23,7 +23,7 @@ sudo: false
 stages:
   - name: test
   - name: deploy
-    if: tag = true
+    if: tag IS present
 
 jobs:
   include:
