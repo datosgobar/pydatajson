@@ -34,7 +34,6 @@ jobs:
   - stage: deploy
     install: skip
     script: skip
-    after_success: skip
     deploy:
       repo: datosgobar/pydatajson
       distributions: sdist bdist_wheel
