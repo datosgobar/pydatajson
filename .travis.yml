@@ -32,7 +32,7 @@ jobs:
   - python: '3.6'
     script: nosetests --with-coverage --cover-package=pydatajson
   - stage: deploy
-    install: skip
+    install: pip install coveralls
     script: skip
     deploy:
       repo: datosgobar/pydatajson
