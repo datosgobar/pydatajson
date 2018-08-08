@@ -96,7 +96,8 @@ class TestIndicatorsTestCase(object):
             'distribuciones_formatos_cant': {
                 'CSV': 1,
                 'XLSX': 1,
-                'PDF': 1
+                'PDF': 1,
+                'None': 3
             }
         }
 
@@ -113,6 +114,7 @@ class TestIndicatorsTestCase(object):
             'datasets_licencias_cant': {
                 'Open Data Commons Open Database License 1.0': 1,
                 'Creative Commons Attribution': 1,
+                'None': 1
             }
         }
 
@@ -124,7 +126,7 @@ class TestIndicatorsTestCase(object):
         # No tienen licencias
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_for_harvest.json")
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
-        assert_equal(indicators['datasets_licencias_cant'], {})
+        assert_equal(indicators['datasets_licencias_cant'], {'None': 3})
 
     @my_vcr.use_cassette()
     def test_field_indicators_on_min_catalog(self):
@@ -262,14 +264,17 @@ class TestIndicatorsTestCase(object):
             'distribuciones_formatos_cant': {
                 'CSV': 2,
                 'XLSX': 1,
-                'PDF': 2
+                'PDF': 2,
+                'None': 3
             },
             'distribuciones_tipos_cant': {
                 'file': 1,
-                'documentation': 1
+                'documentation': 1,
+                'None': 6
             },
             'datasets_licencias_cant': {
                 'Open Data Commons Open Database License 1.0': 2,
+                'None': 3
             },
             'campos_optativos_pct': 32.56,
             'campos_recomendados_pct': 50.72,
@@ -296,6 +301,7 @@ class TestIndicatorsTestCase(object):
             'datasets_licencias_cant': {
                 'Open Data Commons Open Database License 1.0': 3,
                 'Creative Commons Attribution': 1,
+                'None': 1
             },
         }
 
@@ -320,10 +326,11 @@ class TestIndicatorsTestCase(object):
             'catalogos_cant': 2,
             'distribuciones_cant': 8,
             'distribuciones_tipos_cant': {
-                "file": 2,
-                "file.upload": 1,
-                "documentation": 2,
-                "api": 2
+                'file': 2,
+                'file.upload': 1,
+                'documentation': 2,
+                'api': 2,
+                'None': 1,
             }
         }
 
@@ -338,10 +345,11 @@ class TestIndicatorsTestCase(object):
 
         expected = {
             'distribuciones_tipos_cant': {
-                "file": 1,
-                "file.upload": 1,
-                "documentation": 1,
-                "api": 2
+                'file': 1,
+                'file.upload': 1,
+                'documentation': 1,
+                'api': 2,
+                'None': 1
             }
         }
 
