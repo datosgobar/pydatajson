@@ -674,4 +674,4 @@ def _filter_by_likely_publisher(central_datasets, catalog_datasets):
 
 def count_fields(targets, field):
     """Cuenta la cantidad de values en el key especificado de una lista de  diccionarios"""
-    return Counter([target[field] for target in targets if field in target])
+    return Counter([target.get(field) or 'None' for target in targets])
