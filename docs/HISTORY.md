@@ -1,6 +1,13 @@
 Versiones
 =========
 
+0.4.20 (2018-08-09)
+-------------------
+
+* Agrega tildes y ñ a los caracteres permitidos en keyword.
+* Cuenta los campos faltantes como `None` en los indicadores.
+
+
 0.4.19 (2018-08-07)
 -------------------
 
