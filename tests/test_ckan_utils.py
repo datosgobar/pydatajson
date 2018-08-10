@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import unittest
 import os
 from .context import pydatajson
 from pydatajson.ckan_utils import *
 from pydatajson.helpers import title_to_name
+
 SAMPLES_DIR = os.path.join("tests", "samples")
 
 
