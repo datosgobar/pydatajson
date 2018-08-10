@@ -15,7 +15,7 @@ import re
 from openpyxl import load_workbook
 from six.moves.urllib_parse import urlparse
 
-from six import string_types
+from six import string_types, iteritems
 from unidecode import unidecode
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -85,7 +85,7 @@ def parse_date_string(date_string):
 def clean_str(s):
     replacements = {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u",
                     ":": "", ".": ""}
-    for old, new in replacements.iteritems():
+    for old, new in iteritems(replacements):
         s = s.replace(old, new)
     return s.lower().strip()
 
