@@ -355,6 +355,12 @@ La clave '%s' no está en la metadata del 'resource' '%s'. No
 se puede completar distribution['%s'].""",
                          resource_key, resource['name'], distribution_key)
 
+    if 'attributesDescription' in resource:
+        try:
+            distribution['field'] = json.loads(resource['attributesDescription'])
+        except:
+            logger.exception("Error parseando los fields del resource '%s'", resource['name'])
+
     url_path = ['dataset', resource['package_id'], 'resource', resource['id']]
     distribution["accessURL"] = urljoin(portal_url, "/".join(url_path))
 
