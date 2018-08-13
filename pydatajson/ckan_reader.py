@@ -64,7 +64,7 @@ def read_ckan_catalog(portal_url):
 
             # agrega un nuevo dataset a la lista
             packages.append(portal.call_action(
-                'package_show', {'name_or_id': pkg},
+                'package_show', {'id': pkg},
                 requests_kwargs={"verify": False}
             ))
 
@@ -79,7 +79,7 @@ def read_ckan_catalog(portal_url):
             packages, portal_url)
         catalog["themeTaxonomy"] = map_groups_to_themes(groups)
 
-    except:
+    except Exception as e:
         logger.exception(
             'Error al procesar el portal %s', portal_url, exc_info=True)
 
@@ -281,7 +281,7 @@ Se encontró '%s' como temática global, pero no es mapeable a un
         logger.warn("""
 Se encontraron claves con nombres similares pero no idénticos a "Temática
 global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
-\n%s""", package['name'], almost_accrual)
+\n%s""", package['name'], almost_super_theme)
 
 
 def add_accrualPeriodicity(dataset, package):
@@ -355,6 +355,12 @@ La clave '%s' no está en la metadata del 'resource' '%s'. No
 se puede completar distribution['%s'].""",
                          resource_key, resource['name'], distribution_key)
 
+    if 'attributesDescription' in resource:
+        try:
+            distribution['field'] = json.loads(resource['attributesDescription'])
+        except:
+            logger.exception("Error parseando los fields del resource '%s'", resource['name'])
+
     url_path = ['dataset', resource['package_id'], 'resource', resource['id']]
     distribution["accessURL"] = urljoin(portal_url, "/".join(url_path))
 
@@ -373,7 +379,7 @@ def map_group_to_theme(group):
 
     theme_mapping = {
         'name': 'id',
-        'display_name': 'label',
+        'title': 'label',
         'description': 'description'
     }
 
