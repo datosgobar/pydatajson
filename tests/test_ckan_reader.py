@@ -11,10 +11,9 @@ except ImportError:
     from unittest.mock import patch
 
 from pydatajson.core import DataJson
-from pydatajson.ckan_utils import map_dataset_to_package, map_distributions_to_resources, map_theme_to_group
+from pydatajson.ckan_utils import map_dataset_to_package, map_theme_to_group
 
-from pydatajson.ckan_reader import read_ckan_catalog, map_group_to_theme,\
-    map_resource_to_distribution, map_status_to_catalog
+from pydatajson.ckan_reader import read_ckan_catalog
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
@@ -95,3 +94,9 @@ class CKANReaderTestCase(unittest.TestCase):
                           'format', 'title', 'downloadURL']
             for attribute in attributes:
                 self.assertEqual(expected_dataset[attribute], distributions[attribute])
+
+    def test_read_ckan_field_attributes(self):
+        self.assertEqual(len(self.expected_dj.fields),
+                         len(self.dj.fields))
+        for expected_field, field in zip(self.expected_dj.fields, self.dj.fields):
+            self.assertDictEqual(expected_field, field)
