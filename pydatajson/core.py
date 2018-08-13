@@ -215,8 +215,9 @@ class DataJson(dict):
                         (not dataset_identifier or
                          dataset["identifier"] == dataset_identifier)):
                     dataset["distribution"].pop(index)
-                    logger.info("Distribution {} del dataset {} en posicion {} fue eliminada.".format(
-                        identifier, dataset["identifier"], index))
+                    logger.info(
+                        "Distribution {} del dataset {} en posicion {} fue eliminada.".format(
+                            identifier, dataset["identifier"], index))
                     return
 
         logger.warning("No se encontro la distribucion {}.".format(identifier))
@@ -635,7 +636,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 catalog_ids.append(catalog.get("identifier", ""))
         if isinstance(catalog_ids, string_types + (dict,)):
             catalog_ids = [catalog_ids] * len(catalogs)
-        if not catalog_orgs or isinstance(catalog_orgs, string_types + (dict,)):
+        if not catalog_orgs or isinstance(
+                catalog_orgs, string_types + (dict,)):
             catalog_orgs = [catalog_orgs] * len(catalogs)
         if not catalog_homepages or isinstance(catalog_homepages,
                                                string_types + (dict,)):

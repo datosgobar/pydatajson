@@ -65,7 +65,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
 
     spatial = dataset.get('spatial')
     if spatial:
-        serializable = type(spatial) is list
+        serializable = isinstance(spatial, list)
         append_attribute_to_extra(package, dataset, 'spatial', serializable)
 
     contact_point = dataset.get('contactPoint')
@@ -102,10 +102,10 @@ def _get_theme_label(catalog, theme):
     """Intenta conseguir el theme por id o por label."""
     try:
         label = catalog.get_theme(identifier=theme)['label']
-    except:
+    except BaseException:
         try:
             label = catalog.get_theme(label=theme)['label']
-        except:
+        except BaseException:
             raise ce.ThemeNonExistentError(theme)
 
     label = re.sub(r'[^\wá-úÁ-ÚñÑ .-]+', '',

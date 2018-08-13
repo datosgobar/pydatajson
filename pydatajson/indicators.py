@@ -317,7 +317,8 @@ def _generate_status_indicators(catalog, validator=None):
     try:
         summary = generate_datasets_summary(catalog, validator=validator)
     except Exception as e:
-        msg = u'Error generando resumen del catálogo {}: {}'.format(catalog['title'], str(e))
+        msg = u'Error generando resumen del catálogo {}: {}'.format(
+            catalog['title'], str(e))
         logger.error(msg)
         return result
 
@@ -388,7 +389,8 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
             dias_ultima_actualizacion
 
     except Exception as e:
-        msg = u'Error generando indicadores de fecha del catálogo {}: {}'.format(catalog['title'], str(e))
+        msg = u'Error generando indicadores de fecha del catálogo {}: {}'.format(
+            catalog['title'], str(e))
         logger.error(msg)
         return result
 

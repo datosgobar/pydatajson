@@ -20,23 +20,43 @@ class DatasetConversionTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
-        cls.catalog_id = cls.catalog.get('identifier', title_to_name(cls.catalog['title']))
+        cls.catalog_id = cls.catalog.get(
+            'identifier', title_to_name(
+                cls.catalog['title']))
         cls.dataset = cls.catalog.datasets[0]
         cls.dataset_id = cls.dataset.get('identifier')
         cls.distributions = cls.dataset['distribution']
 
     def test_catalog_id_is_prepended_to_dataset_id_and_name_if_passed(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
-        self.assertEqual(self.catalog_id + '_' + self.dataset_id, package['id'])
-        self.assertEqual(title_to_name(self.catalog_id + '-' + self.dataset['title']), package['name'])
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id)
+        self.assertEqual(
+            self.catalog_id +
+            '_' +
+            self.dataset_id,
+            package['id'])
+        self.assertEqual(
+            title_to_name(
+                self.catalog_id +
+                '-' +
+                self.dataset['title']),
+            package['name'])
 
-    def test_dataset_id_and_name_are_preserved_if_catalog_id_is_not_passed(self):
+    def test_dataset_id_and_name_are_preserved_if_catalog_id_is_not_passed(
+            self):
         package = map_dataset_to_package(self.catalog, self.dataset, 'owner')
         self.assertEqual(self.dataset_id, package['id'])
         self.assertEqual(title_to_name(self.dataset['title']), package['name'])
 
     def test_replicated_plain_attributes_are_corrext(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id)
         plain_replicated_attributes = [('notes', 'description'),
                                        ('url', 'landingPage')]
         for fst, snd in plain_replicated_attributes:
@@ -44,20 +64,35 @@ class DatasetConversionTestCase(unittest.TestCase):
         self.assertEqual('owner', package['owner_org'])
 
     def test_dataset_nested_replicated_attributes_stay_the_same(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id)
         contact_point_nested = [('maintainer', 'fn'),
                                 ('maintainer_email', 'hasEmail')]
         for fst, snd in contact_point_nested:
-            self.assertEqual(self.dataset.get('contactPoint', {}).get(snd), package.get(fst))
+            self.assertEqual(
+                self.dataset.get(
+                    'contactPoint',
+                    {}).get(snd),
+                package.get(fst))
         publisher_nested = [('author', 'name'),
                             ('author_email', 'mbox')]
         for fst, snd in publisher_nested:
-            self.assertEqual(self.dataset.get('publisher').get(snd), package.get(fst))
+            self.assertEqual(
+                self.dataset.get('publisher').get(snd),
+                package.get(fst))
 
     def test_dataset_array_attributes_are_correct(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id)
         groups = [group['name'] for group in package.get('groups', [])]
-        super_themes = [title_to_name(s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
+        super_themes = [title_to_name(s_theme.lower())
+                        for s_theme in self.dataset.get('superTheme')]
         try:
             self.assertItemsEqual(super_themes, groups)
         except AttributeError:
@@ -79,10 +114,15 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords + theme_labels, tags)
 
     def test_themes_are_preserved_if_not_demoted(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner',
-                                         catalog_id=self.catalog_id, demote_themes=False)
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id,
+            demote_themes=False)
         groups = [group['name'] for group in package.get('groups', [])]
-        super_themes = [title_to_name(s_theme.lower()) for s_theme in self.dataset.get('superTheme')]
+        super_themes = [title_to_name(s_theme.lower())
+                        for s_theme in self.dataset.get('superTheme')]
         themes = self.dataset.get('theme', [])
         tags = [tag['name'] for tag in package['tags']]
         keywords = self.dataset.get('keyword', [])
@@ -97,8 +137,12 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords, tags)
 
     def test_superThemes_dont_impact_groups_if_not_demoted(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner',
-                                         catalog_id=self.catalog_id, demote_superThemes=False)
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id,
+            demote_superThemes=False)
         groups = [group['name'] for group in package.get('groups', [])]
         tags = [tag['name'] for tag in package['tags']]
         keywords = self.dataset.get('keyword', [])
@@ -134,12 +178,16 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.assertCountEqual(keywords, tags)
 
     def test_dataset_extra_attributes_are_correct(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id)
 #       extras are included in dataset
         if package['extras']:
             for extra in package['extras']:
                 dataset_value = self.dataset[extra['key']]
-                if type(dataset_value) is list:
+                if isinstance(dataset_value, list):
                     extra_value = json.loads(extra['value'])
                     try:
                         self.assertItemsEqual(dataset_value, extra_value)
@@ -150,33 +198,53 @@ class DatasetConversionTestCase(unittest.TestCase):
                     self.assertEqual(dataset_value, extra_value)
 
     def test_dataset_extra_attributes_are_complete(self):
-        package = map_dataset_to_package(self.catalog, self.dataset, 'owner', catalog_id=self.catalog_id)
+        package = map_dataset_to_package(
+            self.catalog,
+            self.dataset,
+            'owner',
+            catalog_id=self.catalog_id)
 #       dataset attributes are included in extras
-        extra_attrs = ['issued', 'modified', 'accrualPeriodicity', 'temporal', 'language', 'spatial', 'superTheme']
+        extra_attrs = [
+            'issued',
+            'modified',
+            'accrualPeriodicity',
+            'temporal',
+            'language',
+            'spatial',
+            'superTheme']
         for key in extra_attrs:
             value = self.dataset.get(key)
             if value:
-                if type(value) is list:
+                if isinstance(value, list):
                     value = json.dumps(value)
                 resulting_dict = {'key': key, 'value': value}
                 self.assertTrue(resulting_dict in package['extras'])
 
     def test_catalog_id_is_prefixed_in_resource_id_if_passed(self):
-        resources = map_distributions_to_resources(self.distributions, self.catalog_id)
+        resources = map_distributions_to_resources(
+            self.distributions, self.catalog_id)
         for resource in resources:
-            distribution = next(x for x in self.dataset['distribution'] if x['title'] == resource['name'])
-            self.assertEqual(self.catalog_id + '_' + distribution['identifier'], resource['id'])
+            distribution = next(
+                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+            self.assertEqual(
+                self.catalog_id +
+                '_' +
+                distribution['identifier'],
+                resource['id'])
 
     def test_resource_id_is_preserved_if_catalog_id_is_not_passed(self):
         resources = map_distributions_to_resources(self.distributions)
         for resource in resources:
-            distribution = next(x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+            distribution = next(
+                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
             self.assertEqual(distribution['identifier'], resource['id'])
 
     def test_resources_replicated_attributes_stay_the_same(self):
-        resources = map_distributions_to_resources(self.distributions, self.catalog_id)
+        resources = map_distributions_to_resources(
+            self.distributions, self.catalog_id)
         for resource in resources:
-            distribution = next(x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+            distribution = next(
+                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
             replicated_attributes = [('url', 'downloadURL'),
                                      ('mimetype', 'mediaType'),
                                      ('description', 'description'),
@@ -191,23 +259,32 @@ class DatasetConversionTestCase(unittest.TestCase):
                     self.assertIsNone(resource.get(fst))
 
     def test_resources_transformed_attributes_are_correct(self):
-        resources = map_distributions_to_resources(self.distributions, self.catalog_id+'_'+self.dataset_id)
+        resources = map_distributions_to_resources(
+            self.distributions, self.catalog_id + '_' + self.dataset_id)
         for resource in resources:
-            distribution = next(x for x in self.dataset['distribution'] if x['title'] == resource['name'])
-            time_attributes = [('created', 'issued'), ('last_modified', 'modified')]
+            distribution = next(
+                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+            time_attributes = [
+                ('created', 'issued'), ('last_modified', 'modified')]
             for fst, snd in time_attributes:
                 if distribution.get(snd):
-                    dist_time = parser.parse(distribution.get(snd)).astimezone(tz.tzutc())
+                    dist_time = parser.parse(
+                        distribution.get(snd)).astimezone(
+                        tz.tzutc())
                     dist_time = dist_time.replace(tzinfo=None).isoformat()
                     self.assertEqual(dist_time, resource.get(fst))
                 else:
                     self.assertIsNone(resource.get(fst))
 
     def test_resources_extra_attributes_are_created_correctly(self):
-        resources = map_distributions_to_resources(self.distributions, self.catalog_id+'_'+self.dataset_id)
+        resources = map_distributions_to_resources(
+            self.distributions, self.catalog_id + '_' + self.dataset_id)
         for resource in resources:
-            distribution = next(x for x in self.dataset['distribution'] if x['title'] == resource['name'])
-            self.assertEqual(distribution.get('accessURL'), resource.get('accessURL'))
+            distribution = next(
+                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+            self.assertEqual(
+                distribution.get('accessURL'),
+                resource.get('accessURL'))
             dist_fields = distribution.get('field')
             if dist_fields:
                 res_fields = json.loads(resource.get('attributesDescription'))
@@ -232,7 +309,9 @@ class ThemeConversionTests(unittest.TestCase):
         group = map_theme_to_group(self.theme)
         self.assertEqual('adjudicaciones', group['name'])
         self.assertEqual('Adjudicaciones', group['title'])
-        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
+        self.assertEqual(
+            'Datasets sobre licitaciones adjudicadas.',
+            group['description'])
 
     def test_label_is_used_as_name_if_id_not_present(self):
         missing_id = dict(self.theme)
@@ -241,7 +320,9 @@ class ThemeConversionTests(unittest.TestCase):
         group = map_theme_to_group(missing_id)
         self.assertEqual('will-be-used-as-name', group['name'])
         self.assertEqual('#Will be used as name#', group['title'])
-        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
+        self.assertEqual(
+            'Datasets sobre licitaciones adjudicadas.',
+            group['description'])
 
     def test_theme_missing_label(self):
         missing_label = dict(self.theme)
@@ -249,7 +330,9 @@ class ThemeConversionTests(unittest.TestCase):
         group = map_theme_to_group(missing_label)
         self.assertEqual('adjudicaciones', group['name'])
         self.assertIsNone(group.get('title'))
-        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
+        self.assertEqual(
+            'Datasets sobre licitaciones adjudicadas.',
+            group['description'])
 
     def test_theme_missing_description(self):
         missing_description = dict(self.theme)
@@ -265,7 +348,9 @@ class ThemeConversionTests(unittest.TestCase):
         group = map_theme_to_group(special_char_id)
         self.assertEqual('theme-id', group['name'])
         self.assertEqual('Adjudicaciones', group['title'])
-        self.assertEqual('Datasets sobre licitaciones adjudicadas.', group['description'])
+        self.assertEqual(
+            'Datasets sobre licitaciones adjudicadas.',
+            group['description'])
 
 
 class DatetimeConversionTests(unittest.TestCase):

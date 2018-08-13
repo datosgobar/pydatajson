@@ -32,7 +32,8 @@ def dataset_to_markdown(dataset):
 """
 
     if "distribution" in dataset:
-        distributions = "".join(map(distribution_to_markdown, dataset["distribution"]))
+        distributions = "".join(
+            map(distribution_to_markdown, dataset["distribution"]))
     else:
         distributions = ""
 
@@ -65,7 +66,8 @@ def distribution_to_markdown(distribution):
 """
 
     if "field" in distribution:
-        fields = "- " + "\n- ".join(map(field_to_markdown, distribution["field"]))
+        fields = "- " + \
+            "\n- ".join(map(field_to_markdown, distribution["field"]))
     else:
         fields = ""
 

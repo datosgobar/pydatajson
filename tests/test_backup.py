@@ -68,11 +68,17 @@ class BackupTestCase(unittest.TestCase):
 
     @VCR.use_cassette()
     def test_make_catalog_backup_data(self):
-        distribution_path = os.path.abspath(os.path.join(
-            RESULTS_DIR, "catalog", "example_ts", "dataset", "1",
-            "distribution", "1.2", "download",
-            "oferta-demanda-globales-datos-desestacionalizados-valores-trimestrales-base-1993.csv"
-        ))
+        distribution_path = os.path.abspath(
+            os.path.join(
+                RESULTS_DIR,
+                "catalog",
+                "example_ts",
+                "dataset",
+                "1",
+                "distribution",
+                "1.2",
+                "download",
+                "oferta-demanda-globales-datos-desestacionalizados-valores-trimestrales-base-1993.csv"))
 
         os.remove(distribution_path) if os.path.exists(
             distribution_path) else None

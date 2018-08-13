@@ -45,22 +45,14 @@ class DocumentationTestCase(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_distribution_to_markdown(self):
-        distribution = {
-            "title": "Convocatorias abiertas durante el año 2015",
-            "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
-            "field": [
-                {
-                    "title": "procedimiento_id",
-                    "type": "integer",
-                    "description": "Identificador único del procedimiento"
-                },
-                {
-                    "title": "unidad_operativa_contrataciones_id",
-                    "type": "integer",
-                    "description": "Identificador único de la unidad operativa de contrataciones"
-                }
-            ]
-        }
+        distribution = {"title": "Convocatorias abiertas durante el año 2015",
+                        "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                        "field": [{"title": "procedimiento_id",
+                                   "type": "integer",
+                                   "description": "Identificador único del procedimiento"},
+                                  {"title": "unidad_operativa_contrataciones_id",
+                                   "type": "integer",
+                                   "description": "Identificador único de la unidad operativa de contrataciones"}]}
 
         result = distribution_to_markdown(distribution)
         expected = """
@@ -90,32 +82,19 @@ Listado de las convocatorias abiertas durante el año 2015 en el sistema de cont
         self.assertEqual(result.strip(), expected.strip())
 
     def test_dataset_to_markdown(self):
-        dataset = {
-            "title": "Sistema de contrataciones electrónicas",
-            "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
-            "distribution": [
-                {
-                    "title": "Convocatorias abiertas durante el año 2015",
-                    "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
-                    "field": [
-                        {
-                            "title": "procedimiento_id",
-                            "type": "integer",
-                            "description": "Identificador único del procedimiento"
-                        },
-                        {
-                            "title": "unidad_operativa_contrataciones_id",
-                            "type": "integer",
-                            "description": "Identificador único de la unidad operativa de contrataciones"
-                        }
-                    ]
-                },
-                {
-                    "title": "Convocatorias abiertas durante el año 2016",
-                    "description": "Listado de las convocatorias abiertas durante el año 2016 en el sistema de contrataciones electrónicas",
-                }
-            ]
-        }
+        dataset = {"title": "Sistema de contrataciones electrónicas",
+                   "description": "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)",
+                   "distribution": [{"title": "Convocatorias abiertas durante el año 2015",
+                                     "description": "Listado de las convocatorias abiertas durante el año 2015 en el sistema de contrataciones electrónicas",
+                                     "field": [{"title": "procedimiento_id",
+                                                "type": "integer",
+                                                "description": "Identificador único del procedimiento"},
+                                               {"title": "unidad_operativa_contrataciones_id",
+                                                "type": "integer",
+                                                "description": "Identificador único de la unidad operativa de contrataciones"}]},
+                                    {"title": "Convocatorias abiertas durante el año 2016",
+                                     "description": "Listado de las convocatorias abiertas durante el año 2016 en el sistema de contrataciones electrónicas",
+                                     }]}
 
         result = dataset_to_markdown(dataset)
         expected = """

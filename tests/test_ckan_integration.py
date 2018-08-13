@@ -11,11 +11,17 @@ SAMPLES_DIR = os.path.join("tests", "samples")
 
 
 class PushTestCase(unittest.TestCase):
-    CKAN_VCR = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                       cassette_library_dir=os.path.join(
-                           "tests", "cassetes", "ckan_integration", "push_dataset"),
-                       filter_headers=['Authorization', 'X-CKAN-API-Key'],
-                       record_mode='once')
+    CKAN_VCR = vcr.VCR(
+        path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+        cassette_library_dir=os.path.join(
+            "tests",
+            "cassetes",
+            "ckan_integration",
+            "push_dataset"),
+        filter_headers=[
+            'Authorization',
+            'X-CKAN-API-Key'],
+        record_mode='once')
 
     portal_url = 'http://localhost:8080'
     apikey = "<apikey>"
@@ -57,8 +63,14 @@ class PushTestCase(unittest.TestCase):
         catalog_id = title_to_name(catalog['title'])
         dataset = catalog.datasets[0]
         dataset_id = dataset['identifier']
-        return_id = push_dataset_to_ckan(catalog, "oficina-de-muestra", dataset_id,
-                                         self.portal_url, self.apikey, catalog_id=catalog_id,)
+        return_id = push_dataset_to_ckan(
+            catalog,
+            "oficina-de-muestra",
+            dataset_id,
+            self.portal_url,
+            self.apikey,
+            catalog_id=catalog_id,
+        )
         self.assertEqual(return_id, catalog_id + '_' + dataset_id)
 
     @CKAN_VCR.use_cassette()
@@ -66,12 +78,24 @@ class PushTestCase(unittest.TestCase):
         catalog = self.full_catalog
         catalog_id = title_to_name(catalog['title'])
         dataset_id = catalog.datasets[0]['identifier']
-        push_dataset_to_ckan(catalog, "oficina-de-muestra", dataset_id,
-                             self.portal_url, self.apikey, catalog_id=catalog_id,)
+        push_dataset_to_ckan(
+            catalog,
+            "oficina-de-muestra",
+            dataset_id,
+            self.portal_url,
+            self.apikey,
+            catalog_id=catalog_id,
+        )
 
         catalog.datasets[0]['description'] = 'updated description'
-        return_id = push_dataset_to_ckan(catalog, "oficina-de-muestra", dataset_id,
-                                         self.portal_url, self.apikey, catalog_id=catalog_id,)
+        return_id = push_dataset_to_ckan(
+            catalog,
+            "oficina-de-muestra",
+            dataset_id,
+            self.portal_url,
+            self.apikey,
+            catalog_id=catalog_id,
+        )
 
         data_dict = {'id': catalog_id + '_' + dataset_id}
         package = self.portal.call_action('package_show', data_dict=data_dict)
@@ -83,22 +107,45 @@ class PushTestCase(unittest.TestCase):
         catalog_id = 'same-catalog-id'
         full_dataset = self.full_catalog.datasets[0]
         full_dataset_id = full_dataset['identifier']
-        push_dataset_to_ckan(self.full_catalog, 'oficina-de-muestra', full_dataset_id,
-                             self.portal_url, self.apikey, catalog_id=catalog_id,)
+        push_dataset_to_ckan(
+            self.full_catalog,
+            'oficina-de-muestra',
+            full_dataset_id,
+            self.portal_url,
+            self.apikey,
+            catalog_id=catalog_id,
+        )
 
         justice_dataset = self.justice_catalog.datasets[0]
         justice_dataset_id = justice_dataset['identifier']
-        push_dataset_to_ckan(self.justice_catalog, 'oficina-de-muestra', justice_dataset_id,
-                             self.portal_url, self.apikey, catalog_id=catalog_id,)
+        push_dataset_to_ckan(
+            self.justice_catalog,
+            'oficina-de-muestra',
+            justice_dataset_id,
+            self.portal_url,
+            self.apikey,
+            catalog_id=catalog_id,
+        )
         # Switch them and update
         full_dataset['distribution'], justice_dataset['distribution'] = \
             justice_dataset['distribution'], full_dataset['distribution']
 
-        full_package_id = push_dataset_to_ckan(self.full_catalog,'oficina-de-muestra', full_dataset_id,
-                                               self.portal_url, self.apikey, catalog_id=catalog_id,)
-        justice_package_id = push_dataset_to_ckan(self.justice_catalog, 'oficina-de-muestra',
-                                                  justice_dataset_id, self.portal_url,
-                                                  self.apikey, catalog_id=catalog_id,)
+        full_package_id = push_dataset_to_ckan(
+            self.full_catalog,
+            'oficina-de-muestra',
+            full_dataset_id,
+            self.portal_url,
+            self.apikey,
+            catalog_id=catalog_id,
+        )
+        justice_package_id = push_dataset_to_ckan(
+            self.justice_catalog,
+            'oficina-de-muestra',
+            justice_dataset_id,
+            self.portal_url,
+            self.apikey,
+            catalog_id=catalog_id,
+        )
         # Switch them back
         full_dataset['distribution'], justice_dataset['distribution'] = \
             justice_dataset['distribution'], full_dataset['distribution']
@@ -115,32 +162,56 @@ class PushTestCase(unittest.TestCase):
         self.assertEqual(len(justice_package['resources']), len(
             full_dataset['distribution']))
 
-        for resource, justice_distribution in zip(full_package['resources'], justice_dataset['distribution']):
-            self.assertEqual('same-catalog-id_' +
-                             justice_distribution['identifier'], resource['id'])
+        for resource, justice_distribution in zip(
+                full_package['resources'], justice_dataset['distribution']):
+            self.assertEqual(
+                'same-catalog-id_' +
+                justice_distribution['identifier'],
+                resource['id'])
 
-        for resource, full_distribution in zip(justice_package['resources'], full_dataset['distribution']):
+        for resource, full_distribution in zip(
+                justice_package['resources'], full_dataset['distribution']):
             self.assertEqual('same-catalog-id_' +
                              full_distribution['identifier'], resource['id'])
 
 
 class RemoveTestCase(unittest.TestCase):
-    CKAN_VCR = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                       cassette_library_dir=os.path.join(
-                           "tests", "cassetes", "ckan_integration", "remove_dataset"),
-                       filter_headers=['Authorization', 'X-CKAN-API-Key'],
-                       record_mode='once')
+    CKAN_VCR = vcr.VCR(
+        path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+        cassette_library_dir=os.path.join(
+            "tests",
+            "cassetes",
+            "ckan_integration",
+            "remove_dataset"),
+        filter_headers=[
+            'Authorization',
+            'X-CKAN-API-Key'],
+        record_mode='once')
 
-    test_datasets = [{'id': '1.1', 'owner_org': 'org-1', 'author': 'author_a', 'name': 'data1_1'},
-                     {'id': '2.1', 'owner_org': 'org-2',
-                         'author': 'author_a', 'name': 'data2_1'},
-                     {'id': '2.2', 'owner_org': 'org-2',
-                         'author': 'author_b', 'name': 'data2_2'},
-                     {'id': '3.1', 'owner_org': 'org-3',
-                         'author': 'author_a', 'name': 'data3_1'},
-                     {'id': '3.2', 'owner_org': 'org-3',
-                         'author': 'author_b', 'name': 'data3_2'},
-                     {'id': '3.3', 'owner_org': 'org-3', 'author': 'author_c', 'name': 'data3_3'}]
+    test_datasets = [{'id': '1.1',
+                      'owner_org': 'org-1',
+                      'author': 'author_a',
+                      'name': 'data1_1'},
+                     {'id': '2.1',
+                      'owner_org': 'org-2',
+                      'author': 'author_a',
+                      'name': 'data2_1'},
+                     {'id': '2.2',
+                      'owner_org': 'org-2',
+                      'author': 'author_b',
+                      'name': 'data2_2'},
+                     {'id': '3.1',
+                      'owner_org': 'org-3',
+                      'author': 'author_a',
+                      'name': 'data3_1'},
+                     {'id': '3.2',
+                      'owner_org': 'org-3',
+                      'author': 'author_b',
+                      'name': 'data3_2'},
+                     {'id': '3.3',
+                      'owner_org': 'org-3',
+                      'author': 'author_c',
+                      'name': 'data3_3'}]
 
     portal_url = 'http://localhost:8080'
     apikey = "<apikey>"
@@ -195,7 +266,10 @@ class RemoveTestCase(unittest.TestCase):
         filter_in = {'dataset': {'publisher': {
             'name': 'author_b', 'mbox': None}}}
         remove_datasets_from_ckan(
-            self.portal_url, self.apikey, filter_in=filter_in, organization='org-3')
+            self.portal_url,
+            self.apikey,
+            filter_in=filter_in,
+            organization='org-3')
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data3_2' not in package_list)
 
@@ -216,7 +290,10 @@ class RemoveTestCase(unittest.TestCase):
         filter_out = {'dataset': {'publisher': {
             'name': 'author_b', 'mbox': None}}}
         remove_datasets_from_ckan(
-            self.portal_url, self.apikey, filter_out=filter_out, organization='org-3')
+            self.portal_url,
+            self.apikey,
+            filter_out=filter_out,
+            organization='org-3')
         package_list = self.ckan_portal.call_action('package_list')
         self.assertTrue('data3_1' not in package_list)
         self.assertTrue('data3_3' not in package_list)
@@ -226,7 +303,10 @@ class RemoveTestCase(unittest.TestCase):
         filter_in = {'dataset': {'identifier': '4.4'}}
         package_list_pre = self.ckan_portal.call_action('package_list')
         remove_datasets_from_ckan(
-            self.portal_url, self.apikey, filter_in=filter_in, organization='org-4')
+            self.portal_url,
+            self.apikey,
+            filter_in=filter_in,
+            organization='org-4')
         package_list_post = self.ckan_portal.call_action('package_list')
         self.assertEqual(len(package_list_pre), len(package_list_post))
 

@@ -26,7 +26,10 @@ class TimeSeriesTestCase(unittest.TestCase):
         self.non_ts_distribution = full_catalog.distributions[0]
 
     def test_get_distribution_time_index(self):
-        self.assertEqual('indice_tiempo', get_distribution_time_index(self.ts_distribution))
+        self.assertEqual(
+            'indice_tiempo',
+            get_distribution_time_index(
+                self.ts_distribution))
         with self.assertRaises(DistributionTimeIndexNonExistentError):
             get_distribution_time_index(self.non_ts_distribution)
 

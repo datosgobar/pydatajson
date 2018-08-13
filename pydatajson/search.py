@@ -309,11 +309,11 @@ def get_dataset(catalog, identifier=None, title=None):
     if identifier:
         try:
             return _get_dataset_by_identifier(catalog, identifier)
-        except:
+        except BaseException:
             try:
                 catalog._build_index()
                 return _get_dataset_by_identifier(catalog, identifier)
-            except:
+            except BaseException:
                 filtered_datasets = get_datasets(
                     catalog, {"dataset": {"identifier": identifier}})
     elif title:  # TODO: is this required?
@@ -358,11 +358,11 @@ def get_distribution(catalog, identifier=None, title=None,
     if identifier:
         try:
             return _get_distribution_by_identifier(catalog, identifier)
-        except:
+        except BaseException:
             try:
                 catalog._build_index()
                 return _get_distribution_by_identifier(catalog, identifier)
-            except:
+            except BaseException:
                 filtered_distributions = get_distributions(
                     catalog, {"distribution": {"identifier": identifier}})
     # toma la distribution que tenga el título único, dentro de un dataset
@@ -406,7 +406,8 @@ def get_field_location(catalog, identifier=None, title=None,
         for distribution in dataset["distribution"]:
             if (not distribution_identifier or
                     distribution_identifier == distribution["identifier"]):
-                if "field" in distribution and isinstance(distribution["field"], list):
+                if "field" in distribution and isinstance(
+                        distribution["field"], list):
                     for field in distribution["field"]:
                         if (identifier and "id" in field and
                                 field["id"] == identifier
@@ -448,11 +449,11 @@ def get_field(catalog, identifier=None, title=None,
     if identifier:
         try:
             return _get_field_by_identifier(catalog, identifier)
-        except:
+        except BaseException:
             try:
                 catalog._build_index()
                 return _get_field_by_identifier(catalog, identifier)
-            except:
+            except BaseException:
                 filtered_fields = get_fields(
                     catalog, {"field": {"id": identifier}})
     elif title and distribution_identifier:

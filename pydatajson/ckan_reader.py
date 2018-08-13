@@ -99,7 +99,7 @@ def map_status_to_catalog(status):
     for status_key, catalog_key in iteritems(catalog_mapping):
         try:
             catalog[catalog_key] = status[status_key]
-        except:
+        except BaseException:
             logger.exception("""
 La clave '%s' no está en el endpoint de status. No se puede completar
 catalog['%s'].""", status_key, catalog_key)
@@ -114,7 +114,7 @@ catalog['%s'].""", status_key, catalog_key)
         for status_key, publisher_key in iteritems(publisher_mapping):
             try:
                 catalog['publisher'][publisher_key] = status[status_key]
-            except:
+            except BaseException:
                 logger.exception("""
 La clave '%s' no está en el endpoint de status. No se puede completar
 catalog['publisher'['%s'].""", status_key, publisher_key)
@@ -156,11 +156,11 @@ def map_package_to_dataset(package, portal_url):
     for package_key, dataset_key in iteritems(dataset_mapping):
         try:
             dataset[dataset_key] = package[package_key]
-        except:
+        except BaseException:
             logger.exception("""
 La clave '%s' no está en el endpoint 'package_show' para el package '%s'. No
 se puede completar dataset['%s'].""",
-                         package_key, package['name'], dataset_key)
+                             package_key, package['name'], dataset_key)
 
     publisher_mapping = {
         'author': 'name',
@@ -172,11 +172,11 @@ se puede completar dataset['%s'].""",
         for package_key, publisher_key in iteritems(publisher_mapping):
             try:
                 dataset['publisher'][publisher_key] = package[package_key]
-            except:
+            except BaseException:
                 logger.exception("""
 La clave '%s' no está en el endpoint 'package_show' para el package '%s'. No
 se puede completar dataset['publisher']['%s'].""",
-                             package_key, package['name'], publisher_key)
+                                 package_key, package['name'], publisher_key)
 
     contact_point_mapping = {
         'maintainer': 'fn',
@@ -188,11 +188,11 @@ se puede completar dataset['publisher']['%s'].""",
         for package_key, contact_key in iteritems(contact_point_mapping):
             try:
                 dataset['contactPoint'][contact_key] = package[package_key]
-            except:
+            except BaseException:
                 logger.exception("""
 La clave '%s' no está en el endpoint 'package_show' para el package '%s'. No
 se puede completar dataset['contactPoint']['%s'].""",
-                             package_key, package['name'], contact_key)
+                                 package_key, package['name'], contact_key)
 
     # Si existen campos extras en la información del package, busco las claves
     # "Frecuencia de actualización" y "Temática global" para completar los
@@ -221,7 +221,7 @@ def add_temporal(dataset, package):
         logger.info("""
 Se encontro mas de un valor de cobertura temporal en 'extras' para el
 'package' '%s'. No se puede completar dataset['temporal'].\n %s""",
-                     package['name'], temporal)
+                    package['name'], temporal)
     elif len(temporal) == 1:
         try:
             dataset["temporal"] = temporal[0]
@@ -256,12 +256,12 @@ def add_superTheme(dataset, package):
         logger.info("""
 No se encontraron valores de temática global en 'extras' para el
 'package' '%s'. No se puede completar dataset['superTheme'].""",
-                     package['name'])
+                    package['name'])
     elif len(super_theme) > 1:
         logger.info("""
 Se encontro mas de un valor de temática global en 'extras' para el
 'package' '%s'. No se puede completar dataset['superTheme'].\n %s""",
-                     package['name'], super_theme)
+                    package['name'], super_theme)
     else:
         try:
             dataset["superTheme"] = [SUPER_THEMES[super_theme[0]]]
@@ -296,12 +296,12 @@ def add_accrualPeriodicity(dataset, package):
         logger.info("""
 No se encontraron valores de frecuencia de actualización en 'extras' para el
 'package' '%s'. No se puede completar dataset['accrualPeriodicity'].""",
-                     package['name'])
+                    package['name'])
     elif len(accrual) > 1:
         logger.info("""
 Se encontro mas de un valor de frecuencia de actualización en 'extras' para el
 'package' '%s'. No se puede completar dataset['accrualPeriodicity'].\n %s""",
-                     package['name'], accrual)
+                    package['name'], accrual)
     else:
         try:
             dataset["accrualPeriodicity"] = FREQUENCIES[accrual[0]]
@@ -349,17 +349,20 @@ def map_resource_to_distribution(resource, portal_url):
     for resource_key, distribution_key in iteritems(distribution_mapping):
         try:
             distribution[distribution_key] = resource[resource_key]
-        except:
+        except BaseException:
             logger.exception("""
 La clave '%s' no está en la metadata del 'resource' '%s'. No
 se puede completar distribution['%s'].""",
-                         resource_key, resource['name'], distribution_key)
+                             resource_key, resource['name'], distribution_key)
 
     if 'attributesDescription' in resource:
         try:
-            distribution['field'] = json.loads(resource['attributesDescription'])
-        except:
-            logger.exception("Error parseando los fields del resource '%s'", resource['name'])
+            distribution['field'] = json.loads(
+                resource['attributesDescription'])
+        except BaseException:
+            logger.exception(
+                "Error parseando los fields del resource '%s'",
+                resource['name'])
 
     url_path = ['dataset', resource['package_id'], 'resource', resource['id']]
     distribution["accessURL"] = urljoin(portal_url, "/".join(url_path))
@@ -386,10 +389,10 @@ def map_group_to_theme(group):
     for group_key, theme_key in iteritems(theme_mapping):
         try:
             theme[theme_key] = group[group_key]
-        except:
+        except BaseException:
             logger.exception("""
 La clave '%s' no está en la metadata del 'group' '%s'. No
 se puede completar theme['%s'].""",
-                         group_key, theme['name'], theme_key)
+                             group_key, theme['name'], theme_key)
 
     return theme
