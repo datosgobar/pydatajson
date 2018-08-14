@@ -27,7 +27,7 @@ my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='once')
 
-
+# A really long comment to verify that the travis build fails upon failure of pycodestyle (E501 & E302)
 class TestDataJsonTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR

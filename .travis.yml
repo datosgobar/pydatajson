@@ -25,12 +25,14 @@ stages:
   - name: deploy
     if: tag IS present
 
+script:
+  - nosetests --with-coverage --cover-package=pydatajson --cover-min-percentage=80
+  - pycodestyle pydatajson tests
+
 jobs:
   include:
   - python: '2.7'
-    script: nosetests --with-coverage --cover-package=pydatajson --cover-min-percentage=80
   - python: '3.6'
-    script: nosetests --with-coverage --cover-package=pydatajson --cover-min-percentage=80
   - stage: deploy
     install: pip install coveralls
     script: skip
