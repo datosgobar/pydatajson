@@ -51,7 +51,7 @@ DATA_FORMATS = [
 MIN_DATASET_TITLE = 10
 MIN_DATASET_DESCRIPTION = 20
 
-# A really long comment to verify that the travis build fails upon failure of pycodestyle (E501 & E302)
+
 class DataJson(dict):
     """Objeto que representa un catálogo de activos de datos."""
 
