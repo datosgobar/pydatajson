@@ -91,7 +91,8 @@ class SearchTestCase(unittest.TestCase):
             self.catalog,
             {"dataset": {
                 "description":
-                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+                "Datos correspondientes al Sistema de Contrataciones "
+                "Electrónicas (Argentina Compra)"
             }}
         )
         pprint(datasets)
@@ -119,7 +120,8 @@ class SearchTestCase(unittest.TestCase):
             self.catalog,
             filter_out={"dataset": {
                 "description":
-                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+                "Datos correspondientes al Sistema de Contrataciones "
+                "Electrónicas (Argentina Compra)"
             }}
         )
         pprint(datasets)
@@ -131,7 +133,8 @@ class SearchTestCase(unittest.TestCase):
             self.catalog,
             filter_out={"dataset": {
                 "description":
-                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+                "Datos correspondientes al Sistema de Contrataciones "
+                "Electrónicas (Argentina Compra)"
             }}
         )
         pprint(distributions)
@@ -157,7 +160,8 @@ class SearchTestCase(unittest.TestCase):
             self.catalog,
             filter_out={"dataset": {
                 "description":
-                "Datos correspondientes al Sistema de Contrataciones Electrónicas (Argentina Compra)"
+                "Datos correspondientes al Sistema de Contrataciones "
+                "Electrónicas (Argentina Compra)"
             }}
         )
         pprint(fields)

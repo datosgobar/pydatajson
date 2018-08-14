@@ -5,7 +5,8 @@ from __future__ import with_statement
 import os.path
 import unittest
 from pydatajson.core import DataJson
-from pydatajson.time_series import get_distribution_time_index, distribution_has_time_index, dataset_has_time_series
+from pydatajson.time_series import get_distribution_time_index,\
+    distribution_has_time_index, dataset_has_time_series
 from pydatajson.custom_exceptions import DistributionTimeIndexNonExistentError
 
 SAMPLES_DIR = os.path.join("tests", "samples")

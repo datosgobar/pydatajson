@@ -7,7 +7,8 @@ import os.path
 import re
 
 import vcr
-from nose.tools import assert_true, assert_false, assert_dict_equal, assert_regexp_matches, nottest
+from nose.tools import assert_true, assert_false, assert_dict_equal,\
+    assert_regexp_matches
 from six import iteritems, text_type
 
 from tests.support.factories.core_files import TEST_FILE_RESPONSES
@@ -46,7 +47,7 @@ class TestDataJsonTestCase(object):
 
     @classmethod
     def tearDown(cls):
-        del (cls.dj)
+        del cls.dj
 
     def run_case(self, case_filename, expected_dict=None):
 
@@ -72,7 +73,7 @@ class TestDataJsonTestCase(object):
         else:
             raise Exception("LA RESPUESTA {} TIENE UN status INVALIDO".format(
                 case_filename))
-
+        assert_dict_equal.__self__.maxDiff = None
         assert_dict_equal(expected_dict, response_dict)
 
     # Tests de CAMPOS REQUERIDOS
@@ -99,8 +100,8 @@ class TestDataJsonTestCase(object):
         case_filename = "invalid_dataset_theme_type"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
-        regex = "%s is not valid under any of the given schemas" % jsonschema_str(
-            'contrataciones')
+        regex = "%s is not valid under any of the given schemas"\
+                % jsonschema_str('contrataciones')
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
@@ -116,8 +117,9 @@ class TestDataJsonTestCase(object):
         case_filename = "invalid_keywords"
         expected_valid = False
         path = ['error', 'dataset', 1, 'errors', 0, 'message']
-        regex = "\[%s, %s, %s\] is not valid under any of the given schemas" % (jsonschema_str(
-            ';;bienes;;'), jsonschema_str('::compras::'), jsonschema_str('//contrataciones//'))
+        regex = "\[%s, %s, %s\] is not valid under any of the given schemas"\
+                % (jsonschema_str(';;bienes;;'), jsonschema_str('::compras::'),
+                   jsonschema_str('//contrataciones//'))
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
@@ -130,19 +132,23 @@ class TestDataJsonTestCase(object):
             ),
             (
                 ['error', 'catalog', 'errors', ],
-                "%s is not valid under any of the given schemas" % jsonschema_str('')
+                "%s is not valid under any of the given schemas"
+                % jsonschema_str('')
             ),
             (
-                ['error', 'catalog', 'errors', ], "%s is not a %s" % (
-                    jsonschema_str('datosmodernizacion.gob.ar'), jsonschema_str('email'))
+                ['error', 'catalog', 'errors', ], "%s is not a %s"
+                % (jsonschema_str('datosmodernizacion.gob.ar'),
+                   jsonschema_str('email'))
             ),
             (
                 ['error', 'catalog', 'errors', ],
-                "%s is not valid under any of the given schemas" % jsonschema_str('datos.gob.ar')
+                "%s is not valid under any of the given schemas"
+                % jsonschema_str('datos.gob.ar')
             ),
             (
                 ['error', 'catalog', 'errors', ],
-                "\[%s, %s\] is not valid under any of the given schemas" % (jsonschema_str('spa'), jsonschema_str(''))
+                "\[%s, %s\] is not valid under any of the given schemas"
+                % (jsonschema_str('spa'), jsonschema_str(''))
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
@@ -154,8 +160,8 @@ class TestDataJsonTestCase(object):
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
-                "%s is not valid under any of the given schemas" %
-                jsonschema_str('convocatoriasabiertasduranteela.*o.csv')
+                "%s is not valid under any of the given schemas"
+                % jsonschema_str('convocatoriasabiertasduranteela.*o.csv')
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
@@ -163,25 +169,32 @@ class TestDataJsonTestCase(object):
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
-                "\[%s\] is not valid under any of the given schemas" % jsonschema_str('string')
+                "\[%s\] is not valid under any of the given schemas"
+                % jsonschema_str('string')
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
-                "\[%s, %s\] is not valid under any of the given schemas" % (jsonschema_str('spa'), jsonschema_str(''))
+                "\[%s, %s\] is not valid under any of the given schemas"
+                % (jsonschema_str('spa'), jsonschema_str(''))
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
-                "\[%s, %s, %s, %s] is not valid under any of the given schemas" %
-                tuple(map(jsonschema_str, ('bienes', 'compras', 'contrataciones', '')))
+                "\[%s, %s, %s, %s] is not valid under any of the given schemas"
+                % tuple(map(jsonschema_str,
+                            ('bienes', 'compras', 'contrataciones', '')
+                            ))
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
-                "\[%s, %s, %s, %s] is not valid under any of the given schemas" %
-                tuple(map(jsonschema_str, ('contrataciones', 'compras', 'convocatorias', '')))
+                "\[%s, %s, %s, %s] is not valid under any of the given schemas"
+                % tuple(map(jsonschema_str,
+                            ('contrataciones', 'compras', 'convocatorias', '')
+                            ))
             ),
         ]
         for path, regex in expected_errors:
-            yield self.validate_contains_message_with_file, case_filename, path, regex
+            yield self.validate_contains_message_with_file,\
+                  case_filename, path, regex
 
     def validate_message_with_file(
             self,
@@ -237,12 +250,19 @@ class TestDataJsonTestCase(object):
     def test_validate_invalid_remote_datajson_has_errors(self):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
 
-        errors = [(['error', 'catalog', 'errors', ], "%s is too short" %
-                   jsonschema_str('')), (['error', 'catalog', 'errors', ], "%s is not a %s" %
-                                         (jsonschema_str(''), jsonschema_str('email'))), ]
+        errors = [(
+                    ['error', 'catalog', 'errors', ],
+                    "%s is too short" % jsonschema_str('')
+                   ),
+                  (
+                    ['error', 'catalog', 'errors', ],
+                    "%s is not a %s" % (jsonschema_str(''),
+                                        jsonschema_str('email'))
+                  )]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson'):
-                yield self.validate_contains_message, BAD_DATAJSON_URL, path, regex
+                yield self.validate_contains_message, BAD_DATAJSON_URL,\
+                      path, regex
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette('test_validate_bad_remote_datajson2')
@@ -262,7 +282,8 @@ class TestDataJsonTestCase(object):
                 jsonschema_str('')), ]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson2'):
-                yield self.validate_contains_message, BAD_DATAJSON_URL2, path, regex
+                yield self.validate_contains_message, BAD_DATAJSON_URL2,\
+                      path, regex
 
     def test_correctness_of_accrualPeriodicity_regex(self):
         """Prueba que la regex de validación de
@@ -309,9 +330,11 @@ class TestDataJsonTestCase(object):
         for error in report_dict['error']['catalog']['errors']:
             assert_true(
                 error['message'] in [
-                    reported['catalog_error_message'] for reported in report_list['catalog']])
+                    reported['catalog_error_message'] for reported
+                    in report_list['catalog']])
 
         for error in report_dict['error']['dataset'][0]['errors']:
             assert_true(
                 error['message'] in [
-                    reported['dataset_error_message'] for reported in report_list['dataset']])
+                    reported['dataset_error_message'] for reported
+                    in report_list['dataset']])

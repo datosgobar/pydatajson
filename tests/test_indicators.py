@@ -242,7 +242,8 @@ class TestIndicatorsTestCase(object):
             "datasets_federados_eliminados_cant": 1,
             "datasets_federados_eliminados": [
                 ('Base de datos legislativos Infoleg',
-                 "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg")]}
+                 "http://datos.jus.gob.ar/dataset/base-de-datos"
+                 "-legislativos-infoleg")]}
 
         for k, v in expected.items():
             assert_equal(indicators[k], v)
@@ -495,8 +496,8 @@ class TestIndicatorsTestCase(object):
         valid = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         unreachable = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
 
-        indicators = self.dj.generate_catalogs_indicators([valid, unreachable])[
-            0][0]
+        indicators = self.dj.generate_catalogs_indicators(
+            [valid, unreachable])[0][0]
 
         # El resultado ignora el catálogo inaccesible
         expected = {

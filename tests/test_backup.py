@@ -78,7 +78,8 @@ class BackupTestCase(unittest.TestCase):
                 "distribution",
                 "1.2",
                 "download",
-                "oferta-demanda-globales-datos-desestacionalizados-valores-trimestrales-base-1993.csv"))
+                "oferta-demanda-globales-datos-desestacionalizados"
+                "-valores-trimestrales-base-1993.csv"))
 
         os.remove(distribution_path) if os.path.exists(
             distribution_path) else None

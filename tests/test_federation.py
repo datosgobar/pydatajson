@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import unittest
 import os
 import re
@@ -34,7 +36,8 @@ class PushDatasetTestCase(unittest.TestCase):
         cls.minimum_catalog_id = cls.minimum_catalog.get('identifier', re.sub(
             r'[^a-z-_]+', '', cls.minimum_catalog['title']).lower())
         cls.minimum_dataset = cls.minimum_catalog.datasets[0]
-        # PATCH: minimum_data no tiene los identificadores obligatorios. Se los agrego aca, pero hay que refactorizar
+        # PATCH: minimum_data no tiene los identificadores obligatorios.
+        # Se los agrego aca, pero hay que refactorizar
         # tests y samples desactualizados para cumplir con los perfiles nuevos
         cls.minimum_dataset['identifier'] = cls.dataset['identifier']
         cls.minimum_dataset['distribution'][0][
@@ -133,8 +136,10 @@ class PushDatasetTestCase(unittest.TestCase):
     def test_licenses_are_interpreted_correctly(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'license_list':
-                return [{'title': 'somelicense', 'url': 'somelicense.com', 'id': '1'}, {
-                    'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
+                return [{'title': 'somelicense',
+                         'url': 'somelicense.com', 'id': '1'},
+                        {'title': 'otherlicense',
+                         'url': 'otherlicense.com', 'id': '2'}]
             elif action == 'package_update':
                 self.assertEqual('notspecified', data_dict['license_id'])
                 return data_dict
@@ -148,8 +153,10 @@ class PushDatasetTestCase(unittest.TestCase):
     def test_dataset_without_license_sets_notspecified(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'license_list':
-                return [{'title': 'somelicense', 'url': 'somelicense.com', 'id': '1'}, {
-                    'title': 'otherlicense', 'url': 'otherlicense.com', 'id': '2'}]
+                return [{'title': 'somelicense',
+                         'url': 'somelicense.com', 'id': '1'},
+                        {'title': 'otherlicense',
+                         'url': 'otherlicense.com', 'id': '2'}]
             elif action == 'package_update':
                 self.assertEqual('notspecified', data_dict['license_id'])
                 return data_dict
@@ -204,10 +211,12 @@ class PushDatasetTestCase(unittest.TestCase):
             self.catalog, 'portal', 'key', self.catalog_id)
         try:
             self.assertItemsEqual([self.catalog_id + '_' + ds['identifier']
-                                   for ds in self.catalog.datasets], harvested_ids)
+                                   for ds in self.catalog.datasets],
+                                  harvested_ids)
         except AttributeError:
             self.assertCountEqual([self.catalog_id + '_' + ds['identifier']
-                                   for ds in self.catalog.datasets], harvested_ids)
+                                   for ds in self.catalog.datasets],
+                                  harvested_ids)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_dataset_list(self, mock_portal):
@@ -221,23 +230,29 @@ class PushDatasetTestCase(unittest.TestCase):
 
         dataset_list = [ds['identifier'] for ds in self.catalog.datasets[:1]]
         harvested_ids, _ = harvest_catalog_to_ckan(
-            self.catalog, 'portal', 'key', self.catalog_id, dataset_list=dataset_list)
+            self.catalog, 'portal', 'key',
+            self.catalog_id, dataset_list=dataset_list)
         try:
             self.assertItemsEqual(
-                [self.catalog_id + '_' + ds_id for ds_id in dataset_list], harvested_ids)
+                [self.catalog_id + '_' + ds_id for ds_id in dataset_list],
+                harvested_ids)
         except AttributeError:
             self.assertCountEqual(
-                [self.catalog_id + '_' + ds_id for ds_id in dataset_list], harvested_ids)
+                [self.catalog_id + '_' + ds_id for ds_id in dataset_list],
+                harvested_ids)
 
         dataset_list = [ds['identifier'] for ds in self.catalog.datasets]
         harvested_ids, _ = harvest_catalog_to_ckan(
-            self.catalog, 'portal', 'key', self.catalog_id, dataset_list=dataset_list)
+            self.catalog, 'portal', 'key',
+            self.catalog_id, dataset_list=dataset_list)
         try:
             self.assertItemsEqual(
-                [self.catalog_id + '_' + ds_id for ds_id in dataset_list], harvested_ids)
+                [self.catalog_id + '_' + ds_id for ds_id in dataset_list],
+                harvested_ids)
         except AttributeError:
             self.assertCountEqual(
-                [self.catalog_id + '_' + ds_id for ds_id in dataset_list], harvested_ids)
+                [self.catalog_id + '_' + ds_id for ds_id in dataset_list],
+                harvested_ids)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_owner_org(self, mock_portal):
@@ -253,10 +268,12 @@ class PushDatasetTestCase(unittest.TestCase):
             self.catalog, 'portal', 'key', self.catalog_id, owner_org='owner')
         try:
             self.assertItemsEqual([self.catalog_id + '_' + ds['identifier']
-                                   for ds in self.catalog.datasets], harvested_ids)
+                                   for ds in self.catalog.datasets],
+                                  harvested_ids)
         except AttributeError:
             self.assertCountEqual([self.catalog_id + '_' + ds['identifier']
-                                   for ds in self.catalog.datasets], harvested_ids)
+                                   for ds in self.catalog.datasets],
+                                  harvested_ids)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_errors(self, mock_portal):
@@ -278,7 +295,8 @@ class PushDatasetTestCase(unittest.TestCase):
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_empty_list(self, mock_portal):
         harvested_ids, _ = harvest_catalog_to_ckan(
-            self.catalog, 'portal', 'key', self.catalog_id, owner_org='owner', dataset_list=[])
+            self.catalog, 'portal', 'key', self.catalog_id,
+            owner_org='owner', dataset_list=[])
         mock_portal.assert_not_called()
         self.assertEqual([], harvested_ids)
 
@@ -436,10 +454,12 @@ class PushCatalogThemesTestCase(unittest.TestCase):
         res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
         try:
             self.assertItemsEqual(
-                [theme['id'] for theme in self.catalog['themeTaxonomy']], res_names)
+                [theme['id'] for theme in self.catalog['themeTaxonomy']],
+                res_names)
         except AttributeError:
             self.assertCountEqual(
-                [theme['id'] for theme in self.catalog['themeTaxonomy']], res_names)
+                [theme['id'] for theme in self.catalog['themeTaxonomy']],
+                res_names)
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_full_portal_pushes_nothing(self, mock_portal):
@@ -471,7 +491,9 @@ class PushCatalogThemesTestCase(unittest.TestCase):
         res_names = push_new_themes(self.catalog, 'portal_url', 'apikey')
         try:
             self.assertItemsEqual(
-                [theme['id'] for theme in self.catalog['themeTaxonomy']][2:], res_names)
+                [theme['id'] for theme in self.catalog['themeTaxonomy']][2:],
+                res_names)
         except AttributeError:
             self.assertCountEqual(
-                [theme['id'] for theme in self.catalog['themeTaxonomy']][2:], res_names)
+                [theme['id'] for theme in self.catalog['themeTaxonomy']][2:],
+                res_names)

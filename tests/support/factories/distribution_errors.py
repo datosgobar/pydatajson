@@ -30,7 +30,8 @@ def distribution_error():
                                 "distribution",
                                 0
                             ],
-                            "message": "%s is a required property" % jsonschema_str('title'),
+                            "message": "%s is a required property"
+                                       % jsonschema_str('title'),
                             "error_code": 1,
                             "validator_value": [
                                 "accessURL",

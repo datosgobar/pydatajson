@@ -225,7 +225,8 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.distributions, self.catalog_id)
         for resource in resources:
             distribution = next(
-                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+                x for x in self.dataset['distribution'] if
+                x['title'] == resource['name'])
             self.assertEqual(
                 self.catalog_id +
                 '_' +
@@ -236,7 +237,8 @@ class DatasetConversionTestCase(unittest.TestCase):
         resources = map_distributions_to_resources(self.distributions)
         for resource in resources:
             distribution = next(
-                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+                x for x in self.dataset['distribution'] if
+                x['title'] == resource['name'])
             self.assertEqual(distribution['identifier'], resource['id'])
 
     def test_resources_replicated_attributes_stay_the_same(self):
@@ -244,7 +246,8 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.distributions, self.catalog_id)
         for resource in resources:
             distribution = next(
-                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+                x for x in self.dataset['distribution'] if
+                x['title'] == resource['name'])
             replicated_attributes = [('url', 'downloadURL'),
                                      ('mimetype', 'mediaType'),
                                      ('description', 'description'),
@@ -263,7 +266,8 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.distributions, self.catalog_id + '_' + self.dataset_id)
         for resource in resources:
             distribution = next(
-                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+                x for x in self.dataset['distribution'] if
+                x['title'] == resource['name'])
             time_attributes = [
                 ('created', 'issued'), ('last_modified', 'modified')]
             for fst, snd in time_attributes:
@@ -281,7 +285,8 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.distributions, self.catalog_id + '_' + self.dataset_id)
         for resource in resources:
             distribution = next(
-                x for x in self.dataset['distribution'] if x['title'] == resource['name'])
+                x for x in self.dataset['distribution'] if
+                x['title'] == resource['name'])
             self.assertEqual(
                 distribution.get('accessURL'),
                 resource.get('accessURL'))

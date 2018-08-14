@@ -94,8 +94,8 @@ def invalid_multiple_fields_type():
             0,
             "byteSize"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
-            '5120'),
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('5120'),
         "error_code": 2,
         "validator_value": [
             {
