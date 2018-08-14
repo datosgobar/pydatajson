@@ -433,18 +433,18 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
         if dataset_index is None:
             logger.error(
                 """No se encontro el dataset '{}' especificado para el campo
-'{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-                    unidecode(
-                        field["dataset_title"]), unidecode(
-                        field["field_title"]), idx + 2))
+                '{}' (fila #{} de la hoja "Field"). Este campo no figurara en
+                el data.json de salida.""".format(
+                    unidecode(field["dataset_title"]),
+                    unidecode(field["field_title"]), idx + 2))
 
         elif distribution_index is None:
             logger.error(
-                """No se encontro la distribucion '{}' especificada para el campo
-'{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-                    unidecode(
-                        field["distribution_title"]), unidecode(
-                        field["field_title"]), idx + 2))
+                """No se encontro la distribucion '{}' especificada para el
+                campo'{}' (fila #{} de la hoja "Field"). Este campo no figurara
+                en el data.json de salida.""".format(
+                    unidecode(field["distribution_title"]),
+                    unidecode(field["field_title"]), idx + 2))
 
         else:
             dataset = catalog["catalog_dataset"][dataset_index]

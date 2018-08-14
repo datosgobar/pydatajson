@@ -71,9 +71,10 @@ class DownloadURLRepetitionError(BaseValidationError):
 
         # TODO: construcción del error
         validator = "repeatedValue"
-        message = "DownloadURL's {} estan repetidas en mas de un `distribution`".format(
-            repeated_urls)
-        validator_value = "Chequea downloadURL's duplicados en las distribuciones"
+        message = "DownloadURL's {} estan repetidas en mas de " \
+                  "un `distribution`".format(repeated_urls)
+        validator_value = "Chequea downloadURL's duplicados " \
+                          "en las distribuciones"
         path = ["catalog", "dataset"]
 
         super(DownloadURLRepetitionError, self).__init__(
@@ -85,8 +86,8 @@ class ExtensionError(BaseValidationError):
     def __init__(self, dataset_idx, distribution_idx, distribution, attribute):
 
         validator = 'mismatchedValue'
-        template = "distribution '{}' tiene distintas extensiones: format ('{}') y " + \
-            attribute + " ('{}')"
+        template = "distribution '{}' tiene distintas extensiones: " \
+                   "format ('{}') y " + attribute + " ('{}')"
         extension = os.path.splitext(
             urlparse(distribution[attribute]).path)[-1].lower()
         message = template.format(

@@ -4,10 +4,10 @@
 de la API de CKAN.
 """
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 import logging
 from ckanapi import RemoteCKAN
-from ckanapi.errors import NotFound, NotAuthorized, ValidationError
+from ckanapi.errors import NotFound
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
 
@@ -268,8 +268,8 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
                 catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
             harvested.append(harvested_id)
         except Exception as e:
-            msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n" % (
-                catalog_id, dataset_id, portal_url)
+            msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n"\
+                  % (catalog_id, dataset_id, portal_url)
             msg += str(e)
             logger.error(msg)
             errors[dataset_id] = str(e)

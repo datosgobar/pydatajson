@@ -180,10 +180,12 @@ class DataJson(dict):
                                 distribution.get("field", [])):
                             if "id" in field:
                                 fields_index[field["id"]] = {
-                                    "field_index": field_index,
-                                    "dataset_identifier": dataset["identifier"],
-                                    "distribution_identifier": distribution[
-                                        "identifier"]
+                                    "field_index":
+                                        field_index,
+                                    "dataset_identifier":
+                                        dataset["identifier"],
+                                    "distribution_identifier":
+                                        distribution["identifier"]
                                 }
 
         setattr(self, "_distributions_index", distributions_index)
@@ -215,9 +217,9 @@ class DataJson(dict):
                         (not dataset_identifier or
                          dataset["identifier"] == dataset_identifier)):
                     dataset["distribution"].pop(index)
-                    logger.info(
-                        "Distribution {} del dataset {} en posicion {} fue eliminada.".format(
-                            identifier, dataset["identifier"], index))
+                    logger.info("Distribution {} del dataset {}"
+                                "en posicion {} fue eliminada.".format(
+                                 identifier, dataset["identifier"], index))
                     return
 
         logger.warning("No se encontro la distribucion {}.".format(identifier))
@@ -636,8 +638,8 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 catalog_ids.append(catalog.get("identifier", ""))
         if isinstance(catalog_ids, string_types + (dict,)):
             catalog_ids = [catalog_ids] * len(catalogs)
-        if not catalog_orgs or isinstance(
-                catalog_orgs, string_types + (dict,)):
+        if not catalog_orgs or\
+                isinstance(catalog_orgs, string_types + (dict,)):
             catalog_orgs = [catalog_orgs] * len(catalogs)
         if not catalog_homepages or isinstance(catalog_homepages,
                                                string_types + (dict,)):
@@ -1202,9 +1204,10 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
             catalogs (list or dict): Lista de catálogos (elementos que pueden
                 ser interpretados por DataJson como catálogos) o diccionario
                 donde las keys se interpretan como los catalog_identifier:
-                    {
-                        "modernizacion": "http://infra.datos.gob.ar/catalog/modernizacion/data.json"
-                    }
+                {
+                "modernizacion":
+                "http://infra.datos.gob.ar/catalog/modernizacion/data.json"
+                }
                 Cuando es una lista, los ids se toman de catalog_identifer, y
                 se ignoran los catálogos que no tengan catalog_identifier.
                 Cuando se pasa un diccionario, los keys reemplazan a los

@@ -130,7 +130,7 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
             Sólo se devolverán los distribuciones que no pertenezcan a un
             dataset de ese publisher_name.
         meta_field (str): Nombre de un metadato de Distribution. En lugar de
-            devolver los objetos completos "Distribution", devuelve una lista de
+            devolver los objetos completos Distribution, devuelve una lista de
             valores para ese metadato presentes en el catálogo.
         exclude_meta_fields (list): Metadatos de Distribution que se quieren
             excluir de los objetos Distribution devueltos.
@@ -157,7 +157,8 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
 
     # realiza filtros especiales
     if only_time_series:
-        filtered_distributions = [distribution for distribution in filtered_distributions if
+        filtered_distributions = [distribution for distribution in
+                                  filtered_distributions if
                                   distribution_has_time_index(distribution)]
 
     if meta_field:
