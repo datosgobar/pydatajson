@@ -17,9 +17,13 @@ except ImportError:
 from .context import pydatajson
 from .support.decorators import RESULTS_DIR
 
-my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                 cassette_library_dir=os.path.join("tests", "cassetes", "indicators"),
-                 record_mode='once')
+my_vcr = vcr.VCR(
+    path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+    cassette_library_dir=os.path.join(
+        "tests",
+        "cassetes",
+        "indicators"),
+    record_mode='once')
 
 
 class TestIndicatorsTestCase(object):
@@ -106,7 +110,9 @@ class TestIndicatorsTestCase(object):
 
     @my_vcr.use_cassette()
     def test_license_indicators(self):
-        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_licenses.json")
+        catalog = os.path.join(
+            self.SAMPLES_DIR,
+            "several_datasets_with_licenses.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
@@ -124,7 +130,9 @@ class TestIndicatorsTestCase(object):
     @my_vcr.use_cassette()
     def test_no_licenses_indicators(self):
         # No tienen licencias
-        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_for_harvest.json")
+        catalog = os.path.join(
+            self.SAMPLES_DIR,
+            "several_datasets_for_harvest.json")
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
         assert_equal(indicators['datasets_licencias_cant'], {'None': 3})
 
@@ -232,11 +240,10 @@ class TestIndicatorsTestCase(object):
         # publisher.name no existe en ningún otro dataset
         expected = {
             "datasets_federados_eliminados_cant": 1,
-            "datasets_federados_eliminados": [(
-                'Base de datos legislativos Infoleg',
-                "http://datos.jus.gob.ar/dataset/base-de-datos-legislativos-infoleg"
-            )]
-        }
+            "datasets_federados_eliminados": [
+                ('Base de datos legislativos Infoleg',
+                 "http://datos.jus.gob.ar/dataset/base-de-datos"
+                 "-legislativos-infoleg")]}
 
         for k, v in expected.items():
             assert_equal(indicators[k], v)
@@ -285,7 +292,9 @@ class TestIndicatorsTestCase(object):
 
     @my_vcr.use_cassette()
     def test_network_license_indicators(self):
-        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_licenses.json")
+        one_catalog = os.path.join(
+            self.SAMPLES_DIR,
+            "several_datasets_with_licenses.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         indicators, network_indicators = self.dj.generate_catalogs_indicators([
@@ -310,7 +319,9 @@ class TestIndicatorsTestCase(object):
 
     @my_vcr.use_cassette()
     def test_network_type_indicators(self):
-        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_types.json")
+        one_catalog = os.path.join(
+            self.SAMPLES_DIR,
+            "several_datasets_with_types.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         indicators, network_indicators = self.dj.generate_catalogs_indicators([
@@ -339,7 +350,9 @@ class TestIndicatorsTestCase(object):
 
     @my_vcr.use_cassette()
     def test_types_indicators(self):
-        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets_with_types.json")
+        catalog = os.path.join(
+            self.SAMPLES_DIR,
+            "several_datasets_with_types.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
@@ -483,7 +496,8 @@ class TestIndicatorsTestCase(object):
         valid = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         unreachable = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
 
-        indicators = self.dj.generate_catalogs_indicators([valid, unreachable])[0][0]
+        indicators = self.dj.generate_catalogs_indicators(
+            [valid, unreachable])[0][0]
 
         # El resultado ignora el catálogo inaccesible
         expected = {
@@ -500,7 +514,8 @@ class TestIndicatorsTestCase(object):
     def test_unreachable_central_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         unreachable = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
-        indics = self.dj.generate_catalogs_indicators(catalog, central_catalog=unreachable)[0][0]
+        indics = self.dj.generate_catalogs_indicators(
+            catalog, central_catalog=unreachable)[0][0]
         expected = {
             'datasets_cant': 3,
             'distribuciones_cant': 6,
@@ -516,7 +531,9 @@ class TestIndicatorsTestCase(object):
             assert_equal(indics[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.indicators.generate_datasets_summary', autospec=True)
+    @mock.patch(
+        'pydatajson.indicators.generate_datasets_summary',
+        autospec=True)
     def test_bad_summary(self, mock_summary):
         mock_summary.side_effect = Exception('bad summary')
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
@@ -548,7 +565,10 @@ class TestIndicatorsTestCase(object):
 
     @my_vcr.use_cassette()
     def test_no_title_nor_identifier_catalog(self):
-        catalog = pydatajson.DataJson(os.path.join(self.SAMPLES_DIR, "missing_catalog_title.json"))
+        catalog = pydatajson.DataJson(
+            os.path.join(
+                self.SAMPLES_DIR,
+                "missing_catalog_title.json"))
         del catalog['identifier']
         indics = self.dj.generate_catalogs_indicators(catalog)[0][0]
         assert_equal(indics['title'], 'no-title')

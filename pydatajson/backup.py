@@ -29,7 +29,8 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
             ser interpretados por DataJson como catálogos) o diccionario
             donde las keys se interpretan como los catalog_identifier:
                 {
-                    "modernizacion": "http://infra.datos.gob.ar/catalog/modernizacion/data.json"
+                "modernizacion":
+                "http://infra.datos.gob.ar/catalog/modernizacion/data.json"
                 }
             Cuando es una lista, los ids se toman de catalog_identifer, y
             se ignoran los catálogos que no tengan catalog_identifier.

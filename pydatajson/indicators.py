@@ -228,14 +228,22 @@ def _federation_indicators(catalog, central_catalog):
         federados_pct = 0
 
     result.update({
-        'datasets_federados_cant': federados,
-        'datasets_no_federados_cant': no_federados,
-        'datasets_federados_eliminados_cant': datasets_federados_eliminados_cant,
-        'datasets_federados_eliminados': datasets_federados_eliminados,
-        'datasets_no_federados': datasets_no_federados,
-        'datasets_federados': datasets_federados,
-        'datasets_federados_pct': round(federados_pct, 2),
-        'distribuciones_federadas_cant': dist_federadas
+        'datasets_federados_cant':
+            federados,
+        'datasets_no_federados_cant':
+            no_federados,
+        'datasets_federados_eliminados_cant':
+            datasets_federados_eliminados_cant,
+        'datasets_federados_eliminados':
+            datasets_federados_eliminados,
+        'datasets_no_federados':
+            datasets_no_federados,
+        'datasets_federados':
+            datasets_federados,
+        'datasets_federados_pct':
+            round(federados_pct, 2),
+        'distribuciones_federadas_cant':
+            dist_federadas
     })
     return result
 
@@ -317,7 +325,8 @@ def _generate_status_indicators(catalog, validator=None):
     try:
         summary = generate_datasets_summary(catalog, validator=validator)
     except Exception as e:
-        msg = u'Error generando resumen del catálogo {}: {}'.format(catalog['title'], str(e))
+        msg = u'Error generando resumen del catálogo {}: {}'.format(
+            catalog['title'], str(e))
         logger.error(msg)
         return result
 
@@ -378,17 +387,18 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
         })
 
     try:
-        dias_ultima_actualizacion = _days_from_last_update(
-            catalog, "modified")
+        dias_ultima_actualizacion =\
+            _days_from_last_update(catalog, "modified")
         if not dias_ultima_actualizacion:
-            dias_ultima_actualizacion = _days_from_last_update(
-                catalog, "issued")
+            dias_ultima_actualizacion =\
+                _days_from_last_update(catalog, "issued")
 
         result['catalogo_ultima_actualizacion_dias'] = \
             dias_ultima_actualizacion
 
     except Exception as e:
-        msg = u'Error generando indicadores de fecha del catálogo {}: {}'.format(catalog['title'], str(e))
+        msg = u'Error generando indicadores de fecha del catálogo {}: {}'\
+            .format(catalog['title'], str(e))
         logger.error(msg)
         return result
 
@@ -422,7 +432,8 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
                     periodicity) * \
                     (1 + tolerance)
             except Exception as e:
-                msg = u'Error generando indicadores de fecha del dataset {} en {}: {}'
+                msg = u'Error generando indicadores'\
+                      u'de fecha del dataset {} en {}: {}'
                 msg.format(dataset['identifier'], catalog['title'], str(e))
                 logger.error(msg)
                 # Asumo desactualizado
@@ -673,5 +684,6 @@ def _filter_by_likely_publisher(central_datasets, catalog_datasets):
 
 
 def count_fields(targets, field):
-    """Cuenta la cantidad de values en el key especificado de una lista de  diccionarios"""
+    """Cuenta la cantidad de values en el key
+    especificado de una lista de  diccionarios"""
     return Counter([target.get(field) or 'None' for target in targets])

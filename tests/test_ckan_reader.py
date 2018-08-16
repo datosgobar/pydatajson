@@ -44,7 +44,12 @@ class MockPortal(object):
     def package_show(self, data_dict):
         catalog = self.data_json
         dataset = catalog.get_dataset(title=data_dict['id'])
-        package = map_dataset_to_package(catalog, dataset, 'owner', demote_superThemes=False, demote_themes=False)
+        package = map_dataset_to_package(
+            catalog,
+            dataset,
+            'owner',
+            demote_superThemes=False,
+            demote_themes=False)
         for resource in package['resources']:
             resource['package_id'] = package['id']
         return package
@@ -65,38 +70,57 @@ class CKANReaderTestCase(unittest.TestCase):
 
     def test_read_ckan_catalog_attributes(self):
         self.assertEqual(self.expected_dj['title'], self.dj['title'])
-        self.assertEqual(self.expected_dj['description'], self.dj['description'])
-        self.assertEqual(self.expected_dj['superThemeTaxonomy'], self.dj['superThemeTaxonomy'])
-        self.assertEqual(self.expected_dj['publisher']['mbox'], self.dj['publisher']['mbox'])
+        self.assertEqual(
+            self.expected_dj['description'],
+            self.dj['description'])
+        self.assertEqual(
+            self.expected_dj['superThemeTaxonomy'],
+            self.dj['superThemeTaxonomy'])
+        self.assertEqual(
+            self.expected_dj['publisher']['mbox'],
+            self.dj['publisher']['mbox'])
 
     def test_read_ckan_catalog_theme_taxonomy(self):
         self.assertEqual(len(self.expected_dj['themeTaxonomy']),
                          len(self.dj['themeTaxonomy']))
-        for expected_theme, theme in zip(self.expected_dj['themeTaxonomy'], self.dj['themeTaxonomy']):
+        for expected_theme, theme in zip(
+                self.expected_dj['themeTaxonomy'], self.dj['themeTaxonomy']):
             self.assertDictEqual(expected_theme, theme)
 
     def test_read_ckan_dataset_attributes(self):
         self.assertEqual(len(self.expected_dj.datasets),
                          len(self.dj.datasets))
-        for expected_dataset, dataset in zip(self.expected_dj.datasets, self.dj.datasets):
+        for expected_dataset, dataset in zip(
+                self.expected_dj.datasets, self.dj.datasets):
             attributes = ['description', 'identifier', 'title', 'landingPage']
             for attribute in attributes:
-                self.assertEqual(expected_dataset[attribute], dataset[attribute])
-            self.assertDictEqual(expected_dataset['contactPoint'], dataset['contactPoint'])
-            self.assertDictEqual(expected_dataset['publisher'], dataset['publisher'])
-            self.assertSetEqual(set(expected_dataset['keyword']), set(dataset['keyword']))
+                self.assertEqual(
+                    expected_dataset[attribute],
+                    dataset[attribute])
+            self.assertDictEqual(
+                expected_dataset['contactPoint'],
+                dataset['contactPoint'])
+            self.assertDictEqual(
+                expected_dataset['publisher'],
+                dataset['publisher'])
+            self.assertSetEqual(
+                set(expected_dataset['keyword']), set(dataset['keyword']))
 
     def test_read_ckan_distribution_attributes(self):
         self.assertEqual(len(self.expected_dj.distributions),
                          len(self.dj.distributions))
-        for expected_dataset, distributions in zip(self.expected_dj.distributions, self.dj.distributions):
+        for expected_dataset, distributions in zip(
+                self.expected_dj.distributions, self.dj.distributions):
             attributes = ['mediaType', 'byteSize', 'identifier', 'description',
                           'format', 'title', 'downloadURL']
             for attribute in attributes:
-                self.assertEqual(expected_dataset[attribute], distributions[attribute])
+                self.assertEqual(
+                    expected_dataset[attribute],
+                    distributions[attribute])
 
     def test_read_ckan_field_attributes(self):
         self.assertEqual(len(self.expected_dj.fields),
                          len(self.dj.fields))
-        for expected_field, field in zip(self.expected_dj.fields, self.dj.fields):
+        for expected_field, field in zip(
+                self.expected_dj.fields, self.dj.fields):
             self.assertDictEqual(expected_field, field)

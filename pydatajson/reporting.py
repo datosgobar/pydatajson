@@ -6,7 +6,8 @@
 Contiene los métodos para generar reportes sobre un catálogo.
 """
 
-from __future__ import unicode_literals, print_function, with_statement, absolute_import
+from __future__ import unicode_literals, print_function,\
+    with_statement, absolute_import
 
 from collections import OrderedDict
 

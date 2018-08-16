@@ -4,7 +4,8 @@
 """Extensión de pydatajson para leer catálogos de metadatos a través de la API
 de CKAN v3.
 """
-from __future__ import unicode_literals, print_function, with_statement, absolute_import
+from __future__ import unicode_literals, print_function,\
+    with_statement, absolute_import
 import os.path
 import logging
 import json
@@ -99,10 +100,10 @@ def map_status_to_catalog(status):
     for status_key, catalog_key in iteritems(catalog_mapping):
         try:
             catalog[catalog_key] = status[status_key]
-        except:
+        except BaseException:
             logger.exception("""
-La clave '%s' no está en el endpoint de status. No se puede completar
-catalog['%s'].""", status_key, catalog_key)
+            La clave '%s' no está en el endpoint de status. No se puede
+            completar catalog['%s'].""", status_key, catalog_key)
 
     publisher_mapping = {
         "site_title": "name",
@@ -114,14 +115,15 @@ catalog['%s'].""", status_key, catalog_key)
         for status_key, publisher_key in iteritems(publisher_mapping):
             try:
                 catalog['publisher'][publisher_key] = status[status_key]
-            except:
+            except BaseException:
                 logger.exception("""
-La clave '%s' no está en el endpoint de status. No se puede completar
-catalog['publisher'['%s'].""", status_key, publisher_key)
+                La clave '%s' no está en el endpoint de status. No se puede
+                completar catalog['publisher'['%s'].""",
+                                 status_key, publisher_key)
     else:
         logger.info("""
-No hay ninguna información sobre catalog['publisher'] en el endpoint
-de 'status'.""")
+        No hay ninguna información sobre catalog['publisher'] en el endpoint
+        de 'status'.""")
 
     catalog['superThemeTaxonomy'] = (
         'http://datos.gob.ar/superThemeTaxonomy.json')
@@ -156,11 +158,11 @@ def map_package_to_dataset(package, portal_url):
     for package_key, dataset_key in iteritems(dataset_mapping):
         try:
             dataset[dataset_key] = package[package_key]
-        except:
+        except BaseException:
             logger.exception("""
-La clave '%s' no está en el endpoint 'package_show' para el package '%s'. No
-se puede completar dataset['%s'].""",
-                         package_key, package['name'], dataset_key)
+            La clave '%s' no está en el endpoint 'package_show' para el
+            package '%s'. No se puede completar dataset['%s'].""",
+                             package_key, package['name'], dataset_key)
 
     publisher_mapping = {
         'author': 'name',
@@ -172,11 +174,12 @@ se puede completar dataset['%s'].""",
         for package_key, publisher_key in iteritems(publisher_mapping):
             try:
                 dataset['publisher'][publisher_key] = package[package_key]
-            except:
+            except BaseException:
                 logger.exception("""
-La clave '%s' no está en el endpoint 'package_show' para el package '%s'. No
-se puede completar dataset['publisher']['%s'].""",
-                             package_key, package['name'], publisher_key)
+                La clave '%s' no está en el endpoint 'package_show' para el
+                package '%s'. No se puede completar
+                dataset['publisher']['%s'].""",
+                                 package_key, package['name'], publisher_key)
 
     contact_point_mapping = {
         'maintainer': 'fn',
@@ -188,11 +191,12 @@ se puede completar dataset['publisher']['%s'].""",
         for package_key, contact_key in iteritems(contact_point_mapping):
             try:
                 dataset['contactPoint'][contact_key] = package[package_key]
-            except:
+            except BaseException:
                 logger.exception("""
-La clave '%s' no está en el endpoint 'package_show' para el package '%s'. No
-se puede completar dataset['contactPoint']['%s'].""",
-                             package_key, package['name'], contact_key)
+                La clave '%s' no está en el endpoint 'package_show' para el
+                package '%s'. No se puede completar
+                dataset['contactPoint']['%s'].""",
+                                 package_key, package['name'], contact_key)
 
     # Si existen campos extras en la información del package, busco las claves
     # "Frecuencia de actualización" y "Temática global" para completar los
@@ -219,16 +223,17 @@ def add_temporal(dataset, package):
 
     if len(temporal) > 1:
         logger.info("""
-Se encontro mas de un valor de cobertura temporal en 'extras' para el
-'package' '%s'. No se puede completar dataset['temporal'].\n %s""",
-                     package['name'], temporal)
+        Se encontro mas de un valor de cobertura temporal en 'extras' para el
+        'package' '%s'. No se puede completar dataset['temporal'].\n %s""",
+                    package['name'], temporal)
     elif len(temporal) == 1:
         try:
             dataset["temporal"] = temporal[0]
         except KeyError:
             logger.exception("""
-Se encontró '%s' como cobertura temporal, pero no es mapeable a un
-'temporal' conocido. La clave no se pudo completar.""", temporal[0])
+            Se encontró '%s' como cobertura temporal, pero no es mapeable a un
+            'temporal' conocido. La clave no se pudo completar.""",
+                             temporal[0])
 
     # Busco claves que son casi "Cobertura temporal" para lanzar
     # advertencias si las hay.
@@ -239,10 +244,10 @@ Se encontró '%s' como cobertura temporal, pero no es mapeable a un
 
     if almost_temporal:
         logger.warn("""
-Se encontraron claves con nombres similares pero no idénticos a
-"Cobertura temporal" en 'extras' para el 'package' '%s'. Por favor, considere
-corregirlas:
-\n%s""", package['name'], almost_temporal)
+        Se encontraron claves con nombres similares pero no idénticos a
+        "Cobertura temporal" en 'extras' para el 'package' '%s'.
+        Por favor, considere corregirlas:
+        \n%s""", package['name'], almost_temporal)
 
 
 def add_superTheme(dataset, package):
@@ -254,21 +259,23 @@ def add_superTheme(dataset, package):
 
     if len(super_theme) == 0:
         logger.info("""
-No se encontraron valores de temática global en 'extras' para el
-'package' '%s'. No se puede completar dataset['superTheme'].""",
-                     package['name'])
+        No se encontraron valores de temática global en 'extras' para el
+        'package' '%s'. No se puede completar dataset['superTheme'].""",
+                    package['name'])
+
     elif len(super_theme) > 1:
         logger.info("""
-Se encontro mas de un valor de temática global en 'extras' para el
-'package' '%s'. No se puede completar dataset['superTheme'].\n %s""",
-                     package['name'], super_theme)
+        Se encontro mas de un valor de temática global en 'extras' para el
+        'package' '%s'. No se puede completar dataset['superTheme'].\n %s""",
+                    package['name'], super_theme)
     else:
         try:
             dataset["superTheme"] = [SUPER_THEMES[super_theme[0]]]
         except KeyError:
             logger.exception("""
-Se encontró '%s' como temática global, pero no es mapeable a un
-'superTheme' conocido. La clave no se pudo completar.""", super_theme[0])
+            Se encontró '%s' como temática global, pero no es mapeable a un
+            'superTheme' conocido. La clave no se pudo completar.""",
+                             super_theme[0])
 
     # Busco claves que son casi "Temática global" para lanzar
     # advertencias si las hay.
@@ -279,9 +286,10 @@ Se encontró '%s' como temática global, pero no es mapeable a un
 
     if almost_super_theme:
         logger.warn("""
-Se encontraron claves con nombres similares pero no idénticos a "Temática
-global" en 'extras' para el 'package' '%s'. Por favor, considere corregirlas:
-\n%s""", package['name'], almost_super_theme)
+        Se encontraron claves con nombres similares pero no idénticos a
+        "Temática global" en 'extras' para el 'package' '%s'. Por favor,
+        considere corregirlas: \n%s""",
+                    package['name'], almost_super_theme)
 
 
 def add_accrualPeriodicity(dataset, package):
@@ -294,21 +302,23 @@ def add_accrualPeriodicity(dataset, package):
 
     if len(accrual) == 0:
         logger.info("""
-No se encontraron valores de frecuencia de actualización en 'extras' para el
-'package' '%s'. No se puede completar dataset['accrualPeriodicity'].""",
-                     package['name'])
+        No se encontraron valores de frecuencia de actualización en 'extras'
+        para el 'package' '%s'. No se puede completar
+        dataset['accrualPeriodicity'].""", package['name'])
     elif len(accrual) > 1:
         logger.info("""
-Se encontro mas de un valor de frecuencia de actualización en 'extras' para el
-'package' '%s'. No se puede completar dataset['accrualPeriodicity'].\n %s""",
-                     package['name'], accrual)
+        Se encontro mas de un valor de frecuencia de actualización en 'extras'
+        para el 'package' '%s'. No se puede completar
+        dataset['accrualPeriodicity'].\n %s""", package['name'], accrual)
     else:
         try:
             dataset["accrualPeriodicity"] = FREQUENCIES[accrual[0]]
+
         except KeyError:
             logger.exception("""
-Se encontró '%s' como frecuencia de actualización, pero no es mapeable a una
-'accrualPeriodicity' conocida. La clave no se pudo completar.""", accrual[0])
+            Se encontró '%s' como frecuencia de actualización, pero no es
+            mapeable a una 'accrualPeriodicity' conocida. La clave no se
+            pudo completar.""", accrual[0])
 
     # Busco claves que son casi "Frecuencia de actualización" para lanzar
     # advertencias si las hay.
@@ -319,9 +329,10 @@ Se encontró '%s' como frecuencia de actualización, pero no es mapeable a una
 
     if almost_accrual:
         logger.warn("""
-Se encontraron claves con nombres similares pero no idénticos a "Frecuencia de
-actualización" en 'extras' para el 'package' '%s'. Por favor, considere
-corregirlas:\n%s""", package['name'], almost_accrual)
+        Se encontraron claves con nombres similares pero no idénticos a
+        "Frecuencia de actualización" en 'extras' para el 'package' '%s'.
+        Por favor, considere corregirlas:\n%s""",
+                    package['name'], almost_accrual)
 
 
 def map_resources_to_distributions(resources, portal_url):
@@ -349,17 +360,21 @@ def map_resource_to_distribution(resource, portal_url):
     for resource_key, distribution_key in iteritems(distribution_mapping):
         try:
             distribution[distribution_key] = resource[resource_key]
-        except:
+        except BaseException:
             logger.exception("""
-La clave '%s' no está en la metadata del 'resource' '%s'. No
-se puede completar distribution['%s'].""",
-                         resource_key, resource['name'], distribution_key)
+            La clave '%s' no está en la metadata del 'resource' '%s'. No
+            se puede completar distribution['%s'].""",
+                             resource_key, resource['name'], distribution_key)
 
     if 'attributesDescription' in resource:
         try:
-            distribution['field'] = json.loads(resource['attributesDescription'])
-        except:
-            logger.exception("Error parseando los fields del resource '%s'", resource['name'])
+            distribution['field'] = json.loads(
+                resource['attributesDescription'])
+
+        except BaseException:
+            logger.exception(
+                "Error parseando los fields del resource '%s'",
+                resource['name'])
 
     url_path = ['dataset', resource['package_id'], 'resource', resource['id']]
     distribution["accessURL"] = urljoin(portal_url, "/".join(url_path))
@@ -386,10 +401,10 @@ def map_group_to_theme(group):
     for group_key, theme_key in iteritems(theme_mapping):
         try:
             theme[theme_key] = group[group_key]
-        except:
+        except BaseException:
             logger.exception("""
-La clave '%s' no está en la metadata del 'group' '%s'. No
-se puede completar theme['%s'].""",
-                         group_key, theme['name'], theme_key)
+            La clave '%s' no está en la metadata del 'group' '%s'. No
+            se puede completar theme['%s'].""",
+                             group_key, theme['name'], theme_key)
 
     return theme

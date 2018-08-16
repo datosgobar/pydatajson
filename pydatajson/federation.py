@@ -4,10 +4,10 @@
 de la API de CKAN.
 """
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 import logging
 from ckanapi import RemoteCKAN
-from ckanapi.errors import NotFound, NotAuthorized, ValidationError
+from ckanapi.errors import NotFound
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
 
@@ -88,7 +88,9 @@ def remove_harvested_ds_from_ckan(catalog, portal_url, apikey,
             remove_dataset_from_ckan(harvested_id, portal_url, apikey)
             logger.info("{} eliminado de {}".format(harvested_id, catalog_id))
         except Exception:
-            logger.exception("{} de {} no existe.".format(harvested_id, catalog_id))
+            logger.exception(
+                "{} de {} no existe.".format(
+                    harvested_id, catalog_id))
 
 
 def remove_datasets_from_ckan(portal_url, apikey, filter_in=None,
@@ -128,8 +130,9 @@ def remove_datasets_from_ckan(portal_url, apikey, filter_in=None,
                            for dataset in search_result['results']]
         start = 500
         while search_result['count'] > start:
-            search_result = ckan_portal.call_action('package_search',
-                                                    data_dict={'q': query, 'rows': 500, 'start': start})
+            search_result = ckan_portal.call_action(
+                'package_search', data_dict={
+                    'q': query, 'rows': 500, 'start': start})
             org_identifiers += [dataset['id']
                                 for dataset in search_result['results']]
             start += 500
@@ -265,7 +268,8 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
                 catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
             harvested.append(harvested_id)
         except Exception as e:
-            msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n" % (catalog_id, dataset_id, portal_url)
+            msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n"\
+                  % (catalog_id, dataset_id, portal_url)
             msg += str(e)
             logger.error(msg)
             errors[dataset_id] = str(e)

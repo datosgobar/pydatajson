@@ -39,7 +39,7 @@ def read_catalog_obj(catalog):
             return catalog
         else:
             return pydatajson.DataJson(catalog)
-    except:
+    except BaseException:
         return pydatajson.DataJson(catalog)
 
 
@@ -431,18 +431,20 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
             logger)
 
         if dataset_index is None:
-            logger.error("""No se encontro el dataset '{}' especificado para el campo
-'{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-                unidecode(field["dataset_title"]),
-                unidecode(field["field_title"]),
-                idx + 2))
+            logger.error(
+                """No se encontro el dataset '{}' especificado para el campo
+                '{}' (fila #{} de la hoja "Field"). Este campo no figurara en
+                el data.json de salida.""".format(
+                    unidecode(field["dataset_title"]),
+                    unidecode(field["field_title"]), idx + 2))
 
         elif distribution_index is None:
-            logger.error("""No se encontro la distribucion '{}' especificada para el campo
-'{}' (fila #{} de la hoja "Field"). Este campo no figurara en el data.json de salida.""".format(
-                unidecode(field["distribution_title"]),
-                unidecode(field["field_title"]),
-                idx + 2))
+            logger.error(
+                """No se encontro la distribucion '{}' especificada para el
+                campo'{}' (fila #{} de la hoja "Field"). Este campo no figurara
+                en el data.json de salida.""".format(
+                    unidecode(field["distribution_title"]),
+                    unidecode(field["field_title"]), idx + 2))
 
         else:
             dataset = catalog["catalog_dataset"][dataset_index]
@@ -463,7 +465,8 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                         "dataset_keyword", "dataset_language"]
         for field in array_fields:
             if field in dataset:
-                dataset[field] = helpers.string_to_list(dataset[field], filter_empty=True)
+                dataset[field] = helpers.string_to_list(
+                    dataset[field], filter_empty=True)
 
     # Elimino los prefijos de los campos a nivel catálogo
     _remove_prefixes_and_unprefixed_fields(catalog, 'catalog_')
@@ -480,7 +483,8 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
     # distribución
     for dataset in catalog["dataset"]:
         for distribution in dataset["distribution"]:
-            _remove_prefixes_and_unprefixed_fields(distribution, 'distribution_')
+            _remove_prefixes_and_unprefixed_fields(
+                distribution, 'distribution_')
 
     # Elimino campos auxiliares y los prefijos de los campos a nivel "campo"
     for dataset in catalog["dataset"]:

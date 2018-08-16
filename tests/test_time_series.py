@@ -5,7 +5,8 @@ from __future__ import with_statement
 import os.path
 import unittest
 from pydatajson.core import DataJson
-from pydatajson.time_series import get_distribution_time_index, distribution_has_time_index, dataset_has_time_series
+from pydatajson.time_series import get_distribution_time_index,\
+    distribution_has_time_index, dataset_has_time_series
 from pydatajson.custom_exceptions import DistributionTimeIndexNonExistentError
 
 SAMPLES_DIR = os.path.join("tests", "samples")
@@ -26,7 +27,10 @@ class TimeSeriesTestCase(unittest.TestCase):
         self.non_ts_distribution = full_catalog.distributions[0]
 
     def test_get_distribution_time_index(self):
-        self.assertEqual('indice_tiempo', get_distribution_time_index(self.ts_distribution))
+        self.assertEqual(
+            'indice_tiempo',
+            get_distribution_time_index(
+                self.ts_distribution))
         with self.assertRaises(DistributionTimeIndexNonExistentError):
             get_distribution_time_index(self.non_ts_distribution)
 

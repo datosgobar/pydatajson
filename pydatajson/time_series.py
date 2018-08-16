@@ -44,7 +44,8 @@ def get_distribution_time_index(distribution):
 
 def distribution_has_time_index(distribution):
     try:
-        return any([field.get('specialType') == 'time_index' for field in distribution.get('field', [])])
+        return any([field.get('specialType') ==
+                    'time_index' for field in distribution.get('field', [])])
     except AttributeError:
         return False
 

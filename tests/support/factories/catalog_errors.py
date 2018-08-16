@@ -97,14 +97,12 @@ def invalid_catalog_publisher_type():
 def invalid_publisher_mbox_format():
     return catalog_error({
         "error_code": 2,
-        "message": "%s is not a %s" % (
-            jsonschema_str('datosATmodernizacion.gob.ar'), jsonschema_str('email')),
+        "message": "%s is not a %s" %
+                   (jsonschema_str('datosATmodernizacion.gob.ar'),
+                    jsonschema_str('email')),
         "validator": "format",
         "validator_value": "email",
-        "path": [
-            "publisher",
-            "mbox"
-        ],
+        "path": ["publisher", "mbox"],
         "instance": "datosATmodernizacion.gob.ar"
     })
 
@@ -137,7 +135,8 @@ def malformed_date():
         "path": [
             "issued"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str('2016/04/14'),
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('2016/04/14'),
         "error_code": 2,
         "validator_value": [
             {
@@ -166,8 +165,8 @@ def malformed_datetime():
         "path": [
             "issued"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
-            '2016-04-1419:48:05.433640-03:00'),
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('2016-04-1419:48:05.433640-03:00'),
         "error_code": 2,
         "validator_value": [
             {
@@ -196,8 +195,8 @@ def malformed_datetime2():
         "path": [
             "issued"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
-            '2016-04-54T19:48:05.433640-03:00'),
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('2016-04-54T19:48:05.433640-03:00'),
         "error_code": 2,
         "validator_value": [
             {
@@ -227,8 +226,9 @@ def malformed_email():
             "publisher",
             "mbox"
         ],
-        "message": "%s is not a %s" % (
-            jsonschema_str('datosATmodernizacion.gob.ar'), jsonschema_str('email')),
+        "message": "%s is not a %s"
+                   % (jsonschema_str('datosATmodernizacion.gob.ar'),
+                      jsonschema_str('email')),
         "error_code": 2,
         "validator_value": "email"
     })
@@ -241,8 +241,9 @@ def malformed_uri():
         "path": [
             "superThemeTaxonomy"
         ],
-        "message": "%s is not a %s" % (
-            jsonschema_str('datos.gob.ar/superThemeTaxonomy.json'), jsonschema_str('uri')),
+        "message": "%s is not a %s"
+                   % (jsonschema_str('datos.gob.ar/superThemeTaxonomy.json'),
+                      jsonschema_str('uri')),
         "error_code": 2,
         "validator_value": "uri"
     })
@@ -256,8 +257,8 @@ def invalid_theme_taxonomy():
             "catalog",
             "themeTaxonomy"
         ],
-        "message": "Los ids [%s] estan repetidos en mas de un `theme`" % jsonschema_str(
-            'convocatorias'),
+        "message": "Los ids [%s] estan repetidos en mas de un `theme`"
+                   % jsonschema_str('convocatorias'),
         "error_code": 2,
         "validator_value": "Chequea ids duplicados en themeTaxonomy"
     })
@@ -268,7 +269,8 @@ def missing_dataset():
         "instance": None,
         "validator": "required",
         "path": [],
-        "message": "%s is a required property" % jsonschema_str('dataset'),
+        "message": "%s is a required property"
+                   % jsonschema_str('dataset'),
         "error_code": 1,
         "validator_value": [
             "dataset",
@@ -289,9 +291,15 @@ def repeated_downloadURL():
             "catalog",
             "dataset"
         ],
-        "message": "DownloadURL's [%s] estan repetidas en mas de un `distribution`" % jsonschema_str(
-            'http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv'),
+        "message": "DownloadURL's [%s] estan repetidas en mas de "
+                   "un `distribution`"
+                   % jsonschema_str('http://186.33.211.253/dataset/'
+                                    '99db6631-d1c9-470b-a73e-c62daa32c420/'
+                                    'resource/'
+                                    '4b7447cb-31ff-4352-96c3-589d212e1cc9/'
+                                    'download/'
+                                    'convocatorias-abiertas-anio-2015.csv'),
         "error_code": 2,
-        "validator_value": "Chequea downloadURL's duplicados en las distribuciones"
+        "validator_value": "Chequea downloadURL's duplicados "
+                           "en las distribuciones"
     })
-

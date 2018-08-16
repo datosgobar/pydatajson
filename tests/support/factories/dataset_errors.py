@@ -118,7 +118,8 @@ def missing_dataset_description():
 
 def malformed_accrualperiodicity():
     return dataset_error({
-        'message': "%s is not valid under any of the given schemas" % jsonschema_str('RP1Y'),
+        'message': "%s is not valid under any of the given schemas"
+                   % jsonschema_str('RP1Y'),
     })
 
 
@@ -131,12 +132,16 @@ def malformed_temporal():
             0,
             "temporal"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
-            '2015-01-1/2015-12-31'),
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('2015-01-1/2015-12-31'),
         "error_code": 2,
         "validator_value": [
             {
-                "pattern": "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)\\/(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
+                "pattern":
+                    "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)"
+                    "?(([+-]\\d\\d:\\d\\d)|Z)?)\\/(\\d{4}-\\d\\d-\\d\\"
+                    "d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)"
+                    "?(([+-]\\d\\d:\\d\\d)|Z)?)$",
                 "type": "string"
             },
             {
@@ -159,12 +164,16 @@ def malformed_temporal2():
             0,
             "temporal"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
-            '2015-01-10/31-12-2015'),
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('2015-01-10/31-12-2015'),
         "error_code": 2,
         "validator_value": [
             {
-                "pattern": "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)\\/(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
+                "pattern": "^(\\d{4}-\\d\\d-\\d\\d"
+                           "(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)"
+                           "?(([+-]\\d\\d:\\d\\d)|Z)?)\\/"
+                           "(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d"
+                           "\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
                 "type": "string"
             },
             {
@@ -180,7 +189,8 @@ def malformed_temporal2():
 
 def too_long_field_title():
     return dataset_error({
-        "instance": "organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc",
+        "instance": "organismo_unidad_operativa_contrataciones_desc_"
+                    "organismo_unidad_operativa_contrataciones_desc",
         "validator": "anyOf",
         "path": [
             "dataset",
@@ -191,8 +201,10 @@ def too_long_field_title():
             3,
             "title"
         ],
-        "message": "%s is not valid under any of the given schemas" % jsonschema_str(
-            'organismo_unidad_operativa_contrataciones_desc_organismo_unidad_operativa_contrataciones_desc'),
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('organismo_unidad_operativa_contrataciones'
+                                    '_desc_organismo_unidad_operativa_'
+                                    'contrataciones_desc'),
         "error_code": 2,
         "validator_value": [
             {

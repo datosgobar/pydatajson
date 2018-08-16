@@ -5,13 +5,15 @@ from __future__ import unicode_literals, absolute_import
 
 from .catalog_errors import missing_catalog_title, \
     missing_catalog_description, \
-    missing_catalog_dataset, invalid_catalog_publisher_type, invalid_publisher_mbox_format, \
-    null_catalog_publisher, empty_mandatory_string, malformed_date, malformed_datetime, \
-    malformed_datetime2, malformed_email, malformed_uri, invalid_theme_taxonomy, missing_dataset, \
-    repeated_downloadURL
+    missing_catalog_dataset, invalid_catalog_publisher_type,\
+    invalid_publisher_mbox_format, null_catalog_publisher,\
+    empty_mandatory_string, malformed_date, malformed_datetime, \
+    malformed_datetime2, malformed_email, malformed_uri,\
+    invalid_theme_taxonomy, missing_dataset, repeated_downloadURL
 from .dataset_errors import missing_dataset_title, \
     missing_dataset_description, \
-    malformed_accrualperiodicity, malformed_temporal, malformed_temporal2, too_long_field_title
+    malformed_accrualperiodicity, malformed_temporal,\
+    malformed_temporal2, too_long_field_title
 from .distribution_errors import missing_distribution_title
 from .other_errors import multiple_missing_descriptions, \
     invalid_multiple_fields_type
@@ -61,9 +63,11 @@ TEST_FROM_RESULT_FILE = {
     'invalid_field_description_type': None,
     # La clave requerida catalog["description"] NO puede ser str vacía
     'empty_optional_string': None,
-    # El format y extension de fileName de las distribuciones deben coincidir si estan los campos presentes
+    # El format y extension de fileName de las distribuciones deben
+    # coincidir si estan los campos presentes
     'mismatched_fileName_and_format': None,
-    # El format y extension de downloadURL de las distribuciones deben coincidir si estan los campos presentes
+    # El format y extension de downloadURL de las distribuciones deben
+    # coincidir si estan los campos presentes
     'mismatched_downloadURL_and_format': None,
 }
 

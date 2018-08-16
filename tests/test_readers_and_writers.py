@@ -169,7 +169,7 @@ revíselo manualmente""".format(temp_filename)
 
         try:
             pydatajson.readers.read_xlsx_catalog(tmp_xlsx)
-        except:
+        except BaseException:
             self.fail("No se pudo leer archivo XLSX")
 
     def test_read_local_xlsx_catalog_with_defaults(self):
@@ -229,9 +229,9 @@ revíselo manualmente""".format(temp_filename)
                 os.path.join(self.SAMPLES_DIR,
                              "catalogo_justicia." + suffix))
             catalog.to_json(os.path.join(self.TEMP_DIR,
-                            "saved_catalog.json"))
+                                         "saved_catalog.json"))
             catalog.to_xlsx(os.path.join(self.TEMP_DIR,
-                            "saved_catalog.xlsx"))
+                                         "saved_catalog.xlsx"))
             catalog_json = pydatajson.core.DataJson(
                 os.path.join(self.TEMP_DIR,
                              "saved_catalog.xlsx"))
@@ -241,18 +241,20 @@ revíselo manualmente""".format(temp_filename)
             self.assertEqual(catalog_json, catalog_xlsx)
 
             # la llamada to_xlsx() genera los indices en el catalogo original
-            # aplicarla a los catalogos generados debería dejarlos igual al original
+            # aplicarla a los catalogos generados debería dejarlos igual al
+            # original
             catalog_xlsx.to_xlsx(os.path.join(self.TEMP_DIR,
-                                 "otro.xlsx"))
+                                              "otro.xlsx"))
             catalog_json.to_xlsx(os.path.join(self.TEMP_DIR,
                                               "otro.xlsx"))
 
             self.assertEqual(catalog_json, catalog)
             self.assertEqual(catalog_xlsx, catalog)
-            
+
     def test_read_xlsx_lists_with_extra_commas(self):
         # No hay valores vacíos a pesar que hay listas con comas extras
-        catalog = pydatajson.readers.read_catalog(self.get_sample("lists_extra_commas.xlsx"))
+        catalog = pydatajson.readers.read_catalog(
+            self.get_sample("lists_extra_commas.xlsx"))
         self.assertTrue(catalog['language'])
         self.assertTrue(all(catalog['language']))
         for dataset in catalog['dataset']:
