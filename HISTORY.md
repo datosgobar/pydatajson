@@ -1,6 +1,13 @@
 Versiones
 =========
 
+0.4.21 (2018-08-21)
+-------------------
+
+* Tests y pequeños bugfixes a ckan_reader.
+* Adecua el codigo a pycodestyle.
+* Fija piso de 80% de coverage para CI.
+
 0.4.20 (2018-08-09)
 -------------------
 
