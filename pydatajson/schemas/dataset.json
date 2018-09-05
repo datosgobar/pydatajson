@@ -75,7 +75,7 @@
                 { "$ref": "mixed-types.json#arrayOrNull" },
                 { "anyOf": [
                     {"not": { "type": "array" }},
-                    {"items": { "pattern": "^[0-9a-zá-źÁ-ŹA-ZñÑ._-]+$" }}
+                    {"items": { "pattern": "^[ 0-9a-zá-źÁ-ŹA-ZñÑ._-]+$" }}
                 ]}
             ]
         },
