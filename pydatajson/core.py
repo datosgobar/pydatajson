@@ -46,7 +46,8 @@ DATA_FORMATS = [
     "csv", "xls", "xlsx", "ods", "dta",
     "shp", "kml",
     "json", "xml",
-    "zip"
+    "zip",
+    "html", "php"
 ]
 MIN_DATASET_TITLE = 10
 MIN_DATASET_DESCRIPTION = 20
@@ -219,7 +220,7 @@ class DataJson(dict):
                     dataset["distribution"].pop(index)
                     logger.info("Distribution {} del dataset {}"
                                 "en posicion {} fue eliminada.".format(
-                                 identifier, dataset["identifier"], index))
+                                    identifier, dataset["identifier"], index))
                     return
 
         logger.warning("No se encontro la distribucion {}.".format(identifier))
