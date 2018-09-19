@@ -46,7 +46,7 @@ DATA_FORMATS = [
     "csv", "xls", "xlsx", "ods", "dta",
     "shp", "kml",
     "json", "xml",
-    "zip",
+    "zip", "rar",
     "html", "php"
 ]
 MIN_DATASET_TITLE = 10
