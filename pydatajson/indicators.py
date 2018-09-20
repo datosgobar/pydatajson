@@ -163,13 +163,14 @@ def _federation_indicators(catalog, central_catalog):
     """
     result = {
         'datasets_federados_cant': None,
+        'datasets_federados_pct': None,
         'datasets_no_federados_cant': None,
         'datasets_federados_eliminados_cant': None,
-        'datasets_federados_eliminados': None,
-        'datasets_no_federados': None,
-        'datasets_federados': None,
-        'datasets_federados_pct': None,
-        'distribuciones_federadas_cant': None
+        'distribuciones_federadas_cant': None,
+        'datasets_federados_eliminados': [],
+        'datasets_no_federados': [],
+        'datasets_federados': [],
+
     }
     try:
         central_catalog = readers.read_catalog(central_catalog)
