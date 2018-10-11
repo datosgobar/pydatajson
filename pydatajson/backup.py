@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 import os
-import traceback
+import sys
 import logging
 
 import pydatajson
@@ -21,7 +21,7 @@ logger = logging.getLogger('pydatajson')
 
 def make_catalogs_backup(catalogs, local_catalogs_dir="",
                          include_metadata=True, include_data=True,
-                         include_metadata_xlsx=False):
+                         include_metadata_xlsx=False, use_short_path=False):
     """Realiza una copia local de los datos y metadatos de un catálogo.
 
     Args:
@@ -57,7 +57,8 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     local_catalogs_dir=local_catalogs_dir,
                     include_metadata=include_metadata,
                     include_metadata_xlsx=include_metadata_xlsx,
-                    include_data=include_data)
+                    include_data=include_data,
+                    use_short_path=use_short_path)
             except Exception:
                 logger.exception("ERROR en {}".format(catalog))
 
@@ -69,15 +70,18 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     local_catalogs_dir=local_catalogs_dir,
                     include_metadata=include_metadata,
                     include_metadata_xlsx=include_metadata_xlsx,
-                    include_data=include_data)
+                    include_data=include_data,
+                    use_short_path=use_short_path)
             except Exception:
                 logger.exception(
                     "ERROR en {} ({})".format(catalog, catalog_id))
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
-                        include_metadata=True, include_data=True,include_datasets=[],include_distribution_formats=['CSV','XLS'],
-                        include_metadata_xlsx=True,use_short_path=True):
+                        include_metadata=True, include_data=True,
+                        include_datasets=[],
+                        include_distribution_formats=['CSV', 'XLS'],
+                        include_metadata_xlsx=True, use_short_path=False):
     """Realiza una copia local de los datos y metadatos de un catálogo.
 
     Args:
@@ -93,9 +97,14 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
             data.json y catalog.xlsx.
         include_data (bool): Si es verdadero, se descargan todas las
             distribuciones de todos los catálogos.
-        include_datasets (list): Si se especifica, se descargan únicamente los datasets indicados. Si no, se descargan todos.
-        include_distribution_formats (list): Si se especifica, se descargan únicamente las distribuciones de los formatos indicados. Si no, se descargan todas.
-        use_short_path (bool): No implementado. Si es verdadero, se utiliza una jerarquía de directorios simplificada. Caso contrario, se replica la existente en infra.
+        include_datasets (list): Si se especifica, se descargan únicamente los
+            datasets indicados. Si no, se descargan todos.
+        include_distribution_formats (list): Si se especifica, se descargan
+            únicamente las distribuciones de los formatos indicados. Si no, se
+            descargan todas.
+        use_short_path (bool): No implementado. Si es verdadero, se utiliza una
+            jerarquía de directorios simplificada. Caso contrario, se replica
+            la existente en infra.
     Return:
         None
     """
@@ -129,7 +138,7 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
                 index + 1, distributions_num, catalog_identifier))
 
             dataset_id = distribution["dataset_identifier"]
-            
+
             if include_datasets and (dataset_id not in include_datasets):
                 pass
             else:
@@ -143,47 +152,61 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
                         distribution_download_url.rfind("/") + 1:]
                 )
 
-                #si no se espicifica un formato, se toma de distribution_file_name
-                #se asume que el formato se indica al menos en distribution_file_name
+                # si no espicifica un formato, toma de distribution_file_name
+                # asume que formato está al menos en distribution_file_name
                 distribution_format = distribution.get(
                     "format",
                     distribution_file_name[
                         distribution_file_name.rfind(".") + 1:]
                 )
-                if include_distribution_formats and (distribution_format not in include_distribution_formats):
+                if (include_distribution_formats and
+                        (distribution_format
+                            not in include_distribution_formats)):
                     pass
                 else:
-                
+
                     # genera el path local donde descargar el archivo
                     file_path = get_distribution_path(
                         catalog_identifier, dataset_id, distribution_id,
-                        distribution_file_name, local_catalogs_dir)
+                        distribution_file_name, local_catalogs_dir,
+                        use_short_path=use_short_path)
                     ensure_dir_exists(os.path.dirname(file_path))
 
                     # decarga el archivo
                     download_to_file(distribution_download_url, file_path)
 
 
-
 def get_distribution_dir(catalog_id, dataset_id, distribution_id,
-                         catalogs_dir=CATALOGS_DIR):
+                         catalogs_dir=CATALOGS_DIR, use_short_path=False):
     """Genera el path estándar de un catálogo en un filesystem."""
-    catalog_path = os.path.join(catalogs_dir, "catalog", catalog_id)
-    dataset_path = os.path.join(catalog_path, "dataset", dataset_id)
-    distribution_dir = os.path.join(dataset_path, "distribution",
-                                    distribution_id)
+    if use_short_path:
+        catalog_path = os.path.join(catalogs_dir, "catalog", catalog_id)
+        distribution_dir = os.path.join(catalog_path, dataset_id)
+    else:
+        catalog_path = os.path.join(catalogs_dir, "catalog", catalog_id)
+        dataset_path = os.path.join(catalog_path, "dataset", dataset_id)
+        distribution_dir = os.path.join(
+            dataset_path, "distribution", distribution_id)
 
     return os.path.abspath(distribution_dir)
 
 
 def get_distribution_path(catalog_id, dataset_id, distribution_id,
-                          distribution_file_name, catalogs_dir=CATALOGS_DIR):
+                          distribution_file_name, catalogs_dir=CATALOGS_DIR,
+                          use_short_path=False):
     """Genera el path estándar de un catálogo en un filesystem."""
-
-    distribution_dir = get_distribution_dir(
-        catalog_id, dataset_id, distribution_id, catalogs_dir)
-    distribution_file_path = os.path.join(
-        distribution_dir, "download", distribution_file_name)
+    if use_short_path:
+        distribution_dir = get_distribution_dir(
+            catalog_id, dataset_id, distribution_id, catalogs_dir,
+            use_short_path=True)
+        distribution_file_path = os.path.join(
+            distribution_dir, distribution_file_name)
+    else:
+        distribution_dir = get_distribution_dir(
+            catalog_id, dataset_id, distribution_id, catalogs_dir,
+            use_short_path=False)
+        distribution_file_path = os.path.join(
+            distribution_dir, "download", distribution_file_name)
 
     return os.path.abspath(distribution_file_path)
 
@@ -201,7 +224,7 @@ def get_catalog_path(catalog_id, catalogs_dir=CATALOGS_DIR, fmt="json"):
             fmt))
 
 
-def main(catalogs, include_data=True):
+def main(catalogs, include_data=True, use_short_path=True):
     """Permite hacer backups de uno o más catálogos por línea de comandos.
 
     Args:
@@ -209,7 +232,8 @@ def main(catalogs, include_data=True):
             locales) para hacer backups.
     """
     include_data = bool(int(include_data))
-    make_catalogs_backup(catalogs.split(","), include_data=include_data)
+    make_catalogs_backup(catalogs.split(
+        ","), include_data=include_data, use_short_path=use_short_path)
 
 
 if __name__ == '__main__':
