@@ -76,8 +76,8 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
-                        include_metadata=True, include_data=True,
-                        include_metadata_xlsx=True):
+                        include_metadata=True, include_data=True,include_datasets=[],include_distribution_formats=['CSV','XLS'],
+                        include_metadata_xlsx=True,use_short_path=True):
     """Realiza una copia local de los datos y metadatos de un catálogo.
 
     Args:
@@ -86,14 +86,16 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
             archivo con la metadata de un catálogo, en formato JSON o XLSX. La
             representación _interna_ de un catálogo es un diccionario.
         catalog_id (str): Si se especifica, se usa este identificador para el
-            backup. Si no se espedifica, se usa catalog["identifier"].
+            backup. Si no se especifica, se usa catalog["identifier"].
         local_catalogs_dir (str): Directorio local en el cual se va a crear
             la carpeta "catalog/..." con todos los catálogos.
         include_metadata (bool): Si es verdadero, se generan los archivos
             data.json y catalog.xlsx.
         include_data (bool): Si es verdadero, se descargan todas las
             distribuciones de todos los catálogos.
-
+        include_datasets (list): Si se especifica, se descargan únicamente los datasets indicados. Si no, se descargan todos.
+        include_distribution_formats (list): Si se especifica, se descargan únicamente las distribuciones de los formatos indicados. Si no, se descargan todas.
+        use_short_path (bool): No implementado. Si es verdadero, se utiliza una jerarquía de directorios simplificada. Caso contrario, se replica la existente en infra.
     Return:
         None
     """
@@ -127,24 +129,40 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
                 index + 1, distributions_num, catalog_identifier))
 
             dataset_id = distribution["dataset_identifier"]
-            distribution_id = distribution["identifier"]
-            distribution_download_url = distribution["downloadURL"]
+            
+            if include_datasets and (dataset_id not in include_datasets):
+                pass
+            else:
+                distribution_id = distribution["identifier"]
+                distribution_download_url = distribution["downloadURL"]
 
-            # si no se especifica un file name, se toma de la URL
-            distribution_file_name = distribution.get(
-                "fileName",
-                distribution_download_url[
-                    distribution_download_url.rfind("/") + 1:]
-            )
+                # si no se especifica un file name, se toma de la URL
+                distribution_file_name = distribution.get(
+                    "fileName",
+                    distribution_download_url[
+                        distribution_download_url.rfind("/") + 1:]
+                )
 
-            # genera el path local donde descargar el archivo
-            file_path = get_distribution_path(
-                catalog_identifier, dataset_id, distribution_id,
-                distribution_file_name, local_catalogs_dir)
-            ensure_dir_exists(os.path.dirname(file_path))
+                #si no se espicifica un formato, se toma de distribution_file_name
+                #se asume que el formato se indica al menos en distribution_file_name
+                distribution_format = distribution.get(
+                    "format",
+                    distribution_file_name[
+                        distribution_file_name.rfind(".") + 1:]
+                )
+                if include_distribution_formats and (distribution_format not in include_distribution_formats):
+                    pass
+                else:
+                
+                    # genera el path local donde descargar el archivo
+                    file_path = get_distribution_path(
+                        catalog_identifier, dataset_id, distribution_id,
+                        distribution_file_name, local_catalogs_dir)
+                    ensure_dir_exists(os.path.dirname(file_path))
 
-            # decarga el archivo
-            download_to_file(distribution_download_url, file_path)
+                    # decarga el archivo
+                    download_to_file(distribution_download_url, file_path)
+
 
 
 def get_distribution_dir(catalog_id, dataset_id, distribution_id,
