@@ -561,7 +561,7 @@ class TestIndicatorsTestCase(object):
             'datasets_actualizados_cant': None,
             'datasets_actualizados_pct': None,
             'catalogo_ultima_actualizacion_dias': None,
-            'datasets_frecuencia_cant': None
+            'datasets_frecuencia_cant': {}
         }
         for k, v in expected.items():
             assert_equal(indics[k], v)

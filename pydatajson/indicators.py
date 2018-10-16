@@ -384,7 +384,7 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
     }
     if not only_numeric:
         result.update({
-            'datasets_frecuencia_cant': None
+            'datasets_frecuencia_cant': {}
         })
 
     try:
