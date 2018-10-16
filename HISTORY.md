@@ -1,6 +1,11 @@
 Versiones
 =========
 
+0.4.24 (2018-10-16)
+-------------------
+* Cambia el valor default en el indicador `datasets_frecuencias_cant`.
+
+
 0.4.23 (2018-10-2)
 -------------------
 * Se agregan HTML, PHP y RAR como formatos de datos posibles.
