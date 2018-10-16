@@ -9,6 +9,7 @@ from __future__ import unicode_literals, print_function,\
 import os.path
 import logging
 import json
+import time
 from six.moves.urllib_parse import urljoin
 from six import iteritems
 from ckanapi import RemoteCKAN
@@ -69,6 +70,9 @@ def read_ckan_catalog(portal_url):
                 requests_kwargs={"verify": False}
             ))
 
+            # tiempo de espera padra evitar baneos
+            time.sleep(0.2)
+
         # itera leyendo todos los temas del portal
         groups = [portal.call_action(
             'group_show', {'id': grp},
@@ -83,6 +87,7 @@ def read_ckan_catalog(portal_url):
     except Exception as e:
         logger.exception(
             'Error al procesar el portal %s', portal_url, exc_info=True)
+        print(e)
 
     return catalog
 
