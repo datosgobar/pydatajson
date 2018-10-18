@@ -300,3 +300,8 @@ def push_new_themes(catalog, portal_url, apikey):
             catalog, portal_url, apikey, identifier=new_theme)
         pushed_names.append(name)
     return pushed_names
+
+
+def get_organizations_from_ckan(portal_url):
+    ckan_portal = RemoteCKAN(portal_url)
+    return ckan_portal.call_action('group_tree', data_dict={'type': 'organization'})
