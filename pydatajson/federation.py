@@ -300,3 +300,17 @@ def push_new_themes(catalog, portal_url, apikey):
             catalog, portal_url, apikey, identifier=new_theme)
         pushed_names.append(name)
     return pushed_names
+
+
+def push_organizations_to_ckan(portal_url, apikey, org_tree, parent=None):
+    portal = RemoteCKAN(portal_url, apikey=apikey)
+    for node in org_tree:
+        if parent:
+            node['groups'] = [{'capacity': 'public', 'name': parent}]
+        try:
+            portal.call_action('organization_create', data_dict=node)
+        except Exception as e:
+            logger.exception('Ocurrió un error creando la organización {}: {}'.format(node['title'], str(e)))
+        push_organizations_to_ckan(portal_url, apikey, node['children'], parent=node['name'])
+    return org_tree
+
