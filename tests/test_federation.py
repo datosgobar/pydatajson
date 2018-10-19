@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import unittest
 import os
 import re
+import json
 
 try:
     from mock import patch, MagicMock
@@ -481,7 +482,30 @@ class PushCatalogThemesTestCase(FederationSuite):
 @patch('pydatajson.federation.RemoteCKAN', autospec=True)
 class OrganizationsTestCase(FederationSuite):
 
+    def setUp(self):
+        self.portal_url = 'portal_url'
+        self.apikey = 'apikey'
+        self.org_tree = json.load(open(self.get_sample('organization_tree.json')))
+
+    def check_hierarchy(self, node, parent=None):
+        if parent is None:
+            self.assertTrue('groups' not in node)
+        else:
+            self.assertDictEqual(node['groups'][0],
+                                 {'capacity': 'public', 'name': parent})
+
+        for child in node['children']:
+            self.check_hierarchy(child, parent=node['name'])
+
     def test_get_organization_calls_api_correctly(self, mock_portal):
-        get_organizations_from_ckan('portal_url')
+        get_organizations_from_ckan(self.portal_url)
         mock_portal.return_value.call_action.assert_called_with(
             'group_tree', data_dict={'type': 'organization'})
+
+    def test_push_organizations_sends_correct_hierarchy(self, mock_portal):
+        mock_portal.return_value.call_action = (lambda _, data_dict: data_dict)
+        pushed_tree = push_organization_tree_to_ckan(self.portal_url,
+                                                     self.apikey,
+                                                     self.org_tree)
+        for node in pushed_tree:
+            self.check_hierarchy(node)
