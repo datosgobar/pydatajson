@@ -286,7 +286,7 @@ def push_new_themes(catalog, portal_url, apikey):
                 taxonomía.
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le
-                permitan crear o actualizar el dataset.
+                permitan crear o actualizar los temas.
         Returns:
             str: Los ids de los temas creados.
     """
@@ -303,6 +303,20 @@ def push_new_themes(catalog, portal_url, apikey):
 
 
 def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
+    """Toma un árbol de organizaciones y crea la jerarqu.
+
+            Args:
+                portal_url (str): La URL del portal CKAN de destino.
+                apikey (str): La apikey de un usuario con los permisos que le
+                    permitan crear las organizaciones.
+                org_tree(list): lista de diccionarios con la data de organizaciones
+                    a crear.
+                parent(str): campo name de la organizacion padre.
+            Returns:
+                (list): Devuelve el arbol de organizaciones recorridas, junto con el
+                    status detallando si la creación fue exitosa o no.
+
+    """
     portal = RemoteCKAN(portal_url, apikey=apikey)
     created = []
     for node in org_tree:
@@ -323,4 +337,3 @@ def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
 
         created.append(pushed_org)
     return created
-
