@@ -302,6 +302,20 @@ def push_new_themes(catalog, portal_url, apikey):
     return pushed_names
 
 
+def get_organizations_from_ckan(portal_url):
+    """Toma la url de un portal y devuelve su árbol de organizaciones.
+
+            Args:
+                portal_url (str): La URL del portal CKAN de origen.
+            Returns:
+                dict: Diccionarios anidados con la información de
+                las organizaciones.
+        """
+    ckan_portal = RemoteCKAN(portal_url)
+    return ckan_portal.call_action('group_tree',
+                                   data_dict={'type': 'organization'})
+
+
 def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
     """Toma un árbol de organizaciones y crea la jerarqu.
 

@@ -18,11 +18,14 @@ from ckanapi.errors import NotFound
 SAMPLES_DIR = os.path.join("tests", "samples")
 
 
-class PushDatasetTestCase(unittest.TestCase):
-
+class FederationSuite(unittest.TestCase):
     @classmethod
     def get_sample(cls, sample_filename):
         return os.path.join(SAMPLES_DIR, sample_filename)
+
+
+@patch('pydatajson.federation.RemoteCKAN', autospec=True)
+class PushDatasetTestCase(FederationSuite):
 
     @classmethod
     def setUpClass(cls):
@@ -43,7 +46,6 @@ class PushDatasetTestCase(unittest.TestCase):
         cls.minimum_dataset['distribution'][0][
             'identifier'] = cls.dataset['distribution'][0]['identifier']
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_id_is_created_correctly(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
@@ -62,7 +64,6 @@ class PushDatasetTestCase(unittest.TestCase):
             catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_id_is_updated_correctly(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
@@ -81,7 +82,6 @@ class PushDatasetTestCase(unittest.TestCase):
             catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_dataset_id_is_preserved_if_catalog_id_is_not_passed(
             self, mock_portal):
         def mock_call_action(action, data_dict=None):
@@ -97,7 +97,6 @@ class PushDatasetTestCase(unittest.TestCase):
                                       'portal', 'key')
         self.assertEqual(self.dataset_id, res_id)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_tags_are_passed_correctly(self, mock_portal):
         themes = self.dataset['theme']
         keywords = [kw for kw in self.dataset['keyword']]
@@ -132,7 +131,6 @@ class PushDatasetTestCase(unittest.TestCase):
             catalog_id=self.catalog_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, res_id)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_licenses_are_interpreted_correctly(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'license_list':
@@ -149,7 +147,6 @@ class PushDatasetTestCase(unittest.TestCase):
         push_dataset_to_ckan(self.catalog, 'owner', self.dataset_id,
                              'portal', 'key', catalog_id=self.catalog_id)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_dataset_without_license_sets_notspecified(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'license_list':
@@ -172,7 +169,6 @@ class PushDatasetTestCase(unittest.TestCase):
             'key',
             catalog_id=self.minimum_catalog_id)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_dataset_level_wrappers(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
@@ -192,7 +188,6 @@ class PushDatasetTestCase(unittest.TestCase):
         self.assertEqual(self.dataset_id, restored_id)
         self.assertEqual(self.catalog_id + '_' + self.dataset_id, harvested_id)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_no_optional_parametres(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
@@ -218,7 +213,6 @@ class PushDatasetTestCase(unittest.TestCase):
                                    for ds in self.catalog.datasets],
                                   harvested_ids)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_dataset_list(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
@@ -254,7 +248,6 @@ class PushDatasetTestCase(unittest.TestCase):
                 [self.catalog_id + '_' + ds_id for ds_id in dataset_list],
                 harvested_ids)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_owner_org(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
@@ -275,7 +268,6 @@ class PushDatasetTestCase(unittest.TestCase):
                                    for ds in self.catalog.datasets],
                                   harvested_ids)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_errors(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'package_update':
@@ -292,7 +284,6 @@ class PushDatasetTestCase(unittest.TestCase):
         self.assertDictEqual(
             {self.catalog.datasets[1]['identifier']: "some message"}, errors)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_harvest_catalog_with_empty_list(self, mock_portal):
         harvested_ids, _ = harvest_catalog_to_ckan(
             self.catalog, 'portal', 'key', self.catalog_id,
@@ -301,7 +292,7 @@ class PushDatasetTestCase(unittest.TestCase):
         self.assertEqual([], harvested_ids)
 
 
-class RemoveDatasetTestCase(unittest.TestCase):
+class RemoveDatasetTestCase(FederationSuite):
 
     @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_empty_search_doesnt_call_purge(self, mock_portal):
@@ -378,22 +369,17 @@ class RemoveDatasetTestCase(unittest.TestCase):
             'dataset_purge', data_dict={'id': 'id_2'})
 
 
-class PushThemeTestCase(unittest.TestCase):
-
-    @classmethod
-    def get_sample(cls, sample_filename):
-        return os.path.join(SAMPLES_DIR, sample_filename)
+@patch('pydatajson.federation.RemoteCKAN', autospec=True)
+class PushThemeTestCase(FederationSuite):
 
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_empty_theme_search_raises_exception(self, mock_portal):
         with self.assertRaises(AssertionError):
             push_theme_to_ckan(self.catalog, 'portal_url', 'apikey')
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_function_pushes_theme_by_identifier(self, mock_portal):
         mock_portal.return_value.call_action = MagicMock(
             return_value={'name': 'group_name'})
@@ -404,7 +390,6 @@ class PushThemeTestCase(unittest.TestCase):
             identifier='compras')
         self.assertEqual('group_name', result)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_function_pushes_theme_by_label(self, mock_portal):
         mock_portal.return_value.call_action = MagicMock(
             return_value={'name': 'other_name'})
@@ -415,7 +400,6 @@ class PushThemeTestCase(unittest.TestCase):
             label='Adjudicaciones')
         self.assertEqual('other_name', result)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_ckan_portal_is_called_with_correct_parametres(self, mock_portal):
         mock_portal.return_value.call_action = MagicMock(
             return_value={'name': u'contrataciones'})
@@ -431,16 +415,13 @@ class PushThemeTestCase(unittest.TestCase):
             'group_create', data_dict=group)
 
 
-class PushCatalogThemesTestCase(unittest.TestCase):
-    @classmethod
-    def get_sample(cls, sample_filename):
-        return os.path.join(SAMPLES_DIR, sample_filename)
+@patch('pydatajson.federation.RemoteCKAN', autospec=True)
+class PushCatalogThemesTestCase(FederationSuite):
 
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_empty_portal_pushes_every_theme(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'group_list':
@@ -461,7 +442,6 @@ class PushCatalogThemesTestCase(unittest.TestCase):
                 [theme['id'] for theme in self.catalog['themeTaxonomy']],
                 res_names)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_full_portal_pushes_nothing(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'group_list':
@@ -476,7 +456,6 @@ class PushCatalogThemesTestCase(unittest.TestCase):
         except AttributeError:
             self.assertCountEqual([], res_names)
 
-    @patch('pydatajson.federation.RemoteCKAN', autospec=True)
     def test_non_empty_intersection_pushes_missing_themes(self, mock_portal):
         def mock_call_action(action, data_dict=None):
             if action == 'group_list':
@@ -497,3 +476,12 @@ class PushCatalogThemesTestCase(unittest.TestCase):
             self.assertCountEqual(
                 [theme['id'] for theme in self.catalog['themeTaxonomy']][2:],
                 res_names)
+
+
+@patch('pydatajson.federation.RemoteCKAN', autospec=True)
+class OrganizationsTestCase(FederationSuite):
+
+    def test_get_organization_calls_api_correctly(self, mock_portal):
+        get_organizations_from_ckan('portal_url')
+        mock_portal.return_value.call_action.assert_called_with(
+            'group_tree', data_dict={'type': 'organization'})
