@@ -428,6 +428,15 @@ Toma los siguientes parámetros:
   portal de destino. Si no se pasa, se toma como organización el catalog_id
 
   Retorna el id en el nodo de destino de los datasets federados.
+  
+### Métodos para manejo de organizaciones
+
+- **pydatajson.federation.get_organizations_from_ckan()**: Devuelve el árbol de organizaciones del portal pasado por parámetro.
+Toma los siguientes parámetros:
+  - **portal_url**: URL del portal de CKAN. Debe implementar el endpoint `/group_tree`.
+  
+  Retorna una lista de diccionarios con la información de las organizaciones. Recursivamente, dentro del campo `children`,
+  se encuentran las organizaciones dependientes en la jerarquía. 
 
 ## Anexo I: Estructura de respuestas
 
