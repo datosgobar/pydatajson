@@ -488,6 +488,9 @@ class OrganizationsTestCase(FederationSuite):
         self.org_tree = json.load(open(self.get_sample('organization_tree.json')))
 
     def check_hierarchy(self, node, parent=None):
+        if not node['success']:
+            self.assertTrue('children' not in node)
+            return
         if parent is None:
             self.assertTrue('groups' not in node)
         else:
@@ -504,6 +507,21 @@ class OrganizationsTestCase(FederationSuite):
 
     def test_push_organizations_sends_correct_hierarchy(self, mock_portal):
         mock_portal.return_value.call_action = (lambda _, data_dict: data_dict)
+        pushed_tree = push_organization_tree_to_ckan(self.portal_url,
+                                                     self.apikey,
+                                                     self.org_tree)
+        for node in pushed_tree:
+            self.check_hierarchy(node)
+
+    def test_push_organizations_cuts_trees_on_failures(self, mock_portal):
+        def mock_org_create(_action, data_dict):
+            broken_orgs = ('acumar', 'modernizacion', 'hacienda')
+            if data_dict['name'] in broken_orgs:
+                raise Exception('broken org on each level')
+            else:
+                return data_dict
+
+        mock_portal.return_value.call_action = mock_org_create
         pushed_tree = push_organization_tree_to_ckan(self.portal_url,
                                                      self.apikey,
                                                      self.org_tree)
