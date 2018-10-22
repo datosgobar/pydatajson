@@ -42,13 +42,6 @@ logger = logging.getLogger('pydatajson')
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
-DATA_FORMATS = [
-    "csv", "xls", "xlsx", "ods", "dta",
-    "shp", "kml",
-    "json", "xml",
-    "zip", "rar",
-    "html", "php"
-]
 MIN_DATASET_TITLE = 10
 MIN_DATASET_DESCRIPTION = 20
 
@@ -385,7 +378,7 @@ class DataJson(dict):
 
         # crea lista de formatos
         distributions_formats = json.dumps(
-            cls._count_distribution_formats_dataset(dataset))
+            helpers.count_distribution_formats_dataset(dataset))
 
         fields = OrderedDict()
         fields["dataset_identifier"] = dataset.get("identifier")
@@ -500,15 +493,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
 
         # 1. VALIDACIONES
         # chequea que haya por lo menos algún formato de datos reconocido
-        has_data_format = False
-        formats = self._count_distribution_formats_dataset(dataset).keys()
-        for distrib_format in formats:
-            for data_format in DATA_FORMATS:
-                if data_format.lower() in distrib_format.lower():
-                    has_data_format = True
-                    break
-            if has_data_format:
-                break
+        has_data_format = helpers.dataset_has_data_distributions(dataset)
 
         # chequea que algunos campos tengan longitudes mínimas
         has_title = "title" in dataset
@@ -1073,22 +1058,6 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
             catalogs, central_catalog, validator=self.validator)
-
-    @staticmethod
-    def _count_distribution_formats_dataset(dataset):
-
-        formats = {}
-        for distribution in dataset['distribution']:
-            # 'format' es recomendado, no obligatorio. Puede no estar.
-            distribution_format = distribution.get('format', None)
-
-            if distribution_format:
-                # Si no está en el diccionario, devuelvo 0
-                count = formats.get(distribution_format, 0)
-
-                formats[distribution_format] = count + 1
-
-        return formats
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos

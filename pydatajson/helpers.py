@@ -26,6 +26,43 @@ STOP_WORDS = [
     "y", "a",
     "un", "una", "en"
 ]
+DATA_FORMATS = [
+    "csv", "xls", "xlsx", "ods", "dta",
+    "shp", "kml",
+    "json", "xml",
+    "zip", "rar",
+    "html", "php"
+]
+
+
+def count_distribution_formats_dataset(dataset):
+
+    formats = {}
+    for distribution in dataset['distribution']:
+            # 'format' es recomendado, no obligatorio. Puede no estar.
+        distribution_format = distribution.get('format', None)
+
+        if distribution_format:
+                # Si no está en el diccionario, devuelvo 0
+            count = formats.get(distribution_format, 0)
+
+            formats[distribution_format] = count + 1
+
+    return formats
+
+
+def dataset_has_data_distributions(dataset):
+    has_data_format = False
+    formats = count_distribution_formats_dataset(dataset).keys()
+    for distrib_format in formats:
+        for data_format in DATA_FORMATS:
+            if data_format.lower() in distrib_format.lower():
+                has_data_format = True
+                break
+        if has_data_format:
+            break
+
+    return has_data_format
 
 
 def title_to_name(title, decode=True, max_len=None, use_complete_words=True):

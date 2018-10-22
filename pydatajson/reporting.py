@@ -15,6 +15,7 @@ from pydatajson import writers
 from .validation import validate_catalog
 
 from . import readers
+from . import helpers
 
 
 def generate_datasets_summary(catalog, export_path=None, validator=None):
@@ -63,6 +64,10 @@ def generate_datasets_summary(catalog, export_path=None, validator=None):
         info["estado_metadatos"] = validation[index]["status"]
         info["cant_errores"] = len(validation[index]["errors"])
         info["cant_distribuciones"] = len(dataset["distribution"])
+        if helpers.dataset_has_data_distributions(dataset):
+            info["tiene_datos"] = "SI"
+        else:
+            info["tiene_datos"] = "NO"
 
         return info
 

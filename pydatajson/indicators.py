@@ -27,6 +27,7 @@ CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
+
 logger = logging.getLogger('pydatajson')
 
 
@@ -117,12 +118,16 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
     Returns:
         dict: diccionario con los indicadores del catálogo provisto
     """
+
     result = {}
+
     # Obtengo summary para los indicadores del estado de los metadatos
     result.update(_generate_status_indicators(catalog, validator=validator))
+
     # Genero los indicadores relacionados con fechas, y los agrego
     result.update(
         _generate_date_indicators(catalog, only_numeric=only_numeric))
+
     # Agrego la cuenta de los formatos de las distribuciones
     if not only_numeric:
         if 'dataset' in catalog:
@@ -320,7 +325,10 @@ def _generate_status_indicators(catalog, validator=None):
         'distribuciones_cant': None,
         'datasets_meta_ok_cant': None,
         'datasets_meta_error_cant': None,
-        'datasets_meta_ok_pct': None
+        'datasets_meta_ok_pct': None,
+        'datasets_con_datos_cant': None,
+        'datasets_sin_datos_cant': None,
+        'datasets_con_datos_pct': None
     }
     try:
         summary = generate_datasets_summary(catalog, validator=validator)
@@ -332,25 +340,43 @@ def _generate_status_indicators(catalog, validator=None):
 
     cant_ok = 0
     cant_error = 0
+    cant_data = 0
+    cant_without_data = 0
     cant_distribuciones = 0
     datasets_total = len(summary)
     for dataset in summary:
         cant_distribuciones += dataset['cant_distribuciones']
 
+        print(dataset)
+        # chequea si el dataset tiene datos
+        if dataset['tiene_datos'] == "SI":
+            cant_data += 1
+        else:  # == "ERROR"
+            cant_without_data += 1
+
+        # chequea estado de los metadatos
         if dataset['estado_metadatos'] == "OK":
             cant_ok += 1
         else:  # == "ERROR"
             cant_error += 1
 
     datasets_ok_pct = 0
+    datasets_with_data_pct = 0
     if datasets_total:
         datasets_ok_pct = round(100 * float(cant_ok) / datasets_total, 2)
+        datasets_with_data_pct = round(
+            100 * float(cant_data) / datasets_total, 2)
+
     result.update({
         'datasets_cant': datasets_total,
         'distribuciones_cant': cant_distribuciones,
         'datasets_meta_ok_cant': cant_ok,
         'datasets_meta_error_cant': cant_error,
-        'datasets_meta_ok_pct': datasets_ok_pct
+        'datasets_meta_ok_pct': datasets_ok_pct,
+        'datasets_con_datos_cant': cant_data,
+        'datasets_sin_datos_cant': cant_without_data,
+        'datasets_con_datos_pct': datasets_with_data_pct
+
     })
     return result
 
