@@ -317,7 +317,8 @@ def get_organizations_from_ckan(portal_url):
 
 
 def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
-    """Toma un árbol de organizaciones y crea la jerarqu.
+    """Toma un árbol de organizaciones y crea la jerarquía en el portal de
+    destino.
 
             Args:
                 portal_url (str): La URL del portal CKAN de destino.
