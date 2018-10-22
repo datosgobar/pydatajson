@@ -524,8 +524,11 @@ class TestIndicatorsTestCase(object):
             'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
             'datasets_federados_cant': None,
             'datasets_no_federados_cant': None,
-            'datasets_no_federados': None,
-            'datasets_federados_pct': None
+            'datasets_federados_pct': None,
+            'datasets_federados': [],
+            'datasets_no_federados': [],
+            'datasets_federados_eliminados': [],
+
         }
         for k, v in expected.items():
             assert_equal(indics[k], v)
@@ -558,7 +561,7 @@ class TestIndicatorsTestCase(object):
             'datasets_actualizados_cant': None,
             'datasets_actualizados_pct': None,
             'catalogo_ultima_actualizacion_dias': None,
-            'datasets_frecuencia_cant': None
+            'datasets_frecuencia_cant': {}
         }
         for k, v in expected.items():
             assert_equal(indics[k], v)
