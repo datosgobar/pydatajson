@@ -485,7 +485,8 @@ class OrganizationsTestCase(FederationSuite):
     def setUp(self):
         self.portal_url = 'portal_url'
         self.apikey = 'apikey'
-        self.org_tree = json.load(open(self.get_sample('organization_tree.json')))
+        self.org_tree = json.load(open(
+            self.get_sample('organization_tree.json')))
 
     def check_hierarchy(self, node, parent=None):
         if not node['success']:

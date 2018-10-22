@@ -324,12 +324,13 @@ def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
                 portal_url (str): La URL del portal CKAN de destino.
                 apikey (str): La apikey de un usuario con los permisos que le
                     permitan crear las organizaciones.
-                org_tree(list): lista de diccionarios con la data de organizaciones
-                    a crear.
+                org_tree(list): lista de diccionarios con la data de las
+                    organizaciones a crear.
                 parent(str): campo name de la organizacion padre.
             Returns:
-                (list): Devuelve el arbol de organizaciones recorridas, junto con el
-                    status detallando si la creación fue exitosa o no.
+                (list): Devuelve el arbol de organizaciones recorridas,
+                    junto con el status detallando si la creación fue
+                    exitosa o no.
 
     """
     portal = RemoteCKAN(portal_url, apikey=apikey)
