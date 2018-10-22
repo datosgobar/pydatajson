@@ -1002,7 +1002,7 @@ Por favor, consulte el informe [`datasets.csv`](datasets.csv).
         catalog_readme = readme_template.format(**content)
 
         if export_path:
-            with io.open(export_path, 'w', encoding='utf-8') as target:
+            with io.open(export_path, 'w+', encoding='utf-8') as target:
                 target.write(catalog_readme)
         else:
             return catalog_readme
