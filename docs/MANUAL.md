@@ -438,6 +438,19 @@ Toma los siguientes parámetros:
   Retorna una lista de diccionarios con la información de las organizaciones. Recursivamente, dentro del campo `children`,
   se encuentran las organizaciones dependientes en la jerarquía. 
 
+- **pydatajson.federation.push_organization_tree_to_ckan()**: Tomando un árbol de organizaciones como el creado por
+`get_organizations_from_ckan()` crea en el portal de destino las organizaciones dentro de su jerarquía. Toma los siguientes
+parámetros:
+  - **portal_url**: La URL del portal CKAN de destino.
+  - **apikey**: La apikey de un usuario con los permisos que le permitan crear las organizaciones.
+  - **org_tree**: lista de diccionarios con la data de organizaciones a crear.
+  - **parent** (opcional, default: None): Si se pasa, el árbol de organizaciones pasado en `org_tree` se
+  crea bajo la organización con `name` pasado en `parent`. Si no se pasa un parámetro, las organizaciones son creadas
+  como primer nivel.
+  
+  Retorna el árbol de organizaciones creadas. Cada nodo tiene un campo `success` que indica si fue creado exitosamente o
+  no. En caso de que `success` sea False, los hijos de esa organización no son creados.
+
 ## Anexo I: Estructura de respuestas
 
 ### validate_catalog()
