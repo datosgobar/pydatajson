@@ -496,7 +496,7 @@ class OrganizationsTestCase(FederationSuite):
             self.assertTrue('groups' not in node)
         else:
             self.assertDictEqual(node['groups'][0],
-                                 {'capacity': 'public', 'name': parent})
+                                 {'name': parent})
 
         for child in node['children']:
             self.check_hierarchy(child, parent=node['name'])

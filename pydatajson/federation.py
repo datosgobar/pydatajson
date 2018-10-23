@@ -317,7 +317,7 @@ def get_organizations_from_ckan(portal_url):
 
 
 def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
-    """Toma un árbol de organizaciones y crea la jerarquía en el portal de
+    """Toma un árbol de organizaciones y lo replica en el portal de
     destino.
 
             Args:
@@ -337,7 +337,7 @@ def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
     created = []
     for node in org_tree:
         if parent:
-            node['groups'] = [{'capacity': 'public', 'name': parent}]
+            node['groups'] = [{'name': parent}]
         try:
             pushed_org = portal.call_action('organization_create',
                                             data_dict=node)
