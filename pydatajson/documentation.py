@@ -47,10 +47,12 @@ def dataset_to_markdown(dataset):
 
 
 def distribution_to_markdown(distribution):
-    """Genera texto en markdown a partir de los metadatos de una `distribution`.
+    """Genera texto en markdown a partir de los metadatos de una
+    `distribution`.
 
     Args:
-        distribution (dict): Diccionario con metadatos de una `distribution`.
+        distribution (dict): Diccionario con metadatos de una
+        `distribution`.
 
     Returns:
         str: Texto que describe una `distribution`.

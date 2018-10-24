@@ -286,7 +286,7 @@ def push_new_themes(catalog, portal_url, apikey):
                 taxonomía.
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le
-                permitan crear o actualizar el dataset.
+                permitan crear o actualizar los temas.
         Returns:
             str: Los ids de los temas creados.
     """
@@ -314,3 +314,42 @@ def get_organizations_from_ckan(portal_url):
     ckan_portal = RemoteCKAN(portal_url)
     return ckan_portal.call_action('group_tree',
                                    data_dict={'type': 'organization'})
+
+
+def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
+    """Toma un árbol de organizaciones y lo replica en el portal de
+    destino.
+
+            Args:
+                portal_url (str): La URL del portal CKAN de destino.
+                apikey (str): La apikey de un usuario con los permisos que le
+                    permitan crear las organizaciones.
+                org_tree(list): lista de diccionarios con la data de las
+                    organizaciones a crear.
+                parent(str): campo name de la organizacion padre.
+            Returns:
+                (list): Devuelve el arbol de organizaciones recorridas,
+                    junto con el status detallando si la creación fue
+                    exitosa o no.
+
+    """
+    portal = RemoteCKAN(portal_url, apikey=apikey)
+    created = []
+    for node in org_tree:
+        if parent:
+            node['groups'] = [{'name': parent}]
+        try:
+            pushed_org = portal.call_action('organization_create',
+                                            data_dict=node)
+            pushed_org['success'] = True
+        except Exception as e:
+            logger.exception('Ocurrió un error creando la organización {}: {}'
+                             .format(node['title'], str(e)))
+            pushed_org = {'name': node, 'success': False}
+
+        if pushed_org['success']:
+            pushed_org['children'] = push_organization_tree_to_ckan(
+                portal_url, apikey, node['children'], parent=node['name'])
+
+        created.append(pushed_org)
+    return created

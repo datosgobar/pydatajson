@@ -1,0 +1,235 @@
+[
+    {
+        "highlighted": false, 
+        "title": " Jefatura de Gabinete de Ministros", 
+        "children": [
+            {
+                "highlighted": false, 
+                "title": "Agencia de Acceso a la Informaci\u00f3n P\u00fablica", 
+                "children": [], 
+                "name": "aaip", 
+                "id": "daa8b40c-fa37-478c-a7ef-081305aeadd8"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Ambiente y Desarrollo Sustentable", 
+                "children": [
+                    {
+                        "highlighted": false, 
+                        "title": "Autoridad de Cuenca Matanza Riachuelo", 
+                        "children": [], 
+                        "name": "acumar", 
+                        "id": "1b6b28cd-098f-41d7-b43f-d5a01ffa8759"
+                    }
+                ], 
+                "name": "ambiente", 
+                "id": "0e5aa328-825e-4509-851d-5421e866635e"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Modernizaci\u00f3n", 
+                "children": [
+                    {
+                        "highlighted": false, 
+                        "title": "Empresa Argentina de Soluciones Satelitales", 
+                        "children": [], 
+                        "name": "arsat", 
+                        "id": "b2509ac0-3af6-4f66-9ffa-8c6fb4206791"
+                    }, 
+                    {
+                        "highlighted": false, 
+                        "title": "Ente Nacional de Comunicaciones", 
+                        "children": [], 
+                        "name": "enacom", 
+                        "id": "6eb7d19b-2d42-494f-8e57-d67c501d23eb"
+                    }
+                ], 
+                "name": "modernizacion", 
+                "id": "4c7a6f6b-5caf-42a1-aae5-0a07e609a235"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Turismo", 
+                "children": [], 
+                "name": "turismo", 
+                "id": "3a751de6-128e-4f9a-a479-4672ef79a0e8"
+            }
+        ], 
+        "name": "jgm", 
+        "id": "f917ad65-28ea-42a9-81ae-61a2bb8f58d0"
+    }, 
+    {
+        "highlighted": false, 
+        "title": " Ministerio de Defensa", 
+        "children": [
+            {
+                "highlighted": false, 
+                "title": "Instituto Geogr\u00e1fico Nacional", 
+                "children": [], 
+                "name": "ign", 
+                "id": "9b47c8eb-bb5c-40df-bbaa-589374d14da8"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Servicio Meteorol\u00f3gico Nacional", 
+                "children": [], 
+                "name": "smn", 
+                "id": "dba2a17e-e2ea-4e0b-b0ef-bf4ffe9f9ad9"
+            }
+        ], 
+        "name": "defensa", 
+        "id": "5e80ed4f-8bfb-4451-8240-e8f39e695ee1"
+    }, 
+    {
+        "highlighted": false, 
+        "title": "Ministerio de Educaci\u00f3n, Cultura, Ciencia y Tecnolog\u00eda", 
+        "children": [
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Ciencia y Tecnolog\u00eda", 
+                "children": [], 
+                "name": "mincyt", 
+                "id": "772ab9b7-056d-4ae4-b7a2-a1329e979690"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Cultura", 
+                "children": [], 
+                "name": "cultura", 
+                "id": "9fcc8ffc-3dcc-4437-acc8-72c5b08d8d51"
+            }
+        ], 
+        "name": "educacion", 
+        "id": "27d39ff7-7110-4c6d-b7e8-1b8eba392d7e"
+    }, 
+    {
+        "highlighted": false, 
+        "title": " Ministerio de Hacienda", 
+        "children": [
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Energ\u00eda", 
+                "children": [
+                    {
+                        "highlighted": false, 
+                        "title": "Ente Nacional Regulador del Gas", 
+                        "children": [], 
+                        "name": "enargas", 
+                        "id": "dddda9d3-644d-4e3d-974b-302fd8945a86"
+                    }
+                ], 
+                "name": "energia", 
+                "id": "cd1b32a2-2d3a-44ac-8c98-a425a7b62d42"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Subsecretar\u00eda de Presupuesto", 
+                "children": [], 
+                "name": "sspre", 
+                "id": "a753aeb8-52eb-4cfc-a6ee-6d930094b0f2"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Subsecretar\u00eda de Programaci\u00f3n Macroecon\u00f3mica", 
+                "children": [], 
+                "name": "sspm", 
+                "id": "68f9ee22-5ec3-44cf-a32b-b87d9db46b93"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Subsecretar\u00eda de Programaci\u00f3n Microecon\u00f3mica", 
+                "children": [], 
+                "name": "sspmi", 
+                "id": "b4baa84a-16a7-4db0-af9c-bd925971d26a"
+            }
+        ], 
+        "name": "hacienda", 
+        "id": "b2a6e77e-a3c8-4e1a-bcba-7134a9436051"
+    }, 
+    {
+        "highlighted": false, 
+        "title": " Ministerio de Justicia y Derechos Humanos", 
+        "children": [], 
+        "name": "justicia", 
+        "id": "06b380f8-888f-43c0-8367-16a7ddf47d4f"
+    }, 
+    {
+        "highlighted": false, 
+        "title": " Ministerio del Interior, Obras P\u00fablicas y Vivienda ", 
+        "children": [], 
+        "name": "interior", 
+        "id": "c88b1ad1-f78d-4cf9-848d-d73ccae6cd8e"
+    }, 
+    {
+        "highlighted": false, 
+        "title": "Ministerio de Producci\u00f3n y Trabajo", 
+        "children": [
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Agroindustria", 
+                "children": [], 
+                "name": "agroindustria", 
+                "id": "b10c94e2-ade1-4a97-8c4c-b1ada7878d60"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Trabajo y Empleo", 
+                "children": [], 
+                "name": "trabajo", 
+                "id": "f31cb5dc-79ab-442b-ac7f-87ef6ad7749d"
+            }, 
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Transformaci\u00f3n Productiva", 
+                "children": [], 
+                "name": "siep", 
+                "id": "83a04686-747a-4ba3-a0b1-2f05c3196bc4"
+            }
+        ], 
+        "name": "produccion", 
+        "id": "1ca8d15b-31fc-4f09-ba09-53edd3d4cce6"
+    }, 
+    {
+        "highlighted": false, 
+        "title": "Ministerio de Relaciones Exteriores y Culto", 
+        "children": [], 
+        "name": "exterior", 
+        "id": "89cd05f2-11c1-4f1a-875f-b4faf97eb4d4"
+    }, 
+    {
+        "highlighted": false, 
+        "title": "Ministerio de Salud y Desarrollo Social", 
+        "children": [
+            {
+                "highlighted": false, 
+                "title": "Secretar\u00eda de Gobierno de Salud", 
+                "children": [], 
+                "name": "salud", 
+                "id": "dd1f2018-587f-43af-9b07-fc32f5ab588b"
+            }
+        ], 
+        "name": "desarrollo-social", 
+        "id": "ef25c735-2abb-4165-94a6-a6798a103603"
+    }, 
+    {
+        "highlighted": false, 
+        "title": " Ministerio de Seguridad", 
+        "children": [], 
+        "name": "seguridad", 
+        "id": "908fd413-5a22-40e7-9204-38ef380ae232"
+    }, 
+    {
+        "highlighted": false, 
+        "title": " Ministerio de Transporte", 
+        "children": [], 
+        "name": "transporte", 
+        "id": "71418928-10c4-4625-aeaf-69a4d73d00ed"
+    }, 
+    {
+        "highlighted": false, 
+        "title": "Sin organizaci\u00f3n asignada", 
+        "children": [], 
+        "name": "otros", 
+        "id": "109d53ef-3ed3-498e-97d0-a456698969f7"
+    }
+]
