@@ -308,12 +308,26 @@ def get_organizations_from_ckan(portal_url):
             Args:
                 portal_url (str): La URL del portal CKAN de origen.
             Returns:
-                dict: Diccionarios anidados con la información de
+                list: Lista de diccionarios anidados con la información de
                 las organizaciones.
         """
     ckan_portal = RemoteCKAN(portal_url)
     return ckan_portal.call_action('group_tree',
                                    data_dict={'type': 'organization'})
+
+
+def get_organization_from_ckan(portal_url, org_id):
+    """Toma la url de un portal y un id, y devuelve la organización a buscar.
+
+            Args:
+                portal_url (str): La URL del portal CKAN de origen.
+                org_id (str): El id de la organización a buscar.
+            Returns:
+                dict: Diccionario con la información de la organización.
+        """
+    ckan_portal = RemoteCKAN(portal_url)
+    return ckan_portal.call_action('organization_show',
+                                   data_dict={'id': org_id})
 
 
 def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):

@@ -501,10 +501,15 @@ class OrganizationsTestCase(FederationSuite):
         for child in node['children']:
             self.check_hierarchy(child, parent=node['name'])
 
-    def test_get_organization_calls_api_correctly(self, mock_portal):
+    def test_get_organizations_calls_api_correctly(self, mock_portal):
         get_organizations_from_ckan(self.portal_url)
         mock_portal.return_value.call_action.assert_called_with(
             'group_tree', data_dict={'type': 'organization'})
+
+    def test_get_organization_calls_api_correctly(self, mock_portal):
+        get_organization_from_ckan(self.portal_url, 'test_id')
+        mock_portal.return_value.call_action.assert_called_with(
+            'organization_show', data_dict={'id': 'test_id'})
 
     def test_push_organizations_sends_correct_hierarchy(self, mock_portal):
         mock_portal.return_value.call_action = (lambda _, data_dict: data_dict)
