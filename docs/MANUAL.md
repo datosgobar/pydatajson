@@ -441,8 +441,8 @@ Toma los siguientes parámetros:
 - **pydatajson.federation.get_organization_from_ckan()**: Devuelve un diccionario con la información de una 
 organización en base a un id y un portal pasados por parámetro.
 Toma los siguientes parámetros:
-  - **portal_url**: URL del portal de CKAN. Debe implementar el endpoint `/group_tree`.
-  - **org_id**: Identificador de la organización a buscar.
+  - **portal_url**: URL del portal de CKAN. Debe implementar el endpoint `/organization_show`.
+  - **org_id**: Identificador o name de la organización a buscar.
   
   Retorna un diccionario con la información de la organización correspondiente al identificador obtenido. 
   _No_ incluye su jerarquía, por lo cual ésta deberá ser conseguida mediante el uso de la función 
