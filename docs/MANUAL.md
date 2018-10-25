@@ -438,6 +438,16 @@ Toma los siguientes parámetros:
   Retorna una lista de diccionarios con la información de las organizaciones. Recursivamente, dentro del campo `children`,
   se encuentran las organizaciones dependientes en la jerarquía. 
 
+- **pydatajson.federation.get_organization_from_ckan()**: Devuelve un diccionario con la información de una 
+organización en base a un id y un portal pasados por parámetro.
+Toma los siguientes parámetros:
+  - **portal_url**: URL del portal de CKAN. Debe implementar el endpoint `/organization_show`.
+  - **org_id**: Identificador o name de la organización a buscar.
+  
+  Retorna un diccionario con la información de la organización correspondiente al identificador obtenido. 
+  _No_ incluye su jerarquía, por lo cual ésta deberá ser conseguida mediante el uso de la función 
+  `get_organizations_from_ckan`.
+
 - **pydatajson.federation.push_organization_tree_to_ckan()**: Tomando un árbol de organizaciones como el creado por
 `get_organizations_from_ckan()` crea en el portal de destino las organizaciones dentro de su jerarquía. Toma los siguientes
 parámetros:
