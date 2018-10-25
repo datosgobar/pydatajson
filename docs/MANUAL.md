@@ -461,6 +461,20 @@ parámetros:
   Retorna el árbol de organizaciones creadas. Cada nodo tiene un campo `success` que indica si fue creado exitosamente o
   no. En caso de que `success` sea False, los hijos de esa organización no son creados.
 
+- **pydatajson.federation.push_organization_to_ckan()**: Tomando en un diccionario la data de una organización; la crea
+en el portal de destino. Toma los siguientes parámetros:
+  - **portal_url**: La URL del portal CKAN de destino.
+  - **apikey**: La apikey de un usuario con los permisos que le permitan crear las organizaciones.
+  - **organization**: Diccionario con la información a crear, el único campo obligatorio es `name`. Para más
+  información sobre los campos posibles, ver la [documentación de CKAN](https://docs.ckan.org/en/latest/api/#ckan.logic.action.create.organization_create)
+  - **parent** (opcional, default: None): Si se define, la organización pasada en `organization` se crea bajo la
+  organización con `name` pasado en `parent`. Si no se pasa un parámetro, las organizaciones son creadas como primer
+  nivel.
+  
+  Retorna el diccionario de la organización creada. El resultado tiene un campo `success` que indica si fue creado
+  exitosamente o no.
+
+
 ## Anexo I: Estructura de respuestas
 
 ### validate_catalog()
