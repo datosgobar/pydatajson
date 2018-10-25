@@ -79,7 +79,7 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
                         include_metadata=True, include_data=True,
-                        include_datasets=[],
+                        include_datasets=None,
                         include_distribution_formats=['CSV', 'XLS'],
                         include_metadata_xlsx=True, use_short_path=False):
     """Realiza una copia local de los datos y metadatos de un catálogo.
