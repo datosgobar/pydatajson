@@ -349,7 +349,10 @@ def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
     """
     created = []
     for node in org_tree:
-        pushed_org = push_organization_to_ckan(portal_url, apikey, node, parent=parent)
+        pushed_org = push_organization_to_ckan(portal_url,
+                                               apikey,
+                                               node,
+                                               parent=parent)
         if pushed_org['success']:
             pushed_org['children'] = push_organization_tree_to_ckan(
                 portal_url, apikey, node['children'], parent=node['name'])

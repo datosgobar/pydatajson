@@ -512,7 +512,8 @@ class OrganizationsTestCase(FederationSuite):
         mock_portal.return_value.call_action.assert_called_with(
             'organization_show', data_dict={'id': 'test_id'})
 
-    def test_push_organization_sets_correct_attributes_on_success(self, mock_portal):
+    def test_push_organization_sets_correct_attributes_on_success(
+            self, mock_portal):
         mock_portal.return_value.call_action = (lambda _, data_dict: data_dict)
         pushed_org = push_organization_to_ckan(self.portal_url,
                                                self.apikey,
@@ -528,7 +529,8 @@ class OrganizationsTestCase(FederationSuite):
         self.assertEqual(1, len(pushed_org['groups']))
         self.assertDictEqual(pushed_org['groups'][0], {'name': 'parent'})
 
-    def test_push_organization_sets_correct_attributes_on_failures(self, mock_portal):
+    def test_push_organization_sets_correct_attributes_on_failures(
+            self, mock_portal):
         def broken_call(_, __):
             raise Exception('broken api call')
         mock_portal.return_value.call_action = broken_call
