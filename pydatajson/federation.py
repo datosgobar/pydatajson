@@ -347,23 +347,44 @@ def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
                     exitosa o no.
 
     """
-    portal = RemoteCKAN(portal_url, apikey=apikey)
     created = []
     for node in org_tree:
-        if parent:
-            node['groups'] = [{'name': parent}]
-        try:
-            pushed_org = portal.call_action('organization_create',
-                                            data_dict=node)
-            pushed_org['success'] = True
-        except Exception as e:
-            logger.exception('Ocurrió un error creando la organización {}: {}'
-                             .format(node['title'], str(e)))
-            pushed_org = {'name': node, 'success': False}
-
+        pushed_org = push_organization_to_ckan(portal_url,
+                                               apikey,
+                                               node,
+                                               parent=parent)
         if pushed_org['success']:
             pushed_org['children'] = push_organization_tree_to_ckan(
                 portal_url, apikey, node['children'], parent=node['name'])
 
         created.append(pushed_org)
     return created
+
+
+def push_organization_to_ckan(portal_url, apikey, organization, parent=None):
+    """Toma una organización y la crea en el portal de destino.
+        Args:
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le
+                permitan crear la organización.
+            organization(dict): Datos de la organización a crear.
+            parent(str): Campo name de la organización padre.
+        Returns:
+            (dict): Devuelve el diccionario de la organizacion enviada,
+                junto con el status detallando si la creación fue
+                exitosa o no.
+
+    """
+    portal = RemoteCKAN(portal_url, apikey=apikey)
+    if parent:
+        organization['groups'] = [{'name': parent}]
+    try:
+        pushed_org = portal.call_action('organization_create',
+                                        data_dict=organization)
+        pushed_org['success'] = True
+    except Exception as e:
+        logger.exception('Ocurrió un error creando la organización {}: {}'
+                         .format(organization['title'], str(e)))
+        pushed_org = {'name': organization, 'success': False}
+
+    return pushed_org
