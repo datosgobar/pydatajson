@@ -368,9 +368,9 @@ def push_organization_to_ckan(portal_url, apikey, organization, parent=None):
             apikey (str): La apikey de un usuario con los permisos que le
                 permitan crear la organización.
             organization(dict): Datos de la organización a crear.
-            parent(str): Campo name de la organizacion padre.
+            parent(str): Campo name de la organización padre.
         Returns:
-            (dict): Devuelve el la organizacion enviada,
+            (dict): Devuelve el diccionario de la organizacion enviada,
                 junto con el status detallando si la creación fue
                 exitosa o no.
 
