@@ -8,15 +8,15 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 
-from functools import wraps
+from contextlib import contextmanager
+
 import unittest
 import nose
 import os
-import io
-import json
 import vcr
+import tempfile
+import shutil
 
-from six import text_type
 
 from .context import pydatajson
 
@@ -26,6 +26,15 @@ RESULTS_DIR = os.path.join("tests", "results")
 VCR = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
               cassette_library_dir=os.path.join("tests", "cassetes", "backup"),
               record_mode='once')
+
+
+@contextmanager
+def tempdir(cleanup=True):
+    tmp = tempfile.mkdtemp(dir='tests/temp')
+    try:
+        yield tmp
+    finally:
+        cleanup and shutil.rmtree(tmp, ignore_errors=True)
 
 
 class BackupTestCase(unittest.TestCase):
@@ -50,66 +59,58 @@ class BackupTestCase(unittest.TestCase):
         del (cls.catalog_data)
 
     def test_make_catalog_backup_metadata(self):
-        json_path = os.path.join(
-            RESULTS_DIR, "catalog", "example", "data.json")
-        xlsx_path = os.path.join(
-            RESULTS_DIR, "catalog", "example", "catalog.xlsx")
+        with tempdir() as temp_dir:
+            json_path = os.path.join(
+                temp_dir, "catalog", "example", "data.json")
+            xlsx_path = os.path.join(
+                temp_dir, "catalog", "example", "catalog.xlsx")
 
-        os.remove(json_path) if os.path.exists(json_path) else None
-        os.remove(xlsx_path) if os.path.exists(xlsx_path) else None
+            pydatajson.backup.make_catalog_backup(
+                self.catalog_meta,
+                catalog_id="example", local_catalogs_dir=temp_dir,
+                include_metadata=True, include_data=False)
 
-        pydatajson.backup.make_catalog_backup(
-            self.catalog_meta,
-            catalog_id="example", local_catalogs_dir=RESULTS_DIR,
-            include_metadata=True, include_data=False)
-
-        self.assertTrue(os.path.exists(json_path))
-        self.assertTrue(os.path.exists(xlsx_path))
+            self.assertTrue(os.path.exists(json_path))
+            self.assertTrue(os.path.exists(xlsx_path))
 
     @VCR.use_cassette()
     def test_make_catalog_backup_data(self):
-        distribution_path = os.path.abspath(
-            os.path.join(
-                RESULTS_DIR,
-                "catalog",
-                "example_ts",
-                "dataset",
-                "1",
-                "distribution",
-                "1.2",
-                "download",
-                "oferta-demanda-globales-datos-desestacionalizados"
-                "-valores-trimestrales-base-1993.csv"))
+        with tempdir() as temp_dir:
+            distribution_path = os.path.abspath(
+                os.path.join(
+                    temp_dir,
+                    "catalog",
+                    "example_ts",
+                    "dataset",
+                    "1",
+                    "distribution",
+                    "1.2",
+                    "download",
+                    "oferta-demanda-globales-datos-desestacionalizados"
+                    "-valores-trimestrales-base-1993.csv"))
 
-        os.remove(distribution_path) if os.path.exists(
-            distribution_path) else None
+            pydatajson.backup.make_catalog_backup(
+                self.catalog_data,
+                catalog_id="example_ts", local_catalogs_dir=temp_dir,
+                include_metadata=True, include_data=True)
 
-        pydatajson.backup.make_catalog_backup(
-            self.catalog_data,
-            catalog_id="example_ts", local_catalogs_dir=RESULTS_DIR,
-            include_metadata=True, include_data=True)
-
-        print(distribution_path)
-        self.assertTrue(os.path.exists(distribution_path))
+            self.assertTrue(os.path.exists(distribution_path))
 
     @VCR.use_cassette()
     def test_make_catalog_backup_data_without_file_name(self):
-        distribution_path = os.path.abspath(os.path.join(
-            RESULTS_DIR, "catalog", "example_ts", "dataset", "1",
-            "distribution", "1.2.b", "download",
-            "odg-total-millones-pesos-1960-trimestral.csv"
-        ))
+        with tempdir() as temp_dir:
+            distribution_path = os.path.abspath(os.path.join(
+                temp_dir, "catalog", "example_ts", "dataset", "1",
+                "distribution", "1.2.b", "download",
+                "odg-total-millones-pesos-1960-trimestral.csv"
+            ))
 
-        os.remove(distribution_path) if os.path.exists(
-            distribution_path) else None
+            pydatajson.backup.make_catalog_backup(
+                self.catalog_data,
+                catalog_id="example_ts", local_catalogs_dir=temp_dir,
+                include_metadata=True, include_data=True)
 
-        pydatajson.backup.make_catalog_backup(
-            self.catalog_data,
-            catalog_id="example_ts", local_catalogs_dir=RESULTS_DIR,
-            include_metadata=True, include_data=True)
-
-        print(distribution_path)
-        self.assertTrue(os.path.exists(distribution_path))
+            self.assertTrue(os.path.exists(distribution_path))
 
 
 if __name__ == '__main__':
