@@ -62,6 +62,9 @@ class TestIndicatorsTestCase(object):
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
             'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+            'datasets_con_datos_cant': 2,
+            'datasets_sin_datos_cant': 1,
+            'datasets_con_datos_pct': round(100 * float(2) / 3, 2),
         }
 
         for k, v in expected.items():
@@ -268,6 +271,9 @@ class TestIndicatorsTestCase(object):
             'datasets_meta_ok_cant': 4,
             'datasets_meta_error_cant': 1,
             'datasets_meta_ok_pct': 100 * float(4) / 5,
+            'datasets_con_datos_cant': 3,
+            'datasets_sin_datos_cant': 2,
+            'datasets_con_datos_pct': 60.00,
             'distribuciones_formatos_cant': {
                 'CSV': 2,
                 'XLSX': 1,
