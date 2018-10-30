@@ -68,7 +68,7 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
     return pushed_package['id']
 
 
-def resource_upload(portal_url, apikey, resource_files):
+def resources_upload(portal_url, apikey, resource_files):
     """Sube un recurso local a una distribución del portal pasado por parámetro
 
             Args:
