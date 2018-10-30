@@ -305,19 +305,6 @@ class PushDatasetTestCase(FederationSuite):
         )
         self.assertEqual(['an_id'], res)
 
-    def test_resource_upload_succesfully(self, mock_portal):
-        mock_portal.return_value.action.resource_patch = MagicMock(
-            return_value={'id': 'an_id',
-                          'resource_type': 'file.upload'})
-        resources = {'an_id': 'tests/samples/resource_sample.csv'}
-        res = resources_upload('portal', 'key', resources)
-        mock_portal.return_value.action.resource_patch.assert_called_with(
-            id='an_id',
-            resource_type='file.upload',
-            upload=ANY
-        )
-        self.assertEqual(['an_id'], res)
-
     def test_resource_upload_error(self, mock_portal):
         mock_portal.return_value.action.resource_patch = MagicMock(
             side_effect=Exception('broken resource'))
