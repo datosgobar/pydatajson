@@ -69,7 +69,8 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
 
 
 def resources_upload(portal_url, apikey, resource_files):
-    """Sube un recurso local a una distribución del portal pasado por parámetro
+    """Sube archivos locales a sus distribuciones correspondientes en el portal
+     pasado por parámetro.
 
             Args:
                 portal_url (str): La URL del portal CKAN de destino.
@@ -92,8 +93,7 @@ def resources_upload(portal_url, apikey, resource_files):
         except Exception as e:
             logger.exception(
                 "Error subiendo recurso {} a la distribución {}: {}"
-                .format(resource_files[resource], resource_files, str(e))
-            )
+                .format(resource_files[resource], resource_files, str(e)))
     return res
 
 
