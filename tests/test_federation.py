@@ -8,9 +8,9 @@ import re
 import json
 
 try:
-    from mock import patch, MagicMock
+    from mock import patch, MagicMock, ANY
 except ImportError:
-    from unittest.mock import patch, MagicMock
+    from unittest.mock import patch, MagicMock, ANY
 
 from .context import pydatajson
 from pydatajson.federation import *
@@ -25,7 +25,7 @@ class FederationSuite(unittest.TestCase):
         return os.path.join(SAMPLES_DIR, sample_filename)
 
 
-@patch('pydatajson.federation.RemoteCKAN', autospec=True)
+@patch('pydatajson.federation.RemoteCKAN')
 class PushDatasetTestCase(FederationSuite):
 
     @classmethod
@@ -292,6 +292,43 @@ class PushDatasetTestCase(FederationSuite):
         mock_portal.assert_not_called()
         self.assertEqual([], harvested_ids)
 
+    def test_resource_upload_succesfully(self, mock_portal):
+        mock_portal.return_value.action.resource_patch = MagicMock(
+            return_value={'id': 'an_id',
+                          'resource_type': 'file.upload'})
+        resources = {'an_id': 'tests/samples/resource_sample.csv'}
+        res = resource_upload('portal', 'key', resources)
+        mock_portal.return_value.action.resource_patch.assert_called_with(
+            id='an_id',
+            resource_type='file.upload',
+            upload=ANY
+        )
+        self.assertEqual(['an_id'], res)
+
+    def test_resource_upload_succesfully(self, mock_portal):
+        mock_portal.return_value.action.resource_patch = MagicMock(
+            return_value={'id': 'an_id',
+                          'resource_type': 'file.upload'})
+        resources = {'an_id': 'tests/samples/resource_sample.csv'}
+        res = resource_upload('portal', 'key', resources)
+        mock_portal.return_value.action.resource_patch.assert_called_with(
+            id='an_id',
+            resource_type='file.upload',
+            upload=ANY
+        )
+        self.assertEqual(['an_id'], res)
+
+    def test_resource_upload_error(self, mock_portal):
+        mock_portal.return_value.action.resource_patch = MagicMock(
+            side_effect=Exception('broken resource'))
+        resources = {'an_id': 'tests/samples/resource_sample.csv'}
+        res = resource_upload('portal', 'key', resources)
+        mock_portal.return_value.action.resource_patch.assert_called_with(
+            id='an_id',
+            resource_type='file.upload',
+            upload=ANY
+        )
+        self.assertEqual([], res)
 
 class RemoveDatasetTestCase(FederationSuite):
 
