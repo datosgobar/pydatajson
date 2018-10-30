@@ -412,7 +412,6 @@ Toma los siguientes parámetros:
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
   organización pasada como parámetro.
 
-
   Retorna el id del dataset restaurado.
 
 - **pydatajson.DataJson.harvest_catalog_to_ckan()**: Federa los datasets de un catálogo al portal pasado por parámetro.
@@ -428,6 +427,16 @@ Toma los siguientes parámetros:
   portal de destino. Si no se pasa, se toma como organización el catalog_id
 
   Retorna el id en el nodo de destino de los datasets federados.
+  
+- **pydatajson.federation.resources_upload()**: Sube archivos de recursos a las distribuciones indicadas.
+Toma los siguientes parámetros:
+  - **portal_url**: URL del portal de CKAN de destino.
+  - **apikey**: La apikey de un usuario del portal de destino con los permisos para modificar la distribución.
+  - **resource_files** Diccionario con el id de las distribuciones y un path al recurso correspondiente a subir.
+  
+  Retorna una lista con los ids de las distribuciones modificadas exitosamente.
+  
+  **Advertencia**: La función `resources_upload()` cambia el `resource_type` de las distribuciones a `file.upload`.
   
 ### Métodos para manejo de organizaciones
 

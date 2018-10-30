@@ -68,6 +68,35 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
     return pushed_package['id']
 
 
+def resources_upload(portal_url, apikey, resource_files):
+    """Sube archivos locales a sus distribuciones correspondientes en el portal
+     pasado por parámetro.
+
+            Args:
+                portal_url (str): La URL del portal CKAN de destino.
+                apikey (str): La apikey de un usuario con los permisos que le
+                    permitan crear o actualizar el dataset.
+                resource_files(dict): Diccionario con entradas
+                    id_de_distribucion:path_al_recurso a subir
+            Returns:
+                list: los ids de los recursos modificados
+        """
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    res = []
+    for resource in resource_files:
+        try:
+            pushed = ckan_portal.action.resource_patch(
+                     id=resource,
+                     resource_type='file.upload',
+                     upload=open(resource_files[resource], 'rb'))
+            res.append(pushed['id'])
+        except Exception as e:
+            logger.exception(
+                "Error subiendo recurso {} a la distribución {}: {}"
+                .format(resource_files[resource], resource_files, str(e)))
+    return res
+
+
 def remove_dataset_from_ckan(identifier, portal_url, apikey):
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
     ckan_portal.call_action('dataset_purge', data_dict={'id': identifier})
