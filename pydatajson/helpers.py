@@ -11,12 +11,19 @@ from datetime import datetime
 import os
 import json
 import re
+import logging
+import tempfile
 
+from contextlib import contextmanager
 from openpyxl import load_workbook
 from six.moves.urllib_parse import urlparse
 
 from six import string_types, iteritems
 from unidecode import unidecode
+
+from pydatajson.download import download_to_file
+
+logger = logging.getLogger('pydatajson.helpers')
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
@@ -392,3 +399,37 @@ def pprint(result):
         result, indent=4, separators=(",", ": "),
         ensure_ascii=False
     )))
+
+
+@contextmanager
+def resource_files_download(catalog, distributions, download_strategy):
+    resource_files = {}
+    distributions = [dist for dist in distributions if
+                     download_strategy(catalog, dist)]
+    for dist in distributions:
+        try:
+            tmpfile = tempfile.NamedTemporaryFile(delete=False)
+            tmpfile.close()
+            download_to_file(dist['downloadURL'], tmpfile.name)
+        except Exception as e:
+            logger.exception(
+                "Error descargando el recurso {} de la distribución {}: {}"
+                .format(dist.get('downloadURL'), dist.get('identifier'), str(e))
+            )
+            continue
+    try:
+        yield resource_files
+
+    finally:
+        for resource in resource_files:
+            os.remove(resource_files[resource])
+
+
+def is_local_resource(catalog, distribution):
+    dist_type = distribution.get('type')
+    if dist_type is not None:
+        return dist_type == 'file.upload'
+    homepage = catalog.get('homepage')
+    if homepage is not None:
+        return re.match(homepage, distribution.get('downloadURL', ''))
+    return False

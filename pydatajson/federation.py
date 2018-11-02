@@ -10,13 +10,15 @@ from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
+from .helpers import resource_files_download
 
 logger = logging.getLogger('pydatajson.federation')
 
 
 def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                          portal_url, apikey, catalog_id=None,
-                         demote_superThemes=True, demote_themes=True):
+                         demote_superThemes=True, demote_themes=True,
+                         download_strategy=None):
     """Escribe la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -33,6 +35,10 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                 themes del dataset, se propagan como grupo.
             demote_themes(bool): Si está en true, los labels de los themes
                 del dataset, pasan a ser tags. Sino, se pasan como grupo.
+            download_strategy(callable): Una función (catálogo, distribución)->
+                bool. Sobre las distribuciones que evalúa True, descarga el
+                recurso en el downloadURL y lo sube al portal de destino.
+                Por default no sube ninguna distribución.
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
@@ -64,11 +70,17 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
         pushed_package = ckan_portal.call_action(
             'package_create', data_dict=package)
 
+    if download_strategy:
+        with resource_files_download(catalog, dataset.get('distribution', []),
+                                     download_strategy) as resource_files:
+            resources_upload(portal_url, apikey, resource_files,
+                             catalog_id=catalog_id)
+
     ckan_portal.close()
     return pushed_package['id']
 
 
-def resources_upload(portal_url, apikey, resource_files):
+def resources_upload(portal_url, apikey, resource_files, catalog_id=None):
     """Sube archivos locales a sus distribuciones correspondientes en el portal
      pasado por parámetro.
 
@@ -78,15 +90,18 @@ def resources_upload(portal_url, apikey, resource_files):
                     permitan crear o actualizar el dataset.
                 resource_files(dict): Diccionario con entradas
                     id_de_distribucion:path_al_recurso a subir
+                catalog_id(str): prependea el id al id del recurso para
+                    encontrarlo antes de subirlo
             Returns:
                 list: los ids de los recursos modificados
         """
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
     res = []
     for resource in resource_files:
+        resource_id = catalog_id + '_' + resource if catalog_id else resource
         try:
             pushed = ckan_portal.action.resource_patch(
-                     id=resource,
+                     id=resource_id,
                      resource_type='file.upload',
                      upload=open(resource_files[resource], 'rb'))
             res.append(pushed['id'])
@@ -199,7 +214,7 @@ def push_theme_to_ckan(catalog, portal_url, apikey,
 
 
 def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
-                            portal_url, apikey):
+                            portal_url, apikey, download_strategy=None):
     """Restaura la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -210,15 +225,22 @@ def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le
                 permitan crear o actualizar el dataset.
+            download_strategy(callable): Una función (catálogo, distribución)->
+                bool. Sobre las distribuciones que evalúa True, descarga el
+                recurso en el downloadURL y lo sube al portal de destino.
+                Por default no sube ninguna distribución.
         Returns:
             str: El id del dataset restaurado.
     """
-    return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
-                                portal_url, apikey, None, False, False)
+
+    return push_dataset_to_ckan(catalog, owner_org,
+                                dataset_origin_identifier, portal_url,
+                                apikey, None, False, False, download_strategy)
 
 
 def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
-                            portal_url, apikey, catalog_id):
+                            portal_url, apikey, catalog_id,
+                            download_strategy=None):
     """Federa la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -229,17 +251,22 @@ def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le
                 permitan crear o actualizar el dataset.
-            catalog_id(str): El id que prep
+            catalog_id(str): El id que prependea al dataset y recursos
+            download_strategy(callable): Una función (catálogo, distribución)->
+                bool. Sobre las distribuciones que evalúa True, descarga el
+                recurso en el downloadURL y lo sube al portal de destino.
+                Por default no sube ninguna distribución.
         Returns:
             str: El id del dataset restaurado.
     """
 
     return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
-                                portal_url, apikey, catalog_id=catalog_id)
+                                portal_url, apikey, catalog_id=catalog_id,
+                                download_strategy=download_strategy)
 
 
 def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey,
-                            dataset_list=None):
+                            dataset_list=None, download_strategy=None):
     """Restaura los datasets de un catálogo al portal pasado por parámetro.
         Si hay temas presentes en el DataJson que no están en el portal de
         CKAN, los genera.
@@ -253,6 +280,10 @@ def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey,
                 se pasa una lista, todos los datasests se restauran.
             owner_org (str): La organización a la cual pertencen los datasets.
                 Si no se pasa, se utiliza el catalog_id.
+            download_strategy(callable): Una función (catálogo, distribución)->
+                bool. Sobre las distribuciones que evalúa True, descarga el
+                recurso en el downloadURL y lo sube al portal de destino.
+                Por default no sube ninguna distribución.
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
@@ -261,14 +292,16 @@ def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey,
                                     for ds in catalog.datasets]
     restored = []
     for dataset_id in dataset_list:
-        restored_id = restore_dataset_to_ckan(
-            catalog, owner_org, dataset_id, portal_url, apikey)
+        restored_id = restore_dataset_to_ckan(catalog, owner_org, dataset_id,
+                                              portal_url, apikey,
+                                              download_strategy)
         restored.append(restored_id)
     return restored
 
 
 def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
-                            dataset_list=None, owner_org=None):
+                            dataset_list=None, owner_org=None,
+                            download_strategy=None):
     """Federa los datasets de un catálogo al portal pasado por parámetro.
 
         Args:
@@ -282,6 +315,10 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
                 se pasa una lista, todos los datasests se federan.
             owner_org (str): La organización a la cual pertencen los datasets.
                 Si no se pasa, se utiliza el catalog_id.
+            download_strategy(callable): Una función (catálogo, distribución)->
+                bool. Sobre las distribuciones que evalúa True, descarga el
+                recurso en el downloadURL y lo sube al portal de destino.
+                Por default no sube ninguna distribución.
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
@@ -293,8 +330,10 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
     errors = {}
     for dataset_id in dataset_list:
         try:
-            harvested_id = harvest_dataset_to_ckan(
-                catalog, owner_org, dataset_id, portal_url, apikey, catalog_id)
+            harvested_id = harvest_dataset_to_ckan(catalog, owner_org,
+                                                   dataset_id, portal_url,
+                                                   apikey, catalog_id,
+                                                   download_strategy)
             harvested.append(harvested_id)
         except Exception as e:
             msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n"\
