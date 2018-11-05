@@ -483,6 +483,16 @@ en el portal de destino. Toma los siguientes parámetros:
   Retorna el diccionario de la organización creada. El resultado tiene un campo `success` que indica si fue creado
   exitosamente o no.
 
+- **pydatajson.federation.remove_organization_from_ckan()**: Tomando el id o name de una organización; la borra en el
+portal de destino. Toma los siguientes parámetros:
+  - **portal_url**: La URL del portal CKAN de destino.
+  - **apikey**: La apikey de un usuario con los permisos que le permitan borrar la organización.
+  - **organization_id**: Id o name de la organización a borrar.
+    
+  Retorna None.
+  
+  **Advertencia**: En caso de que la organización tenga hijos en la jerarquía, estos pasan a ser de primer nivel.
+
 
 ## Anexo I: Estructura de respuestas
 
