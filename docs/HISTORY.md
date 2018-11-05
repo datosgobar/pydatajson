@@ -1,6 +1,19 @@
 Versiones
 =========
 
+0.4.26 (2018-11-05)
+-------------------
+* Agrega métodos de manejo de organizaciones para bajar la información o subir a un portal CKAN.
+* Fix en indicador 'datasets_con_datos_pct' al calcular el porcentaje.
+* Cambio en los tests para que usen archivos temporales en lugar de crearlos en la carpeta results.
+
+
+0.4.25 (2018-10-22)
+-------------------
+* Agrega indicador 'datasets_con_datos_cant' para identificar la cantidad de datasets que tienen alguna distribución potencialmente con datos y los que no.
+* Expande la función `backup.make_catalogs_backup()` con argumentos opcionales para facilitar la generación de backups descargando las distribuciones.
+
+
 0.4.24 (2018-10-16)
 -------------------
 * Cambia el valor default en el indicador `datasets_frecuencias_cant`.
@@ -45,6 +58,7 @@ Versiones
 * Agrega interfaz por línea de comandos para validar rápidamente un catálogo: `pydatajson validation http://datos.gob.ar/data.json`.
 * Validación de keywords, themes, y lenguajes vacíos.
 * Bugfix en `distribution_has_time_index` para capturar excepciones en field inválidos.
+
 
 0.4.17 (2018-07-10)
 -------------------
