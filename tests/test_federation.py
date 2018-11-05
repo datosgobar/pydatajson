@@ -586,3 +586,17 @@ class OrganizationsTestCase(FederationSuite):
                                                      self.org_tree)
         for node in pushed_tree:
             self.check_hierarchy(node)
+
+    def test_remove_organization_sends_correct_parameters(self, mock_portal):
+        remove_organization_from_ckan(self.portal_url, self.apikey, 'test_id')
+        mock_portal.return_value.call_action.assert_called_with(
+            'organization_purge', data_dict={'id': 'test_id'})
+
+    @patch('logging.Logger.exception')
+    def test_remove_organization_logs_failures(self, mock_logger, mock_portal):
+        mock_portal.return_value.call_action.side_effect = Exception('test')
+        remove_organization_from_ckan(self.portal_url, self.apikey, 'test_id')
+        mock_portal.return_value.call_action.assert_called_with(
+            'organization_purge', data_dict={'id': 'test_id'})
+        mock_logger.assert_called_with(
+            'Ocurrió un error borrando la organización test_id: test')
