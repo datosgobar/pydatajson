@@ -417,3 +417,24 @@ def push_organization_to_ckan(portal_url, apikey, organization, parent=None):
         pushed_org = {'name': organization, 'success': False}
 
     return pushed_org
+
+
+def remove_organization_from_ckan(portal_url, apikey, organization_id):
+    """Toma un id de organización y la purga del portal de destino.
+        Args:
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le
+                permitan borrar la organización.
+            organization_id(str): Id o name de la organización a borrar.
+        Returns:
+            None.
+
+    """
+    portal = RemoteCKAN(portal_url, apikey=apikey)
+    try:
+        portal.call_action('organization_purge',
+                           data_dict={'id': organization_id})
+
+    except Exception as e:
+        logger.exception('Ocurrió un error borrando la organización {}: {}'
+                         .format(organization_id, str(e)))
