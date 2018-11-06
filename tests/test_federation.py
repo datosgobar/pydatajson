@@ -14,6 +14,7 @@ except ImportError:
 
 from .context import pydatajson
 from pydatajson.federation import *
+from pydatajson.helpers import is_local_andino_resource
 from ckanapi.errors import NotFound
 
 SAMPLES_DIR = os.path.join("tests", "samples")
@@ -346,12 +347,12 @@ class PushDatasetTestCase(FederationSuite):
                 return []
         mock_portal.return_value.call_action = mock_call_action
         push_dataset_to_ckan(
-            self.catalog,
+            self.minimum_catalog,
             'owner',
             self.dataset_id,
             'portal',
             'key',
-            download_strategy=(lambda _, __: False))
+            download_strategy=is_local_andino_resource)
         mock_portal.return_value.action.resource_patch.not_called()
 
 
