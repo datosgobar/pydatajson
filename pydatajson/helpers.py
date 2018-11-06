@@ -415,7 +415,8 @@ def resource_files_download(catalog, distributions, download_strategy):
         except Exception as e:
             logger.exception(
                 "Error descargando el recurso {} de la distribución {}: {}"
-                .format(dist.get('downloadURL'), dist.get('identifier'), str(e))
+                .format(dist.get('downloadURL'),
+                        dist.get('identifier'), str(e))
             )
             continue
     try:
