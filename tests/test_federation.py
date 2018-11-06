@@ -317,6 +317,43 @@ class PushDatasetTestCase(FederationSuite):
         )
         self.assertEqual([], res)
 
+    @patch('pydatajson.helpers.download_to_file')
+    def test_push_dataset_upload_strategy(self, mock_download, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return data_dict
+            else:
+                return []
+        mock_portal.return_value.call_action = mock_call_action
+        push_dataset_to_ckan(
+            self.catalog,
+            'owner',
+            self.dataset_id,
+            'portal',
+            'key',
+            download_strategy=(lambda _, x: x['identifier'] == '1.1'))
+        mock_portal.return_value.action.resource_patch.assert_called_with(
+            id='1.1',
+            resource_type='file.upload',
+            upload=ANY
+        )
+
+    def test_push_dataset_upload_empty_strategy(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return data_dict
+            else:
+                return []
+        mock_portal.return_value.call_action = mock_call_action
+        push_dataset_to_ckan(
+            self.catalog,
+            'owner',
+            self.dataset_id,
+            'portal',
+            'key',
+            download_strategy=(lambda _, __: False))
+        mock_portal.return_value.action.resource_patch.not_called()
+
 
 class RemoveDatasetTestCase(FederationSuite):
 
