@@ -411,6 +411,7 @@ def resource_files_download(catalog, distributions, download_strategy):
             tmpfile = tempfile.NamedTemporaryFile(delete=False)
             tmpfile.close()
             download_to_file(dist['downloadURL'], tmpfile.name)
+            resource_files[dist['identifier']] = tmpfile.name
         except Exception as e:
             logger.exception(
                 "Error descargando el recurso {} de la distribución {}: {}"
@@ -425,11 +426,11 @@ def resource_files_download(catalog, distributions, download_strategy):
             os.remove(resource_files[resource])
 
 
-def is_local_resource(catalog, distribution):
+def is_local_andino_resource(catalog, distribution):
     dist_type = distribution.get('type')
     if dist_type is not None:
         return dist_type == 'file.upload'
     homepage = catalog.get('homepage')
     if homepage is not None:
-        return re.match(homepage, distribution.get('downloadURL', ''))
+        return distribution.get('downloadURL', '').startswith(homepage)
     return False
