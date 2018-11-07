@@ -350,6 +350,10 @@ Toma los siguientes parámetros:
   como groups de CKAN.
   - **demote_themes** (opcional, default: True): Si está en true, los labels de los themes del dataset, se escriben como
   tags de CKAN; sino,se pasan como grupo.
+  - **download_strategy** (opcional, default None): La referencia a una función que toma (catalog, distribution) de
+  entrada y devuelve un booleano. Esta función se aplica sobre todas las distribuciones del dataset. Si devuelve `True`,
+  se descarga el archivo indicado en el `downloadURL` de la distribución y se lo sube al portal de destino. Si es None,
+  se omite esta operación. 
 
 
   Retorna el id en el nodo de destino del dataset federado.
@@ -400,6 +404,10 @@ Toma los siguientes parámetros:
   organización pasada como parámetro.
   - **catalog_id**: El prefijo que va a preceder el id y name del dataset en el portal
   destino, separado por un guión.
+  - **download_strategy** (opcional, default None): La referencia a una función que toma (catalog, distribution) de
+  entrada y devuelve un booleano. Esta función se aplica sobre todas las distribuciones del dataset. Si devuelve `True`,
+  se descarga el archivo indicado en el `downloadURL` de la distribución y se lo sube al portal de destino. Si es None,
+  se omite esta operación.
 
 
   Retorna el id en el nodo de destino del dataset federado.
@@ -411,6 +419,10 @@ Toma los siguientes parámetros:
   - **portal_url**: URL del portal de CKAN de destino.
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para crear el dataset bajo la
   organización pasada como parámetro.
+  - **download_strategy** (opcional, default None): La referencia a una función que toma (catalog, distribution) de
+  entrada y devuelve un booleano. Esta función se aplica sobre todas las distribuciones del dataset. Si devuelve `True`,
+  se descarga el archivo indicado en el `downloadURL` de la distribución y se lo sube al portal de destino. Si es None,
+  se omite esta operación.
 
   Retorna el id del dataset restaurado.
 
@@ -424,7 +436,11 @@ Toma los siguientes parámetros:
   - **dataset_list** (opcional, default: None): Lista de ids de los datasets a federar. Si no se pasa, se federan todos
   los datasets del catálogo.
   - **owner_org** (opcional, default: None): La organización a la que pertence el dataset. Debe encontrarse en el
-  portal de destino. Si no se pasa, se toma como organización el catalog_id
+  portal de destino. Si no se pasa, se toma como organización el catalog_id.
+  - **download_strategy** (opcional, default None): La referencia a una función que toma (catalog, distribution) de
+  entrada y devuelve un booleano. Esta función se aplica sobre todas las distribuciones del catálogo. Si devuelve
+  `True`, se descarga el archivo indicado en el `downloadURL` de la distribución y se lo sube al portal de destino. Si
+  es None, se omite esta operación.
 
   Retorna el id en el nodo de destino de los datasets federados.
   

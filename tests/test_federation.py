@@ -14,6 +14,7 @@ except ImportError:
 
 from .context import pydatajson
 from pydatajson.federation import *
+from pydatajson.helpers import is_local_andino_resource
 from ckanapi.errors import NotFound
 
 SAMPLES_DIR = os.path.join("tests", "samples")
@@ -316,6 +317,43 @@ class PushDatasetTestCase(FederationSuite):
             upload=ANY
         )
         self.assertEqual([], res)
+
+    @patch('pydatajson.helpers.download_to_file')
+    def test_push_dataset_upload_strategy(self, mock_download, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return data_dict
+            else:
+                return []
+        mock_portal.return_value.call_action = mock_call_action
+        push_dataset_to_ckan(
+            self.catalog,
+            'owner',
+            self.dataset_id,
+            'portal',
+            'key',
+            download_strategy=(lambda _, x: x['identifier'] == '1.1'))
+        mock_portal.return_value.action.resource_patch.assert_called_with(
+            id='1.1',
+            resource_type='file.upload',
+            upload=ANY
+        )
+
+    def test_push_dataset_upload_empty_strategy(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return data_dict
+            else:
+                return []
+        mock_portal.return_value.call_action = mock_call_action
+        push_dataset_to_ckan(
+            self.minimum_catalog,
+            'owner',
+            self.dataset_id,
+            'portal',
+            'key',
+            download_strategy=is_local_andino_resource)
+        mock_portal.return_value.action.resource_patch.not_called()
 
 
 class RemoveDatasetTestCase(FederationSuite):
