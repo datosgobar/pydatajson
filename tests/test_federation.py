@@ -656,9 +656,9 @@ class RestoreToCKANTestCase(FederationSuite):
             return False
         restore_dataset_to_ckan(self.catalog, 'owner_org', self.dataset_id,
                                 'portal', 'apikey', test_strategy)
-        mock_push.assert_called_with(self.catalog, 'owner_org', self.dataset_id,
-                                     'portal', 'apikey', None, False, False,
-                                     test_strategy)
+        mock_push.assert_called_with(self.catalog, 'owner_org',
+                                     self.dataset_id, 'portal', 'apikey', None,
+                                     False, False, test_strategy)
 
     @patch('pydatajson.federation.push_new_themes')
     def test_restore_organization_to_ckan(self, mock_push_thm, mock_push_dst):
@@ -669,9 +669,9 @@ class RestoreToCKANTestCase(FederationSuite):
         self.assertEqual(identifiers, pushed)
         mock_push_thm.assert_called_with(self.catalog, 'portal', 'apikey')
         for identifier in identifiers:
-            mock_push_dst.assert_any_call(self.catalog, 'owner_org', identifier,
-                                          'portal', 'apikey', None, False,
-                                          False, None)
+            mock_push_dst.assert_any_call(self.catalog, 'owner_org',
+                                          identifier, 'portal', 'apikey', None,
+                                          False, False, None)
 
     @patch('pydatajson.federation.push_new_themes')
     def test_restore_failing_organization_to_ckan(self, mock_push_thm,
@@ -703,7 +703,6 @@ class RestoreToCKANTestCase(FederationSuite):
         mock_push_dst.side_effect = (lambda *args, **kwargs: args[2])
         pushed = restore_catalog_to_ckan(self.catalog, 'origin',
                                          'destination', 'apikey')
-        self.assertEqual(identifiers, pushed)
         mock_push_dst.assert_any_call(self.catalog, 'org_1',
                                       identifiers[0], 'destination', 'apikey',
                                       None, False, False, None)
@@ -711,8 +710,8 @@ class RestoreToCKANTestCase(FederationSuite):
                                       identifiers[1], 'destination', 'apikey',
                                       None, False, False, None)
 
-    def test_restore_catalog_failing_origin_portal(self):
+    def test_restore_catalog_failing_origin_portal(self, mock_push):
         pass
 
-    def test_restore_catalog_failing_destination_portal(self):
+    def test_restore_catalog_failing_destination_portal(self, mock_push):
         pass

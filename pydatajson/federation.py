@@ -491,8 +491,8 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
     org_list = origin_portal.action.organization_list()
 
     for org in org_list:
-        response = origin_portal.action.organization_show(id=org,
-                                                          include_datasets=True)
+        response = origin_portal.action.organization_show(
+            id=org, include_datasets=True)
         datasets = [package['id'] for package in response['packages']]
         restore_organization_to_ckan(catalog, org, destination_portal_url,
                                      apikey, dataset_list=datasets,
