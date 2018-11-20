@@ -638,3 +638,81 @@ class OrganizationsTestCase(FederationSuite):
             'organization_purge', data_dict={'id': 'test_id'})
         mock_logger.assert_called_with(
             'Ocurrió un error borrando la organización test_id: test')
+
+
+@patch('pydatajson.federation.push_dataset_to_ckan')
+class RestoreToCKANTestCase(FederationSuite):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
+        cls.catalog_id = cls.catalog.get('identifier', re.sub(
+            r'[^a-z-_]+', '', cls.catalog['title']).lower())
+        cls.dataset = cls.catalog.datasets[0]
+        cls.dataset_id = cls.dataset['identifier']
+
+    def test_restore_dataset_to_ckan(self, mock_push):
+        def test_strategy(_catalog, _dist):
+            return False
+        restore_dataset_to_ckan(self.catalog, 'owner_org', self.dataset_id,
+                                'portal', 'apikey', test_strategy)
+        mock_push.assert_called_with(self.catalog, 'owner_org', self.dataset_id,
+                                     'portal', 'apikey', None, False, False,
+                                     test_strategy)
+
+    @patch('pydatajson.federation.push_new_themes')
+    def test_restore_organization_to_ckan(self, mock_push_thm, mock_push_dst):
+        identifiers = [ds['identifier'] for ds in self.catalog.datasets]
+        mock_push_dst.side_effect = identifiers
+        pushed = restore_organization_to_ckan(self.catalog, 'owner_org',
+                                              'portal', 'apikey', identifiers)
+        self.assertEqual(identifiers, pushed)
+        mock_push_thm.assert_called_with(self.catalog, 'portal', 'apikey')
+        for identifier in identifiers:
+            mock_push_dst.assert_any_call(self.catalog, 'owner_org', identifier,
+                                          'portal', 'apikey', None, False,
+                                          False, None)
+
+    @patch('pydatajson.federation.push_new_themes')
+    def test_restore_failing_organization_to_ckan(self, mock_push_thm,
+                                                  mock_push_dst):
+        # Continua subiendo el segundo dataset a pesar que el primero falla
+        effects = [CKANAPIError('broken dataset'),
+                   self.catalog.datasets[1]['identifier']]
+        mock_push_dst.side_effect = effects
+        identifiers = [ds['identifier'] for ds in self.catalog.datasets]
+        pushed = restore_organization_to_ckan(self.catalog, 'owner_org',
+                                              'portal', 'apikey', identifiers)
+        self.assertEqual([identifiers[1]], pushed)
+        mock_push_thm.assert_called_with(self.catalog, 'portal', 'apikey')
+        mock_push_dst.assert_called_with(self.catalog, 'owner_org',
+                                         identifiers[1], 'portal', 'apikey',
+                                         None, False, False, None)
+
+    @patch('pydatajson.federation.push_new_themes')
+    @patch('ckanapi.remoteckan.ActionShortcut')
+    def test_restore_catalog_to_ckan(self, mock_action, mock_push_thm,
+                                     mock_push_dst):
+        identifiers = [ds['identifier'] for ds in self.catalog.datasets]
+        mock_action.return_value.organization_list.return_value = \
+            ['org_1', 'org_2']
+        mock_action.return_value.organization_show.side_effect = [
+            {'packages': [{'id': identifiers[0]}]},
+            {'packages': [{'id': identifiers[1]}]},
+        ]
+        mock_push_dst.side_effect = (lambda *args, **kwargs: args[2])
+        pushed = restore_catalog_to_ckan(self.catalog, 'origin',
+                                         'destination', 'apikey')
+        self.assertEqual(identifiers, pushed)
+        mock_push_dst.assert_any_call(self.catalog, 'org_1',
+                                      identifiers[0], 'destination', 'apikey',
+                                      None, False, False, None)
+        mock_push_dst.assert_any_call(self.catalog, 'org_2',
+                                      identifiers[1], 'destination', 'apikey',
+                                      None, False, False, None)
+
+    def test_restore_catalog_failing_origin_portal(self):
+        pass
+
+    def test_restore_catalog_failing_destination_portal(self):
+        pass
