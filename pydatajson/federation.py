@@ -491,7 +491,8 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
             Args:
                 catalog (DataJson): El catálogo de origen que se restaura.
                 origin_portal_url (str): La URL del portal CKAN de origen.
-                destination_portal_url (str): La URL del portal CKAN de destino.
+                destination_portal_url (str): La URL del portal CKAN de
+                    destino.
                 apikey (str): La apikey de un usuario con los permisos que le
                     permitan crear o actualizar el dataset.
                 download_strategy(callable): Una función
