@@ -459,13 +459,12 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
             dataset_list(list(str)): Los ids de los datasets a restaurar. Si no
                 se pasa una lista, todos los datasests se restauran.
             owner_org (str): La organización a la cual pertencen los datasets.
-                Si no se pasa, se utiliza el catalog_id.
             download_strategy(callable): Una función (catálogo, distribución)->
                 bool. Sobre las distribuciones que evalúa True, descarga el
                 recurso en el downloadURL y lo sube al portal de destino.
                 Por default no sube ninguna distribución.
         Returns:
-            str: El id del dataset en el catálogo de destino.
+            list(str): La lista de ids de datasets subidos.
     """
     push_new_themes(catalog, portal_url, apikey)
     if dataset_list is None:
@@ -485,6 +484,25 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
 
 def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                             apikey, download_strategy=None):
+    """Restaura los datasets de un catálogo original al portal pasado
+       por parámetro. Si hay temas presentes en el DataJson que no están en
+       el portal de CKAN, los genera.
+
+            Args:
+                catalog (DataJson): El catálogo de origen que se restaura.
+                origin_portal_url (str): La URL del portal CKAN de origen.
+                destination_portal_url (str): La URL del portal CKAN de destino.
+                apikey (str): La apikey de un usuario con los permisos que le
+                    permitan crear o actualizar el dataset.
+                download_strategy(callable): Una función
+                    (catálogo, distribución)-> bool. Sobre las distribuciones
+                    que evalúa True, descarga el recurso en el downloadURL y lo
+                    sube al portal de destino. Por default no sube ninguna
+                    distribución.
+            Returns:
+                dict: Diccionario con key organización y value la lista de ids
+                    de datasets subidos a esa organización
+        """
     catalog['homepage'] = catalog.get('homepage') or origin_portal_url
     res = {}
     origin_portal = RemoteCKAN(origin_portal_url)
