@@ -485,15 +485,22 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
 
 def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                             apikey, download_strategy=None):
-
-    # Asumo que están subidas las organizaciones
+    res = {}
     origin_portal = RemoteCKAN(origin_portal_url)
-    org_list = origin_portal.action.organization_list()
+    try:
+        org_list = origin_portal.action.organization_list()
+    except CKANAPIError as e:
+        logger.exception(
+            'Ocurrió un buscando las organizaciones del portal {}: {}'
+            .format(origin_portal_url, str(e)))
+        return res
 
     for org in org_list:
         response = origin_portal.action.organization_show(
             id=org, include_datasets=True)
         datasets = [package['id'] for package in response['packages']]
-        restore_organization_to_ckan(catalog, org, destination_portal_url,
-                                     apikey, dataset_list=datasets,
-                                     download_strategy=download_strategy)
+        pushed_datasets = restore_organization_to_ckan(
+            catalog, org, destination_portal_url, apikey, dataset_list=datasets,
+            download_strategy=download_strategy)
+        res[org] = pushed_datasets
+    return res
