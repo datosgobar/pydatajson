@@ -709,9 +709,44 @@ class RestoreToCKANTestCase(FederationSuite):
         mock_push_dst.assert_any_call(self.catalog, 'org_2',
                                       identifiers[1], 'destination', 'apikey',
                                       None, False, False, None)
+        expected = {'org_1': [identifiers[0]],
+                    'org_2': [identifiers[1]]}
+        self.assertDictEqual(expected, pushed)
 
-    def test_restore_catalog_failing_origin_portal(self, mock_push):
-        pass
+    @patch('pydatajson.federation.push_new_themes')
+    @patch('ckanapi.remoteckan.ActionShortcut')
+    def test_restore_catalog_failing_origin_portal(
+            self, mock_action, mock_push_thm, mock_push_dst):
+        mock_action.return_value.organization_list.side_effect = \
+            CKANAPIError('Broken origin portal')
+        pushed = restore_catalog_to_ckan(self.catalog, 'origin',
+                                         'destination', 'apikey')
+        self.assertDictEqual({}, pushed)
+        mock_push_thm.assert_not_called()
+        mock_push_dst.assert_not_called()
 
-    def test_restore_catalog_failing_destination_portal(self, mock_push):
-        pass
+    @patch('pydatajson.federation.push_new_themes')
+    @patch('ckanapi.remoteckan.ActionShortcut')
+    def test_restore_catalog_failing_destination_portal(
+            self, mock_action, mock_push_thm, mock_push_dst):
+
+        identifiers = [ds['identifier'] for ds in self.catalog.datasets]
+        mock_action.return_value.organization_list.return_value = \
+            ['org_1', 'org_2']
+        mock_action.return_value.organization_show.side_effect = [
+            {'packages': [{'id': identifiers[0]}]},
+            {'packages': [{'id': identifiers[1]}]},
+        ]
+        mock_push_dst.side_effect = CKANAPIError('Broken destination portal')
+
+        pushed = restore_catalog_to_ckan(self.catalog, 'origin',
+                                         'destination', 'apikey')
+        mock_push_dst.assert_any_call(self.catalog, 'org_1',
+                                      identifiers[0], 'destination', 'apikey',
+                                      None, False, False, None)
+        mock_push_dst.assert_any_call(self.catalog, 'org_2',
+                                      identifiers[1], 'destination', 'apikey',
+                                      None, False, False, None)
+        expected = {'org_1': [],
+                    'org_2': []}
+        self.assertDictEqual(expected, pushed)
