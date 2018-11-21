@@ -485,6 +485,7 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
 
 def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                             apikey, download_strategy=None):
+    catalog['homepage'] = catalog.get('homepage') or origin_portal_url
     res = {}
     origin_portal = RemoteCKAN(origin_portal_url)
     try:
@@ -500,7 +501,7 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
             id=org, include_datasets=True)
         datasets = [package['id'] for package in response['packages']]
         pushed_datasets = restore_organization_to_ckan(
-            catalog, org, destination_portal_url, apikey, dataset_list=datasets,
-            download_strategy=download_strategy)
+            catalog, org, destination_portal_url, apikey,
+            dataset_list=datasets, download_strategy=download_strategy)
         res[org] = pushed_datasets
     return res

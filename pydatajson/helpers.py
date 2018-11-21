@@ -411,7 +411,8 @@ def resource_files_download(catalog, distributions, download_strategy):
             tmpdir = tempfile.mkdtemp()
             tmpfile = tempfile.NamedTemporaryFile(delete=False, dir=tmpdir)
             tmpfile.close()
-            file_name = dist.get('fileName') or tmpfile.name
+            file_name = dist.get('fileName') or \
+                dist['downloadURL'].split('/')[-1]
             os.rename(tmpfile.name, os.path.join(tmpdir, file_name))
             tmpfile.name = os.path.join(tmpdir, file_name)
             download_to_file(dist['downloadURL'], tmpfile.name)
