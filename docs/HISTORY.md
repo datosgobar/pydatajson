@@ -1,6 +1,11 @@
 Versiones
 =========
 
+0.4.27 (2018-11-23)
+-------------------
+* Las funcionalidades que estaban en `restore_catalog_to_ckan()` pasan a ser de `restore_organization`. `restore_catalog` se compone de varias llamadas a `restore_organization`.
+* Documentación de `restore_catalog_to_ckan`.
+
 0.4.26 (2018-11-05)
 -------------------
 * Agrega métodos de manejo de organizaciones para bajar la información o subir a un portal CKAN.
