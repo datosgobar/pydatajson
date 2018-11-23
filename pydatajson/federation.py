@@ -289,10 +289,14 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
             str: El id del dataset en el catálogo de destino.
     """
     # Evitar entrar con valor falsy
-    if dataset_list is None:
-        dataset_list = [ds['identifier'] for ds in catalog.datasets]
-    owner_org = owner_org or catalog_id
     harvested = []
+    if dataset_list is None:
+        try:
+            dataset_list = [ds['identifier'] for ds in catalog.datasets]
+        except KeyError:
+            logger.exception('Hay datasets sin identificadores')
+            return harvested
+    owner_org = owner_org or catalog_id
     errors = {}
     for dataset_id in dataset_list:
         try:
@@ -467,9 +471,14 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
             list(str): La lista de ids de datasets subidos.
     """
     push_new_themes(catalog, portal_url, apikey)
-    if dataset_list is None:
-        dataset_list = [ds['identifier'] for ds in catalog.datasets]
     restored = []
+    if dataset_list is None:
+        try:
+            dataset_list = [ds['identifier'] for ds in catalog.datasets]
+        except KeyError:
+            logger.exception('Hay datasets sin identificadores')
+            return restored
+
     for dataset_id in dataset_list:
         try:
             restored_id = restore_dataset_to_ckan(catalog, owner_org,
@@ -511,7 +520,7 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
         org_list = origin_portal.action.organization_list()
     except CKANAPIError as e:
         logger.exception(
-            'Ocurrió un buscando las organizaciones del portal {}: {}'
+            'Ocurrió un error buscando las organizaciones del portal {}: {}'
             .format(origin_portal_url, str(e)))
         return res
 

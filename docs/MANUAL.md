@@ -448,7 +448,7 @@ Toma los siguientes parámetros:
 parámetro. Toma los siguientes parámetros:
     - **catalog**: El catálogo de origen que se restaura.
     - **portal_url**: La URL del portal CKAN de destino.
-    - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+    - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar los dataset.
     - **dataset_list**: Los ids de los datasets a restaurar. Si no se pasa una lista, todos los datasests se restauran.
     - **owner_org**: La organización a la cual pertencen los datasets.
     - **download_strategy**: Una función (catálogo, distribución)->bool. Sobre las distribuciones que evalúa True,
@@ -461,7 +461,7 @@ Toma los siguientes parámetros:
   - **catalog**: El catálogo de origen que se restaura.
   - **origin_portal_url**: La URL del portal CKAN de origen.
   - **destination_portal_url**: La URL del portal CKAN de destino.
-  - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar el dataset.
+  - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar los dataset.
   - **download_strategy**: Una función (catálogo, distribución)-> bool. Sobre las distribuciones que evalúa True,
     descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
 

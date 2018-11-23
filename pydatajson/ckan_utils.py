@@ -90,7 +90,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
                 logger.exception('Theme no presente en catálogo.')
                 continue
     else:
-        package['groups'] = package.get('groups', [])
+        package.setdefault('groups', [])
         for theme in themes:
             theme_dict = catalog.get_theme(identifier=theme) or\
                          catalog.get_theme(label=theme)
