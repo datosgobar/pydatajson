@@ -444,6 +444,29 @@ Toma los siguientes parámetros:
 
   Retorna el id en el nodo de destino de los datasets federados.
   
+- **pydatajson.DataJson.restore_organization_to_ckan()**: Restaura los datasets de una organización al portal pasado por
+parámetro. Toma los siguientes parámetros:
+    - **catalog**: El catálogo de origen que se restaura.
+    - **portal_url**: La URL del portal CKAN de destino.
+    - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar los dataset.
+    - **dataset_list**: Los ids de los datasets a restaurar. Si no se pasa una lista, todos los datasests se restauran.
+    - **owner_org**: La organización a la cual pertencen los datasets.
+    - **download_strategy**: Una función (catálogo, distribución)->bool. Sobre las distribuciones que evalúa True,
+        descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
+        
+    Retorna la lista de ids de datasets subidos.
+
+- **pydatajson.DataJson.restore_catalog_to_ckan()**: Restaura los datasets de un catálogo al portal pasado por parámetro.
+Toma los siguientes parámetros:
+  - **catalog**: El catálogo de origen que se restaura.
+  - **origin_portal_url**: La URL del portal CKAN de origen.
+  - **destination_portal_url**: La URL del portal CKAN de destino.
+  - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar los dataset.
+  - **download_strategy**: Una función (catálogo, distribución)-> bool. Sobre las distribuciones que evalúa True,
+    descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
+
+  Retorna un diccionario con key organización y value la lista de ids de datasets subidos a esa organización
+
 - **pydatajson.federation.resources_upload()**: Sube archivos de recursos a las distribuciones indicadas.
 Toma los siguientes parámetros:
   - **portal_url**: URL del portal de CKAN de destino.
@@ -716,3 +739,37 @@ OK | OK | 16 | 56
 
 Por favor, consulte el informe [`datasets.csv`](datasets.csv).
 ```
+
+## Anexo II: Restaurar un catálogo
+
+El primer paso es replicar la estructura de organizaciones del catálogo original al catálogo destino. Asumiendo que
+los nombres e ids de las organizaciones del original no se utilizan en el portal donde se replican:
+
+```python
+from pydatajson.federation import get_organizations_from_ckan, push_organization_tree_to_ckan
+arbol_original = get_organizations_from_ckan('url_portal_original')
+arbol_replicado = push_organization_tree_to_ckan('url_portal_destino', 'apikey', arbol_original)
+``` 
+
+Para cada organización en `arbol_replicado`, el campo `success` tiene un booleano que marca si fue subida exitosamente.
+Con las organizaciones replicadas podemos restaurar la data y metadata del catálogo orginal:
+
+```python
+from pydatajson.core import DataJson
+from pydatajson.helpers import is_local_andino_resource
+
+original = DataJson('portal-original/data.json')
+pushed_datasets =original.restore_catalog_to_ckan('portal-original-url', 'portal-destino-url', 'apikey',
+    download_strategy=is_local_andino_resource)
+``` 
+
+Si pasamos `download_strategy=None`, tan solo se restaura la metadata. `is_local_andino_resource` es una función
+auxiliar que toma una distribución y un catálogo y realiza las siguientes validaciones:
+
+ -1: Chequea que el campo `type` sea `file.upload`
+ 
+ -2: Si la distribución no tiene campo `type`, chequea que el `downloadURL` comience con el `homepage` del catálogo
+ 
+Si se cumple alguna de las condiciones, descarga el recurso y lo sube al portal de destino. Tambien es posible definir
+una función propia como estrategia para carga y descarga de archivos. Esta función debe tomar una distribución, un
+catálogo y devolver un booleano.
