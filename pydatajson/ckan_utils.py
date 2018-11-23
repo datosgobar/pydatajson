@@ -90,11 +90,12 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
                 logger.exception('Theme no presente en catálogo.')
                 continue
     else:
-        package['groups'] = package.get('groups', []) + [
-            {'name': title_to_name(theme, decode=False)}
-            for theme in themes
-        ]
-
+        package['groups'] = package.get('groups', [])
+        for theme in themes:
+            theme_dict = catalog.get_theme(identifier=theme) or\
+                         catalog.get_theme(label=theme)
+            if theme_dict:
+                package['groups'].append(map_theme_to_group(theme_dict))
     return package
 
 
