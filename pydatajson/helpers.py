@@ -404,21 +404,27 @@ def pprint(result):
 @contextmanager
 def resource_files_download(catalog, distributions, download_strategy):
     resource_files = {}
-    distributions = [dist for dist in distributions if
-                     download_strategy(catalog, dist)]
-    for dist in distributions:
-        try:
-            tmpfile = tempfile.NamedTemporaryFile(delete=False)
-            tmpfile.close()
-            download_to_file(dist['downloadURL'], tmpfile.name)
-            resource_files[dist['identifier']] = tmpfile.name
-        except Exception as e:
-            logger.exception(
-                "Error descargando el recurso {} de la distribución {}: {}"
-                .format(dist.get('downloadURL'),
-                        dist.get('identifier'), str(e))
-            )
-            continue
+    if download_strategy is not None:
+        distributions = [dist for dist in distributions if
+                         download_strategy(catalog, dist)]
+        for dist in distributions:
+            try:
+                tmpdir = tempfile.mkdtemp()
+                tmpfile = tempfile.NamedTemporaryFile(delete=False, dir=tmpdir)
+                tmpfile.close()
+                file_name = dist.get('fileName') or \
+                    dist['downloadURL'].split('/')[-1]
+                os.rename(tmpfile.name, os.path.join(tmpdir, file_name))
+                tmpfile.name = os.path.join(tmpdir, file_name)
+                download_to_file(dist['downloadURL'], tmpfile.name)
+                resource_files[dist['identifier']] = tmpfile.name
+            except Exception as e:
+                logger.exception(
+                    "Error descargando el recurso {} de la distribución {}: {}"
+                    .format(dist.get('downloadURL'),
+                            dist.get('identifier'), str(e))
+                )
+                continue
     try:
         yield resource_files
 

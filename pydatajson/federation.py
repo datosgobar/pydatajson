@@ -18,7 +18,7 @@ logger = logging.getLogger('pydatajson.federation')
 def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                          portal_url, apikey, catalog_id=None,
                          demote_superThemes=True, demote_themes=True,
-                         download_strategy=None):
+                         download_strategy=None, preserve_access_url=None):
     """Escribe la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -39,6 +39,9 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                 bool. Sobre las distribuciones que evalúa True, descarga el
                 recurso en el downloadURL y lo sube al portal de destino.
                 Por default no sube ninguna distribución.
+            preserve_access_url(list): Se pasan los ids de las distribuciones
+                cuyo accessURL se desea mantener en el portal de destino. Para
+                el resto, el portal debe generar un nuevo valor para el campo.
         Returns:
             str: El id del dataset en el catálogo de destino.
     """
@@ -70,17 +73,18 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
         pushed_package = ckan_portal.call_action(
             'package_create', data_dict=package)
 
-    if download_strategy:
-        with resource_files_download(catalog, dataset.get('distribution', []),
-                                     download_strategy) as resource_files:
-            resources_upload(portal_url, apikey, resource_files,
-                             catalog_id=catalog_id)
+    with resource_files_download(catalog, dataset.get('distribution', []),
+                                 download_strategy) as resource_files:
+        resources_update(portal_url, apikey, dataset.get('distribution', []),
+                         resource_files, preserve_access_url, catalog_id)
 
     ckan_portal.close()
     return pushed_package['id']
 
 
-def resources_upload(portal_url, apikey, resource_files, catalog_id=None):
+def resources_update(portal_url, apikey, distributions,
+                     resource_files, preserve_access_url=None,
+                     catalog_id=None):
     """Sube archivos locales a sus distribuciones correspondientes en el portal
      pasado por parámetro.
 
@@ -97,18 +101,29 @@ def resources_upload(portal_url, apikey, resource_files, catalog_id=None):
         """
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
     res = []
-    for resource in resource_files:
-        resource_id = catalog_id + '_' + resource if catalog_id else resource
-        try:
-            pushed = ckan_portal.action.resource_patch(
-                     id=resource_id,
-                     resource_type='file.upload',
-                     upload=open(resource_files[resource], 'rb'))
-            res.append(pushed['id'])
-        except Exception as e:
-            logger.exception(
-                "Error subiendo recurso {} a la distribución {}: {}"
-                .format(resource_files[resource], resource_files, str(e)))
+    for distribution in distributions:
+        updated = False
+        resource_id = catalog_id + '_' + distribution['id']\
+            if catalog_id else distribution['id']
+        fields = {'id': resource_id}
+        if distribution['id'] not in preserve_access_url:
+            fields.update({'accessURL': None})
+            updated = True
+        if distribution['id'] in resource_files:
+            fields.update({'resource_type': 'file.upload',
+                           'upload':
+                               open(resource_files[distribution['id']],  'rb')
+                           })
+            updated = True
+        if updated:
+            try:
+                pushed = ckan_portal.action.resource_patch(**fields)
+                res.append(pushed['id'])
+            except CKANAPIError as e:
+                logger.exception(
+                    "Error subiendo recurso {} a la distribución {}: {}"
+                    .format(resource_files[distribution['id']], resource_files,
+                            str(e)))
     return res
 
 

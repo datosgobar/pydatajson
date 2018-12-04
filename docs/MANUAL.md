@@ -444,7 +444,30 @@ Toma los siguientes parámetros:
 
   Retorna el id en el nodo de destino de los datasets federados.
   
-- **pydatajson.federation.resources_upload()**: Sube archivos de recursos a las distribuciones indicadas.
+- **pydatajson.DataJson.restore_organization_to_ckan()**: Restaura los datasets de una organización al portal pasado por
+parámetro. Toma los siguientes parámetros:
+    - **catalog**: El catálogo de origen que se restaura.
+    - **portal_url**: La URL del portal CKAN de destino.
+    - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar los dataset.
+    - **dataset_list**: Los ids de los datasets a restaurar. Si no se pasa una lista, todos los datasests se restauran.
+    - **owner_org**: La organización a la cual pertencen los datasets.
+    - **download_strategy**: Una función (catálogo, distribución)->bool. Sobre las distribuciones que evalúa True,
+        descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
+        
+    Retorna la lista de ids de datasets subidos.
+
+- **pydatajson.DataJson.restore_catalog_to_ckan()**: Restaura los datasets de un catálogo al portal pasado por parámetro.
+Toma los siguientes parámetros:
+  - **catalog**: El catálogo de origen que se restaura.
+  - **origin_portal_url**: La URL del portal CKAN de origen.
+  - **destination_portal_url**: La URL del portal CKAN de destino.
+  - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar los dataset.
+  - **download_strategy**: Una función (catálogo, distribución)-> bool. Sobre las distribuciones que evalúa True,
+    descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
+
+  Retorna un diccionario con key organización y value la lista de ids de datasets subidos a esa organización
+
+- **pydatajson.federation.resources_update()**: Sube archivos de recursos a las distribuciones indicadas.
 Toma los siguientes parámetros:
   - **portal_url**: URL del portal de CKAN de destino.
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para modificar la distribución.
@@ -452,7 +475,7 @@ Toma los siguientes parámetros:
   
   Retorna una lista con los ids de las distribuciones modificadas exitosamente.
   
-  **Advertencia**: La función `resources_upload()` cambia el `resource_type` de las distribuciones a `file.upload`.
+  **Advertencia**: La función `resources_update()` cambia el `resource_type` de las distribuciones a `file.upload`.
   
 ### Métodos para manejo de organizaciones
 

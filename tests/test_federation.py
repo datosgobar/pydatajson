@@ -298,7 +298,7 @@ class PushDatasetTestCase(FederationSuite):
             return_value={'id': 'an_id',
                           'resource_type': 'file.upload'})
         resources = {'an_id': 'tests/samples/resource_sample.csv'}
-        res = resources_upload('portal', 'key', resources)
+        res = resources_update('portal', 'key', resources)
         mock_portal.return_value.action.resource_patch.assert_called_with(
             id='an_id',
             resource_type='file.upload',
@@ -310,7 +310,7 @@ class PushDatasetTestCase(FederationSuite):
         mock_portal.return_value.action.resource_patch = MagicMock(
             side_effect=Exception('broken resource'))
         resources = {'an_id': 'tests/samples/resource_sample.csv'}
-        res = resources_upload('portal', 'key', resources)
+        res = resources_update('portal', 'key', resources)
         mock_portal.return_value.action.resource_patch.assert_called_with(
             id='an_id',
             resource_type='file.upload',
