@@ -7,7 +7,7 @@ de la API de CKAN.
 from __future__ import print_function, unicode_literals
 import logging
 from ckanapi import RemoteCKAN
-from ckanapi.errors import NotFound
+from ckanapi.errors import NotFound, CKANAPIError
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from .search import get_datasets
 from .helpers import resource_files_download
@@ -280,40 +280,6 @@ def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                                 download_strategy=download_strategy)
 
 
-def restore_catalog_to_ckan(catalog, owner_org, portal_url, apikey,
-                            dataset_list=None, download_strategy=None):
-    """Restaura los datasets de un catálogo al portal pasado por parámetro.
-        Si hay temas presentes en el DataJson que no están en el portal de
-        CKAN, los genera.
-
-        Args:
-            catalog (DataJson): El catálogo de origen que se restaura.
-            portal_url (str): La URL del portal CKAN de destino.
-            apikey (str): La apikey de un usuario con los permisos que le
-                permitan crear o actualizar el dataset.
-            dataset_list(list(str)): Los ids de los datasets a restaurar. Si no
-                se pasa una lista, todos los datasests se restauran.
-            owner_org (str): La organización a la cual pertencen los datasets.
-                Si no se pasa, se utiliza el catalog_id.
-            download_strategy(callable): Una función (catálogo, distribución)->
-                bool. Sobre las distribuciones que evalúa True, descarga el
-                recurso en el downloadURL y lo sube al portal de destino.
-                Por default no sube ninguna distribución.
-        Returns:
-            str: El id del dataset en el catálogo de destino.
-    """
-    push_new_themes(catalog, portal_url, apikey)
-    dataset_list = dataset_list or [ds['identifier']
-                                    for ds in catalog.datasets]
-    restored = []
-    for dataset_id in dataset_list:
-        restored_id = restore_dataset_to_ckan(catalog, owner_org, dataset_id,
-                                              portal_url, apikey,
-                                              download_strategy)
-        restored.append(restored_id)
-    return restored
-
-
 def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
                             dataset_list=None, owner_org=None,
                             download_strategy=None):
@@ -338,10 +304,14 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
             str: El id del dataset en el catálogo de destino.
     """
     # Evitar entrar con valor falsy
-    if dataset_list is None:
-        dataset_list = [ds['identifier'] for ds in catalog.datasets]
-    owner_org = owner_org or catalog_id
     harvested = []
+    if dataset_list is None:
+        try:
+            dataset_list = [ds['identifier'] for ds in catalog.datasets]
+        except KeyError:
+            logger.exception('Hay datasets sin identificadores')
+            return harvested
+    owner_org = owner_org or catalog_id
     errors = {}
     for dataset_id in dataset_list:
         try:
@@ -492,3 +462,89 @@ def remove_organization_from_ckan(portal_url, apikey, organization_id):
     except Exception as e:
         logger.exception('Ocurrió un error borrando la organización {}: {}'
                          .format(organization_id, str(e)))
+
+
+def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
+                                 dataset_list=None, download_strategy=None):
+    """Restaura los datasets de la organización de un catálogo al portal pasado
+       por parámetro. Si hay temas presentes en el DataJson que no están en el
+       portal de CKAN, los genera.
+
+        Args:
+            catalog (DataJson): El catálogo de origen que se restaura.
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le
+                permitan crear o actualizar el dataset.
+            dataset_list(list(str)): Los ids de los datasets a restaurar. Si no
+                se pasa una lista, todos los datasests se restauran.
+            owner_org (str): La organización a la cual pertencen los datasets.
+            download_strategy(callable): Una función (catálogo, distribución)->
+                bool. Sobre las distribuciones que evalúa True, descarga el
+                recurso en el downloadURL y lo sube al portal de destino.
+                Por default no sube ninguna distribución.
+        Returns:
+            list(str): La lista de ids de datasets subidos.
+    """
+    push_new_themes(catalog, portal_url, apikey)
+    restored = []
+    if dataset_list is None:
+        try:
+            dataset_list = [ds['identifier'] for ds in catalog.datasets]
+        except KeyError:
+            logger.exception('Hay datasets sin identificadores')
+            return restored
+
+    for dataset_id in dataset_list:
+        try:
+            restored_id = restore_dataset_to_ckan(catalog, owner_org,
+                                                  dataset_id, portal_url,
+                                                  apikey, download_strategy)
+            restored.append(restored_id)
+        except (CKANAPIError, KeyError, AttributeError) as e:
+            logger.exception('Ocurrió un error restaurando el dataset {}: {}'
+                             .format(dataset_id, str(e)))
+    return restored
+
+
+def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
+                            apikey, download_strategy=None):
+    """Restaura los datasets de un catálogo original al portal pasado
+       por parámetro. Si hay temas presentes en el DataJson que no están en
+       el portal de CKAN, los genera.
+
+            Args:
+                catalog (DataJson): El catálogo de origen que se restaura.
+                origin_portal_url (str): La URL del portal CKAN de origen.
+                destination_portal_url (str): La URL del portal CKAN de
+                    destino.
+                apikey (str): La apikey de un usuario con los permisos que le
+                    permitan crear o actualizar el dataset.
+                download_strategy(callable): Una función
+                    (catálogo, distribución)-> bool. Sobre las distribuciones
+                    que evalúa True, descarga el recurso en el downloadURL y lo
+                    sube al portal de destino. Por default no sube ninguna
+                    distribución.
+            Returns:
+                dict: Diccionario con key organización y value la lista de ids
+                    de datasets subidos a esa organización
+        """
+    catalog['homepage'] = catalog.get('homepage') or origin_portal_url
+    res = {}
+    origin_portal = RemoteCKAN(origin_portal_url)
+    try:
+        org_list = origin_portal.action.organization_list()
+    except CKANAPIError as e:
+        logger.exception(
+            'Ocurrió un error buscando las organizaciones del portal {}: {}'
+            .format(origin_portal_url, str(e)))
+        return res
+
+    for org in org_list:
+        response = origin_portal.action.organization_show(
+            id=org, include_datasets=True)
+        datasets = [package['id'] for package in response['packages']]
+        pushed_datasets = restore_organization_to_ckan(
+            catalog, org, destination_portal_url, apikey,
+            dataset_list=datasets, download_strategy=download_strategy)
+        res[org] = pushed_datasets
+    return res
