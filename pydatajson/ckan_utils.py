@@ -167,3 +167,36 @@ def map_theme_to_group(theme):
         "title": theme.get('label'),
         "description": theme.get('description'),
     }
+
+
+def theme_cataclysm(portal):
+    themes = portal.action.group_list()
+    for theme in themes:
+        try:
+            portal.action.group_purge(id=theme)
+        except:
+            continue
+
+
+def dataset_extintion(portal):
+    datasets = portal.action.package_list()
+    for dataset in datasets:
+        try:
+            portal.action.dataset_purge(id=dataset)
+        except:
+            continue
+
+
+def organization_inquisition(portal):
+    organzations = portal.action.organization_list()
+    for organization in organzations:
+        try:
+            portal.action.organization_purge(id=organization)
+        except:
+            continue
+
+
+def nuke_from_orbit(portal):
+    dataset_extintion(portal)
+    theme_cataclysm(portal)
+    organization_inquisition(portal)
