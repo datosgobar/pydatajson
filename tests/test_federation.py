@@ -15,7 +15,7 @@ except ImportError:
 from .context import pydatajson
 from pydatajson.federation import *
 from pydatajson.helpers import is_local_andino_resource
-from ckanapi.errors import NotFound
+from ckanapi.errors import NotFound, CKANAPIError
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
@@ -36,6 +36,8 @@ class PushDatasetTestCase(FederationSuite):
             r'[^a-z-_]+', '', cls.catalog['title']).lower())
         cls.dataset = cls.catalog.datasets[0]
         cls.dataset_id = cls.dataset['identifier']
+        cls.distribution = cls.catalog.distributions[0]
+        cls.distribution_id = cls.distribution['identifier']
         cls.minimum_catalog = pydatajson.DataJson(
             cls.get_sample('minimum_data.json'))
         cls.minimum_catalog_id = cls.minimum_catalog.get('identifier', re.sub(
@@ -297,10 +299,11 @@ class PushDatasetTestCase(FederationSuite):
         mock_portal.return_value.action.resource_patch = MagicMock(
             return_value={'id': 'an_id',
                           'resource_type': 'file.upload'})
-        resources = {'an_id': 'tests/samples/resource_sample.csv'}
-        res = resources_update('portal', 'key', resources)
+        resources = {self.distribution_id: 'tests/samples/resource_sample.csv'}
+        res = resources_update('portal', 'key', self.catalog.distributions,
+                               resources)
         mock_portal.return_value.action.resource_patch.assert_called_with(
-            id='an_id',
+            id=self.distribution_id,
             resource_type='file.upload',
             upload=ANY
         )
@@ -308,11 +311,12 @@ class PushDatasetTestCase(FederationSuite):
 
     def test_resource_upload_error(self, mock_portal):
         mock_portal.return_value.action.resource_patch = MagicMock(
-            side_effect=Exception('broken resource'))
-        resources = {'an_id': 'tests/samples/resource_sample.csv'}
-        res = resources_update('portal', 'key', resources)
+            side_effect=CKANAPIError('broken resource'))
+        resources = {self.distribution_id: 'tests/samples/resource_sample.csv'}
+        res = resources_update('portal', 'key', self.catalog.distributions,
+                               resources)
         mock_portal.return_value.action.resource_patch.assert_called_with(
-            id='an_id',
+            id=self.distribution_id,
             resource_type='file.upload',
             upload=ANY
         )
@@ -354,6 +358,49 @@ class PushDatasetTestCase(FederationSuite):
             'key',
             download_strategy=is_local_andino_resource)
         mock_portal.return_value.action.resource_patch.not_called()
+
+    def test_push_dataset_regenerate_accessurl_all(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return data_dict
+            else:
+                return []
+        mock_portal.return_value.call_action = mock_call_action
+        identifiers = [dist['identifier'] for dist in
+                       self.dataset['distribution']]
+
+        def side_effect(**kwargs):
+            self.assertTrue(kwargs['id'] in identifiers)
+            self.assertEqual('', kwargs['accessURL'])
+            return {'id': kwargs['id']}
+
+        mock_portal.return_value.action.resource_patch.side_effect = side_effect
+
+        pushed = push_dataset_to_ckan(self.catalog, 'owner',
+                                      self.dataset_id,
+                                      'portal', 'key',
+                                      generate_new_access_url=identifiers)
+        self.assertEqual(self.dataset_id, pushed)
+
+    def test_push_dataset_regenerate_accessurl_none(self, mock_portal):
+        def mock_call_action(action, data_dict=None):
+            if action == 'package_update':
+                return data_dict
+            else:
+                return []
+
+        mock_portal.return_value.call_action = mock_call_action
+
+        def side_effect(**kwargs):
+            self.fail('should not be called')
+
+        mock_portal.return_value.action.resource_patch.side_effect = side_effect
+
+        pushed = push_dataset_to_ckan(self.catalog, 'owner',
+                                      self.dataset_id,
+                                      'portal', 'key',
+                                      generate_new_access_url=None)
+        self.assertEqual(self.dataset_id, pushed)
 
 
 class RemoveDatasetTestCase(FederationSuite):
@@ -435,7 +482,6 @@ class RemoveDatasetTestCase(FederationSuite):
 
 @patch('pydatajson.federation.RemoteCKAN', autospec=True)
 class PushThemeTestCase(FederationSuite):
-
     @classmethod
     def setUpClass(cls):
         cls.catalog = pydatajson.DataJson(cls.get_sample('full_data.json'))
@@ -658,7 +704,7 @@ class RestoreToCKANTestCase(FederationSuite):
                                 'portal', 'apikey', test_strategy)
         mock_push.assert_called_with(self.catalog, 'owner_org',
                                      self.dataset_id, 'portal', 'apikey', None,
-                                     False, False, test_strategy)
+                                     False, False, test_strategy, None)
 
     @patch('pydatajson.federation.push_new_themes')
     def test_restore_organization_to_ckan(self, mock_push_thm, mock_push_dst):
@@ -671,7 +717,7 @@ class RestoreToCKANTestCase(FederationSuite):
         for identifier in identifiers:
             mock_push_dst.assert_any_call(self.catalog, 'owner_org',
                                           identifier, 'portal', 'apikey', None,
-                                          False, False, None)
+                                          False, False, None, None)
 
     @patch('pydatajson.federation.push_new_themes')
     def test_restore_failing_organization_to_ckan(self, mock_push_thm,
@@ -687,7 +733,7 @@ class RestoreToCKANTestCase(FederationSuite):
         mock_push_thm.assert_called_with(self.catalog, 'portal', 'apikey')
         mock_push_dst.assert_called_with(self.catalog, 'owner_org',
                                          identifiers[1], 'portal', 'apikey',
-                                         None, False, False, None)
+                                         None, False, False, None, None)
 
     @patch('pydatajson.federation.push_new_themes')
     @patch('ckanapi.remoteckan.ActionShortcut')
@@ -705,10 +751,10 @@ class RestoreToCKANTestCase(FederationSuite):
                                          'destination', 'apikey')
         mock_push_dst.assert_any_call(self.catalog, 'org_1',
                                       identifiers[0], 'destination', 'apikey',
-                                      None, False, False, None)
+                                      None, False, False, None, None)
         mock_push_dst.assert_any_call(self.catalog, 'org_2',
                                       identifiers[1], 'destination', 'apikey',
-                                      None, False, False, None)
+                                      None, False, False, None, None)
         expected = {'org_1': [identifiers[0]],
                     'org_2': [identifiers[1]]}
         self.assertDictEqual(expected, pushed)
@@ -743,10 +789,10 @@ class RestoreToCKANTestCase(FederationSuite):
                                          'destination', 'apikey')
         mock_push_dst.assert_any_call(self.catalog, 'org_1',
                                       identifiers[0], 'destination', 'apikey',
-                                      None, False, False, None)
+                                      None, False, False, None, None)
         mock_push_dst.assert_any_call(self.catalog, 'org_2',
                                       identifiers[1], 'destination', 'apikey',
-                                      None, False, False, None)
+                                      None, False, False, None, None)
         expected = {'org_1': [],
                     'org_2': []}
         self.assertDictEqual(expected, pushed)
