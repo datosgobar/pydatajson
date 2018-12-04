@@ -374,7 +374,8 @@ class PushDatasetTestCase(FederationSuite):
             self.assertEqual('', kwargs['accessURL'])
             return {'id': kwargs['id']}
 
-        mock_portal.return_value.action.resource_patch.side_effect = side_effect
+        mock_portal.return_value.action.resource_patch.side_effect =\
+            side_effect
 
         pushed = push_dataset_to_ckan(self.catalog, 'owner',
                                       self.dataset_id,
@@ -394,7 +395,8 @@ class PushDatasetTestCase(FederationSuite):
         def side_effect(**kwargs):
             self.fail('should not be called')
 
-        mock_portal.return_value.action.resource_patch.side_effect = side_effect
+        mock_portal.return_value.action.resource_patch.side_effect =\
+            side_effect
 
         pushed = push_dataset_to_ckan(self.catalog, 'owner',
                                       self.dataset_id,

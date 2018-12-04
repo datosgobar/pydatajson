@@ -93,8 +93,13 @@ def resources_update(portal_url, apikey, distributions,
                 portal_url (str): La URL del portal CKAN de destino.
                 apikey (str): La apikey de un usuario con los permisos que le
                     permitan crear o actualizar el dataset.
+                distributions(list): Lista de distribuciones posibles para
+                    actualizar.
                 resource_files(dict): Diccionario con entradas
                     id_de_distribucion:path_al_recurso a subir
+                generate_new_access_url(list): Lista de ids de distribuciones a
+                    las cuales se actualizará el accessURL con los valores
+                    generados por el portal de destino
                 catalog_id(str): prependea el id al id del recurso para
                     encontrarlo antes de subirlo
             Returns:
@@ -248,6 +253,10 @@ def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                 bool. Sobre las distribuciones que evalúa True, descarga el
                 recurso en el downloadURL y lo sube al portal de destino.
                 Por default no sube ninguna distribución.
+            generate_new_access_url(list): Se pasan los ids de las
+                    distribuciones cuyo accessURL se regenerar en el portal de
+                    destino. Para el resto, el portal debe mantiene el valor
+                    pasado en el DataJson.
         Returns:
             str: El id del dataset restaurado.
     """
@@ -489,6 +498,10 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                 bool. Sobre las distribuciones que evalúa True, descarga el
                 recurso en el downloadURL y lo sube al portal de destino.
                 Por default no sube ninguna distribución.
+            generate_new_access_url(list): Se pasan los ids de las
+                    distribuciones cuyo accessURL se regenerar en el portal de
+                    destino. Para el resto, el portal debe mantiene el valor
+                    pasado en el DataJson.
         Returns:
             list(str): La lista de ids de datasets subidos.
     """
@@ -533,6 +546,10 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                     que evalúa True, descarga el recurso en el downloadURL y lo
                     sube al portal de destino. Por default no sube ninguna
                     distribución.
+                generate_new_access_url(list): Se pasan los ids de las
+                    distribuciones cuyo accessURL se regenerar en el portal de
+                    destino. Para el resto, el portal debe mantiene el valor
+                    pasado en el DataJson.
             Returns:
                 dict: Diccionario con key organización y value la lista de ids
                     de datasets subidos a esa organización
