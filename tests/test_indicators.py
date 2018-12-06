@@ -582,3 +582,19 @@ class TestIndicatorsTestCase(object):
         indics = self.dj.generate_catalogs_indicators(catalog)[0][0]
         assert_equal(indics['title'], 'no-title')
         assert_equal(indics['identifier'], 'no-id')
+
+    def test_node_indicators_no_central_catalog(self):
+        catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+        node_indicators, network_indicators = \
+            self.dj.generate_catalogs_indicators(catalog)
+
+        # Esperado: no se calculan indicadores de federación
+        federation_indicators = [
+            'datasets_federados_cant',
+            'datasets_no_federados_cant',
+            'datasets_no_federados',
+            'distribuciones_federadas_cant']
+
+        for fed_ind in federation_indicators:
+            assert_true(fed_ind not in node_indicators[0])
+            assert_true(fed_ind not in network_indicators)
