@@ -137,6 +137,8 @@ Un ejemplo del resultado completo de `validate_catalog()` se puede consultar en 
 
 `pydatajson` permite federar o restaurar fácilmente un dataset de un catálogo hacia un Portal Andino (usa todo el perfil de metadatos) o CKAN (sólo usa campos de metadatos de CKAN), utilizando la API de CKAN.
 
+Para esto hace falta un *apikey* que se puede sacar de la API de CKAN `/api/action/user_list` ingresando con un usuario administrador.
+
 #### Federar un dataset
 
 Incluye la transformación de algunos metadatos, para adaptar un dataset de un nodo original a cómo debe documentarse en un nodo indexador.

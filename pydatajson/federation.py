@@ -101,9 +101,9 @@ def resources_upload(portal_url, apikey, resource_files, catalog_id=None):
         resource_id = catalog_id + '_' + resource if catalog_id else resource
         try:
             pushed = ckan_portal.action.resource_patch(
-                     id=resource_id,
-                     resource_type='file.upload',
-                     upload=open(resource_files[resource], 'rb'))
+                id=resource_id,
+                resource_type='file.upload',
+                upload=open(resource_files[resource], 'rb'))
             res.append(pushed['id'])
         except Exception as e:
             logger.exception(
@@ -516,15 +516,20 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
     catalog['homepage'] = catalog.get('homepage') or origin_portal_url
     res = {}
     origin_portal = RemoteCKAN(origin_portal_url)
+
     try:
         org_list = origin_portal.action.organization_list()
+
     except CKANAPIError as e:
         logger.exception(
             'Ocurrió un error buscando las organizaciones del portal {}: {}'
             .format(origin_portal_url, str(e)))
+        print(e)
         return res
 
     for org in org_list:
+        print("Restaurando organizacion {}".format(org))
+
         response = origin_portal.action.organization_show(
             id=org, include_datasets=True)
         datasets = [package['id'] for package in response['packages']]
@@ -532,4 +537,5 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
             catalog, org, destination_portal_url, apikey,
             dataset_list=datasets, download_strategy=download_strategy)
         res[org] = pushed_datasets
+
     return res

@@ -292,13 +292,13 @@ def _network_indicator_percentages(fields, network_indicators):
         total = partial + (percentages[indicator][1] or 0)
         # Evita division por 0
         if total:
-            pct = 100 * float(partial)/total
+            pct = 100 * float(partial) / total
         network_indicators[indicator] = round(pct, 2)
 
     # % de campos recomendados y optativos utilizados en el catálogo entero
     if fields:  # 'fields' puede estar vacío si ningún campo es válido
         rec_pct = 100 * float(fields['recomendado']) / \
-                  fields['total_recomendado']
+            fields['total_recomendado']
 
         opt_pct = 100 * float(fields['optativo']) / fields['total_optativo']
 
@@ -345,7 +345,6 @@ def _generate_status_indicators(catalog, validator=None):
     for dataset in summary:
         cant_distribuciones += dataset['cant_distribuciones']
 
-        print(dataset)
         # chequea si el dataset tiene datos
         if dataset['tiene_datos'] == "SI":
             cant_data += 1
