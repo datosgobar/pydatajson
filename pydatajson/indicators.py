@@ -60,7 +60,6 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
             un diccionario con indicadores a nivel global,
             datos sobre la lista entera en general.
     """
-    central_catalog = central_catalog or CENTRAL_CATALOG
     assert isinstance(catalogs, string_types + (dict, list))
     # Si se pasa un único catálogo, genero una lista que lo contenga
     if isinstance(catalogs, string_types + (dict,)):

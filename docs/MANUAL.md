@@ -355,7 +355,10 @@ Toma los siguientes parámetros:
   - **download_strategy** (opcional, default None): La referencia a una función que toma (catalog, distribution) de
   entrada y devuelve un booleano. Esta función se aplica sobre todas las distribuciones del dataset. Si devuelve `True`,
   se descarga el archivo indicado en el `downloadURL` de la distribución y se lo sube al portal de destino. Si es None,
-  se omite esta operación. 
+  se omite esta operación.
+  - **generate_new_access_url** (opcional, default None): Se pasan los ids de las distribuciones cuyo accessURL se regenerar en el portal de
+      destino. Para el resto, el portal debe mantiene el valor pasado en el DataJson.
+ 
 
 
   Retorna el id en el nodo de destino del dataset federado.
@@ -425,6 +428,9 @@ Toma los siguientes parámetros:
   entrada y devuelve un booleano. Esta función se aplica sobre todas las distribuciones del dataset. Si devuelve `True`,
   se descarga el archivo indicado en el `downloadURL` de la distribución y se lo sube al portal de destino. Si es None,
   se omite esta operación.
+  - **generate_new_access_url** (opcional, default None): Se pasan los ids de las distribuciones cuyo accessURL se regenerar en el portal de
+      destino. Para el resto, el portal debe mantiene el valor pasado en el DataJson.
+
 
   Retorna el id del dataset restaurado.
 
@@ -455,6 +461,8 @@ parámetro. Toma los siguientes parámetros:
     - **owner_org**: La organización a la cual pertencen los datasets.
     - **download_strategy**: Una función (catálogo, distribución)->bool. Sobre las distribuciones que evalúa True,
         descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
+    - **generate_new_access_url** (opcional, default None): Se pasan los ids de las distribuciones cuyo accessURL se regenerar en el portal de
+        destino. Para el resto, el portal debe mantiene el valor pasado en el DataJson.
         
     Retorna la lista de ids de datasets subidos.
 
@@ -465,19 +473,27 @@ Toma los siguientes parámetros:
   - **destination_portal_url**: La URL del portal CKAN de destino.
   - **apikey**: La apikey de un usuario con los permisos que le permitan crear o actualizar los dataset.
   - **download_strategy**: Una función (catálogo, distribución)-> bool. Sobre las distribuciones que evalúa True,
-    descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
+      descarga el recurso en el downloadURL y lo sube al portal de destino. Por default no sube ninguna distribución.
+  - **generate_new_access_url** (opcional, default None): Se pasan los ids de las distribuciones cuyo accessURL se regenerar en el portal de
+      destino. Para el resto, el portal debe mantiene el valor pasado en el DataJson.
 
   Retorna un diccionario con key organización y value la lista de ids de datasets subidos a esa organización
 
-- **pydatajson.federation.resources_upload()**: Sube archivos de recursos a las distribuciones indicadas.
-Toma los siguientes parámetros:
+- **pydatajson.federation.resources_update()**: Sube archivos de recursos a las distribuciones indicadas y regenera los
+accessURL en las distribuciones indicadas. Toma los siguientes parámetros:
   - **portal_url**: URL del portal de CKAN de destino.
   - **apikey**: La apikey de un usuario del portal de destino con los permisos para modificar la distribución.
+  - **distributions**: Lista de distribuciones posibles para actualizar.
   - **resource_files** Diccionario con el id de las distribuciones y un path al recurso correspondiente a subir.
+  - **generate_new_access_url** (opcional, default None): Lista de ids de distribuciones a las cuales se actualizará el
+    accessURL con los valores generados por el portal de destino.
+  - **catalog_id** (opcional, default None): prependea el id al id del recurso para encontrarlo antes de subirlo si es
+    necesario.
+      
   
   Retorna una lista con los ids de las distribuciones modificadas exitosamente.
   
-  **Advertencia**: La función `resources_upload()` cambia el `resource_type` de las distribuciones a `file.upload`.
+  **Advertencia**: La función `resources_update()` cambia el `resource_type` de las distribuciones a `file.upload`.
   
 ### Métodos para manejo de organizaciones
 
