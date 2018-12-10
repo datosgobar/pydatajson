@@ -44,14 +44,6 @@ pydatajson.custom\_exceptions module
     :undoc-members:
     :show-inheritance:
 
-pydatajson.data\_profiling module
----------------------------------
-
-.. automodule:: pydatajson.data_profiling
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 pydatajson.documentation module
 -------------------------------
 
