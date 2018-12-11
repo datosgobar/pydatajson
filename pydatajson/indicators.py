@@ -195,11 +195,12 @@ def _federation_indicators(catalog, central_catalog):
     for dataset in catalog.get('dataset', []):
         found = False
         for central_dataset in central_catalog.get('dataset', []):
-            if datasets_equal(dataset, central_dataset):
+            new_dataset = (dataset.get('title'), dataset.get('landingPage'))
+            if (datasets_equal(dataset, central_dataset) and
+                    new_dataset not in datasets_federados):
                 found = True
                 federados += 1
-                datasets_federados.append((dataset.get('title'),
-                                           dataset.get('landingPage')))
+                datasets_federados.append(new_dataset)
                 dist_federadas += len(dataset.get('distribution', []))
                 break
         if not found:
