@@ -1,6 +1,12 @@
 Versiones
 =========
 
+0.4.28 (2018-12-11)
+-------------------
+* Parametro opcional a `push_dataset_to_ckan()` para regenerar `accessURL` de recursos.
+* Permite el cálculo de indicadores con catálogo central opcional. 
+
+
 0.4.27 (2018-11-23)
 -------------------
 * Las funcionalidades que estaban en `restore_catalog_to_ckan()` pasan a ser de `restore_organization`. `restore_catalog` se compone de varias llamadas a `restore_organization`.
