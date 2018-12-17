@@ -19,6 +19,7 @@ import warnings
 import openpyxl as pyxl
 import requests
 import unicodecsv as csv
+from openpyxl.utils.exceptions import *
 from six import string_types, text_type, iteritems
 from six.moves.urllib_parse import urlparse
 from unidecode import unidecode
@@ -32,6 +33,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 pydj_logger = logging.getLogger('pydatajson.readers')
 
+openpyxl_exceptions = (CellCoordinatesException, IllegalCharacterError,
+                       NamedRangeException, SheetTitleException,
+                       InsufficientCoordinatesException, InvalidFileException,
+                       ReadOnlyWorkbookException, WorkbookAlreadySaved)
 
 def read_catalog_obj(catalog):
     try:
@@ -61,9 +66,9 @@ def read_catalog(catalog, default_values=None):
         dict: Representación interna de un catálogo para uso en las funciones
         de esta librería.
     """
-    unknown_catalog_repr_msg = """
-No se pudo inferir una representación válida de un catálogo del parámetro
-provisto: {}.""".format(catalog)
+    unknown_catalog_repr_msg = \
+        """No se pudo inferir una representación válida de un catálogo del
+        parámetro provisto: {}.""".format(catalog)
     assert isinstance(catalog, string_types + (dict,)
                       ), unknown_catalog_repr_msg
 
@@ -73,17 +78,17 @@ provisto: {}.""".format(catalog)
     else:
         # catalog es una URL remota o un path local
         suffix = catalog.split(".")[-1].strip("/")
-        unknown_suffix_msg = """
-{} no es un sufijo conocido. Pruebe con 'json' o  'xlsx'""".format(suffix)
-        assert suffix in ["json", "xlsx"], unknown_suffix_msg
-
-        if suffix == "json":
-            catalog_dict = read_json(catalog)
-        elif suffix == "xlsx":
-            # El archivo está en formato XLSX
-            catalog_dict = read_xlsx_catalog(catalog)
+        if suffix == "xlsx":
+            try:
+                catalog_dict = read_xlsx_catalog(catalog)
+            except openpyxl_exceptions as e:
+                raise ce.NonParseableCatalog(catalog, str(e))
         else:
-            raise Exception("Formato no reconocido {}".format(suffix))
+            try:
+                catalog_dict = read_json(catalog)
+            except(ValueError, TypeError) as e:
+                raise ce.NonParseableCatalog(catalog, str(e))
+
     # si se pasaron valores default, los aplica al catálogo leído
     if default_values:
         _apply_default_values(catalog_dict, default_values)
