@@ -38,6 +38,7 @@ openpyxl_exceptions = (CellCoordinatesException, IllegalCharacterError,
                        InsufficientCoordinatesException, InvalidFileException,
                        ReadOnlyWorkbookException, WorkbookAlreadySaved)
 
+
 def read_catalog_obj(catalog):
     try:
         if getattr(catalog, "has_catalog"):
@@ -81,12 +82,12 @@ def read_catalog(catalog, default_values=None):
         if suffix == "xlsx":
             try:
                 catalog_dict = read_xlsx_catalog(catalog)
-            except openpyxl_exceptions as e:
+            except openpyxl_exceptions + (ValueError,) as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
         else:
             try:
                 catalog_dict = read_json(catalog)
-            except(ValueError, TypeError) as e:
+            except(ValueError, TypeError, IOError) as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
 
     # si se pasaron valores default, los aplica al catálogo leído
