@@ -21,6 +21,7 @@ except ImportError:
 import filecmp
 from .context import pydatajson
 from pydatajson.helpers import ensure_dir_exists
+from pydatajson.custom_exceptions import NonParseableCatalog
 from . import xl_methods
 import openpyxl as pyxl
 
@@ -169,7 +170,7 @@ revíselo manualmente""".format(temp_filename)
 
         try:
             pydatajson.readers.read_xlsx_catalog(tmp_xlsx)
-        except BaseException:
+        except NonParseableCatalog:
             self.fail("No se pudo leer archivo XLSX")
 
     def test_read_local_xlsx_catalog_with_defaults(self):
@@ -263,6 +264,17 @@ revíselo manualmente""".format(temp_filename)
                 self.assertTrue(dataset[field])
                 # Elementos no vacios
                 self.assertTrue(all(dataset[field]))
+
+    def test_read_without_suffix_reads_json(self):
+        original = pydatajson.readers.read_catalog(
+            self.get_sample('full_data.json'))
+        suffixless = pydatajson.readers.read_catalog(
+            self.get_sample('full_data'))
+        self.assertDictEqual(original, suffixless)
+
+    @nose.tools.raises(NonParseableCatalog)
+    def test_failing_catalog_raises_non_parseable_error(self):
+        pydatajson.readers.read_catalog('inexistent_file')
 
 
 if __name__ == '__main__':

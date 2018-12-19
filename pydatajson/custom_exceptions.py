@@ -128,6 +128,13 @@ class DistributionUnexpectedTitle(BaseUnexpectedValue):
         super(DistributionUnexpectedTitle, self).__init__(msg)
 
 
+class NonParseableCatalog(ValueError):
+    """No se puede leer un data.json a partir del parámetro pasado"""
+    def __init__(self, catalog, error):
+        msg = "Error parseando el datajson {}: {}".format(catalog, error)
+        super(NonParseableCatalog, self).__init__(msg)
+
+
 class BaseRepetitionError(ValueError):
 
     """El id de una entidad está repetido en el catálogo."""
