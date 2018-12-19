@@ -478,6 +478,21 @@ def remove_organization_from_ckan(portal_url, apikey, organization_id):
                          .format(organization_id, str(e)))
 
 
+def remove_organizations_from_ckan(portal_url, apikey, organization_list):
+    """Toma una lista de ids de organización y las purga del portal de destino.
+        Args:
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le
+                permitan borrar la organización.
+            organization_list(list): Id o name de la organización a borrar.
+        Returns:
+            None.
+
+    """
+    for org in organization_list:
+        remove_organization_from_ckan(portal_url, apikey, org)
+
+
 def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                  dataset_list=None, download_strategy=None,
                                  generate_new_access_url=None
