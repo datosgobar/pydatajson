@@ -36,6 +36,7 @@ from . import writers
 from . import federation
 from . import transformation
 from . import backup
+from . import reporting
 
 logger = logging.getLogger('pydatajson')
 
@@ -134,6 +135,9 @@ class DataJson(dict):
 
     # metodos para generar indicadores
     generate_indicators = indicators.generate_indicators
+
+    # metodos para generar reportes
+    get_catalog_report = reporting.get_catalog_report
 
     # metodos para hacer backups
     make_catalog_backup = backup.make_catalog_backup
