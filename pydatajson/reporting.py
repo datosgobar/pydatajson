@@ -110,6 +110,30 @@ def generate_datasets_summary(catalog, export_path=None, validator=None):
 
 def get_catalog_report(catalog, catalog_id, catalog_url=None,
                        include_datasets=None, backup_catalog=False):
+    """Genera un reporte en html sobre las distribuciones CSV del catálogo
+    competo o de algunos de sus datasets:
+        - Título del catálogo
+        - Título del dataset
+        - Título de la distribución
+        - Datos de profiling de la distribución
+        - Preview de la distribución
+
+    Es utilizada para la tarea de análisis de calidad de los datos del
+    catálogo.
+
+    Args:
+        catalog (str o dict): Path a un catálogo en cualquier formato,
+            JSON, XLSX, o diccionario de python.
+        catalog_id (str): Identificador del organismo.
+        catalog_url (str): Si no se indica el parámetro catalog, se crea a
+            patir de la URL provista.
+        include_datasets (list): Identificadores de los datasets a considerar.
+        backup_catalog (bool): Si es verdadero se realiza un backup del
+            catálogo. Default: False.
+
+    Returns:
+        str: Reporte en lenguaje html.
+    """
 
     include_datasets = include_datasets or []
 
@@ -175,7 +199,7 @@ def get_distribution_report(catalog, distribution_id, catalog_id):
 
     # validaciones: tamaño, formato...
     if not basic_validations(catalog, distribution_id):
-        return ""
+        return ''
 
     d_profiling = distribution_profiling(
         catalog, distribution_id, catalog_id)
@@ -183,14 +207,9 @@ def get_distribution_report(catalog, distribution_id, catalog_id):
     if d_profiling is None:
         return ''
 
-    # COSAS
-    # TABLA_PROFILING = ''
     TABLA_PROFILING = d_profiling[0]
-    # .encode('utf-8')
     TABLA_PREVIEW = distribution_preview(
         catalog, distribution_id, catalog_id, d_profiling[1])
-    # .encode('utf-8')
-    # , 'latin-1')  # encoding)
 
     title = catalog.get_distribution(identifier=distribution_id)[
         'title'].strip()
@@ -201,7 +220,7 @@ def get_distribution_report(catalog, distribution_id, catalog_id):
 
 
 def basic_validations(catalog, distribution_id):
-    # sólo valido formato por ahora
+    # sólo valida formato por ahora
     d_format = catalog.get_distribution(identifier=distribution_id)[
         'format'].upper()
 
@@ -215,8 +234,7 @@ def distribution_preview(catalog, distribution_id, catalog_id,
                          encoding='utf8'):
     distribution = catalog.get_distribution(identifier=distribution_id)
     ds_org = catalog_id
-    ds_id = distribution['dataset_identifier']  # .decode("utf-8")
-    # d_id = distribution_id
+    ds_id = distribution['dataset_identifier']
 
     distribution_download_url = distribution["downloadURL"]
 
@@ -226,7 +244,7 @@ def distribution_preview(catalog, distribution_id, catalog_id,
         distribution_download_url[
             distribution_download_url.rfind("/") + 1:]
     )
-    d_file_name = d_file_name[:d_file_name.rfind(".")]  # .decode("utf-8")
+    d_file_name = d_file_name[:d_file_name.rfind(".")]
 
     distribution_path = glob.glob(
         './catalog/{}/{}/{}.csv'.format(ds_org, ds_id, d_file_name))
@@ -254,8 +272,7 @@ def distribution_profiling(catalog, distribution_id, catalog_id):
     distribution = catalog.get_distribution(identifier=distribution_id)
     ds_org = catalog_id
     ds_id = distribution['dataset_identifier']
-    # ds_title = distribution['title']
-    # d_id = distribution_id
+
     distribution_download_url = distribution["downloadURL"]
 
     # si no se especifica un file name, se toma de la URL
@@ -290,13 +307,6 @@ def distribution_profiling(catalog, distribution_id, catalog_id):
                                   skiprows=d_broken_lines,
                                   nrows=ROWS_TO_READ)
 
-        # d_col_names = pd_file.columns.values
-
-        # with open(distribucion_path) as fp:
-        #     for (d_rows, _) in enumerate(fp, 1):
-        #         pass
-
-        # d_cols = len(pd_file.columns.values)
         d_rows, d_cols = pd_file.shape
 
         lista = [d_encoding,
@@ -321,7 +331,7 @@ def distribution_profiling(catalog, distribution_id, catalog_id):
         html_report = df_report.to_html(index_names=False,
                                         justify='center',
                                         escape=False)
-        # return '\r' + html_report + '\r'
+
         return [u'\r' + html_report + u'\r', d_encoding]
     else:
         return
@@ -355,15 +365,10 @@ def find_dialect(f_path):
         o mensaje 'no identificado'
     """
     with open(f_path, 'rb') as csvfile:
-        # try:
         line = csvfile.readline().decode('utf-8', errors='ignore')
-        # except UnicodeDecodeError():
-        # line = csvfile.readline().decode('latin-1')
-
         dialect = csv.Sniffer().sniff(line)
 
         return dialect.delimiter, dialect.quotechar
-        # return 'no identificado', 'no identificado'
 ##
 
 
@@ -382,7 +387,6 @@ def broken_lines(f_path):
     while cont is True:
         try:
             pd.read_csv(f_path, skiprows=rows_skipped, nrows=10)
-#             data = pd.read_csv(f_path,memory_map=True,skiprows=rows_skipped)
             cont = False
         except Exception as e:
             errortype = e.message.split('.')[0].strip()
