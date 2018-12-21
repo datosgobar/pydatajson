@@ -484,7 +484,7 @@ def remove_organizations_from_ckan(portal_url, apikey, organization_list):
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le
                 permitan borrar la organización.
-            organization_list(list): Id o name de la organización a borrar.
+            organization_list(list): Id o name de las organizaciones a borrar.
         Returns:
             None.
 
