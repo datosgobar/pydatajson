@@ -551,6 +551,14 @@ portal de destino. Toma los siguientes parámetros:
   **Advertencia**: En caso de que la organización tenga hijos en la jerarquía, estos pasan a ser de primer nivel.
 
 
+- **pydatajson.federation.remove_organizations_from_ckan()**: Tomando el una lista de ids o names de organizaciones,
+las borra en el portal de destino. Toma los siguientes parámetros:
+  - **portal_url**: La URL del portal CKAN de destino.
+  - **apikey**: La apikey de un usuario con los permisos que le permitan borrar organizaciones.
+  - **organization_list**: Lista de id o names de las organizaciones a borrar.
+    
+  Retorna None.
+
 ## Anexo I: Estructura de respuestas
 
 ### validate_catalog()
