@@ -1,6 +1,12 @@
 Versiones
 =========
 
+0.4.29 (2018-12-21)
+-------------------
+* Método `remove_organizations_from_ckan()`.
+* Cambia la estrategia de lectura para json sin extensión. 
+
+
 0.4.28 (2018-12-11)
 -------------------
 * Parametro opcional a `push_dataset_to_ckan()` para regenerar `accessURL` de recursos.
