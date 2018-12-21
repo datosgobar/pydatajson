@@ -678,6 +678,13 @@ class OrganizationsTestCase(FederationSuite):
         mock_portal.return_value.call_action.assert_called_with(
             'organization_purge', data_dict={'id': 'test_id'})
 
+    def test_remove_organizations(self, mock_portal):
+        ids = ['id1', 'id2', 'id3']
+        remove_organizations_from_ckan(self.portal_url, self.apikey, ids)
+        for test_id in ids:
+            mock_portal.return_value.call_action.assert_any_call(
+                'organization_purge', data_dict={'id': test_id})
+
     @patch('logging.Logger.exception')
     def test_remove_organization_logs_failures(self, mock_logger, mock_portal):
         mock_portal.return_value.call_action.side_effect = Exception('test')
