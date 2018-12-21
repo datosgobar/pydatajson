@@ -495,8 +495,7 @@ def remove_organizations_from_ckan(portal_url, apikey, organization_list):
 
 def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                  dataset_list=None, download_strategy=None,
-                                 generate_new_access_url=None
-                                 ):
+                                 generate_new_access_url=None):
     """Restaura los datasets de la organización de un catálogo al portal pasado
        por parámetro. Si hay temas presentes en el DataJson que no están en el
        portal de CKAN, los genera.
