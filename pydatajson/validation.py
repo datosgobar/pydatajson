@@ -301,14 +301,14 @@ def iter_custom_errors(catalog):
 
         # chequea que no haya duplicados en los downloadURL de las
         # distribuciones
-        urls = []
-        for dataset in catalog["dataset"]:
-            urls += [distribution['downloadURL']
-                     for distribution in dataset['distribution']
-                     if distribution.get('downloadURL')]
-        dups = _find_dups(urls)
-        if len(dups) > 0:
-            yield ce.DownloadURLRepetitionError(dups)
+        # urls = []
+        # for dataset in catalog["dataset"]:
+        #     urls += [distribution['downloadURL']
+        #              for distribution in dataset['distribution']
+        #              if distribution.get('downloadURL')]
+        # dups = _find_dups(urls)
+        # if len(dups) > 0:
+        #     yield ce.DownloadURLRepetitionError(dups)
 
         # chequea que las URLs de las distribuciones estén operativas
         # hay que revisar

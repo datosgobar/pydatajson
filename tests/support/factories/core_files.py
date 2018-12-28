@@ -101,7 +101,7 @@ TEST_FROM_GENERATED_RESULT = {
     'invalid_catalog_publisher_type': invalid_catalog_publisher_type(),
     'invalid_publisher_mbox_format': invalid_publisher_mbox_format(),
 
-    'repeated_downloadURL': repeated_downloadURL(),
+    # 'repeated_downloadURL': repeated_downloadURL(),
 }
 
 TEST_FILE_RESPONSES = {}
