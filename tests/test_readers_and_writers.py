@@ -26,7 +26,8 @@ from . import xl_methods
 import openpyxl as pyxl
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                 cassette_library_dir=os.path.join("tests", "cassetes"),
+                 cassette_library_dir=os.path.join(
+                     "tests", "cassetes", "readers_and_writers"),
                  record_mode='once')
 
 
@@ -265,15 +266,30 @@ revíselo manualmente""".format(temp_filename)
                 # Elementos no vacios
                 self.assertTrue(all(dataset[field]))
 
-    def test_read_without_suffix_reads_json(self):
+    def test_read_suffixless_json(self):
         original = pydatajson.readers.read_catalog(
             self.get_sample('full_data.json'))
         suffixless = pydatajson.readers.read_catalog(
-            self.get_sample('full_data'))
+            self.get_sample('full_data_no_json_suffix'))
+        self.assertDictEqual(original, suffixless)
+
+    def test_read_suffixless_xlsx(self):
+        original = pydatajson.readers.read_catalog(
+            self.get_sample('catalogo_justicia.xlsx'))
+        suffixless = pydatajson.readers.read_catalog(
+            self.get_sample('catalogo_justicia_no_xlsx_suffix'))
         self.assertDictEqual(original, suffixless)
 
     @nose.tools.raises(NonParseableCatalog)
-    def test_failing_catalog_raises_non_parseable_error(self):
+    def test_read_failing_json_catalog_raises_non_parseable_error(self):
+        pydatajson.readers.read_catalog('inexistent_file.json')
+
+    @nose.tools.raises(NonParseableCatalog)
+    def test_read_failing_xlsx_catalog_raises_non_parseable_error(self):
+        pydatajson.readers.read_catalog('inexistent_file.xlsx')
+
+    @nose.tools.raises(NonParseableCatalog)
+    def test_failing_suffixless_catalog_raises_non_parseable_error(self):
         pydatajson.readers.read_catalog('inexistent_file')
 
 
