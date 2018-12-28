@@ -373,7 +373,8 @@ def read_local_xlsx_catalog(xlsx_path, logger=None):
     """
     logger = logger or pydj_logger
 
-    wb = pyxl.load_workbook(open(xlsx_path, 'rb'), data_only=True, read_only=True)
+    wb = pyxl.load_workbook(open(xlsx_path, 'rb'), data_only=True,
+                            read_only=True)
 
     # Toma las hojas del modelo, resistente a mayúsuculas/minúsculas
     ws_catalog = helpers.get_ws_case_insensitive(wb, "catalog")
