@@ -27,6 +27,7 @@ from unidecode import unidecode
 import pydatajson
 from . import custom_exceptions as ce
 from . import helpers
+from .ckan_reader import read_ckan_catalog
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -82,13 +83,16 @@ def read_catalog(catalog, default_values=None):
         if suffix == "xlsx":
             try:
                 catalog_dict = read_xlsx_catalog(catalog)
-            except openpyxl_exceptions + (ValueError,) as e:
+            except openpyxl_exceptions + (ValueError, AssertionError, IOError)\
+                    as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
-        else:
+        elif suffix == "json":
             try:
                 catalog_dict = read_json(catalog)
             except(ValueError, TypeError, IOError) as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
+        else:
+            catalog_dict = read_suffixless_catalog(catalog)
 
     # si se pasaron valores default, los aplica al catálogo leído
     if default_values:
@@ -368,10 +372,8 @@ def read_local_xlsx_catalog(xlsx_path, logger=None):
         dict: Diccionario con los metadatos de un catálogo.
     """
     logger = logger or pydj_logger
-    assert xlsx_path.endswith(".xlsx"), """
-El archivo a leer debe tener extensión XLSX."""
 
-    wb = pyxl.load_workbook(xlsx_path, data_only=True, read_only=True)
+    wb = pyxl.load_workbook(open(xlsx_path, 'rb'), data_only=True, read_only=True)
 
     # Toma las hojas del modelo, resistente a mayúsuculas/minúsculas
     ws_catalog = helpers.get_ws_case_insensitive(wb, "catalog")
@@ -506,6 +508,25 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
         dataset = _make_contact_point(dataset)
 
     return catalog
+
+
+def read_suffixless_catalog(catalog):
+    try:
+        catalog_dict = read_ckan_catalog(catalog)
+        return catalog_dict
+    except ce.NonParseableCatalog:
+        pass
+    try:
+        catalog_dict = read_json(catalog)
+        return catalog_dict
+    except(ValueError, TypeError, IOError):
+        pass
+    try:
+        catalog_dict = read_xlsx_catalog(catalog)
+        return catalog_dict
+    except openpyxl_exceptions + (ValueError, AssertionError, IOError):
+        raise ce.NonParseableCatalog(
+            catalog, 'No es posible discernir el formato del catalogo')
 
 
 def read_table(path):
