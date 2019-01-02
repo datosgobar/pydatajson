@@ -26,7 +26,8 @@ from . import xl_methods
 import openpyxl as pyxl
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                 cassette_library_dir=os.path.join("tests", "cassetes"),
+                 cassette_library_dir=os.path.join(
+                     "tests", "cassetes", "readers_and_writers"),
                  record_mode='once')
 
 
@@ -265,15 +266,50 @@ revíselo manualmente""".format(temp_filename)
                 # Elementos no vacios
                 self.assertTrue(all(dataset[field]))
 
-    def test_read_without_suffix_reads_json(self):
+    def test_read_suffixless_json(self):
         original = pydatajson.readers.read_catalog(
             self.get_sample('full_data.json'))
         suffixless = pydatajson.readers.read_catalog(
-            self.get_sample('full_data'))
+            self.get_sample('full_data_no_json_suffix'))
         self.assertDictEqual(original, suffixless)
 
+    def test_read_suffixless_xlsx(self):
+        original = pydatajson.readers.read_catalog(
+            self.get_sample('catalogo_justicia.xlsx'))
+        suffixless = pydatajson.readers.read_catalog(
+            self.get_sample('catalogo_justicia_no_xlsx_suffix'))
+        self.assertDictEqual(original, suffixless)
+
+    @mock.patch('pydatajson.readers.read_json', return_value='test_catalog')
+    def test_force_json_format(self, mock_reader):
+        catalog = pydatajson.readers.read_catalog('full_data.xlsx',
+                                                  dj_format='json')
+        self.assertEqual('test_catalog', catalog)
+
+    @mock.patch('pydatajson.readers.read_xlsx_catalog',
+                return_value='test_catalog')
+    def test_force_xlsx_format(self, mock_reader):
+        catalog = pydatajson.readers.read_catalog('full_data.json',
+                                                  dj_format='xlsx')
+        self.assertEqual('test_catalog', catalog)
+
+    @mock.patch('pydatajson.readers.read_ckan_catalog',
+                return_value='test_catalog')
+    def test_force_ckan_format(self, mock_reader):
+        catalog = pydatajson.readers.read_catalog('full_data',
+                                                  dj_format='ckan')
+        self.assertEqual('test_catalog', catalog)
+
     @nose.tools.raises(NonParseableCatalog)
-    def test_failing_catalog_raises_non_parseable_error(self):
+    def test_read_failing_json_catalog_raises_non_parseable_error(self):
+        pydatajson.readers.read_catalog('inexistent_file.json')
+
+    @nose.tools.raises(NonParseableCatalog)
+    def test_read_failing_xlsx_catalog_raises_non_parseable_error(self):
+        pydatajson.readers.read_catalog('inexistent_file.xlsx')
+
+    @nose.tools.raises(NonParseableCatalog)
+    def test_failing_suffixless_catalog_raises_non_parseable_error(self):
         pydatajson.readers.read_catalog('inexistent_file')
 
 

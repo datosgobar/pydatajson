@@ -12,9 +12,11 @@ import json
 import time
 from six.moves.urllib_parse import urljoin
 from six import iteritems
+from requests.exceptions import RequestException
 from ckanapi import RemoteCKAN
-
+from ckanapi.errors import CKANAPIError
 from .helpers import clean_str, title_to_name
+from .custom_exceptions import NonParseableCatalog
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -46,8 +48,6 @@ def read_ckan_catalog(portal_url):
             de esta librería.
     """
     portal = RemoteCKAN(portal_url)
-    catalog = {}
-
     try:
         status = portal.call_action(
             'status_show', requests_kwargs={"verify": False})
@@ -84,10 +84,10 @@ def read_ckan_catalog(portal_url):
             packages, portal_url)
         catalog["themeTaxonomy"] = map_groups_to_themes(groups)
 
-    except Exception as e:
+    except (CKANAPIError, RequestException) as e:
         logger.exception(
             'Error al procesar el portal %s', portal_url, exc_info=True)
-        print(e)
+        raise NonParseableCatalog(portal_url, e)
 
     return catalog
 
