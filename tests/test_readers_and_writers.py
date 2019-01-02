@@ -280,6 +280,26 @@ revíselo manualmente""".format(temp_filename)
             self.get_sample('catalogo_justicia_no_xlsx_suffix'))
         self.assertDictEqual(original, suffixless)
 
+    @mock.patch('pydatajson.readers.read_json', return_value='test_catalog')
+    def test_force_json_format(self, mock_reader):
+        catalog = pydatajson.readers.read_catalog('full_data.xlsx',
+                                                  dj_format='json')
+        self.assertEqual('test_catalog', catalog)
+
+    @mock.patch('pydatajson.readers.read_xlsx_catalog',
+                return_value='test_catalog')
+    def test_force_xlsx_format(self, mock_reader):
+        catalog = pydatajson.readers.read_catalog('full_data.json',
+                                                  dj_format='xlsx')
+        self.assertEqual('test_catalog', catalog)
+
+    @mock.patch('pydatajson.readers.read_ckan_catalog',
+                return_value='test_catalog')
+    def test_force_ckan_format(self, mock_reader):
+        catalog = pydatajson.readers.read_catalog('full_data',
+                                                  dj_format='ckan')
+        self.assertEqual('test_catalog', catalog)
+
     @nose.tools.raises(NonParseableCatalog)
     def test_read_failing_json_catalog_raises_non_parseable_error(self):
         pydatajson.readers.read_catalog('inexistent_file.json')
