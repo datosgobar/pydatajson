@@ -50,7 +50,7 @@ def read_catalog_obj(catalog):
         return pydatajson.DataJson(catalog)
 
 
-def read_catalog(catalog, default_values=None):
+def read_catalog(catalog, default_values=None, dj_format=None):
     """Toma una representación cualquiera de un catálogo, y devuelve su
     representación interna (un diccionario de Python con su metadata.)
 
@@ -80,17 +80,21 @@ def read_catalog(catalog, default_values=None):
     else:
         # catalog es una URL remota o un path local
         suffix = catalog.split(".")[-1].strip("/")
-        if suffix == "xlsx":
+        if suffix in ('json', 'xlsx'):
+            dj_format = dj_format or suffix
+        if dj_format == "xlsx":
             try:
                 catalog_dict = read_xlsx_catalog(catalog)
             except openpyxl_exceptions + (ValueError, AssertionError, IOError)\
                     as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
-        elif suffix == "json":
+        elif dj_format == "json":
             try:
                 catalog_dict = read_json(catalog)
             except(ValueError, TypeError, IOError) as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
+        elif dj_format == "ckan":
+            catalog_dict = read_ckan_catalog(catalog)
         else:
             catalog_dict = read_suffixless_catalog(catalog)
 
