@@ -1,6 +1,18 @@
 Versiones
 =========
 
+0.4.31 (2019-01-08)
+-------------------
+* Se aceptan catálogos sin formato para la lectura del DataJson
+* Nuevo parámetro para forzar la lectura de un catálogo en cierto formato
+* Actualización de pyyaml  
+
+
+0.4.30 (2018-12-28)
+-------------------
+* No se validan URLs repetidas para datasets, hay casos válidos donde ocurren 
+
+
 0.4.29 (2018-12-21)
 -------------------
 * Método `remove_organizations_from_ckan()`.
