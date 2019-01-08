@@ -53,7 +53,7 @@ class DataJson(dict):
     CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
     def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
-                 default_values=None):
+                 default_values=None, dj_format=None):
         """Lee un catálogo y crea un objeto con funciones para manipularlo.
 
         Salvo que se indique lo contrario, se utiliza como default el schema
@@ -83,7 +83,8 @@ class DataJson(dict):
 
             # lee representaciones de un catálogo hacia un diccionario
             catalog = readers.read_catalog(catalog,
-                                           default_values=default_values)
+                                           default_values=default_values,
+                                           dj_format=dj_format)
 
             # copia todos los atributos del diccionario hacia el objeto
             for key, value in iteritems(catalog):
