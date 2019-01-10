@@ -283,21 +283,21 @@ revíselo manualmente""".format(temp_filename)
     @mock.patch('pydatajson.readers.read_json', return_value='test_catalog')
     def test_force_json_format(self, mock_reader):
         catalog = pydatajson.readers.read_catalog('full_data.xlsx',
-                                                  dj_format='json')
+                                                  catalog_format='json')
         self.assertEqual('test_catalog', catalog)
 
     @mock.patch('pydatajson.readers.read_xlsx_catalog',
                 return_value='test_catalog')
     def test_force_xlsx_format(self, mock_reader):
         catalog = pydatajson.readers.read_catalog('full_data.json',
-                                                  dj_format='xlsx')
+                                                  catalog_format='xlsx')
         self.assertEqual('test_catalog', catalog)
 
     @mock.patch('pydatajson.readers.read_ckan_catalog',
                 return_value='test_catalog')
     def test_force_ckan_format(self, mock_reader):
         catalog = pydatajson.readers.read_catalog('full_data',
-                                                  dj_format='ckan')
+                                                  catalog_format='ckan')
         self.assertEqual('test_catalog', catalog)
 
     @nose.tools.raises(NonParseableCatalog)
