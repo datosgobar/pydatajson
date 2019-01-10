@@ -1,5 +1,11 @@
 Versiones
 =========
+0.4.33 (2019-01-10)
+-------------------
+* Cambia el kwarg dj_format por catalog_format
+* Pequeño fix para los catalogos remotos json incorrectamente leídos como xlsx
+
+
 0.4.32 (2019-01-08)
 -------------------
 * Fix al dj_format para las lecturas
