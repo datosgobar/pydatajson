@@ -42,6 +42,18 @@ def get_distribution_time_index(distribution):
     )
 
 
+def get_distribution_time_index_frequency(distribution):
+    for field in distribution.get('field', []):
+        if field.get('specialType') == 'time_index':
+            return field.get('specialTypeDetail')
+
+    raise ce.DistributionTimeIndexNonExistentError(
+        distribution.get("title"),
+        distribution.get("dataset_identifier"),
+        "no tiene índice de tiempo."
+    )
+
+
 def distribution_has_time_index(distribution):
     try:
         return any([field.get('specialType') ==

@@ -181,7 +181,7 @@ def get_distributions(catalog, filter_in=None, filter_out=None,
 
 
 def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
-               only_time_series=False):
+               only_time_series=False, distribution_identifier=None):
     """Devuelve lista de campos del catálogo o de uno de sus metadatos.
 
     Args:
@@ -222,6 +222,12 @@ def get_fields(catalog, filter_in=None, filter_out=None, meta_field=None,
     filter_in = filter_in or {}
     filter_out = filter_out or {}
     catalog = read_catalog_obj(catalog)
+
+    # agrego atajos para filtros
+    if distribution_identifier:
+        if "distribution" not in filter_in:
+            filter_in["distribution"] = {}
+        filter_in["distribution"]["identifier"] = distribution_identifier
 
     fields = []
     for distribution in get_distributions(catalog, filter_in, filter_out,

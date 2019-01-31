@@ -195,6 +195,14 @@ class DataJson(dict):
 
         return time_series.get_distribution_time_index(distribution)
 
+    def get_distribution_time_index_frequency(self, distribution):
+        if isinstance(distribution, dict):
+            distribution = distribution
+        else:
+            distribution = self.get_distribution(distribution)
+
+        return time_series.get_distribution_time_index_frequency(distribution)
+
     def remove_dataset(self, identifier):
         for index, dataset in enumerate(self["dataset"]):
             if dataset["identifier"] == identifier:

@@ -37,7 +37,8 @@ pydj_logger = logging.getLogger('pydatajson.readers')
 
 openpyxl_exceptions = (CellCoordinatesException, IllegalCharacterError,
                        NamedRangeException, SheetTitleException,
-                       InsufficientCoordinatesException, InvalidFileException,
+                       # InsufficientCoordinatesException,
+                       InvalidFileException,
                        ReadOnlyWorkbookException, WorkbookAlreadySaved)
 
 
