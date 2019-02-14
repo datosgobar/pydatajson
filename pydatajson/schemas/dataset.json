@@ -18,12 +18,8 @@
                 "name": { "$ref": "mixed-types.json#nonEmptyString" },
                 "mbox": {
                     "anyOf": [
-                        {
-                            "type": "string",
-                            "format": "email"
-                        },
-                        { "type": "null" },
-                        { "type": "string", "maxLength": 0 }
+                        { "type": "string", "format": "email" },
+                        { "$ref": "mixed-types.json#emptyValue" }
                     ]
                 }
             }
@@ -59,12 +55,8 @@
                 "fn": { "$ref": "mixed-types.json#stringOrNull" },
                 "hasEmail": {
                     "anyOf": [
-                        {
-                            "type": "string",
-                            "format": "email"
-                        },
-                        { "type": "null" },
-                        { "type": "string", "maxLength": 0 }
+                        { "type": "string", "format": "email" },
+                        { "$ref": "mixed-types.json#emptyValue" }
                     ]
                 }
             }
@@ -80,7 +72,7 @@
             ]
         },
         "modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
-        "identifier": { "$ref": "mixed-types.json#stringOrNull" },
+        "identifier": { "$ref": "mixed-types.json#nonEmptyString" },
         "language": { "$ref": "mixed-types.json#arrayOrNull" },
         "spatial": {
             "anyOf": [
@@ -92,14 +84,11 @@
         "temporal": { "$ref": "mixed-types.json#temporalOrNull" },
         "landingPage": {
                     "anyOf": [
-                        {
-                            "type": "string",
-                            "format": "uri"
-                        },
-                        { "type": "null" },
-                        { "type": "string", "maxLength": 0 }
+                        { "type": "string", "format": "uri" },
+                        { "$ref": "mixed-types.json#emptyValue" }
                     ]
         },
-        "license": { "$ref": "mixed-types.json#stringOrNull" }
+        "license": { "$ref": "mixed-types.json#stringOrNull" },
+        "source": { "$ref": "mixed-types.json#stringOrNull" }
     }
 }
