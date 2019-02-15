@@ -8,7 +8,8 @@
         "superTheme",
         "distribution",
         "accrualPeriodicity",
-        "issued"
+        "issued",
+        "identifier"
     ],
     "properties": {
         "publisher": {
