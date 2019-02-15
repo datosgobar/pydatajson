@@ -37,7 +37,8 @@ def distribution_error():
                                 "accessURL",
                                 "downloadURL",
                                 "title",
-                                "issued"
+                                "issued",
+                                "identifier"
                             ]
                         }
                     ],

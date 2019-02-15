@@ -132,8 +132,7 @@ class TestDataJsonTestCase(object):
             ),
             (
                 ['error', 'catalog', 'errors', ],
-                "%s is not valid under any of the given schemas"
-                % jsonschema_str('')
+                "789 is not valid under any of the given schemas"
             ),
             (
                 ['error', 'catalog', 'errors', ], "%s is not a %s"

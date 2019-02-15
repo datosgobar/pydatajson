@@ -11,7 +11,7 @@
     ],
     "superThemeTaxonomy": "http://datos.gob.ar/superThemeTaxonomy.json",
     "issued": "2016-04-14T19:48:05.433640-03:00",
-    "rights": "",
+    "rights": 789,
     "modified": "2016-04-19T19:48:05.433640-03:00",
     "dataset": [
         {
