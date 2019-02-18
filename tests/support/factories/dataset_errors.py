@@ -87,7 +87,8 @@ def missing_dataset_title():
             "superTheme",
             "distribution",
             "accrualPeriodicity",
-            "issued"
+            "issued",
+            "identifier"
         ],
         "dataset_title": None,
     })
@@ -110,7 +111,8 @@ def missing_dataset_description():
             "superTheme",
             "distribution",
             "accrualPeriodicity",
-            "issued"
+            "issued",
+            "identifier"
         ],
         "dataset_title": 'Sistema de contrataciones electrónicas',
     })

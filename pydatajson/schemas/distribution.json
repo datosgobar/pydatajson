@@ -5,17 +5,13 @@
         "accessURL",
         "downloadURL",
         "title",
-        "issued"
+        "issued",
+        "identifier"
     ],
     "properties": {
-        "accessURL": {
-            "type": "string",
-            "format": "uri"
-        },
-        "downloadURL": {
-            "type": "string",
-            "format": "uri"
-        },
+        "identifier": { "$ref": "mixed-types.json#nonEmptyString" },
+        "accessURL": { "type": "string", "format": "uri" },
+        "downloadURL": { "type": "string", "format": "uri" },
         "title": { "$ref": "mixed-types.json#nonEmptyString" },
         "issued": { "$ref": "mixed-types.json#dateOrDatetimeString" },
         "description": { "$ref": "mixed-types.json#stringOrNull" },
@@ -25,8 +21,7 @@
         "byteSize": {
             "anyOf": [
                 { "type": "integer" },
-                { "type": "null" },
-                { "type": "string", "maxLength": 0 }
+                { "$ref": "mixed-types.json#emptyValue" }
             ]
          },
         "modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },

@@ -77,5 +77,11 @@
             { "type": "null" },
             { "type": "string", "maxLength": 0 }
         ]
+    },
+    "emptyValue": {
+        "anyOf": [
+            { "type": "string", "maxLength": 0 },
+            { "type": "null" }
+        ]
     }
 }

@@ -23,7 +23,8 @@
                     "superTheme",
                     "distribution",
                     "accrualPeriodicity",
-                    "issued"
+                    "issued",
+                    "identifier"
                 ],
                 "properties": {
                     "publisher": {
@@ -38,7 +39,8 @@
                                 "accessURL",
                                 "downloadURL",
                                 "title",
-                                "issued"
+                                "issued",
+                                "identifier"
                             ]
                         }
                     }

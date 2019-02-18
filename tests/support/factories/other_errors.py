@@ -62,7 +62,8 @@ def multiple_missing_descriptions():
             "superTheme",
             "distribution",
             "accrualPeriodicity",
-            "issued"
+            "issued",
+            "identifier"
         ]
     })
 
@@ -102,11 +103,7 @@ def invalid_multiple_fields_type():
                 "type": "integer"
             },
             {
-                "type": "null"
-            },
-            {
-                "type": "string",
-                "maxLength": 0
+                '$ref': 'mixed-types.json#emptyValue'
             }
         ]
     })
