@@ -1,5 +1,16 @@
 Versiones
 =========
+0.4.35 (2019-02-19)
+-------------------
+* Actualiza la validación para aceptar el string vacío como valor válido
+* Marca los identificadores de distribuciones y datasets como campos requeridos
+
+
+0.4.34 (2019-02-01)
+-------------------
+* Implementa método para tomar frecuencia de una serie de tiempo
+
+
 0.4.33 (2019-01-10)
 -------------------
 * Cambia el kwarg dj_format por catalog_format
