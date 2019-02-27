@@ -61,10 +61,10 @@ class TestIndicatorsTestCase(object):
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+            'datasets_meta_ok_pct': 0.6667,
             'datasets_con_datos_cant': 2,
             'datasets_sin_datos_cant': 1,
-            'datasets_con_datos_pct': round(100 * float(2) / 3, 2),
+            'datasets_con_datos_pct': 0.6667,
         }
 
         for k, v in expected.items():
@@ -82,7 +82,7 @@ class TestIndicatorsTestCase(object):
             'catalogo_ultima_actualizacion_dias': dias_diff,
             'datasets_actualizados_cant': 1,
             'datasets_desactualizados_cant': 2,
-            'datasets_actualizados_pct': 100 * round(float(1) / 3, 2),
+            'datasets_actualizados_pct': 0.3333,
             'datasets_frecuencia_cant': {
                 'R/P1W': 1,
                 'R/P1M': 1,
@@ -162,8 +162,8 @@ class TestIndicatorsTestCase(object):
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
         expected = {
-            'campos_recomendados_pct': 95.45,
-            'campos_optativos_pct': 100
+            'campos_recomendados_pct': 0.9545,
+            'campos_optativos_pct': 1.0000
         }
 
         for k, v in expected.items():
@@ -180,7 +180,7 @@ class TestIndicatorsTestCase(object):
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 0,
             'datasets_no_federados': [],
-            'datasets_federados_pct': 100,
+            'datasets_federados_pct': 1.0000,
             'distribuciones_federadas_cant': 6
         }
 
@@ -201,7 +201,7 @@ class TestIndicatorsTestCase(object):
                 ('Sistema de contrataciones electrónicas UNO', None),
                 ('Sistema de contrataciones electrónicas DOS', None),
                 ('Sistema de contrataciones electrónicas TRES', None)],
-            'datasets_federados_pct': 0,
+            'datasets_federados_pct': 0.00,
             'distribuciones_federadas_cant': 0
         }
 
@@ -270,10 +270,10 @@ class TestIndicatorsTestCase(object):
             'distribuciones_cant': 8,
             'datasets_meta_ok_cant': 4,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': 100 * float(4) / 5,
+            'datasets_meta_ok_pct': 0.8000,
             'datasets_con_datos_cant': 3,
             'datasets_sin_datos_cant': 2,
-            'datasets_con_datos_pct': 60.00,
+            'datasets_con_datos_pct': 0.6000,
             'distribuciones_formatos_cant': {
                 'CSV': 2,
                 'XLSX': 1,
@@ -289,8 +289,8 @@ class TestIndicatorsTestCase(object):
                 'Open Data Commons Open Database License 1.0': 2,
                 'None': 3
             },
-            'campos_optativos_pct': 32.56,
-            'campos_recomendados_pct': 50.72,
+            'campos_optativos_pct': 0.3256,
+            'campos_recomendados_pct': 0.5072,
         }
 
         for k, v in expected.items():
@@ -388,7 +388,7 @@ class TestIndicatorsTestCase(object):
         expected = {
             'datasets_federados_cant': 3,
             'datasets_no_federados_cant': 2,
-            'datasets_federados_pct': 60.0,
+            'datasets_federados_pct': 0.6000,
             'distribuciones_federadas_cant': 6
         }
         for k, v in expected.items():
@@ -511,7 +511,7 @@ class TestIndicatorsTestCase(object):
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+            'datasets_meta_ok_pct': 0.6667,
         }
 
         for k, v in expected.items():
@@ -527,7 +527,7 @@ class TestIndicatorsTestCase(object):
             'distribuciones_cant': 6,
             'datasets_meta_ok_cant': 2,
             'datasets_meta_error_cant': 1,
-            'datasets_meta_ok_pct': round(100 * float(2) / 3, 2),
+            'datasets_meta_ok_pct': 0.6667,
             'datasets_federados_cant': None,
             'datasets_no_federados_cant': None,
             'datasets_federados_pct': None,

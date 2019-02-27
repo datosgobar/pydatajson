@@ -144,13 +144,13 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
 
     # Agrego porcentaje de campos recomendados/optativos usados
     fields_count = _count_required_and_optional_fields(catalog)
-    recomendados_pct = 100 * float(fields_count['recomendado']) / \
+    recomendados_pct = float(fields_count['recomendado']) / \
         fields_count['total_recomendado']
-    optativos_pct = 100 * float(fields_count['optativo']) / \
+    optativos_pct = float(fields_count['optativo']) / \
         fields_count['total_optativo']
     result.update({
-        'campos_recomendados_pct': round(recomendados_pct, 2),
-        'campos_optativos_pct': round(optativos_pct, 2)
+        'campos_recomendados_pct': round(recomendados_pct, 4),
+        'campos_optativos_pct': round(optativos_pct, 4)
     })
     return fields_count, result
 
@@ -229,7 +229,7 @@ def _federation_indicators(catalog, central_catalog):
             )
 
     if federados or no_federados:  # Evita división por 0
-        federados_pct = 100 * float(federados) / (federados + no_federados)
+        federados_pct = float(federados) / (federados + no_federados)
     else:
         federados_pct = 0
 
@@ -247,7 +247,7 @@ def _federation_indicators(catalog, central_catalog):
         'datasets_federados':
             datasets_federados,
         'datasets_federados_pct':
-            round(federados_pct, 2),
+            round(federados_pct, 4),
         'distribuciones_federadas_cant':
             dist_federadas
     })
@@ -292,19 +292,19 @@ def _network_indicator_percentages(fields, network_indicators):
         total = partial + (percentages[indicator][1] or 0)
         # Evita division por 0
         if total:
-            pct = 100 * float(partial) / total
-        network_indicators[indicator] = round(pct, 2)
+            pct = float(partial) / total
+        network_indicators[indicator] = round(pct, 4)
 
     # % de campos recomendados y optativos utilizados en el catálogo entero
     if fields:  # 'fields' puede estar vacío si ningún campo es válido
-        rec_pct = 100 * float(fields['recomendado']) / \
+        rec_pct = float(fields['recomendado']) / \
             fields['total_recomendado']
 
-        opt_pct = 100 * float(fields['optativo']) / fields['total_optativo']
+        opt_pct = float(fields['optativo']) / fields['total_optativo']
 
         network_indicators.update({
-            'campos_recomendados_pct': round(rec_pct, 2),
-            'campos_optativos_pct': round(opt_pct, 2)
+            'campos_recomendados_pct': round(rec_pct, 4),
+            'campos_optativos_pct': round(opt_pct, 4)
         })
 
 
@@ -360,9 +360,8 @@ def _generate_status_indicators(catalog, validator=None):
     datasets_ok_pct = 0
     datasets_with_data_pct = 0
     if datasets_total:
-        datasets_ok_pct = round(100 * float(cant_ok) / datasets_total, 2)
-        datasets_with_data_pct = round(
-            100 * float(cant_data) / datasets_total, 2)
+        datasets_ok_pct = round(float(cant_ok) / datasets_total, 4)
+        datasets_with_data_pct = round(float(cant_data) / datasets_total, 4)
 
     result.update({
         'datasets_cant': datasets_total,
@@ -478,7 +477,7 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
     result.update({
         'datasets_desactualizados_cant': desactualizados,
         'datasets_actualizados_cant': actualizados,
-        'datasets_actualizados_pct': 100 * round(actualizados_pct, 2)
+        'datasets_actualizados_pct': round(actualizados_pct, 4)
     })
     if not only_numeric:
         result.update({
