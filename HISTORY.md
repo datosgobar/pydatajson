@@ -1,5 +1,11 @@
 Versiones
 =========
+0.4.36 (2019-03-01)
+-------------------
+* Cambia el cálculo de indicadores porcentuales para que calculen de 0 a 1
+* Bugfix para ciertos catálogos con sufijos no reconocidos
+
+
 0.4.35 (2019-02-19)
 -------------------
 * Actualiza la validación para aceptar el string vacío como valor válido
