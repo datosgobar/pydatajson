@@ -531,8 +531,8 @@ def read_suffixless_catalog(catalog):
     try:
         catalog_dict = read_xlsx_catalog(catalog)
         return catalog_dict
-    except openpyxl_exceptions + \
-           (ValueError, AssertionError,IOError, BadZipfile):
+    except openpyxl_exceptions + (ValueError, AssertionError,
+                                  IOError, BadZipfile):
         raise ce.NonParseableCatalog(
             catalog, 'No es posible discernir el formato del catalogo')
 
