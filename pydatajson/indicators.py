@@ -191,22 +191,41 @@ def _federation_indicators(catalog, central_catalog):
     datasets_no_federados = []
     datasets_federados_eliminados = []
 
-    # busca c/dataset del catálogo específico a ver si está en el central
-    for dataset in catalog.get('dataset', []):
-        found = False
-        for central_dataset in central_catalog.get('dataset', []):
-            new_dataset = (dataset.get('title'), dataset.get('landingPage'))
-            if (datasets_equal(dataset, central_dataset) and
-                    new_dataset not in datasets_federados):
-                found = True
-                federados += 1
-                datasets_federados.append(new_dataset)
-                dist_federadas += len(dataset.get('distribution', []))
-                break
-        if not found:
-            no_federados += 1
-            datasets_no_federados.append((dataset.get('title'),
-                                          dataset.get('landingPage')))
+    # If catalog id:
+    catalog_identifier = catalog.get('identifier')
+    if catalog_identifier:
+        central_datasets = {ds['identifier'] for ds in
+                            central_catalog.get('dataset', [])}
+
+        catalog_datasets = {catalog_identifier + '_' + ds['identifier']
+                            for ds in catalog.get('dataset', [])}
+
+        federated_ids = catalog_datasets & central_datasets
+
+        federados = len(federated_ids)
+        no_federados = len(catalog_datasets) - federados
+        dist_federadas = sum([len(ds.get('distribution', [])) for ds in
+                              catalog.get('dataset', []) if
+                              ds['identifier'] in federated_ids])
+
+    else:
+        # busca c/dataset del catálogo específico a ver si está en el central
+        for dataset in catalog.get('dataset', []):
+            found = False
+            for central_dataset in central_catalog.get('dataset', []):
+                new_dataset = (dataset.get('title'),
+                               dataset.get('landingPage'))
+                if (datasets_equal(dataset, central_dataset) and
+                        new_dataset not in datasets_federados):
+                    found = True
+                    federados += 1
+                    datasets_federados.append(new_dataset)
+                    dist_federadas += len(dataset.get('distribution', []))
+                    break
+            if not found:
+                no_federados += 1
+                datasets_no_federados.append((dataset.get('title'),
+                                              dataset.get('landingPage')))
 
     # busca c/dataset del central cuyo publisher podría pertenecer al
     # catálogo específico, a ver si está en el catálogo específico
