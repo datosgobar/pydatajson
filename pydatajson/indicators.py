@@ -42,6 +42,7 @@ def generate_numeric_indicators(catalog, validator=None):
 
 
 def generate_catalogs_indicators(catalogs, central_catalog=None,
+                                 identifier_search=False,
                                  validator=None):
     """Genera una lista de diccionarios con varios indicadores sobre
     los catálogos provistos, tales como la cantidad de datasets válidos,
@@ -81,8 +82,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
         fields_count, result = _generate_indicators(
             catalog, validator=validator)
         if central_catalog:
-            result.update(_federation_indicators(catalog,
-                                                 central_catalog))
+            result.update(_federation_indicators(
+                catalog, central_catalog, identifier_search=identifier_search))
         if not indicators_list:
             # La primera iteracion solo copio el primer resultado
             network_indicators = result.copy()
@@ -155,7 +156,8 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
     return fields_count, result
 
 
-def _federation_indicators(catalog, central_catalog):
+def _federation_indicators(catalog, central_catalog,
+                           identifier_search=False):
     """Cuenta la cantidad de datasets incluídos tanto en la lista
     'catalogs' como en el catálogo central, y genera indicadores a partir
     de esa información.
@@ -193,7 +195,7 @@ def _federation_indicators(catalog, central_catalog):
 
     # If catalog id:
     catalog_identifier = catalog.get('identifier')
-    if catalog_identifier:
+    if identifier_search:
         central_datasets = {ds['identifier'] for ds in
                             central_catalog.get('dataset', [])}
 
@@ -205,13 +207,13 @@ def _federation_indicators(catalog, central_catalog):
         federados = len(federated_ids)
         no_federados = len(catalog_datasets) - federados
         datasets_federados = [(ds.get('title'), ds.get('landingPage')) for
-                              ds in catalog.get('dataset', []) if
+                              ds in central_catalog.get('dataset', []) if
                               ds['identifier'] in federated_ids]
         datasets_no_federados = [(ds.get('title'), ds.get('landingPage')) for
-                                 ds in catalog.get('dataset', []) if
+                                 ds in central_catalog.get('dataset', []) if
                                  ds['identifier'] not in federated_ids]
         dist_federadas = sum([len(ds.get('distribution', [])) for ds in
-                              catalog.get('dataset', []) if
+                              central_catalog.get('dataset', []) if
                               ds['identifier'] in federated_ids])
 
     else:

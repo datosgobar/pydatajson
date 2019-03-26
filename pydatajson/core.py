@@ -1063,10 +1063,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         return datasets_to_harvest
 
     def generate_catalogs_indicators(self, catalogs=None,
-                                     central_catalog=None):
+                                     central_catalog=None,
+                                     identifier_search=False):
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
-            catalogs, central_catalog, validator=self.validator)
+            catalogs, central_catalog, identifier_search=identifier_search,
+            validator=self.validator)
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos
