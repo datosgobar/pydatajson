@@ -207,11 +207,13 @@ def _federation_indicators(catalog, central_catalog,
         federados = len(federated_ids)
         no_federados = len(catalog_datasets) - federados
         datasets_federados = [(ds.get('title'), ds.get('landingPage')) for
-                              ds in central_catalog.get('dataset', []) if
-                              ds['identifier'] in federated_ids]
+                              ds in catalog.get('dataset', []) if
+                              catalog_identifier + '_' + ds['identifier']
+                              in federated_ids]
         datasets_no_federados = [(ds.get('title'), ds.get('landingPage')) for
-                                 ds in central_catalog.get('dataset', []) if
-                                 ds['identifier'] not in federated_ids]
+                                 ds in catalog.get('dataset', []) if
+                                 catalog_identifier + '_' + ds['identifier']
+                                 not in federated_ids]
         dist_federadas = sum([len(ds.get('distribution', [])) for ds in
                               central_catalog.get('dataset', []) if
                               ds['identifier'] in federated_ids])

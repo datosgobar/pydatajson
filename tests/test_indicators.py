@@ -613,10 +613,10 @@ class TestIndicatorsTestCase(object):
             'datasets_federados_cant': 2,
             'datasets_no_federados_cant': 2,
             'datasets_no_federados': [
-                ('Sistema de contrataciones electrónicas (sin datos)',
-                 'http://datos.gob.ar/dataset/argentina-compra'),
                 ('Sistema de contrataciones electrónicas',
                  'http://datos.gob.ar/dataset/contrataciones-electronicas'),
+                ('Sistema de contrataciones electrónicas (sin datos)',
+                 'http://datos.gob.ar/dataset/argentina-compra'),
             ],
             'datasets_federados_pct': 0.5000,
             'distribuciones_federadas_cant': 2
