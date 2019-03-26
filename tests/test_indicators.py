@@ -14,7 +14,8 @@ try:
 except ImportError:
     from unittest import mock
 
-from .context import pydatajson
+from pydatajson.core import DataJson
+from pydatajson import readers
 from .support.decorators import RESULTS_DIR
 
 my_vcr = vcr.VCR(
@@ -37,8 +38,8 @@ class TestIndicatorsTestCase(object):
 
     @classmethod
     def setUp(cls):
-        cls.dj = pydatajson.DataJson(cls.get_sample("full_data.json"))
-        cls.catalog = pydatajson.readers.read_catalog(
+        cls.dj = DataJson(cls.get_sample("full_data.json"))
+        cls.catalog = readers.read_catalog(
             cls.get_sample("full_data.json"))
         cls.maxDiff = None
         cls.longMessage = True
@@ -574,7 +575,7 @@ class TestIndicatorsTestCase(object):
 
     @my_vcr.use_cassette()
     def test_no_title_nor_identifier_catalog(self):
-        catalog = pydatajson.DataJson(
+        catalog = DataJson(
             os.path.join(
                 self.SAMPLES_DIR,
                 "missing_catalog_title.json"))
@@ -598,3 +599,28 @@ class TestIndicatorsTestCase(object):
         for fed_ind in federation_indicators:
             assert_true(fed_ind not in node_indicators[0])
             assert_true(fed_ind not in network_indicators)
+
+    def test_federation_indicators_by_id(self):
+        catalogs = [
+            os.path.join(self.SAMPLES_DIR, "federated_1.json"),
+            os.path.join(self.SAMPLES_DIR, "federated_2.json"),
+        ]
+        central = os.path.join(self.SAMPLES_DIR, "central.json")
+        indicators = self.dj.generate_catalogs_indicators(
+            catalogs, central, identifier_search=True)[1]
+
+        expected = {
+            'datasets_federados_cant': 2,
+            'datasets_no_federados_cant': 2,
+            'datasets_no_federados': [
+                ('Sistema de contrataciones electrónicas (sin datos)',
+                 'http://datos.gob.ar/dataset/argentina-compra'),
+                ('Sistema de contrataciones electrónicas',
+                 'http://datos.gob.ar/dataset/contrataciones-electronicas'),
+            ],
+            'datasets_federados_pct': 0.5000,
+            'distribuciones_federadas_cant': 2
+        }
+
+        for k, v in expected.items():
+            assert_equal(indicators[k], v)
