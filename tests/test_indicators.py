@@ -55,7 +55,7 @@ class TestIndicatorsTestCase(object):
 
         # Resultados esperados haciendo cuentas manuales sobre el catálogo
         expected = {
-            'identifier': '7d4d816f-3a40-476e-ab71-d48a3f0eb3c8',
+            'identifier': 'no-id',
             'title': 'Cosechando Datos Argentina',
             'datasets_cant': 3,
             'distribuciones_cant': 6,
