@@ -22,6 +22,7 @@ from . import helpers
 from . import readers
 from .reporting import generate_datasets_summary
 from .search import get_datasets, get_distributions
+from .indicator_generators import FederationIndicatorsGenerator
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -187,8 +188,24 @@ def _federation_indicators(catalog, central_catalog,
 
     generator = FederationIndicatorsGenerator(central_catalog, catalog,
                                               id_based=identifier_search)
-
-    result.update(generator.federation_indicators())
+    result.update({
+            'datasets_federados_cant':
+            generator.datasets_federados_cant(),
+            'datasets_no_federados_cant':
+            generator.datasets_no_federados_cant(),
+            'datasets_federados_eliminados_cant':
+            generator.datasets_federados_eliminados_cant(),
+            'datasets_federados_eliminados':
+            generator.datasets_federados_eliminados(),
+            'datasets_no_federados':
+            generator.datasets_no_federados(),
+            'datasets_federados':
+            generator.datasets_federados(),
+            'datasets_federados_pct':
+            generator.datasets_federados_pct(),
+            'distribuciones_federadas_cant':
+            generator.distribuciones_federadas_cant()
+        })
     return result
 
 
@@ -545,254 +562,7 @@ def _count_fields_recursive(dataset, fields):
     return key_count
 
 
-def datasets_equal(dataset, other, fields_dataset=None,
-                   fields_distribution=None, return_diff=False):
-    """Función de igualdad de dos datasets: se consideran iguales si
-    los valores de los campos 'title', 'publisher.name',
-    'accrualPeriodicity' e 'issued' son iguales en ambos.
-
-    Args:
-        dataset (dict): un dataset, generado por la lectura de un catálogo
-        other (dict): idem anterior
-
-    Returns:
-        bool: True si son iguales, False en caso contrario
-    """
-    dataset_is_equal = True
-    dataset_diff = []
-
-    # Campos a comparar. Si es un campo anidado escribirlo como lista
-    if not fields_dataset:
-        fields_dataset = [
-            'title',
-            ['publisher', 'name']
-        ]
-
-    for field_dataset in fields_dataset:
-        if isinstance(field_dataset, list):
-            value = helpers.traverse_dict(dataset, field_dataset)
-            other_value = helpers.traverse_dict(other, field_dataset)
-        else:
-            value = dataset.get(field_dataset)
-            other_value = other.get(field_dataset)
-
-        if value != other_value:
-            dataset_diff.append({
-                "error_location": field_dataset,
-                "dataset_value": value,
-                "other_value": other_value
-            })
-            dataset_is_equal = False
-
-    if fields_distribution:
-        dataset_distributions = dataset.get("distribution")
-        other_distributions = other.get("distribution")
-
-        if len(dataset_distributions) != len(other_distributions):
-            logger.info("{} distribuciones en origen y {} en destino".format(
-                len(dataset_distributions), len(other_distributions)))
-            dataset_is_equal = False
-
-        distributions_equal = True
-        for dataset_distribution, other_distribution in zip(
-                dataset_distributions, other_distributions):
-
-            for field_distribution in fields_distribution:
-                if isinstance(field_distribution, list):
-                    value = helpers.traverse_dict(
-                        dataset_distribution, field_distribution)
-                    other_value = helpers.traverse_dict(
-                        other_distribution, field_distribution)
-                else:
-                    value = dataset_distribution.get(field_distribution)
-                    other_value = other_distribution.get(field_distribution)
-
-                if value != other_value:
-                    dataset_diff.append({
-                        "error_location": "{} ({})".format(
-                            field_distribution,
-                            dataset_distribution.get("title")
-                        ),
-                        "dataset_value": value,
-                        "other_value": other_value
-                    })
-                    distributions_equal = False
-
-        if not distributions_equal:
-            dataset_is_equal = False
-
-    if return_diff:
-        return dataset_diff
-    else:
-        return dataset_is_equal
-
-
-def _filter_by_likely_publisher(central_datasets, catalog_datasets):
-    publisher_names = [
-        catalog_dataset["publisher"]["name"]
-        for catalog_dataset in catalog_datasets
-        if "name" in catalog_dataset.get("publisher", {})
-    ]
-
-    filtered_central_datasets = []
-    for central_dataset in central_datasets:
-        if "name" in central_dataset["publisher"] and \
-                central_dataset["publisher"]["name"] in publisher_names:
-            filtered_central_datasets.append(central_dataset)
-
-    return filtered_central_datasets
-
-
 def count_fields(targets, field):
     """Cuenta la cantidad de values en el key
     especificado de una lista de  diccionarios"""
     return Counter([target.get(field) or 'None' for target in targets])
-
-
-class FederationIndicatorsGenerator(object):
-    def __init__(self, central_catalog, catalog, id_based=False):
-        if id_based:
-            calculator = IdBasedIndicatorCalculator
-        else:
-            calculator = TitleBasedIndicatorCalculator
-
-        self.calculator = calculator(central_catalog, catalog)
-
-    def datasets_federados(self):
-        return self.calculator.datasets_federados()
-
-    def datasets_federados_cant(self):
-        return len(self.calculator.datasets_federados())
-
-    def datasets_no_federados(self):
-        return self.calculator.datasets_no_federados()
-
-    def datasets_no_federados_cant(self):
-        return len(self.calculator.datasets_no_federados())
-
-    def distribuciones_federadas_cant(self):
-        return self.calculator.distribuciones_federadas_cant()
-
-    def datasets_federados_eliminados(self):
-        return self.calculator.datasets_federados_eliminados()
-
-    def datasets_federados_eliminados_cant(self):
-        return len(self.datasets_federados_eliminados())
-
-    def datasets_federados_pct(self):
-        federados = self.datasets_federados_cant()
-        no_federados = self.datasets_no_federados_cant()
-        if federados or no_federados:  # Evita división por 0
-            federados_pct = float(federados) / (federados + no_federados)
-        else:
-            federados_pct = 0
-        return round(federados_pct, 4)
-
-    def federation_indicators(self):
-        return {
-            'datasets_federados_cant':
-                self.datasets_federados_cant(),
-            'datasets_no_federados_cant':
-                self.datasets_no_federados_cant(),
-            'datasets_federados_eliminados_cant':
-                self.datasets_federados_eliminados_cant(),
-            'datasets_federados_eliminados':
-                self.datasets_federados_eliminados(),
-            'datasets_no_federados':
-                self.datasets_no_federados(),
-            'datasets_federados':
-                self.datasets_federados(),
-            'datasets_federados_pct':
-                self.datasets_federados_pct(),
-            'distribuciones_federadas_cant':
-                self.distribuciones_federadas_cant()
-        }
-
-
-class IdBasedIndicatorCalculator(object):
-    def __init__(self, central_catalog, catalog):
-        self.central_catalog = readers.read_catalog(central_catalog)
-        self.catalog = readers.read_catalog(catalog)
-        self.central_datasets = {ds['identifier'] for ds in
-                                 self.central_catalog.get('dataset', [])}
-        self.catalog_datasets = {catalog['identifier'] + '_' + ds['identifier']
-                                 for ds in catalog.get('dataset', [])}
-        self.federated_ids = self.catalog_datasets & self.central_datasets
-        self.filtered_central = _filter_by_likely_publisher(
-            self.central_catalog.get('dataset', []),
-            self.catalog.get('dataset', []))
-
-    def distribuciones_federadas_cant(self):
-        return sum([len(ds.get('distribution', [])) for ds in
-                    self.central_catalog.get('dataset', []) if
-                    ds['identifier'] in self.federated_ids])
-
-    def datasets_federados_eliminados(self):
-        return [(ds.get('title'), ds.get('landingPage')) for ds in
-                self.filtered_central if ds['identifier'] not in
-                self.federated_ids]
-
-    def datasets_no_federados(self):
-        return [(ds.get('title'), ds.get('landingPage')) for
-                ds in self.catalog.get('dataset', []) if
-                self.catalog['identifier'] + '_' + ds['identifier']
-                not in self.federated_ids]
-
-    def datasets_federados(self):
-        return [(ds.get('title'), ds.get('landingPage')) for
-                ds in self.catalog.get('dataset', []) if
-                self.catalog['identifier'] + '_' + ds['identifier']
-                in self.federated_ids]
-
-
-class TitleBasedIndicatorCalculator(object):
-
-    def __init__(self, central_catalog, catalog):
-        self.central_catalog = readers.read_catalog(central_catalog)
-        self.catalog = readers.read_catalog(catalog)
-        self.filtered_central = _filter_by_likely_publisher(
-            self.central_catalog.get('dataset', []),
-            self.catalog.get('dataset', []))
-
-    def datasets_federados(self):
-        datasets_federados = []
-        for dataset in self.catalog.get('dataset', []):
-            for central_dataset in self.central_catalog.get('dataset', []):
-                new_dataset = (dataset.get('title'),
-                               dataset.get('landingPage'))
-                if (datasets_equal(dataset, central_dataset) and
-                        new_dataset not in datasets_federados):
-                    datasets_federados.append(new_dataset)
-        return datasets_federados
-
-    def datasets_no_federados(self):
-        datasets_federados = self.datasets_federados()
-        datasets_no_federados = []
-        for dataset in self.catalog.get('dataset', []):
-            if not (dataset.get('title'), dataset.get('landingPage')) \
-                   in datasets_federados:
-                datasets_no_federados.append((dataset.get('title'),
-                                              dataset.get('landingPage')))
-        return datasets_no_federados
-
-    def datasets_federados_eliminados(self):
-        datasets_federados = self.datasets_federados()
-        datasets_federados_eliminados = []
-        for central_dataset in self.filtered_central:
-            if (central_dataset.get('title'),
-                central_dataset.get('landingPage'))\
-                    not in datasets_federados:
-                    datasets_federados_eliminados.append(
-                        (central_dataset.get('title'),
-                         central_dataset.get('landingPage'))
-                    )
-        return datasets_federados_eliminados
-
-    def distribuciones_federadas_cant(self):
-        datasets_federados = self.datasets_federados()
-        distribuciones_federadas = 0
-        for dataset in self.catalog.get('dataset', []):
-            if (dataset.get('title'), dataset.get('landingPage')) \
-                   in datasets_federados:
-                distribuciones_federadas += len(dataset['distribution'])
-        return distribuciones_federadas

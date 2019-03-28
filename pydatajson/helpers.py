@@ -441,3 +441,101 @@ def is_local_andino_resource(catalog, distribution):
     if homepage is not None:
         return distribution.get('downloadURL', '').startswith(homepage)
     return False
+
+
+def datasets_equal(dataset, other, fields_dataset=None,
+                   fields_distribution=None, return_diff=False):
+    """Función de igualdad de dos datasets: se consideran iguales si
+    los valores de los campos 'title', 'publisher.name',
+    'accrualPeriodicity' e 'issued' son iguales en ambos.
+
+    Args:
+        dataset (dict): un dataset, generado por la lectura de un catálogo
+        other (dict): idem anterior
+
+    Returns:
+        bool: True si son iguales, False en caso contrario
+    """
+    dataset_is_equal = True
+    dataset_diff = []
+
+    # Campos a comparar. Si es un campo anidado escribirlo como lista
+    if not fields_dataset:
+        fields_dataset = [
+            'title',
+            ['publisher', 'name']
+        ]
+
+    for field_dataset in fields_dataset:
+        if isinstance(field_dataset, list):
+            value = traverse_dict(dataset, field_dataset)
+            other_value = traverse_dict(other, field_dataset)
+        else:
+            value = dataset.get(field_dataset)
+            other_value = other.get(field_dataset)
+
+        if value != other_value:
+            dataset_diff.append({
+                "error_location": field_dataset,
+                "dataset_value": value,
+                "other_value": other_value
+            })
+            dataset_is_equal = False
+
+    if fields_distribution:
+        dataset_distributions = dataset.get("distribution")
+        other_distributions = other.get("distribution")
+
+        if len(dataset_distributions) != len(other_distributions):
+            logger.info("{} distribuciones en origen y {} en destino".format(
+                len(dataset_distributions), len(other_distributions)))
+            dataset_is_equal = False
+
+        distributions_equal = True
+        for dataset_distribution, other_distribution in zip(
+                dataset_distributions, other_distributions):
+
+            for field_distribution in fields_distribution:
+                if isinstance(field_distribution, list):
+                    value = traverse_dict(
+                        dataset_distribution, field_distribution)
+                    other_value = traverse_dict(
+                        other_distribution, field_distribution)
+                else:
+                    value = dataset_distribution.get(field_distribution)
+                    other_value = other_distribution.get(field_distribution)
+
+                if value != other_value:
+                    dataset_diff.append({
+                        "error_location": "{} ({})".format(
+                            field_distribution,
+                            dataset_distribution.get("title")
+                        ),
+                        "dataset_value": value,
+                        "other_value": other_value
+                    })
+                    distributions_equal = False
+
+        if not distributions_equal:
+            dataset_is_equal = False
+
+    if return_diff:
+        return dataset_diff
+    else:
+        return dataset_is_equal
+
+
+def _filter_by_likely_publisher(central_datasets, catalog_datasets):
+    publisher_names = [
+        catalog_dataset["publisher"]["name"]
+        for catalog_dataset in catalog_datasets
+        if "name" in catalog_dataset.get("publisher", {})
+    ]
+
+    filtered_central_datasets = []
+    for central_dataset in central_datasets:
+        if "name" in central_dataset["publisher"] and \
+                central_dataset["publisher"]["name"] in publisher_names:
+            filtered_central_datasets.append(central_dataset)
+
+    return filtered_central_datasets
