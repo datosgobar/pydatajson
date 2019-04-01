@@ -525,7 +525,7 @@ def datasets_equal(dataset, other, fields_dataset=None,
         return dataset_is_equal
 
 
-def _filter_by_likely_publisher(central_datasets, catalog_datasets):
+def filter_by_likely_publisher(central_datasets, catalog_datasets):
     publisher_names = [
         catalog_dataset["publisher"]["name"]
         for catalog_dataset in catalog_datasets
@@ -539,3 +539,8 @@ def _filter_by_likely_publisher(central_datasets, catalog_datasets):
             filtered_central_datasets.append(central_dataset)
 
     return filtered_central_datasets
+
+
+def title_in_dataset_list(dataset, dataset_list):
+    return (dataset.get('title'), dataset.get('landingPage')) \
+                   in dataset_list

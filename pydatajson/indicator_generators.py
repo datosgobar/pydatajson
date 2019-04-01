@@ -11,7 +11,8 @@ from __future__ import print_function, absolute_import
 from __future__ import unicode_literals, with_statement
 
 from pydatajson.readers import read_catalog
-from pydatajson.helpers import datasets_equal, _filter_by_likely_publisher
+from pydatajson.helpers import datasets_equal, filter_by_likely_publisher
+from pydatajson.helpers import title_in_dataset_list
 
 
 class FederationIndicatorsGenerator(object):
@@ -58,7 +59,7 @@ class AbstractCalculator(object):
     def __init__(self, central_catalog, catalog):
         self.central_catalog = read_catalog(central_catalog)
         self.catalog = read_catalog(catalog)
-        self.filtered_central = _filter_by_likely_publisher(
+        self.filtered_central = filter_by_likely_publisher(
             self.central_catalog.get('dataset', []),
             self.catalog.get('dataset', []))
 
@@ -118,19 +119,17 @@ class TitleBasedIndicatorCalculator(AbstractCalculator):
         datasets_federados = []
         for dataset in self.catalog.get('dataset', []):
             for central_dataset in self.central_catalog.get('dataset', []):
-                new_dataset = (dataset.get('title'),
-                               dataset.get('landingPage'))
-                if (datasets_equal(dataset, central_dataset) and
-                        new_dataset not in datasets_federados):
-                    datasets_federados.append(new_dataset)
+                if (datasets_equal(dataset, central_dataset) and not
+                        title_in_dataset_list(dataset, datasets_federados)):
+                    datasets_federados.append((dataset.get('title'),
+                                               dataset.get('landingPage')))
         return datasets_federados
 
     def datasets_no_federados(self):
         datasets_federados = self.datasets_federados()
         datasets_no_federados = []
         for dataset in self.catalog.get('dataset', []):
-            if not (dataset.get('title'), dataset.get('landingPage')) \
-                   in datasets_federados:
+            if not title_in_dataset_list(dataset, datasets_federados):
                 datasets_no_federados.append((dataset.get('title'),
                                               dataset.get('landingPage')))
         return datasets_no_federados
@@ -139,9 +138,7 @@ class TitleBasedIndicatorCalculator(AbstractCalculator):
         datasets_federados = self.datasets_federados()
         datasets_federados_eliminados = []
         for central_dataset in self.filtered_central:
-            if (central_dataset.get('title'),
-                central_dataset.get('landingPage'))\
-                    not in datasets_federados:
+            if not title_in_dataset_list(central_dataset, datasets_federados):
                     datasets_federados_eliminados.append(
                         (central_dataset.get('title'),
                          central_dataset.get('landingPage'))
@@ -152,7 +149,6 @@ class TitleBasedIndicatorCalculator(AbstractCalculator):
         datasets_federados = self.datasets_federados()
         distribuciones_federadas = 0
         for dataset in self.catalog.get('dataset', []):
-            if (dataset.get('title'), dataset.get('landingPage')) \
-                   in datasets_federados:
+            if title_in_dataset_list(dataset, datasets_federados):
                 distribuciones_federadas += len(dataset['distribution'])
         return distribuciones_federadas
