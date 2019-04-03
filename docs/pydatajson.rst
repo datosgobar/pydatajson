@@ -76,6 +76,14 @@ pydatajson.helpers module
     :undoc-members:
     :show-inheritance:
 
+pydatajson.indicator_generators module
+--------------------------------------
+
+.. automodule:: pydatajson.indicator_generators
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pydatajson.indicators module
 ----------------------------
 
