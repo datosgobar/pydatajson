@@ -592,6 +592,7 @@ class TestDataJsonTestCase(object):
         self.dj.generate_catalog_readme(catalog, export_path=actual_filename)
 
         comparison = filecmp.cmp(actual_filename, expected_filename)
+
         if comparison:
             os.remove(actual_filename)
         else:
