@@ -20,7 +20,7 @@
 
 - **Cantidad de Datasets Federados**: {federated_datasets}
 - **Cantidad de Datasets NO Federados**: {not_federated_datasets}
-- **Porcentaje de Datasets NO Federados**: {not_federated_datasets_pct}%
+- **Porcentaje de Datasets NO Federados**: {not_federated_datasets_pct}
 
 ## Datasets federados que fueron eliminados en el nodo original
 

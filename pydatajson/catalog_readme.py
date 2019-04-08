@@ -9,7 +9,7 @@ import io
 import os
 import logging
 
-from six import string_types, u
+from six import string_types
 
 from pydatajson.helpers import traverse_dict
 from pydatajson.readers import read_catalog
@@ -23,7 +23,13 @@ ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "templates")
 
 
-def generate_catalog_readme(_data_json, catalog, export_path=None):
+def generate_catalog_readme(_datajson, catalog, export_path=None):
+    """Este método está para mantener retrocompatibilidad con versiones
+    anteriores. Se ignora el argumento _data_json."""
+    return generate_readme(catalog, export_path)
+
+
+def generate_readme(catalog, export_path=None):
     """Genera una descripción textual en formato Markdown sobre los
     metadatos generales de un catálogo (título, editor, fecha de
     publicación, et cetera), junto con:
@@ -37,7 +43,6 @@ def generate_catalog_readme(_data_json, catalog, export_path=None):
     un README con información básica sobre los catálogos mantenidos.
 
     Args:
-        _data_json(DataJson): Parametro mantenido para retrocompatibilidad
         catalog (str o dict): Path a un catálogo en cualquier formato,
             JSON, XLSX, o diccionario de python.
         export_path (str): Path donde exportar el texto generado (en
@@ -75,7 +80,9 @@ def generate_catalog_readme(_data_json, catalog, export_path=None):
             "- [{}]({})".format(dataset[0], dataset[1])
             for dataset in indicators["datasets_federados"]
         ])
-
+        non_federated_pct = 1.0 - indicators["datasets_federados_pct"] if \
+            indicators["datasets_federados_pct"] is not None else \
+            indicators["datasets_federados_pct"]
         content = {
             "title": catalog.get("title"),
             "publisher_name": traverse_dict(
@@ -91,8 +98,7 @@ def generate_catalog_readme(_data_json, catalog, export_path=None):
                                         dataset in catalog["dataset"]]),
             "federated_datasets": indicators["datasets_federados_cant"],
             "not_federated_datasets": indicators["datasets_no_federados_cant"],
-            "not_federated_datasets_pct": (
-                100.0 - indicators["datasets_federados_pct"]),
+            "not_federated_datasets_pct": non_federated_pct,
             "not_federated_datasets_list": not_federated_datasets_list,
             "federated_removed_datasets_list": federated_removed_datasets_list,
             "federated_datasets_list": federated_datasets_list,
