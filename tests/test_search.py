@@ -17,7 +17,7 @@ import json
 
 from six import text_type
 
-from .context import pydatajson
+from tests.context import pydatajson
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 RESULTS_DIR = os.path.join("tests", "results")

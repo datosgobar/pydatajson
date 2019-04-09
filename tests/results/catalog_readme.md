@@ -20,7 +20,7 @@
 
 - **Cantidad de Datasets Federados**: 0
 - **Cantidad de Datasets NO Federados**: 3
-- **Porcentaje de Datasets NO Federados**: 100.0%
+- **Porcentaje de Datasets NO Federados**: 1.0
 
 ## Datasets federados que fueron eliminados en el nodo original
 

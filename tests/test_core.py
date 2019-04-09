@@ -580,27 +580,6 @@ class TestDataJsonTestCase(object):
 
         assert_list_equal(actual, expected)
 
-    @my_vcr.use_cassette()
-    def test_generate_catalog_readme(self):
-        """Genera README para presentar un catálogo."""
-        catalog = os.path.join(self.SAMPLES_DIR,
-                               "several_datasets_for_harvest.json")
-        actual_filename = os.path.join(self.TEMP_DIR, "catalog_readme.md")
-
-        expected_filename = os.path.join(self.RESULTS_DIR, "catalog_readme.md")
-
-        self.dj.generate_catalog_readme(catalog, export_path=actual_filename)
-
-        comparison = filecmp.cmp(actual_filename, expected_filename)
-        if comparison:
-            os.remove(actual_filename)
-        else:
-            """
-{} se escribió correctamente, pero no es idéntico al esperado. Por favor,
-revíselo manualmente""".format(actual_filename)
-
-        assert_true(comparison)
-
     def test_DataJson_constructor(self):
         for key, value in iteritems(self.catalog):
             if key != "dataset":

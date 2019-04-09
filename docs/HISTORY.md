@@ -2,6 +2,11 @@ Versiones
 =========
 0.4.36 (2019-03-01)
 -------------------
+* Permite el cálculo de indicadores de federación usando ids
+
+
+0.4.36 (2019-03-01)
+-------------------
 * Cambia el cálculo de indicadores porcentuales para que calculen de 0 a 1
 * Bugfix para ciertos catálogos con sufijos no reconocidos
 

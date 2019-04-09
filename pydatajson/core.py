@@ -11,12 +11,9 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import with_statement
 
-import io
 import json
 import os.path
-import re
 import sys
-import warnings
 import logging
 from collections import OrderedDict
 from datetime import datetime
@@ -36,6 +33,7 @@ from . import writers
 from . import federation
 from . import transformation
 from . import backup
+from . import catalog_readme
 
 logger = logging.getLogger('pydatajson')
 
@@ -139,7 +137,7 @@ class DataJson(dict):
     # metodos para hacer backups
     make_catalog_backup = backup.make_catalog_backup
 
-    # Metodos para interactuar con un portal de CKAN
+    # metodos para interactuar con un portal de CKAN
     push_dataset_to_ckan = federation.push_dataset_to_ckan
     harvest_dataset_to_ckan = federation.harvest_dataset_to_ckan
     restore_dataset_to_ckan = federation.restore_dataset_to_ckan
@@ -148,6 +146,9 @@ class DataJson(dict):
     push_theme_to_ckan = federation.push_theme_to_ckan
     push_new_themes = federation.push_new_themes
     remove_harvested_ds_from_ckan = federation.remove_harvested_ds_from_ckan
+
+    # metodos de README
+    generate_catalog_readme = catalog_readme.generate_catalog_readme
 
     def _build_index(self):
         """Itera todos los datasets, distribucioens y fields indexandolos."""
@@ -897,125 +898,6 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         else:
             return summary
 
-    def generate_catalog_readme(self, catalog, export_path=None):
-        """Genera una descripción textual en formato Markdown sobre los
-        metadatos generales de un catálogo (título, editor, fecha de
-        publicación, et cetera), junto con:
-            - estado de los metadatos a nivel catálogo,
-            - estado global de los metadatos,
-            - cantidad de datasets federados y no federados,
-            - detalles de los datasets no federados
-            - cantidad de datasets y distribuciones incluidas
-
-        Es utilizada por la rutina diaria de `libreria-catalogos` para generar
-        un README con información básica sobre los catálogos mantenidos.
-
-        Args:
-            catalog (str o dict): Path a un catálogo en cualquier formato,
-                JSON, XLSX, o diccionario de python.
-            export_path (str): Path donde exportar el texto generado (en
-                formato Markdown). Si se especifica, el método no devolverá
-                nada.
-
-        Returns:
-            str: Texto de la descripción generada.
-        """
-        # Si se paso una ruta, guardarla
-        if isinstance(catalog, string_types):
-            catalog_path_or_url = catalog
-        else:
-            catalog_path_or_url = None
-
-        catalog = readers.read_catalog(catalog)
-        validation = self.validate_catalog(catalog)
-        # Solo necesito indicadores para un catalogo
-        indicators = self.generate_catalogs_indicators(
-            catalog, CENTRAL_CATALOG)[0][0]
-
-        readme_template = """
-# Catálogo: {title}
-
-## Información General
-
-- **Autor**: {publisher_name}
-- **Correo Electrónico**: {publisher_mbox}
-- **Ruta del catálogo**: {catalog_path_or_url}
-- **Nombre del catálogo**: {title}
-- **Descripción**:
-
-> {description}
-
-## Estado de los metadatos y cantidad de recursos
-
-- **Estado metadatos globales**: {global_status}
-- **Estado metadatos catálogo**: {catalog_status}
-- **Cantidad Total de Datasets**: {no_of_datasets}
-- **Cantidad Total de Distribuciones**: {no_of_distributions}
-
-- **Cantidad de Datasets Federados**: {federated_datasets}
-- **Cantidad de Datasets NO Federados**: {not_federated_datasets}
-- **Porcentaje de Datasets NO Federados**: {not_federated_datasets_pct}%
-
-## Datasets federados que fueron eliminados en el nodo original
-
-{federated_removed_datasets_list}
-
-## Datasets no federados
-
-{not_federated_datasets_list}
-
-## Datasets federados
-
-{federated_datasets_list}
-
-## Reporte
-
-Por favor, consulte el informe [`datasets.csv`](datasets.csv).
-"""
-
-        not_federated_datasets_list = "\n".join([
-            "- [{}]({})".format(dataset[0], dataset[1])
-            for dataset in indicators["datasets_no_federados"]
-        ])
-        federated_removed_datasets_list = "\n".join([
-            "- [{}]({})".format(dataset[0], dataset[1])
-            for dataset in indicators["datasets_federados_eliminados"]
-        ])
-        federated_datasets_list = "\n".join([
-            "- [{}]({})".format(dataset[0], dataset[1])
-            for dataset in indicators["datasets_federados"]
-        ])
-
-        content = {
-            "title": catalog.get("title"),
-            "publisher_name": helpers.traverse_dict(
-                catalog, ["publisher", "name"]),
-            "publisher_mbox": helpers.traverse_dict(
-                catalog, ["publisher", "mbox"]),
-            "catalog_path_or_url": catalog_path_or_url,
-            "description": catalog.get("description"),
-            "global_status": validation["status"],
-            "catalog_status": validation["error"]["catalog"]["status"],
-            "no_of_datasets": len(catalog["dataset"]),
-            "no_of_distributions": sum([len(dataset["distribution"]) for
-                                        dataset in catalog["dataset"]]),
-            "federated_datasets": indicators["datasets_federados_cant"],
-            "not_federated_datasets": indicators["datasets_no_federados_cant"],
-            "not_federated_datasets_pct": (
-                100.0 - indicators["datasets_federados_pct"]),
-            "not_federated_datasets_list": not_federated_datasets_list,
-            "federated_removed_datasets_list": federated_removed_datasets_list,
-            "federated_datasets_list": federated_datasets_list,
-        }
-
-        catalog_readme = readme_template.format(**content)
-
-        if export_path:
-            with io.open(export_path, 'w+', encoding='utf-8') as target:
-                target.write(catalog_readme)
-        else:
-            return catalog_readme
-
     @classmethod
     def _extract_datasets_to_harvest(cls, report):
         """Extrae de un reporte los datos necesarios para reconocer qué
@@ -1063,10 +945,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         return datasets_to_harvest
 
     def generate_catalogs_indicators(self, catalogs=None,
-                                     central_catalog=None):
+                                     central_catalog=None,
+                                     identifier_search=False):
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
-            catalogs, central_catalog, validator=self.validator)
+            catalogs, central_catalog, identifier_search=identifier_search,
+            validator=self.validator)
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos
