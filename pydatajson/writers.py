@@ -445,9 +445,9 @@ def _generate_field_table(catalog):
 def _generate_theme_table(catalog):
     headers = []
     themes = []
-
+    catalog_themes = catalog.get_themes() or []
     # tabula diccionarios con estructura, como listas planas de diccionarios
-    for theme in catalog.get_themes():
+    for theme in catalog_themes:
         tab_theme = _tabulate_nested_dict(theme, "theme")
         themes.append(tab_theme)
 
