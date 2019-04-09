@@ -115,7 +115,13 @@ print validation_report
 
 #### Otros formatos
 
-`pydatajson` puede interpretar catálogos tanto en formato JSON como en formato XLSX (siempre y cuando se hayan creado utilizando la [plantilla](samples/plantilla_data.xlsx), estén estos almacenados localmente o remotamente a través de URLs de descarga directa. También es capaz de interpretar diccionarios de Python con metadatos de catálogos.
+`pydatajson` puede interpretar catálogos en formatos:
+
+* JSON
+* XLSX (ver [plantilla de catálogo en XLSX](docs/assets/catalog.xlsx))
+
+Los catálogos pueden estar almacenados localmente o remotamente a través de URLs de descarga directa. También es capaz de interpretar diccionarios de Python con metadatos de catálogos.
+
 
 ```python
 from pydatajson import DataJson

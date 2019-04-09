@@ -1,6 +1,6 @@
 Versiones
 =========
-0.4.36 (2019-03-01)
+0.4.37 (2019-04-03)
 -------------------
 * Permite el cálculo de indicadores de federación usando ids
 
