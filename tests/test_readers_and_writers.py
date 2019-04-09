@@ -7,9 +7,10 @@ from __future__ import print_function, unicode_literals, with_statement
 
 import os.path
 import unittest
-
 import nose
 import vcr
+
+from tempfile import NamedTemporaryFile
 
 from tests.support.factories.xlsx import CSV_TABLE, WRITE_XLSX_TABLE
 from tests.support.factories.xlsx import READ_XLSX_TABLE
@@ -19,10 +20,11 @@ try:
 except ImportError:
     from unittest import mock
 import filecmp
-from .context import pydatajson
+from tests.context import pydatajson
+from pydatajson.core import DataJson
 from pydatajson.helpers import ensure_dir_exists
 from pydatajson.custom_exceptions import NonParseableCatalog
-from . import xl_methods
+from tests import xl_methods
 import openpyxl as pyxl
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
@@ -45,7 +47,7 @@ class ReadersAndWritersTestCase(unittest.TestCase):
         ensure_dir_exists(cls.SAMPLES_DIR)
         ensure_dir_exists(cls.RESULTS_DIR)
         ensure_dir_exists(cls.TEMP_DIR)
-        cls.dj = pydatajson.DataJson()
+        cls.dj = DataJson()
         cls.maxDiff = None
         cls.longMessage = True
 
@@ -163,7 +165,7 @@ revíselo manualmente""".format(temp_filename)
 
     def test_read_written_xlsx_catalog(self):
         """read_catalog puede leer XLSX creado por write_xlsx_catalog"""
-        original_catalog = pydatajson.DataJson(
+        original_catalog = DataJson(
             os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json"))
 
         tmp_xlsx = os.path.join(self.TEMP_DIR, "xlsx_catalog.xlsx")
@@ -227,19 +229,16 @@ revíselo manualmente""".format(temp_filename)
 
     def test_read_write_both_formats_yields_the_same(self):
         for suffix in ['xlsx', 'json']:
-            catalog = pydatajson.core.DataJson(
-                os.path.join(self.SAMPLES_DIR,
-                             "catalogo_justicia." + suffix))
+            catalog = DataJson(os.path.join(self.SAMPLES_DIR,
+                                            "catalogo_justicia." + suffix))
             catalog.to_json(os.path.join(self.TEMP_DIR,
                                          "saved_catalog.json"))
             catalog.to_xlsx(os.path.join(self.TEMP_DIR,
                                          "saved_catalog.xlsx"))
-            catalog_json = pydatajson.core.DataJson(
-                os.path.join(self.TEMP_DIR,
-                             "saved_catalog.xlsx"))
-            catalog_xlsx = pydatajson.core.DataJson(
-                os.path.join(self.TEMP_DIR,
-                             "saved_catalog.xlsx"))
+            catalog_json = DataJson(os.path.join(self.TEMP_DIR,
+                                                 "saved_catalog.xlsx"))
+            catalog_xlsx = DataJson(os.path.join(self.TEMP_DIR,
+                                                 "saved_catalog.xlsx"))
             self.assertEqual(catalog_json, catalog_xlsx)
 
             # la llamada to_xlsx() genera los indices en el catalogo original
@@ -311,6 +310,17 @@ revíselo manualmente""".format(temp_filename)
     @nose.tools.raises(NonParseableCatalog)
     def test_failing_suffixless_catalog_raises_non_parseable_error(self):
         pydatajson.readers.read_catalog('inexistent_file')
+
+    def test_xlsx_write_missing_optional_fields_and_themes(self):
+        with NamedTemporaryFile(suffix='.xlsx') as tempfile:
+            catalog = DataJson(os.path.join(self.SAMPLES_DIR,
+                                            "minimum_data.json"))
+            catalog.to_xlsx(tempfile.name)
+            written_datajson = DataJson(tempfile.name)
+        written_dataset = written_datajson.datasets[0]
+        written_distribution = written_datajson.distributions[0]
+        self.assertTrue('theme' not in written_dataset)
+        self.assertTrue('field' not in written_distribution)
 
 
 if __name__ == '__main__':
