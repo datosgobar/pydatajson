@@ -202,10 +202,9 @@ def validate_catalog(catalog, only_errors=False, fmt="dict",
 
     # filtra los resultados que están ok, para hacerlo más compacto
     if only_errors:
-        response["error"]["dataset"] = filter(
-            lambda dataset: dataset["status"] == "ERROR",
-            response["error"]["dataset"]
-        )
+        response["error"]["dataset"] = [
+            dataset for dataset in response["error"]["dataset"] if
+            dataset["status"] == "ERROR"]
 
     # elige el formato del resultado
     if export_path:
