@@ -1,5 +1,12 @@
 Versiones
 =========
+0.4.38 (2019-04-15)
+-------------------
+* Bugfix en la escritura de catálogos sin themes
+* Actualiza planilla xlsx de catálogo
+* La validación de datasets devuelve una lista en vez de un generador
+
+
 0.4.37 (2019-04-03)
 -------------------
 * Permite el cálculo de indicadores de federación usando ids
