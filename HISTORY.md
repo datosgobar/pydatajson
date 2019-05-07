@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.39 (2019-05-07)
+-------------------
+* Cambia el nivel del logging para los warnings que se logueaban bajo error
+
 0.4.38 (2019-04-15)
 -------------------
 * Bugfix en la escritura de catálogos sin themes
