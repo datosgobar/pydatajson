@@ -323,7 +323,7 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
         try:
             dataset_list = [ds['identifier'] for ds in catalog.datasets]
         except KeyError:
-            logger.exception('Hay datasets sin identificadores')
+            logger.warning('Hay datasets sin identificadores')
             return harvested
     owner_org = owner_org or catalog_id
     errors = {}
@@ -338,7 +338,7 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
             msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n"\
                   % (catalog_id, dataset_id, portal_url)
             msg += str(e)
-            logger.error(msg)
+            logger.warning(msg)
             errors[dataset_id] = str(e)
 
     return harvested, errors

@@ -309,10 +309,10 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title,
     many_dsets_msg = "Hay mas de un dataset con el identifier {}: {}".format(
         dataset_identifier, matching_datasets)
     if len(matching_datasets) == 0:
-        logger.error(no_dsets_msg)
+        logger.warning(no_dsets_msg)
         return None
     elif len(matching_datasets) > 1:
-        logger.error(many_dsets_msg)
+        logger.warning(many_dsets_msg)
         return None
     else:
         return matching_datasets[0]
@@ -424,7 +424,7 @@ def read_local_xlsx_catalog(xlsx_path, logger=None):
             catalog, distribution["dataset_identifier"],
             distribution["dataset_title"], logger)
         if dataset_index is None:
-            logger.error("""La distribucion con ID '{}' y titulo '{}' no se
+            logger.warning("""La distribucion con ID '{}' y titulo '{}' no se
 pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 distribution["distribution_identifier"],
                 distribution["distribution_title"]))
@@ -446,7 +446,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
             logger)
 
         if dataset_index is None:
-            logger.error(
+            logger.warning(
                 """No se encontro el dataset '{}' especificado para el campo
                 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en
                 el data.json de salida.""".format(
@@ -454,7 +454,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                     unidecode(field["field_title"]), idx + 2))
 
         elif distribution_index is None:
-            logger.error(
+            logger.warning(
                 """No se encontro la distribucion '{}' especificada para el
                 campo'{}' (fila #{} de la hoja "Field"). Este campo no figurara
                 en el data.json de salida.""".format(
