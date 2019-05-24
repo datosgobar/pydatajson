@@ -37,7 +37,9 @@ EXTENSIONS_EXCEPTIONS = ["zip", "php", "asp", "aspx"]
 logger = logging.getLogger('pydatajson')
 
 
-def create_validator(schema_filename=None, schema_dir=None):
+def create_validator(schema_filename=None,
+                     schema_dir=None,
+                     validator_class=None):
     """Crea el validador necesario para inicializar un objeto DataJson.
 
     Para poder resolver referencias inter-esquemas, un Validador requiere
@@ -64,6 +66,7 @@ def create_validator(schema_filename=None, schema_dir=None):
     schema_dir = schema_dir or ABSOLUTE_SCHEMA_DIR
     schema_path = os.path.join(schema_dir, schema_filename)
     schema = readers.read_json(schema_path)
+    validator_class = validator_class or jsonschema.Draft4Validator
 
     # Según https://github.com/Julian/jsonschema/issues/98
     # Permite resolver referencias locales a otros esquemas.
@@ -75,7 +78,7 @@ def create_validator(schema_filename=None, schema_dir=None):
 
     format_checker = jsonschema.FormatChecker()
 
-    validator = jsonschema.Draft4Validator(
+    validator = validator_class(
         schema=schema, resolver=resolver, format_checker=format_checker)
 
     return validator

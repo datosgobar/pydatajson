@@ -7,7 +7,8 @@ import os.path
 import re
 
 import vcr
-from nose.tools import assert_true, assert_false, assert_dict_equal,\
+from jsonschema import Draft4Validator
+from nose.tools import assert_true, assert_false, assert_dict_equal, \
     assert_regexp_matches
 from six import iteritems, text_type
 
@@ -100,7 +101,7 @@ class TestDataJsonTestCase(object):
         case_filename = "invalid_dataset_theme_type"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
-        regex = "%s is not valid under any of the given schemas"\
+        regex = "%s is not valid under any of the given schemas" \
                 % jsonschema_str('contrataciones')
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
@@ -117,7 +118,7 @@ class TestDataJsonTestCase(object):
         case_filename = "invalid_keywords"
         expected_valid = False
         path = ['error', 'dataset', 1, 'errors', 0, 'message']
-        regex = "\[%s, %s, %s\] is not valid under any of the given schemas"\
+        regex = "\[%s, %s, %s\] is not valid under any of the given schemas" \
                 % (jsonschema_str(';;bienes;;'), jsonschema_str('::compras::'),
                    jsonschema_str('//contrataciones//'))
         self.validate_message_with_file(
@@ -192,7 +193,7 @@ class TestDataJsonTestCase(object):
             ),
         ]
         for path, regex in expected_errors:
-            yield self.validate_contains_message_with_file,\
+            yield self.validate_contains_message_with_file, \
                   case_filename, path, regex
 
     def validate_message_with_file(
@@ -250,17 +251,17 @@ class TestDataJsonTestCase(object):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
 
         errors = [(
-                    ['error', 'catalog', 'errors', ],
-                    "%s is too short" % jsonschema_str('')
-                   ),
-                  (
-                    ['error', 'catalog', 'errors', ],
-                    "%s is not a %s" % (jsonschema_str(''),
-                                        jsonschema_str('email'))
-                  )]
+            ['error', 'catalog', 'errors', ],
+            "%s is too short" % jsonschema_str('')
+        ),
+            (
+                ['error', 'catalog', 'errors', ],
+                "%s is not a %s" % (jsonschema_str(''),
+                                    jsonschema_str('email'))
+            )]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson'):
-                yield self.validate_contains_message, BAD_DATAJSON_URL,\
+                yield self.validate_contains_message, BAD_DATAJSON_URL, \
                       path, regex
 
     # Tests contra una URL REMOTA
@@ -275,13 +276,18 @@ class TestDataJsonTestCase(object):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
         errors = [
             ([
-                'error', 'catalog', 'errors', ], "%s is not a %s" %
-                (jsonschema_str(''), jsonschema_str('email'))), ([
-                    'error', 'catalog', 'errors', ], "%s is too short" %
-                jsonschema_str('')), ]
+                 'error', 'catalog', 'errors', ], "%s is not a %s" %
+             (jsonschema_str(''), jsonschema_str('email'))),
+            ([
+                 'error',
+                 'catalog',
+                 'errors', ],
+             "%s is too short" %
+             jsonschema_str(
+                 '')), ]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson2'):
-                yield self.validate_contains_message, BAD_DATAJSON_URL2,\
+                yield self.validate_contains_message, BAD_DATAJSON_URL2, \
                       path, regex
 
     def test_correctness_of_accrualPeriodicity_regex(self):
@@ -337,3 +343,14 @@ class TestDataJsonTestCase(object):
                 error['message'] in [
                     reported['dataset_error_message'] for reported
                     in report_list['dataset']])
+
+    def test_specify_validator_class(self):
+        class MyValidator(Draft4Validator):
+            def my_method(self):
+                return "MyValidator!"
+
+        dj = pydatajson.DataJson(self.get_sample('full_data.json'),
+                                 validator_class=MyValidator)
+        dj.is_valid_catalog()
+        dj.validate_catalog()
+        assert_true(dj.validator.my_method() == "MyValidator!")

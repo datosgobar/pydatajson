@@ -51,7 +51,8 @@ class DataJson(dict):
     CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
     def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
-                 default_values=None, catalog_format=None):
+                 default_values=None, catalog_format=None,
+                 validator_class=None):
         """Lee un catálogo y crea un objeto con funciones para manipularlo.
 
         Salvo que se indique lo contrario, se utiliza como default el schema
@@ -97,7 +98,7 @@ class DataJson(dict):
             self.has_catalog = False
 
         self.validator = validation.create_validator(
-            schema_filename, schema_dir)
+            schema_filename, schema_dir, validator_class)
 
         # asigno docstrings de los métodos modularizados
         fn_doc = indicators.generate_catalogs_indicators.__doc__
