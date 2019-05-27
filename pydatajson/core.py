@@ -337,6 +337,9 @@ class DataJson(dict):
         catalog = readers.read_catalog(catalog) if catalog else self
 
         validation = self.validator.validate_catalog(catalog, only_errors)
+        if export_path:
+            fmt = 'table'
+
         return format_response(validation, export_path, fmt)
 
     @staticmethod
