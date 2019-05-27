@@ -15,6 +15,8 @@ import mimetypes
 import logging
 from collections import Counter
 
+from pydatajson.validation_formatter import ListFormatter, TablesFormatter
+
 try:
     from urlparse import urlparse
 except ImportError:
@@ -77,14 +79,14 @@ class Validator(object):
         return response
 
     def _get_errors(self, catalog):
-        jsonschema_errors = list(
-            self.jsonschema_validator.iter_errors(catalog))
+        errors = list(
+            self.jsonschema_validator.iter_errors(catalog)
+        )
         try:
-            custom_errors = self._custom_errors(catalog)
+            for error in self._custom_errors(catalog):
+                errors.append(error)
         except:
             logger.warning("Error de validación")
-            custom_errors = []
-        errors = jsonschema_errors + custom_errors
         return errors
 
     def _default_response(self, catalog):
@@ -118,14 +120,11 @@ class Validator(object):
         En esta función se agregan bloques de código en python que realizan
         validaciones complicadas o imposibles de especificar usando jsonschema
         """
-        errors = []
         for error in self._theme_ids_not_repeated(catalog):
-            errors.append(error)
+            yield error
 
         for error in self._consistent_distribution_fields(catalog):
-            errors.append(error)
-
-        return errors
+            yield error
 
     def _theme_ids_not_repeated(self, catalog):
         if "themeTaxonomy" in catalog:
@@ -212,34 +211,6 @@ class Validator(object):
         return new_response
 
 
-def create_validator(schema_filename=None, schema_dir=None):
-    """Crea el validador necesario para inicializar un objeto DataJson.
-
-    Para poder resolver referencias inter-esquemas, un Validador requiere
-    que se especifique un RefResolver (Resolvedor de Referencias) con el
-    directorio base (absoluto) y el archivo desde el que se referencia el
-    directorio.
-
-    Para poder validar formatos, un Validador requiere que se provea
-    explícitamente un FormatChecker. Actualmente se usa el default de la
-    librería, jsonschema.FormatChecker().
-
-    Args:
-        schema_filename (str): Nombre del archivo que contiene el esquema
-            validador "maestro".
-        schema_dir (str): Directorio (absoluto) donde se encuentra el
-            esquema validador maestro y sus referencias, de tenerlas.
-
-    Returns:
-        Draft4Validator: Un validador de JSONSchema Draft #4. El validador
-            se crea con un RefResolver que resuelve referencias de
-            `schema_filename` dentro de `schema_dir`.
-    """
-    schema_filename = schema_filename or DEFAULT_CATALOG_SCHEMA_FILENAME
-    schema_dir = schema_dir or ABSOLUTE_SCHEMA_DIR
-    return Validator(schema_filename, schema_dir)
-
-
 def is_valid_catalog(catalog, validator=None):
     """Valida que un archivo `data.json` cumpla con el schema definido.
 
@@ -320,122 +291,6 @@ def validate_catalog(catalog, only_errors=False, fmt="dict",
         if hasattr(catalog, "validator"):
             validator = catalog.validator
         else:
-            validator = create_validator()
+            validator = Validator()
 
-    response = validator.validate_catalog(catalog, only_errors)
-
-    # elige el formato del resultado
-    if export_path:
-        validation_lists = _catalog_validation_to_list(response)
-
-        # config styles para reportes en excel
-        alignment = Alignment(
-            wrap_text=True,
-            shrink_to_fit=True,
-            vertical="center"
-        )
-        column_styles = {
-            "catalog": {
-                "catalog_status": {"width": 20},
-                "catalog_error_location": {"width": 40},
-                "catalog_error_message": {"width": 40},
-                "catalog_title": {"width": 20},
-            },
-            "dataset": {
-                "dataset_error_location": {"width": 20},
-                "dataset_identifier": {"width": 40},
-                "dataset_status": {"width": 20},
-                "dataset_title": {"width": 40},
-                "dataset_list_index": {"width": 20},
-                "dataset_error_message": {"width": 40},
-            }
-        }
-        cell_styles = {
-            "catalog": [
-                {"alignment": Alignment(vertical="center")},
-                {"row": 1, "font": Font(bold=True)},
-            ],
-            "dataset": [
-                {"alignment": Alignment(vertical="center")},
-                {"row": 1, "font": Font(bold=True)},
-            ]
-        }
-
-        # crea tablas en un sólo excel o varios CSVs
-        writers.write_tables(
-            tables=validation_lists, path=export_path,
-            column_styles=column_styles, cell_styles=cell_styles
-        )
-
-    elif fmt == "dict":
-        return response
-
-    elif fmt == "list":
-        return _catalog_validation_to_list(response)
-
-    # Comentado porque requiere una extensión pesada nueva para pydatajson
-    # elif fmt == "df":
-    #     validation_lists = self._catalog_validation_to_list(response)
-    #     return {
-    #         "catalog": pd.DataFrame(validation_lists["catalog"]),
-    #         "dataset": pd.DataFrame(validation_lists["dataset"])
-    #     }
-
-    else:
-        raise Exception("No se reconoce el formato {}".format(fmt))
-
-
-def _catalog_validation_to_list(response):
-    """Formatea la validación de un catálogo a dos listas de errores.
-
-    Una lista de errores para "catalog" y otra para "dataset".
-    """
-
-    # crea una lista de dicts para volcarse en una tabla  (catalog)
-    rows_catalog = []
-    validation_result = {
-        "catalog_title": response["error"]["catalog"]["title"],
-        "catalog_status": response["error"]["catalog"]["status"],
-    }
-    for error in response["error"]["catalog"]["errors"]:
-        catalog_result = dict(validation_result)
-        catalog_result.update({
-            "catalog_error_message": error["message"],
-            "catalog_error_location": ", ".join(error["path"]),
-        })
-        rows_catalog.append(catalog_result)
-
-    if len(response["error"]["catalog"]["errors"]) == 0:
-        catalog_result = dict(validation_result)
-        catalog_result.update({
-            "catalog_error_message": None,
-            "catalog_error_location": None
-        })
-        rows_catalog.append(catalog_result)
-
-    # crea una lista de dicts para volcarse en una tabla (dataset)
-    rows_dataset = []
-    for dataset in response["error"]["dataset"]:
-        validation_result = {
-            "dataset_title": dataset["title"],
-            "dataset_identifier": dataset["identifier"],
-            "dataset_list_index": dataset["list_index"],
-            "dataset_status": dataset["status"]
-        }
-        for error in dataset["errors"]:
-            dataset_result = dict(validation_result)
-            dataset_result.update({
-                "dataset_error_message": error["message"],
-                "dataset_error_location": error["path"][-1]
-            })
-            rows_dataset.append(dataset_result)
-
-        if len(dataset["errors"]) == 0:
-            dataset_result = dict(validation_result)
-            dataset_result.update({
-                "dataset_error_message": None,
-                "dataset_error_location": None
-            })
-            rows_dataset.append(dataset_result)
-
-    return {"catalog": rows_catalog, "dataset": rows_dataset}
+    return validator.validate_catalog(catalog, only_errors)
