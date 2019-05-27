@@ -243,7 +243,6 @@ class DataJson(dict):
             bool: True si el data.json cumple con el schema, sino False.
         """
         catalog = readers.read_catalog(catalog) if catalog else self
-        catalog = readers.read_catalog(catalog) if catalog else self
         return self.validator.is_valid(catalog)
 
     @staticmethod
