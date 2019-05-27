@@ -116,11 +116,17 @@ class Validator(object):
         En esta función se agregan bloques de código en python que realizan
         validaciones complicadas o imposibles de especificar usando jsonschema
         """
-        for error in self._theme_ids_not_repeated(catalog):
-            yield error
+        validators = self._validators()
 
-        for error in self._consistent_distribution_fields(catalog):
-            yield error
+        for validator in validators:
+            for error in validator(catalog):
+                yield error
+
+    def _validators(self):
+        return [
+            self._theme_ids_not_repeated,
+            self._consistent_distribution_fields
+        ]
 
     def _theme_ids_not_repeated(self, catalog):
         if "themeTaxonomy" in catalog:
