@@ -13,7 +13,7 @@ from pydatajson.response_formatters.validation_response_formatter import\
 class TablesFormatter(ValidationResponseFormatter):
 
     def __init__(self, response, export_path):
-        super().__init__(response)
+        super(TablesFormatter, self).__init__(response)
         self.export_path = export_path
 
     def format(self):
