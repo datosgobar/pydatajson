@@ -22,13 +22,15 @@ from openpyxl.styles import Alignment, Font
 from six import string_types, iteritems
 from six.moves.urllib_parse import urljoin
 
+from pydatajson.response_formatters import format_response
+from pydatajson.validation import Validator, \
+    DEFAULT_CATALOG_SCHEMA_FILENAME, ABSOLUTE_SCHEMA_DIR
 from . import documentation
 from . import helpers
 from . import indicators
 from . import readers
 from . import search
 from . import time_series
-from . import validation
 from . import writers
 from . import federation
 from . import transformation
@@ -36,7 +38,6 @@ from . import backup
 from . import catalog_readme
 
 logger = logging.getLogger('pydatajson')
-
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -51,7 +52,8 @@ class DataJson(dict):
     CATALOG_FIELDS_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "fields")
 
     def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
-                 default_values=None, catalog_format=None):
+                 default_values=None, catalog_format=None,
+                 validator_class=Validator):
         """Lee un catálogo y crea un objeto con funciones para manipularlo.
 
         Salvo que se indique lo contrario, se utiliza como default el schema
@@ -95,16 +97,14 @@ class DataJson(dict):
 
         else:
             self.has_catalog = False
+        schema_filename = schema_filename or DEFAULT_CATALOG_SCHEMA_FILENAME
+        schema_dir = schema_dir or ABSOLUTE_SCHEMA_DIR
 
-        self.validator = validation.create_validator(
-            schema_filename, schema_dir)
+        self.validator = validator_class(schema_filename, schema_dir)
 
         # asigno docstrings de los métodos modularizados
         fn_doc = indicators.generate_catalogs_indicators.__doc__
         self.generate_catalogs_indicators.__func__.__doc__ = fn_doc
-
-        fn_doc = validation.is_valid_catalog.__doc__
-        self.is_valid_catalog.__func__.__doc__ = fn_doc
 
     # metodos para buscar entidades cuando DataJson tiene catalogo cargado
     get_themes = search.get_themes
@@ -242,8 +242,8 @@ class DataJson(dict):
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        catalog = catalog or self
-        return validation.is_valid_catalog(catalog, validator=self.validator)
+        catalog = readers.read_catalog(catalog) if catalog else self
+        return self.validator.is_valid(catalog)
 
     @staticmethod
     def _update_validation_response(error, response):
@@ -333,9 +333,13 @@ class DataJson(dict):
             "message", "validator", "validator_value", "error_code".
 
         """
-        catalog = catalog or self
-        return validation.validate_catalog(
-            catalog, only_errors, fmt, export_path, validator=self.validator)
+        catalog = readers.read_catalog(catalog) if catalog else self
+
+        validation = self.validator.validate_catalog(catalog, only_errors)
+        if export_path:
+            fmt = 'table'
+
+        return format_response(validation, export_path, fmt)
 
     @staticmethod
     def _stringify_list(str_or_list):
@@ -634,7 +638,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 catalog_ids.append(catalog.get("identifier", ""))
         if isinstance(catalog_ids, string_types + (dict,)):
             catalog_ids = [catalog_ids] * len(catalogs)
-        if not catalog_orgs or\
+        if not catalog_orgs or \
                 isinstance(catalog_orgs, string_types + (dict,)):
             catalog_orgs = [catalog_orgs] * len(catalogs)
         if not catalog_homepages or isinstance(catalog_homepages,

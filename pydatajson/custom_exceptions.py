@@ -364,3 +364,7 @@ class DownloadURLBrokenError(BaseNonExistentError):
         msg = "Distribution ({}) con URL descarga ({}) inválida ({})"
         super(DownloadURLBrokenError, self).__init__(msg.format(
             distribution_id, distribution_downloadURL, status_code))
+
+
+class FormatNameError(ValueError):
+    pass
