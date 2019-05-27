@@ -15,19 +15,15 @@ import mimetypes
 import logging
 from collections import Counter
 
-from pydatajson.validation_formatter import ListFormatter, TablesFormatter
-
 try:
     from urlparse import urlparse
 except ImportError:
     from urllib.parse import urlparse
 
 import jsonschema
-from openpyxl.styles import Alignment, Font
 
 from . import custom_exceptions as ce
 from . import readers
-from . import writers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")

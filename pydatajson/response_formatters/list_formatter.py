@@ -1,18 +1,9 @@
-import abc
+# -*- coding: utf-8 -*-
 
-from openpyxl.styles import Alignment, Font
+from __future__ import unicode_literals
 
-from pydatajson import writers
-
-
-class ValidationResponseFormatter(abc.ABC):
-
-    def __init__(self, response):
-        self.response = response
-
-    @abc.abstractmethod
-    def format(self):
-        raise NotImplementedError
+from pydatajson.response_formatters.validation_response_formatter import \
+    ValidationResponseFormatter
 
 
 class ListFormatter(ValidationResponseFormatter):
@@ -65,46 +56,3 @@ class ListFormatter(ValidationResponseFormatter):
                 rows_dataset.append(dataset_result)
 
         return {"catalog": rows_catalog, "dataset": rows_dataset}
-
-
-class TablesFormatter(ValidationResponseFormatter):
-
-    def __init__(self, response, export_path):
-        super().__init__(response)
-        self.export_path = export_path
-
-    def format(self):
-        validation_lists = ListFormatter(self.response).format()
-
-        column_styles = {
-            "catalog": {
-                "catalog_status": {"width": 20},
-                "catalog_error_location": {"width": 40},
-                "catalog_error_message": {"width": 40},
-                "catalog_title": {"width": 20},
-            },
-            "dataset": {
-                "dataset_error_location": {"width": 20},
-                "dataset_identifier": {"width": 40},
-                "dataset_status": {"width": 20},
-                "dataset_title": {"width": 40},
-                "dataset_list_index": {"width": 20},
-                "dataset_error_message": {"width": 40},
-            }
-        }
-        cell_styles = {
-            "catalog": [
-                {"alignment": Alignment(vertical="center")},
-                {"row": 1, "font": Font(bold=True)},
-            ],
-            "dataset": [
-                {"alignment": Alignment(vertical="center")},
-                {"row": 1, "font": Font(bold=True)},
-            ]
-        }
-
-        # crea tablas en un sólo excel o varios CSVs
-        writers.write_tables(
-            tables=validation_lists, path=self.export_path,
-            column_styles=column_styles, cell_styles=cell_styles
-        )

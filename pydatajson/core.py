@@ -22,9 +22,9 @@ from openpyxl.styles import Alignment, Font
 from six import string_types, iteritems
 from six.moves.urllib_parse import urljoin
 
+from pydatajson.response_formatters import format_response
 from pydatajson.validation import Validator, \
     DEFAULT_CATALOG_SCHEMA_FILENAME, ABSOLUTE_SCHEMA_DIR
-from pydatajson.validation_formatter import TablesFormatter, ListFormatter
 from . import documentation
 from . import helpers
 from . import indicators
@@ -38,7 +38,6 @@ from . import backup
 from . import catalog_readme
 
 logger = logging.getLogger('pydatajson')
-
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -337,15 +336,8 @@ class DataJson(dict):
         """
         catalog = readers.read_catalog(catalog) if catalog else self
 
-        response = self.validator.validate_catalog(catalog, only_errors)
-        if export_path:
-            return TablesFormatter(response, export_path).format()
-        elif fmt == "dict":
-            return response
-        elif fmt == "list":
-            return ListFormatter(response).format()
-        else:
-            raise Exception("No se reconoce el formato {}".format(fmt))
+        validation = self.validator.validate_catalog(catalog, only_errors)
+        return format_response(validation, export_path, fmt)
 
     @staticmethod
     def _stringify_list(str_or_list):
@@ -644,7 +636,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
                 catalog_ids.append(catalog.get("identifier", ""))
         if isinstance(catalog_ids, string_types + (dict,)):
             catalog_ids = [catalog_ids] * len(catalogs)
-        if not catalog_orgs or\
+        if not catalog_orgs or \
                 isinstance(catalog_orgs, string_types + (dict,)):
             catalog_orgs = [catalog_orgs] * len(catalogs)
         if not catalog_homepages or isinstance(catalog_homepages,
