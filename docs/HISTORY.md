@@ -1,6 +1,10 @@
 Versiones
 =========
 
+0.4.41 (2019-05-28)
+-------------------
+* Agrega parámetros `verify_ssl` y `requests_timeout` a `DataJson` que controla el comportamiento de descarga de catálogos remotos.
+
 0.4.40 (2019-05-28)
 -------------------
 * Refactor de validaciones. Ahora `DataJson` acepta un parámetro `validator_class` que corre validaciones sobre el catálogo.
