@@ -1,5 +1,10 @@
 Versiones
 =========
+
+0.4.40 (2019-05-28)
+-------------------
+* Refactor de validaciones. Ahora `DataJson` acepta un parámetro `validator_class` que corre validaciones sobre el catálogo.
+
 0.4.39 (2019-05-07)
 -------------------
 * Cambia el nivel del logging para los warnings que se logueaban bajo error
