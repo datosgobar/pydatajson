@@ -53,7 +53,7 @@ class DataJson(dict):
 
     def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
                  default_values=None, catalog_format=None,
-                 validator_class=Validator):
+                 validator_class=Validator, verify_ssl=False):
         """Lee un catálogo y crea un objeto con funciones para manipularlo.
 
         Salvo que se indique lo contrario, se utiliza como default el schema
@@ -78,13 +78,16 @@ class DataJson(dict):
                         "distribution_issued": "2017-06-22"
                     }
         """
+        self.verify_ssl = verify_ssl
+
         # se construye el objeto DataJson con la interfaz de un dicconario
         if catalog:
 
             # lee representaciones de un catálogo hacia un diccionario
             catalog = readers.read_catalog(catalog,
                                            default_values=default_values,
-                                           catalog_format=catalog_format)
+                                           catalog_format=catalog_format,
+                                           verify=self.verify_ssl)
 
             # copia todos los atributos del diccionario hacia el objeto
             for key, value in iteritems(catalog):
@@ -242,7 +245,7 @@ class DataJson(dict):
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
-        catalog = readers.read_catalog(catalog) if catalog else self
+        catalog = self._read_catalog(catalog) if catalog else self
         return self.validator.is_valid(catalog)
 
     @staticmethod
@@ -333,7 +336,7 @@ class DataJson(dict):
             "message", "validator", "validator_value", "error_code".
 
         """
-        catalog = readers.read_catalog(catalog) if catalog else self
+        catalog = self._read_catalog(catalog) if catalog else self
 
         validation = self.validator.validate_catalog(catalog, only_errors)
         if export_path:
@@ -562,7 +565,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         """
 
         url = catalog if isinstance(catalog, string_types) else None
-        catalog = readers.read_catalog(catalog)
+        catalog = self._read_catalog(catalog)
 
         validation = self.validate_catalog(catalog)
         catalog_validation = validation["error"]["catalog"]
@@ -799,7 +802,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
         if isinstance(catalogs, string_types + (dict,)):
             catalogs = [catalogs]
 
-        harvestable_catalogs = [readers.read_catalog(c) for c in catalogs]
+        harvestable_catalogs = [self._read_catalog(c) for c in catalogs]
         catalogs_urls = [catalog if isinstance(catalog, string_types)
                          else None for catalog in catalogs]
 
@@ -871,7 +874,7 @@ el argumento 'report'. Por favor, intentelo nuevamente.""")
             list: Contiene tantos dicts como datasets estén presentes en
             `catalogs`, con los datos antes mencionados.
         """
-        catalog = readers.read_catalog(catalog)
+        catalog = self._read_catalog(catalog)
 
         # Trato de leer todos los datasets bien formados de la lista
         # catalog["dataset"], si existe.
@@ -1012,7 +1015,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         return key_count
 
     def dataset_is_updated(self, catalog, dataset):
-        catalog = readers.read_catalog(catalog)
+        catalog = self._read_catalog(catalog)
 
         for catalog_dataset in catalog.get('dataset', []):
             if catalog_dataset.get('title') == dataset:
@@ -1092,6 +1095,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
         # TODO: implementar función
         pass
+
+    def _read_catalog(self, catalog):
+        return readers.read_catalog(catalog, verify=self.verify_ssl)
 
 
 def main():
