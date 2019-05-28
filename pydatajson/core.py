@@ -25,7 +25,7 @@ from six.moves.urllib_parse import urljoin
 from pydatajson.response_formatters import format_response
 from pydatajson.validation import Validator, \
     DEFAULT_CATALOG_SCHEMA_FILENAME, ABSOLUTE_SCHEMA_DIR
-from . import documentation
+from . import documentation, constants
 from . import helpers
 from . import indicators
 from . import readers
@@ -53,7 +53,8 @@ class DataJson(dict):
 
     def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
                  default_values=None, catalog_format=None,
-                 validator_class=Validator, verify_ssl=False):
+                 validator_class=Validator, verify_ssl=False,
+                 requests_timeout=constants.REQUESTS_TIMEOUT):
         """Lee un catálogo y crea un objeto con funciones para manipularlo.
 
         Salvo que se indique lo contrario, se utiliza como default el schema
@@ -79,7 +80,7 @@ class DataJson(dict):
                     }
         """
         self.verify_ssl = verify_ssl
-
+        self.requests_timeout = requests_timeout
         # se construye el objeto DataJson con la interfaz de un dicconario
         if catalog:
 
@@ -87,7 +88,8 @@ class DataJson(dict):
             catalog = readers.read_catalog(catalog,
                                            default_values=default_values,
                                            catalog_format=catalog_format,
-                                           verify=self.verify_ssl)
+                                           verify=self.verify_ssl,
+                                           timeout=self.requests_timeout)
 
             # copia todos los atributos del diccionario hacia el objeto
             for key, value in iteritems(catalog):
@@ -1097,7 +1099,9 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         pass
 
     def _read_catalog(self, catalog):
-        return readers.read_catalog(catalog, verify=self.verify_ssl)
+        return readers.read_catalog(catalog,
+                                    verify=self.verify_ssl,
+                                    timeout=self.requests_timeout)
 
 
 def main():
