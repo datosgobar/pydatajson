@@ -10,7 +10,7 @@ from ckanapi.errors import NotFound, CKANAPIError
 
 from pydatajson.constants import REQUESTS_TIMEOUT
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
-from .ckan_utils import CustomRemoteCKAN as RemoteCKAN
+from pydatajson.custom_remote_ckan import CustomRemoteCKAN as RemoteCKAN
 from .search import get_datasets
 from .helpers import resource_files_download
 
