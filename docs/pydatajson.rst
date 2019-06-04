@@ -19,24 +19,24 @@ pydatajson.backup module
     :undoc-members:
     :show-inheritance:
 
-pydatajson.catalog\_readme module
----------------------------------
+pydatajson.catalog_readme module
+--------------------------------
 
 .. automodule:: pydatajson.catalog_readme
     :members:
     :undoc-members:
     :show-inheritance:
 
-pydatajson.ckan\_reader module
-------------------------------
+pydatajson.ckan_reader module
+-----------------------------
 
 .. automodule:: pydatajson.ckan_reader
     :members:
     :undoc-members:
     :show-inheritance:
 
-pydatajson.ckan\_utils module
------------------------------
+pydatajson.ckan_utils module
+----------------------------
 
 .. automodule:: pydatajson.ckan_utils
     :members:
@@ -59,10 +59,18 @@ pydatajson.core module
     :undoc-members:
     :show-inheritance:
 
-pydatajson.custom\_exceptions module
-------------------------------------
+pydatajson.custom_exceptions module
+-----------------------------------
 
 .. automodule:: pydatajson.custom_exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pydatajson.custom_remote_ckan module
+------------------------------------
+
+.. automodule:: pydatajson.custom_remote_ckan
     :members:
     :undoc-members:
     :show-inheritance:
@@ -99,8 +107,8 @@ pydatajson.helpers module
     :undoc-members:
     :show-inheritance:
 
-pydatajson.indicator\_generators module
----------------------------------------
+pydatajson.indicator_generators module
+--------------------------------------
 
 .. automodule:: pydatajson.indicator_generators
     :members:
@@ -139,8 +147,8 @@ pydatajson.search module
     :undoc-members:
     :show-inheritance:
 
-pydatajson.time\_series module
-------------------------------
+pydatajson.time_series module
+-----------------------------
 
 .. automodule:: pydatajson.time_series
     :members:
