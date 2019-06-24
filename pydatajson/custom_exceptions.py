@@ -368,3 +368,8 @@ class DownloadURLBrokenError(BaseNonExistentError):
 
 class FormatNameError(ValueError):
     pass
+
+
+class NumericDistributionIdentifierError(ValueError):
+    """La distribucion tiene un id puramente numerico, lo cual imposibilita restaurar"""
+    pass
