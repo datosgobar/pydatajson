@@ -592,7 +592,8 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                                   apikey, download_strategy,
                                                   generate_new_access_url)
             restored.append(restored_id)
-        except (CKANAPIError, KeyError, AttributeError) as e:
+        except (CKANAPIError, KeyError, AttributeError,
+                NumericDistributionIdentifierError) as e:
             logger.exception('Ocurrió un error restaurando el dataset {}: {}'
                              .format(dataset_id, str(e)))
     return restored
