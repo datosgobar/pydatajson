@@ -371,5 +371,5 @@ class FormatNameError(ValueError):
 
 
 class NumericDistributionIdentifierError(ValueError):
-    """La distribucion tiene un id puramente numerico, lo cual imposibilita restaurar"""
+    """La distribucion tiene un id puramente numerico"""
     pass
