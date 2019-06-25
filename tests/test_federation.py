@@ -715,6 +715,14 @@ class RestoreToCKANTestCase(FederationSuite):
                                      self.dataset_id, 'portal', 'apikey', None,
                                      False, False, test_strategy, None)
 
+    def test_restore_with_numeric_distribution_identifier(self, mock_push):
+        bad_catalog = pydatajson.DataJson(self.get_sample(
+            'numeric_distribution_identifier.json'))
+        bad_dataset_id = '99db6631-d1c9-470b-a73e-c62daa32c777'
+        with self.assertRaises(NumericDistributionIdentifierError):
+            restore_dataset_to_ckan(bad_catalog, 'owner_org',
+                                    bad_dataset_id, 'portal', 'apikey')
+
     @patch('pydatajson.federation.push_new_themes')
     def test_restore_organization_to_ckan(self, mock_push_thm, mock_push_dst):
         identifiers = [ds['identifier'] for ds in self.catalog.datasets]

@@ -9,6 +9,7 @@ import logging
 from ckanapi.errors import NotFound, CKANAPIError
 
 from pydatajson.constants import REQUESTS_TIMEOUT
+from pydatajson.custom_exceptions import NumericDistributionIdentifierError
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
 from pydatajson.custom_remote_ckan import CustomRemoteCKAN as RemoteCKAN
 from .search import get_datasets
@@ -278,6 +279,20 @@ def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
         Returns:
             str: El id del dataset restaurado.
     """
+
+    conditions = {
+        "dataset": {
+            "identifier": dataset_origin_identifier
+        }
+    }
+    distributions = catalog.get_distributions(filter_in=conditions)
+
+    for distribution in distributions:
+        if distribution["identifier"].isdigit():
+            raise NumericDistributionIdentifierError(
+                'No puede restaurarse la distribucion con id "{}" dado que '
+                'este es numerico. Por favor, cambielo e intente de '
+                'nuevo'.format(distribution["identifier"]))
 
     return push_dataset_to_ckan(catalog, owner_org,
                                 dataset_origin_identifier, portal_url,
@@ -577,7 +592,8 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                                   apikey, download_strategy,
                                                   generate_new_access_url)
             restored.append(restored_id)
-        except (CKANAPIError, KeyError, AttributeError) as e:
+        except (CKANAPIError, KeyError, AttributeError,
+                NumericDistributionIdentifierError) as e:
             logger.exception('Ocurrió un error restaurando el dataset {}: {}'
                              .format(dataset_id, str(e)))
     return restored
