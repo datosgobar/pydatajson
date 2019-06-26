@@ -13,7 +13,7 @@ import logging
 
 __author__ = """Datos Argentina"""
 __email__ = 'datos@modernizacion.gob.ar'
-__version__ = '0.4.42'
+__version__ = '0.4.43'
 
 """
 Logger base para librería pydatajson

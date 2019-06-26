@@ -1,5 +1,10 @@
 Versiones
 =========
+0.4.43 (2019-06-26)
+-------------------
+* Validación para ids numéricos en la resturación de catálogos.
+
+
 0.4.42 (2019-06-04)
 -------------------
 * Agrega parámetros `verify_ssl` y `requests_timeout` a los métodos de federación.
