@@ -123,6 +123,34 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
+    def test_invalid_whitespace_emails(self):
+        case_filename = "invalid_whitespace_emails"
+        expected_valid = False
+        path = ['error', 'dataset', 0, 'errors', 0, 'message']
+        regex = "%s is not valid under any of the given schemas" \
+                % (jsonschema_str(' whitespace@mail.com'), )
+        self.validate_message_with_file(
+            case_filename, expected_valid, path, regex)
+        path = ['error', 'dataset', 1, 'errors', 0, 'message']
+        regex = "%s is not valid under any of the given schemas" \
+                % (jsonschema_str('trailspace@mail.com '),)
+        self.validate_message_with_file(
+            case_filename, expected_valid, path, regex)
+
+    def test_invalid_multiple_emails(self):
+        case_filename = "invalid_multiple_emails"
+        expected_valid = False
+        path = ['error', 'dataset', 0, 'errors', 0, 'message']
+        regex = "%s is not valid under any of the given schemas" \
+                % (jsonschema_str('first@mail.com; second@mail.com'), )
+        self.validate_message_with_file(
+            case_filename, expected_valid, path, regex)
+        path = ['error', 'dataset', 1, 'errors', 0, 'message']
+        regex = "%s is not valid under any of the given schemas" \
+                % (jsonschema_str('one@mail.com;two@mail.com;three@mail.com'),)
+        self.validate_message_with_file(
+            case_filename, expected_valid, path, regex)
+
     def test_several_assorted_errors(self):
         case_filename = "several_assorted_errors"
         expected_errors = [
