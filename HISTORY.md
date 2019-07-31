@@ -1,5 +1,11 @@
 Versiones
 =========
+0.4.44 (2019-07-30)
+-------------------
+* Bugfix en validación de campos de mail
+* subo versión de openpyxl
+
+
 0.4.43 (2019-06-26)
 -------------------
 * Validación para ids numéricos en la resturación de catálogos.
