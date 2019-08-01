@@ -493,6 +493,44 @@ def remove_organizations_from_ckan(portal_url, apikey, organization_list):
         remove_organization_from_ckan(portal_url, apikey, org)
 
 
+def restore_organizations_to_ckan(catalog, organizations, portal_url, apikey,
+                                  download_strategy=None,
+                                  generate_new_access_url=None):
+    """Restaura los datasets indicados para c/organización de un catálogo al
+        portal pasado. Si hay temas presentes en el DataJson que no están en el
+        portal de CKAN, los genera. Las organizaciones ya deben estar creadas.
+
+        Args:
+            catalog (DataJson): El catálogo de origen que se restaura.
+            organizations (dict): Datasets a restaurar por c/organización donde
+                {"organizacion_id": [dataset_id1, dataset_id2, ...]}
+            portal_url (str): La URL del portal CKAN de destino.
+            apikey (str): La apikey de un usuario con los permisos que le
+                permitan crear o actualizar el dataset.
+            download_strategy(callable): Una función (catálogo, distribución)->
+                bool. Sobre las distribuciones que evalúa True, descarga el
+                recurso en el downloadURL y lo sube al portal de destino.
+                Por default no sube ninguna distribución.
+            generate_new_access_url(list): Se pasan los ids de las
+                distribuciones cuyo accessURL se regenerar en el portal de
+                destino. Para el resto, el portal debe mantiene el valor
+                pasado en el DataJson.
+        Returns:
+            list(str): La lista de ids de datasets subidos.
+    """
+    pushed_datasets = {}
+    for org in organizations:
+        org_pushed_datasets = restore_organization_to_ckan(
+            catalog, org,
+            portal_url,
+            apikey,
+            dataset_list=organizations[org]
+        )
+        pushed_datasets[org] = org_pushed_datasets
+
+    return pushed_datasets
+
+
 def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                  dataset_list=None, download_strategy=None,
                                  generate_new_access_url=None):
@@ -536,8 +574,10 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                                   generate_new_access_url)
             restored.append(restored_id)
         except (CKANAPIError, KeyError, AttributeError) as e:
-            logger.exception('Ocurrió un error restaurando el dataset {}: {}'
-                             .format(dataset_id, str(e)))
+            msg = 'Ocurrió un error restaurando el dataset {}: {}'.format(
+                dataset_id, str(e))
+            print(msg)
+            logger.exception(msg)
     return restored
 
 

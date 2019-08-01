@@ -143,6 +143,8 @@ class DataJson(dict):
     restore_dataset_to_ckan = federation.restore_dataset_to_ckan
     harvest_catalog_to_ckan = federation.harvest_catalog_to_ckan
     restore_catalog_to_ckan = federation.restore_catalog_to_ckan
+    restore_organization_to_ckan = federation.restore_organization_to_ckan
+    restore_organizations_to_ckan = federation.restore_organizations_to_ckan
     push_theme_to_ckan = federation.push_theme_to_ckan
     push_new_themes = federation.push_new_themes
     remove_harvested_ds_from_ckan = federation.remove_harvested_ds_from_ckan
