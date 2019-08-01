@@ -13,4 +13,4 @@ ckanapi==4.0
 urllib3
 Unidecode==0.4.21
 six
-python-dateutil==2.6.1
+python-dateutil==2.8.0
