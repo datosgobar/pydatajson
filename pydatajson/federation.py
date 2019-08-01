@@ -6,9 +6,12 @@ de la API de CKAN.
 
 from __future__ import print_function, unicode_literals
 import logging
-from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound, CKANAPIError
+
+from pydatajson.constants import REQUESTS_TIMEOUT
+from pydatajson.custom_exceptions import NumericDistributionIdentifierError
 from .ckan_utils import map_dataset_to_package, map_theme_to_group
+from pydatajson.custom_remote_ckan import CustomRemoteCKAN as RemoteCKAN
 from .search import get_datasets
 from .helpers import resource_files_download
 
@@ -47,7 +50,9 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
             str: El id del dataset en el catálogo de destino.
     """
     dataset = catalog.get_dataset(dataset_origin_identifier)
-    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey,
+                             verify_ssl=catalog.verify_ssl,
+                             requests_timeout=catalog.requests_timeout)
 
     package = map_dataset_to_package(catalog, dataset, owner_org, catalog_id,
                                      demote_superThemes, demote_themes)
@@ -85,7 +90,8 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
 
 def resources_update(portal_url, apikey, distributions,
                      resource_files, generate_new_access_url=None,
-                     catalog_id=None):
+                     catalog_id=None, verify_ssl=False,
+                     requests_timeout=REQUESTS_TIMEOUT):
     """Sube archivos locales a sus distribuciones correspondientes en el portal
      pasado por parámetro.
 
@@ -102,10 +108,14 @@ def resources_update(portal_url, apikey, distributions,
                     generados por el portal de destino
                 catalog_id(str): prependea el id al id del recurso para
                     encontrarlo antes de subirlo
+                verify_ssl(bool): Verificar certificados SSL
+                requests_timeout(int): cantidad en segundos para timeoutear un
+                request al server.
             Returns:
                 list: los ids de los recursos modificados
         """
-    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey, verify_ssl=verify_ssl,
+                             requests_timeout=requests_timeout)
     result = []
     generate_new_access_url = generate_new_access_url or []
     for distribution in distributions:
@@ -135,8 +145,10 @@ def resources_update(portal_url, apikey, distributions,
     return result
 
 
-def remove_dataset_from_ckan(identifier, portal_url, apikey):
-    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+def remove_dataset_from_ckan(identifier, portal_url, apikey, verify_ssl=False,
+                             requests_timeout=REQUESTS_TIMEOUT):
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey, verify_ssl=verify_ssl,
+                             requests_timeout=requests_timeout)
     ckan_portal.call_action('dataset_purge', data_dict={'id': identifier})
 
 
@@ -162,7 +174,8 @@ def remove_harvested_ds_from_ckan(catalog, portal_url, apikey,
 
 def remove_datasets_from_ckan(portal_url, apikey, filter_in=None,
                               filter_out=None, only_time_series=False,
-                              organization=None):
+                              organization=None, verify_ssl=False,
+                              requests_timeout=REQUESTS_TIMEOUT):
     """Borra un dataset en el portal pasado por parámetro.
 
             Args:
@@ -177,10 +190,14 @@ def remove_datasets_from_ckan(portal_url, apikey, filter_in=None,
                     recursos con series de tiempo.
                 organization(str): Filtrar solo los datasets que pertenezcan a
                     cierta organizacion.
+                verify_ssl(bool): Verificar certificados SSL
+                requests_timeout(int): cantidad en segundos para timeoutear un
+                request al server.
             Returns:
                 None
     """
-    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey, verify_ssl=verify_ssl,
+                             requests_timeout=requests_timeout)
     identifiers = []
     datajson_filters = filter_in or filter_out or only_time_series
     if datajson_filters:
@@ -229,7 +246,9 @@ def push_theme_to_ckan(catalog, portal_url, apikey,
             Returns:
                 str: El name del theme en el catálogo de destino.
         """
-    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey,
+                             verify_ssl=catalog.verify_ssl,
+                             requests_timeout=catalog.requests_timeout)
     theme = catalog.get_theme(identifier=identifier, label=label)
     group = map_theme_to_group(theme)
     pushed_group = ckan_portal.call_action('group_create', data_dict=group)
@@ -260,6 +279,20 @@ def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
         Returns:
             str: El id del dataset restaurado.
     """
+
+    conditions = {
+        "dataset": {
+            "identifier": dataset_origin_identifier
+        }
+    }
+    distributions = catalog.get_distributions(filter_in=conditions)
+
+    for distribution in distributions:
+        if distribution["identifier"].isdigit():
+            raise NumericDistributionIdentifierError(
+                'No puede restaurarse la distribucion con id "{}" dado que '
+                'este es numerico. Por favor, cambielo e intente de '
+                'nuevo'.format(distribution["identifier"]))
 
     return push_dataset_to_ckan(catalog, owner_org,
                                 dataset_origin_identifier, portal_url,
@@ -323,7 +356,7 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
         try:
             dataset_list = [ds['identifier'] for ds in catalog.datasets]
         except KeyError:
-            logger.exception('Hay datasets sin identificadores')
+            logger.warning('Hay datasets sin identificadores')
             return harvested
     owner_org = owner_org or catalog_id
     errors = {}
@@ -338,7 +371,7 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
             msg = "Error federando catalogo: %s, dataset: %s al portal: %s\n"\
                   % (catalog_id, dataset_id, portal_url)
             msg += str(e)
-            logger.error(msg)
+            logger.warning(msg)
             errors[dataset_id] = str(e)
 
     return harvested, errors
@@ -357,7 +390,9 @@ def push_new_themes(catalog, portal_url, apikey):
         Returns:
             str: Los ids de los temas creados.
     """
-    ckan_portal = RemoteCKAN(portal_url, apikey=apikey)
+    ckan_portal = RemoteCKAN(portal_url, apikey=apikey,
+                             verify_ssl=catalog.verify_ssl,
+                             requests_timeout=catalog.requests_timeout)
     existing_themes = ckan_portal.call_action('group_list')
     new_themes = [theme['id'] for theme in catalog[
         'themeTaxonomy'] if theme['id'] not in existing_themes]
@@ -369,30 +404,40 @@ def push_new_themes(catalog, portal_url, apikey):
     return pushed_names
 
 
-def get_organizations_from_ckan(portal_url):
+def get_organizations_from_ckan(portal_url, verify_ssl=False,
+                                requests_timeout=REQUESTS_TIMEOUT):
     """Toma la url de un portal y devuelve su árbol de organizaciones.
 
             Args:
                 portal_url (str): La URL del portal CKAN de origen.
+                verify_ssl(bool): Verificar certificados SSL
+                requests_timeout(int): cantidad en segundos para timeoutear un
+                    request al server.
             Returns:
                 list: Lista de diccionarios anidados con la información de
                 las organizaciones.
         """
-    ckan_portal = RemoteCKAN(portal_url)
+    ckan_portal = RemoteCKAN(portal_url, verify_ssl=verify_ssl,
+                             requests_timeout=requests_timeout)
     return ckan_portal.call_action('group_tree',
                                    data_dict={'type': 'organization'})
 
 
-def get_organization_from_ckan(portal_url, org_id):
+def get_organization_from_ckan(portal_url, org_id, verify_ssl=False,
+                               requests_timeout=REQUESTS_TIMEOUT):
     """Toma la url de un portal y un id, y devuelve la organización a buscar.
 
             Args:
                 portal_url (str): La URL del portal CKAN de origen.
                 org_id (str): El id de la organización a buscar.
+                verify_ssl(bool): Verificar certificados SSL
+                requests_timeout(int): cantidad en segundos para timeoutear un
+                    request al server.
             Returns:
                 dict: Diccionario con la información de la organización.
         """
-    ckan_portal = RemoteCKAN(portal_url)
+    ckan_portal = RemoteCKAN(portal_url, verify_ssl=verify_ssl,
+                             requests_timeout=requests_timeout)
     return ckan_portal.call_action('organization_show',
                                    data_dict={'id': org_id})
 
@@ -428,7 +473,9 @@ def push_organization_tree_to_ckan(portal_url, apikey, org_tree, parent=None):
     return created
 
 
-def push_organization_to_ckan(portal_url, apikey, organization, parent=None):
+def push_organization_to_ckan(portal_url, apikey, organization, parent=None,
+                              verify_ssl=False,
+                              requests_timeout=REQUESTS_TIMEOUT):
     """Toma una organización y la crea en el portal de destino.
         Args:
             portal_url (str): La URL del portal CKAN de destino.
@@ -436,13 +483,17 @@ def push_organization_to_ckan(portal_url, apikey, organization, parent=None):
                 permitan crear la organización.
             organization(dict): Datos de la organización a crear.
             parent(str): Campo name de la organización padre.
+            verify_ssl(bool): Verificar certificados SSL
+            requests_timeout(int): cantidad en segundos para timeoutear un
+                request al server.
         Returns:
             (dict): Devuelve el diccionario de la organizacion enviada,
                 junto con el status detallando si la creación fue
                 exitosa o no.
 
     """
-    portal = RemoteCKAN(portal_url, apikey=apikey)
+    portal = RemoteCKAN(portal_url, apikey=apikey, verify_ssl=verify_ssl,
+                        requests_timeout=requests_timeout)
     if parent:
         organization['groups'] = [{'name': parent}]
     try:
@@ -457,18 +508,24 @@ def push_organization_to_ckan(portal_url, apikey, organization, parent=None):
     return pushed_org
 
 
-def remove_organization_from_ckan(portal_url, apikey, organization_id):
+def remove_organization_from_ckan(portal_url, apikey, organization_id,
+                                  verify_ssl=False,
+                                  requests_timeout=REQUESTS_TIMEOUT):
     """Toma un id de organización y la purga del portal de destino.
         Args:
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le
                 permitan borrar la organización.
             organization_id(str): Id o name de la organización a borrar.
+            verify_ssl(bool): Verificar certificados SSL
+            requests_timeout(int): cantidad en segundos para timeoutear un
+                request al server.
         Returns:
             None.
 
     """
-    portal = RemoteCKAN(portal_url, apikey=apikey)
+    portal = RemoteCKAN(portal_url, apikey=apikey, verify_ssl=verify_ssl,
+                        requests_timeout=requests_timeout)
     try:
         portal.call_action('organization_purge',
                            data_dict={'id': organization_id})
@@ -573,11 +630,10 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                                   apikey, download_strategy,
                                                   generate_new_access_url)
             restored.append(restored_id)
-        except (CKANAPIError, KeyError, AttributeError) as e:
-            msg = 'Ocurrió un error restaurando el dataset {}: {}'.format(
-                dataset_id, str(e))
-            print(msg)
-            logger.exception(msg)
+        except (CKANAPIError, KeyError, AttributeError,
+                NumericDistributionIdentifierError) as e:
+            logger.exception('Ocurrió un error restaurando el dataset {}: {}'
+                             .format(dataset_id, str(e)))
     return restored
 
 
@@ -610,7 +666,9 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
         """
     catalog['homepage'] = catalog.get('homepage') or origin_portal_url
     res = {}
-    origin_portal = RemoteCKAN(origin_portal_url)
+    origin_portal = RemoteCKAN(origin_portal_url,
+                               verify_ssl=catalog.verify_ssl,
+                               requests_timeout=catalog.requests_timeout)
 
     try:
         org_list = origin_portal.action.organization_list()

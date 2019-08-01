@@ -77,7 +77,7 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
             catalogs_cant += 1
         except Exception as e:
             msg = u'Error leyendo catálogo de la lista: {}'.format(str(e))
-            logger.error(msg)
+            logger.warning(msg)
             continue
 
         fields_count, result = _generate_indicators(
@@ -183,7 +183,7 @@ def _federation_indicators(catalog, central_catalog,
         central_catalog = readers.read_catalog(central_catalog)
     except Exception as e:
         msg = u'Error leyendo el catálogo central: {}'.format(str(e))
-        logger.error(msg)
+        logger.warning(msg)
         return result
 
     generator = FederationIndicatorsGenerator(central_catalog, catalog,
@@ -288,7 +288,7 @@ def _generate_status_indicators(catalog, validator=None):
     except Exception as e:
         msg = u'Error generando resumen del catálogo {}: {}'.format(
             catalog['title'], str(e))
-        logger.error(msg)
+        logger.warning(msg)
         return result
 
     cant_ok = 0
@@ -376,7 +376,7 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
     except Exception as e:
         msg = u'Error generando indicadores de fecha del catálogo {}: {}'\
             .format(catalog['title'], str(e))
-        logger.error(msg)
+        logger.warning(msg)
         return result
 
     actualizados = 0
@@ -412,7 +412,7 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
                 msg = u'Error generando indicadores'\
                       u'de fecha del dataset {} en {}: {}'
                 msg.format(dataset['identifier'], catalog['title'], str(e))
-                logger.error(msg)
+                logger.warning(msg)
                 # Asumo desactualizado
                 desactualizados += 1
                 continue

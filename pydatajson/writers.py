@@ -102,7 +102,7 @@ La lista ingresada no esta formada por diccionarios con las mismas claves.""")
 
 def _write_csv_table(table, path):
     if len(table) == 0:
-        logger.error("No se puede crear un CSV con una tabla vacía.")
+        logger.warning("No se puede crear un CSV con una tabla vacía.")
         return
 
     headers = table[0].keys()
@@ -203,7 +203,7 @@ def _write_xlsx_table(tables, path, column_styles=None, cell_styles=None,
 def _list_table_to_ws(wb, table, table_name=None, column_styles=None,
                       cell_styles=None, fields=None):
     if len(table) == 0 and not fields:
-        logger.error("No se puede crear una hoja Excel con una tabla vacía.")
+        logger.warning("No se puede crear una hoja Excel con una tabla vacía.")
         return
     elif len(table) == 0 and fields:
         # la primer fila de la tabla está vacía

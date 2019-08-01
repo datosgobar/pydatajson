@@ -27,7 +27,7 @@ from unidecode import unidecode
 
 import pydatajson
 from . import custom_exceptions as ce
-from . import helpers
+from . import helpers, constants
 from .ckan_reader import read_ckan_catalog
 
 import urllib3
@@ -52,7 +52,8 @@ def read_catalog_obj(catalog):
         return pydatajson.DataJson(catalog)
 
 
-def read_catalog(catalog, default_values=None, catalog_format=None):
+def read_catalog(catalog, default_values=None, catalog_format=None,
+                 verify=False, timeout=constants.REQUESTS_TIMEOUT):
     """Toma una representación cualquiera de un catálogo, y devuelve su
     representación interna (un diccionario de Python con su metadata.)
 
@@ -86,13 +87,17 @@ def read_catalog(catalog, default_values=None, catalog_format=None):
             catalog_format = catalog_format or suffix
         if catalog_format == "xlsx":
             try:
-                catalog_dict = read_xlsx_catalog(catalog)
+                catalog_dict = read_xlsx_catalog(catalog,
+                                                 verify=verify,
+                                                 timeout=timeout)
             except openpyxl_exceptions + \
                     (ValueError, AssertionError, IOError, BadZipfile) as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
         elif catalog_format == "json":
             try:
-                catalog_dict = read_json(catalog)
+                catalog_dict = read_json(catalog,
+                                         verify=verify,
+                                         timeout=timeout)
             except(ValueError, TypeError, IOError) as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
         elif catalog_format == "ckan":
@@ -182,7 +187,8 @@ def _set_default_value(dict_obj, keys, value):
             variable[keys[-1]] = value
 
 
-def read_json(json_path_or_url):
+def read_json(json_path_or_url, verify=False,
+              timeout=constants.REQUESTS_TIMEOUT):
     """Toma el path a un JSON y devuelve el diccionario que representa.
 
     Se asume que el parámetro es una URL si comienza con 'http' o 'https', o
@@ -200,7 +206,7 @@ def read_json(json_path_or_url):
 
     parsed_url = urlparse(json_path_or_url)
     if parsed_url.scheme in ["http", "https"]:
-        res = requests.get(json_path_or_url, verify=False)
+        res = requests.get(json_path_or_url, verify=verify, timeout=timeout)
         json_dict = json.loads(res.content, encoding='utf-8')
 
     else:
@@ -218,7 +224,8 @@ quiso decir 'http://{}'?""".format(json_path_or_url).encode("utf-8"))
     return json_dict
 
 
-def read_xlsx_catalog(xlsx_path_or_url, logger=None):
+def read_xlsx_catalog(xlsx_path_or_url, logger=None, verify=False,
+                      timeout=constants.REQUESTS_TIMEOUT):
     """Toma el path a un catálogo en formato XLSX y devuelve el diccionario
     que representa.
 
@@ -238,7 +245,7 @@ def read_xlsx_catalog(xlsx_path_or_url, logger=None):
 
     parsed_url = urlparse(xlsx_path_or_url)
     if parsed_url.scheme in ["http", "https"]:
-        res = requests.get(xlsx_path_or_url, verify=False)
+        res = requests.get(xlsx_path_or_url, verify=verify, timeout=timeout)
         tmpfilename = ".tmpfile.xlsx"
         with io.open(tmpfilename, 'wb') as tmpfile:
             tmpfile.write(res.content)
@@ -309,10 +316,10 @@ def _get_dataset_index(catalog, dataset_identifier, dataset_title,
     many_dsets_msg = "Hay mas de un dataset con el identifier {}: {}".format(
         dataset_identifier, matching_datasets)
     if len(matching_datasets) == 0:
-        logger.error(no_dsets_msg)
+        logger.warning(no_dsets_msg)
         return None
     elif len(matching_datasets) > 1:
-        logger.error(many_dsets_msg)
+        logger.warning(many_dsets_msg)
         return None
     else:
         return matching_datasets[0]
@@ -424,7 +431,7 @@ def read_local_xlsx_catalog(xlsx_path, logger=None):
             catalog, distribution["dataset_identifier"],
             distribution["dataset_title"], logger)
         if dataset_index is None:
-            logger.error("""La distribucion con ID '{}' y titulo '{}' no se
+            logger.warning("""La distribucion con ID '{}' y titulo '{}' no se
 pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 distribution["distribution_identifier"],
                 distribution["distribution_title"]))
@@ -446,7 +453,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
             logger)
 
         if dataset_index is None:
-            logger.error(
+            logger.warning(
                 """No se encontro el dataset '{}' especificado para el campo
                 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en
                 el data.json de salida.""".format(
@@ -454,7 +461,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                     unidecode(field["field_title"]), idx + 2))
 
         elif distribution_index is None:
-            logger.error(
+            logger.warning(
                 """No se encontro la distribucion '{}' especificada para el
                 campo'{}' (fila #{} de la hoja "Field"). Este campo no figurara
                 en el data.json de salida.""".format(
