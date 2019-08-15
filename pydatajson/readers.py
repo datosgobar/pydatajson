@@ -249,6 +249,7 @@ def read_xlsx_catalog(xlsx_path_or_url, logger=None, verify=False,
         res = requests.get(xlsx_path_or_url, verify=verify, timeout=timeout)
         with NamedTemporaryFile() as tmpfile:
             tmpfile.write(res.content)
+            tmpfile.flush()
             catalog_dict = read_local_xlsx_catalog(tmpfile.name, logger)
 
     else:
