@@ -1,6 +1,6 @@
 Versiones
 =========
-0.4.46
+0.4.46 (2019-08-16)
 -------------------
 * Fix a lecturas de catálogos XLSX en contextos concurrentes
 
