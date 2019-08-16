@@ -1,5 +1,14 @@
 Versiones
 =========
+0.4.46
+-------------------
+* Fix a lecturas de catálogos XLSX en contextos concurrentes
+
+
+0.4.45 (2019-08-01)
+-------------------
+* Subo versión de python-dateutil
+
 0.4.44 (2019-07-30)
 -------------------
 * Bugfix en validación de campos de mail
