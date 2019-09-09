@@ -5,12 +5,9 @@ from __future__ import print_function, unicode_literals
 import json
 import re
 import logging
-from datetime import time, datetime
+from datetime import time
 
-import pytz
 from dateutil import parser, tz
-
-from pydatajson import constants
 from .helpers import title_to_name
 from . import custom_exceptions as ce
 
@@ -23,15 +20,6 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         if serialize:
             value = json.dumps(value)
         package['extras'].append({'key': attribute, 'value': value})
-
-
-def append_iso_date_to_extra(package, dataset, attribute):
-    date_string = dataset.get(attribute)
-    if date_string:
-        package['extras'].append({
-            'key': attribute,
-            'value': convert_iso_string_to_default_timezone(date_string)
-        })
 
 
 def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
@@ -53,7 +41,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     package['author'] = dataset['publisher']['name']
     package['owner_org'] = owner_org
 
-    append_iso_date_to_extra(package, dataset, "issued")
+    append_attribute_to_extra(package, dataset, 'issued')
     append_attribute_to_extra(package, dataset, 'accrualPeriodicity')
 
     distributions = dataset['distribution']
@@ -71,7 +59,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     # Recomendados y opcionales
     package['url'] = dataset.get('landingPage')
     package['author_email'] = dataset['publisher'].get('mbox')
-    append_iso_date_to_extra(package, dataset, "modified")
+    append_attribute_to_extra(package, dataset, 'modified')
     append_attribute_to_extra(package, dataset, 'temporal')
     append_attribute_to_extra(package, dataset, 'source')
     append_attribute_to_extra(package, dataset, 'language', serialize=True)
@@ -105,7 +93,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     else:
         package.setdefault('groups', [])
         for theme in themes:
-            theme_dict = catalog.get_theme(identifier=theme) or \
+            theme_dict = catalog.get_theme(identifier=theme) or\
                          catalog.get_theme(label=theme)
             if theme_dict:
                 package['groups'].append(map_theme_to_group(theme_dict))
@@ -127,32 +115,36 @@ def _get_theme_label(catalog, theme):
     return label
 
 
-def convert_iso_string_to_default_timezone(date_string):
+def convert_iso_string_to_utc(date_string):
     date_time = parser.parse(date_string)
+    if date_time.time() == time(0):
+        return date_string
 
-    if date_time.tzinfo is None:
-        timezone = pytz.timezone(constants.DEFAULT_TIMEZONE)
-        date_time = timezone.localize(date_time)
-    return date_time.isoformat()
+    if date_time.tzinfo is not None:
+        utc_date_time = date_time.astimezone(tz.tzutc())
+    else:
+        utc_date_time = date_time
+    utc_date_time = utc_date_time.replace(tzinfo=None)
+    return utc_date_time.isoformat()
 
 
 def map_distributions_to_resources(distributions, catalog_id=None):
     resources = []
     for distribution in distributions:
         resource = dict()
-        #       Obligatorios
+#       Obligatorios
         resource['id'] = catalog_id + '_' + \
-                         distribution['identifier'] if catalog_id else distribution[
-            'identifier']
+            distribution['identifier'] if catalog_id else distribution[
+                'identifier']
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
-        resource['created'] = convert_iso_string_to_default_timezone(distribution['issued'])
-        #       Recomendados y opcionales
+        resource['created'] = convert_iso_string_to_utc(distribution['issued'])
+#       Recomendados y opcionales
         resource['description'] = distribution.get('description')
         resource['format'] = distribution.get('format')
         last_modified = distribution.get('modified')
         if last_modified:
-            resource['last_modified'] = convert_iso_string_to_default_timezone(
+            resource['last_modified'] = convert_iso_string_to_utc(
                 last_modified)
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
@@ -170,6 +162,7 @@ def map_distributions_to_resources(distributions, catalog_id=None):
 
 
 def map_theme_to_group(theme):
+
     return {
         "name": title_to_name(theme.get('id') or theme['label']),
         "title": theme.get('label'),
