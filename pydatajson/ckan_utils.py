@@ -5,9 +5,12 @@ from __future__ import print_function, unicode_literals
 import json
 import re
 import logging
-from datetime import time
+from datetime import time, datetime
 
+import pytz
 from dateutil import parser, tz
+
+from pydatajson import constants
 from .helpers import title_to_name
 from . import custom_exceptions as ce
 
@@ -59,7 +62,13 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     # Recomendados y opcionales
     package['url'] = dataset.get('landingPage')
     package['author_email'] = dataset['publisher'].get('mbox')
-    append_attribute_to_extra(package, dataset, 'modified')
+    modified = dataset.get('modified')
+    if modified:
+        modified_date = datetime.strptime(modified, constants.DATE_ISO_FORMAT)
+        if modified_date.tzinfo is None:
+            timezone = pytz.timezone(constants.DEFAULT_TIMEZONE)
+            modified_date = timezone.localize(modified_date)
+        package['extras'].append({'key': 'modified', 'value': modified_date.isoformat()})
     append_attribute_to_extra(package, dataset, 'temporal')
     append_attribute_to_extra(package, dataset, 'source')
     append_attribute_to_extra(package, dataset, 'language', serialize=True)
@@ -93,7 +102,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     else:
         package.setdefault('groups', [])
         for theme in themes:
-            theme_dict = catalog.get_theme(identifier=theme) or\
+            theme_dict = catalog.get_theme(identifier=theme) or \
                          catalog.get_theme(label=theme)
             if theme_dict:
                 package['groups'].append(map_theme_to_group(theme_dict))
@@ -132,14 +141,14 @@ def map_distributions_to_resources(distributions, catalog_id=None):
     resources = []
     for distribution in distributions:
         resource = dict()
-#       Obligatorios
+        #       Obligatorios
         resource['id'] = catalog_id + '_' + \
-            distribution['identifier'] if catalog_id else distribution[
-                'identifier']
+                         distribution['identifier'] if catalog_id else distribution[
+            'identifier']
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
         resource['created'] = convert_iso_string_to_utc(distribution['issued'])
-#       Recomendados y opcionales
+        #       Recomendados y opcionales
         resource['description'] = distribution.get('description')
         resource['format'] = distribution.get('format')
         last_modified = distribution.get('modified')
@@ -162,7 +171,6 @@ def map_distributions_to_resources(distributions, catalog_id=None):
 
 
 def map_theme_to_group(theme):
-
     return {
         "name": title_to_name(theme.get('id') or theme['label']),
         "title": theme.get('label'),
