@@ -41,7 +41,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
 
     # Obligatorios
     package['id'] = catalog_id + '_' + \
-        dataset['identifier'] if catalog_id else dataset['identifier']
+                    dataset['identifier'] if catalog_id else dataset['identifier']
     package['name'] = title_to_name(
         catalog_id + '-' +
         dataset['title'] if catalog_id else dataset['title'],
@@ -141,19 +141,19 @@ def map_distributions_to_resources(distributions, catalog_id=None):
     for distribution in distributions:
         resource = dict()
         #       Obligatorios
-        resource['id'] = catalog_id + '_' + \
-                         distribution['identifier'] if catalog_id else distribution[
-            'identifier']
+        resource['id'] = catalog_id + '_' + distribution['identifier'] \
+            if catalog_id else distribution['identifier']
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
-        resource['created'] = convert_iso_string_to_default_timezone(distribution['issued'])
+        resource['created'] = \
+            convert_iso_string_to_default_timezone(distribution['issued'])
         #       Recomendados y opcionales
         resource['description'] = distribution.get('description')
         resource['format'] = distribution.get('format')
         last_modified = distribution.get('modified')
         if last_modified:
-            resource['last_modified'] = convert_iso_string_to_default_timezone(
-                last_modified)
+            resource['last_modified'] = \
+                convert_iso_string_to_default_timezone(last_modified)
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
         resource['accessURL'] = distribution.get('accessURL')

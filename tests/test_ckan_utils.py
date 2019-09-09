@@ -369,13 +369,13 @@ class DatetimeConversionTests(unittest.TestCase):
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
-    def test_timezone_is_seted_to_default_if_none_given_without_microseconds(self):
+    def test_timezone_is_seted_to_default_if_none_given_without_ms(self):
         date = '2018-01-29T17:14:09'
         expected_date = '2018-01-29T17:14:09-03:00'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
-    def test_timezone_maintained_if_given_without_microseconds(self):
+    def test_timezone_maintained_if_given_without_ms(self):
         date = '2018-01-29T14:14:09+03:00'
         expected_date = '2018-01-29T14:14:09+03:00'
         res = convert_iso_string_to_default_timezone(date)
