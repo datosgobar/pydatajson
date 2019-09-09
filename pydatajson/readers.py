@@ -15,7 +15,6 @@ import json
 import logging
 import os.path
 import warnings
-from tempfile import NamedTemporaryFile
 
 import openpyxl as pyxl
 import requests
@@ -247,11 +246,11 @@ def read_xlsx_catalog(xlsx_path_or_url, logger=None, verify=False,
     parsed_url = urlparse(xlsx_path_or_url)
     if parsed_url.scheme in ["http", "https"]:
         res = requests.get(xlsx_path_or_url, verify=verify, timeout=timeout)
-        with NamedTemporaryFile() as tmpfile:
+        tmpfilename = ".tmpfile.xlsx"
+        with io.open(tmpfilename, 'wb') as tmpfile:
             tmpfile.write(res.content)
-            tmpfile.flush()
-            catalog_dict = read_local_xlsx_catalog(tmpfile.name, logger)
-
+        catalog_dict = read_local_xlsx_catalog(tmpfilename, logger)
+        os.remove(tmpfilename)
     else:
         # Si xlsx_path_or_url parece ser una URL remota, lo advierto.
         path_start = parsed_url.path.split(".")[0]
