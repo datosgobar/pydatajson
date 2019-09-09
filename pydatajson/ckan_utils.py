@@ -40,8 +40,8 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     package['extras'] = []
 
     # Obligatorios
-    package['id'] = catalog_id + '_' + \
-                    dataset['identifier'] if catalog_id else dataset['identifier']
+    package['id'] = catalog_id + '_' + dataset['identifier'] \
+        if catalog_id else dataset['identifier']
     package['name'] = title_to_name(
         catalog_id + '-' +
         dataset['title'] if catalog_id else dataset['title'],
