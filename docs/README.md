@@ -4,7 +4,6 @@ pydatajson
 [![Coverage Status](https://coveralls.io/repos/github/datosgobar/pydatajson/badge.svg?branch=master)](https://coveralls.io/github/datosgobar/pydatajson?branch=master)
 [![Build Status](https://travis-ci.org/datosgobar/pydatajson.svg?branch=master)](https://travis-ci.org/datosgobar/pydatajson)
 [![PyPI](https://badge.fury.io/py/pydatajson.svg)](http://badge.fury.io/py/pydatajson)
-[![Stories in Ready](https://badge.waffle.io/datosgobar/pydatajson.png?label=ready&title=Ready)](https://waffle.io/datosgobar/pydatajson)
 [![Documentation Status](http://readthedocs.org/projects/pydatajson/badge/?version=stable)](http://pydatajson.readthedocs.io/es/stable/?badge=stable)
 
 Paquete en python con herramientas para manipular y validar metadatos de catálogos de datos.
