@@ -1,3 +1,4 @@
+pytz
 jsonschema==2.6.0
 requests
 # Para validar fechas y horas acorde a ISO 8601
