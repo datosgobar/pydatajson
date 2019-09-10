@@ -5,10 +5,9 @@ from __future__ import print_function, unicode_literals
 import json
 import re
 import logging
-from datetime import time, datetime
 
 import pytz
-from dateutil import parser, tz
+from dateutil import parser
 
 from pydatajson import constants
 from .helpers import title_to_name
@@ -23,15 +22,6 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
         if serialize:
             value = json.dumps(value)
         package['extras'].append({'key': attribute, 'value': value})
-
-
-def append_iso_date_to_extra(package, dataset, attribute):
-    date_string = dataset.get(attribute)
-    if date_string:
-        package['extras'].append({
-            'key': attribute,
-            'value': convert_iso_string_to_default_timezone(date_string)
-        })
 
 
 def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
@@ -53,7 +43,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     package['author'] = dataset['publisher']['name']
     package['owner_org'] = owner_org
 
-    append_iso_date_to_extra(package, dataset, "issued")
+    append_attribute_to_extra(package, dataset, 'issued')
     append_attribute_to_extra(package, dataset, 'accrualPeriodicity')
 
     distributions = dataset['distribution']
@@ -71,7 +61,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
     # Recomendados y opcionales
     package['url'] = dataset.get('landingPage')
     package['author_email'] = dataset['publisher'].get('mbox')
-    append_iso_date_to_extra(package, dataset, "modified")
+    append_attribute_to_extra(package, dataset, 'modified')
     append_attribute_to_extra(package, dataset, 'temporal')
     append_attribute_to_extra(package, dataset, 'source')
     append_attribute_to_extra(package, dataset, 'language', serialize=True)
@@ -132,7 +122,7 @@ def convert_iso_string_to_default_timezone(date_string):
 
     if date_time.tzinfo is not None:
         timezone = pytz.timezone(constants.DEFAULT_TIMEZONE)
-        date_time = timezone.normalize(date_time)
+        date_time = date_time.astimezone(timezone)
         date_time = date_time.replace(tzinfo=None)
 
     return date_time.isoformat()
@@ -160,9 +150,9 @@ def map_distributions_to_resources(distributions, catalog_id=None):
         resource['size'] = distribution.get('byteSize')
         resource['accessURL'] = distribution.get('accessURL')
         resource['resource_type'] = distribution.get('type')
-        fileName = distribution.get('fileName')
-        if fileName:
-            resource['fileName'] = fileName
+        file_name = distribution.get('fileName')
+        if file_name:
+            resource['fileName'] = file_name
         dist_fields = distribution.get('field')
         if dist_fields:
             resource['attributesDescription'] = json.dumps(dist_fields)
