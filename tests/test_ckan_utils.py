@@ -272,7 +272,7 @@ class DatasetConversionTestCase(unittest.TestCase):
                 ('created', 'issued'), ('last_modified', 'modified')]
             for fst, snd in time_attributes:
                 if distribution.get(snd):
-                    dist_time = parser.parse(distribution.get(snd))
+                    dist_time = parser.parse(distribution.get(snd)).replace(tzinfo=None)
                     self.assertEqual(dist_time.isoformat(), resource.get(fst))
                 else:
                     self.assertIsNone(resource.get(fst))
@@ -359,42 +359,42 @@ class DatetimeConversionTests(unittest.TestCase):
 
     def test_timezone_is_seted_to_default_if_none_given(self):
         date = '2018-01-29T17:14:09.291510'
-        expected_date = '2018-01-29T17:14:09.291510-03:00'
+        expected_date = '2018-01-29T17:14:09.291510'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_maintained_if_given(self):
         date = '2018-01-29T14:14:09.291510+03:00'
-        expected_date = '2018-01-29T14:14:09.291510+03:00'
+        expected_date = '2018-01-29T08:14:09.291510'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_is_seted_to_default_if_none_given_without_ms(self):
         date = '2018-01-29T17:14:09'
-        expected_date = '2018-01-29T17:14:09-03:00'
+        expected_date = '2018-01-29T17:14:09'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_maintained_if_given_without_ms(self):
-        date = '2018-01-29T14:14:09+03:00'
-        expected_date = '2018-01-29T14:14:09+03:00'
+        date = '2018-01-29T14:14:09-06:00'
+        expected_date = '2018-01-29T17:14:09'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_is_seted_to_default_if_none_given_without_seconds(self):
         date = '2018-01-29T17:14'
-        expected_date = '2018-01-29T17:14:00-03:00'
+        expected_date = '2018-01-29T17:14:00'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_maintained_if_given_without_seconds(self):
-        date = '2018-01-29T14:14+03:00'
-        expected_date = '2018-01-29T14:14:00+03:00'
+        date = '2018-01-29T14:14+04:00'
+        expected_date = '2018-01-29T07:14:00'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_is_seted_to_default_if_none_given_without_time(self):
         date = '2018-01-29'
-        expected_date = '2018-01-29T00:00:00-03:00'
+        expected_date = '2018-01-29T00:00:00'
         res = convert_iso_string_to_default_timezone(date)
         self.assertEqual(res, expected_date)
