@@ -130,9 +130,11 @@ def _get_theme_label(catalog, theme):
 def convert_iso_string_to_default_timezone(date_string):
     date_time = parser.parse(date_string)
 
-    if date_time.tzinfo is None:
+    if date_time.tzinfo is not None:
         timezone = pytz.timezone(constants.DEFAULT_TIMEZONE)
-        date_time = timezone.localize(date_time)
+        date_time = timezone.normalize(date_time)
+        date_time = date_time.replace(tzinfo=None)
+
     return date_time.isoformat()
 
 
