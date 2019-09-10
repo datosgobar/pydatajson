@@ -272,7 +272,8 @@ class DatasetConversionTestCase(unittest.TestCase):
                 ('created', 'issued'), ('last_modified', 'modified')]
             for fst, snd in time_attributes:
                 if distribution.get(snd):
-                    dist_time = parser.parse(distribution.get(snd)).replace(tzinfo=None)
+                    dist_time = parser.parse(distribution.get(snd))\
+                        .replace(tzinfo=None)
                     self.assertEqual(dist_time.isoformat(), resource.get(fst))
                 else:
                     self.assertIsNone(resource.get(fst))
