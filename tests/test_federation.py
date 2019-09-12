@@ -710,10 +710,13 @@ class RestoreToCKANTestCase(FederationSuite):
         def test_strategy(_catalog, _dist):
             return False
         restore_dataset_to_ckan(self.catalog, 'owner_org', self.dataset_id,
-                                'portal', 'apikey', test_strategy)
+                                'portal', 'apikey', download_strategy=test_strategy)
         mock_push.assert_called_with(self.catalog, 'owner_org',
-                                     self.dataset_id, 'portal', 'apikey', None,
-                                     False, False, test_strategy, None)
+                                     self.dataset_id, 'portal', 'apikey',
+                                     catalog_id=None, demote_superThemes=False,
+                                     demote_themes=False, download_strategy=test_strategy,
+                                     generate_new_access_url=None,
+                                     origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
 
     def test_restore_with_numeric_distribution_identifier(self, mock_push):
         bad_catalog = pydatajson.DataJson(self.get_sample(
@@ -733,8 +736,11 @@ class RestoreToCKANTestCase(FederationSuite):
         mock_push_thm.assert_called_with(self.catalog, 'portal', 'apikey')
         for identifier in identifiers:
             mock_push_dst.assert_any_call(self.catalog, 'owner_org',
-                                          identifier, 'portal', 'apikey', None,
-                                          False, False, None, None)
+                                          identifier, 'portal', 'apikey',
+                                          catalog_id=None, demote_superThemes=False,
+                                          demote_themes=False, download_strategy=None,
+                                          generate_new_access_url=None,
+                                          origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
 
     @patch('pydatajson.federation.push_new_themes')
     def test_restore_failing_organization_to_ckan(self, mock_push_thm,
@@ -750,7 +756,10 @@ class RestoreToCKANTestCase(FederationSuite):
         mock_push_thm.assert_called_with(self.catalog, 'portal', 'apikey')
         mock_push_dst.assert_called_with(self.catalog, 'owner_org',
                                          identifiers[1], 'portal', 'apikey',
-                                         None, False, False, None, None)
+                                         catalog_id=None, demote_superThemes=False,
+                                         demote_themes=False, download_strategy=None,
+                                         generate_new_access_url=None,
+                                         origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
 
     @patch('pydatajson.federation.push_new_themes')
     @patch('ckanapi.remoteckan.ActionShortcut')
@@ -768,10 +777,16 @@ class RestoreToCKANTestCase(FederationSuite):
                                          'destination', 'apikey')
         mock_push_dst.assert_any_call(self.catalog, 'org_1',
                                       identifiers[0], 'destination', 'apikey',
-                                      None, False, False, None, None)
+                                      catalog_id=None, demote_superThemes=False,
+                                      demote_themes=False, download_strategy=None,
+                                      generate_new_access_url=None,
+                                      origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
         mock_push_dst.assert_any_call(self.catalog, 'org_2',
                                       identifiers[1], 'destination', 'apikey',
-                                      None, False, False, None, None)
+                                      catalog_id=None, demote_superThemes=False,
+                                      demote_themes=False, download_strategy=None,
+                                      generate_new_access_url=None,
+                                      origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
         expected = {'org_1': [identifiers[0]],
                     'org_2': [identifiers[1]]}
         self.assertDictEqual(expected, pushed)
@@ -806,10 +821,16 @@ class RestoreToCKANTestCase(FederationSuite):
                                          'destination', 'apikey')
         mock_push_dst.assert_any_call(self.catalog, 'org_1',
                                       identifiers[0], 'destination', 'apikey',
-                                      None, False, False, None, None)
+                                      catalog_id=None, demote_superThemes=False,
+                                      demote_themes=False, download_strategy=None,
+                                      generate_new_access_url=None,
+                                      origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
         mock_push_dst.assert_any_call(self.catalog, 'org_2',
                                       identifiers[1], 'destination', 'apikey',
-                                      None, False, False, None, None)
+                                      catalog_id=None, demote_superThemes=False,
+                                      demote_themes=False, download_strategy=None,
+                                      generate_new_access_url=None,
+                                      origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
         expected = {'org_1': [],
                     'org_2': []}
         self.assertDictEqual(expected, pushed)
