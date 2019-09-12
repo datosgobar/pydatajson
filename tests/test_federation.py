@@ -710,7 +710,7 @@ class RestoreToCKANTestCase(FederationSuite):
         def test_strategy(_catalog, _dist):
             return False
         restore_dataset_to_ckan(self.catalog, 'owner_org',
-                                self.dataset_id,'portal', 'apikey',
+                                self.dataset_id, 'portal', 'apikey',
                                 download_strategy=test_strategy)
         mock_push.assert_called_with(self.catalog, 'owner_org',
                                      self.dataset_id, 'portal', 'apikey',
@@ -741,10 +741,13 @@ class RestoreToCKANTestCase(FederationSuite):
         for identifier in identifiers:
             mock_push_dst.assert_any_call(self.catalog, 'owner_org',
                                           identifier, 'portal', 'apikey',
-                                          catalog_id=None, demote_superThemes=False,
-                                          demote_themes=False, download_strategy=None,
+                                          catalog_id=None,
+                                          demote_superThemes=False,
+                                          demote_themes=False,
+                                          download_strategy=None,
                                           generate_new_access_url=None,
-                                          origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE)
+                                          origin_tz=DEFAULT_TIMEZONE,
+                                          dst_tz=DEFAULT_TIMEZONE)
 
     @patch('pydatajson.federation.push_new_themes')
     def test_restore_failing_organization_to_ckan(self, mock_push_thm,

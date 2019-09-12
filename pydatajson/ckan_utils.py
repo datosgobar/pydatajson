@@ -137,7 +137,8 @@ def convert_iso_string_to_default_timezone(date_string,
 
 
 def map_distributions_to_resources(distributions, catalog_id=None,
-                                   origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+                                   origin_tz=DEFAULT_TIMEZONE,
+                                   dst_tz=DEFAULT_TIMEZONE):
     resources = []
     for distribution in distributions:
         resource = dict()
