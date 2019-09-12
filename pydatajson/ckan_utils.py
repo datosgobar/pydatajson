@@ -26,7 +26,8 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
 
 def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
                            demote_superThemes=True, demote_themes=True,
-                           origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+                           origin_tz=DEFAULT_TIMEZONE,
+                           dst_tz=DEFAULT_TIMEZONE):
     package = dict()
     package['extras'] = []
 
@@ -118,7 +119,9 @@ def _get_theme_label(catalog, theme):
     return label
 
 
-def convert_iso_string_to_default_timezone(date_string, origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+def convert_iso_string_to_default_timezone(date_string,
+                                           origin_tz=DEFAULT_TIMEZONE,
+                                           dst_tz=DEFAULT_TIMEZONE):
     date_time = parser.parse(date_string)
 
     dest_timezone = pytz.timezone(dst_tz)
@@ -133,7 +136,8 @@ def convert_iso_string_to_default_timezone(date_string, origin_tz=DEFAULT_TIMEZO
     return date_time.isoformat()
 
 
-def map_distributions_to_resources(distributions, catalog_id=None, origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+def map_distributions_to_resources(distributions, catalog_id=None,
+                                   origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
     resources = []
     for distribution in distributions:
         resource = dict()

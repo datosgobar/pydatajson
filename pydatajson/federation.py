@@ -33,8 +33,8 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
             portal_url (str): La URL del portal CKAN de destino.
             apikey (str): La apikey de un usuario con los permisos que le
                 permitan crear o actualizar el dataset.
-            catalog_id (str or None): El prefijo con el que va a preceder el id del
-                dataset en catálogo destino.
+            catalog_id (str or None): El prefijo con el que va a preceder
+                el id del dataset en catálogo destino.
             demote_superThemes(bool): Si está en true, los ids de los super
                 themes del dataset, se propagan como grupo.
             demote_themes(bool): Si está en true, los labels de los themes
@@ -47,8 +47,8 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                 distribuciones cuyo accessURL se regenerar en el portal de
                 destino. Para el resto, el portal debe mantiene el valor pasado
                 en el DataJson.
-            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako) el
-                cual identifica el timezone del emisor del DataJson.
+            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako)
+                el cual identifica el timezone del emisor del DataJson.
             dst_tz(str): Timezone de destino, un string
                 (EJ: Antarctica/Palmer) el cual identifica el timezone del
                 receptor del DataJson, comunmente el timezone del servidor.
@@ -270,7 +270,8 @@ def push_theme_to_ckan(catalog, portal_url, apikey,
 def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                             portal_url, apikey, download_strategy=None,
                             generate_new_access_url=None,
-                            origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+                            origin_tz=DEFAULT_TIMEZONE,
+                            dst_tz=DEFAULT_TIMEZONE):
     """Restaura la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -289,8 +290,8 @@ def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                     distribuciones cuyo accessURL se regenerar en el portal de
                     destino. Para el resto, el portal debe mantiene el valor
                     pasado en el DataJson.
-            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako) el
-                cual identifica el timezone del emisor del DataJson.
+            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako)
+                el cual identifica el timezone del emisor del DataJson.
             dst_tz(str): Timezone de destino, un string
                 (EJ: Antarctica/Palmer) el cual identifica el timezone del
                 receptor del DataJson, comunmente el timezone del servidor.
@@ -312,17 +313,20 @@ def restore_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                 'este es numerico. Por favor, cambielo e intente de '
                 'nuevo'.format(distribution["identifier"]))
 
-    return push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
-                                portal_url, apikey, catalog_id=None, demote_superThemes=False,
-                                demote_themes=False, download_strategy=download_strategy,
-                                generate_new_access_url=generate_new_access_url,
-                                origin_tz=origin_tz, dst_tz=dst_tz)
+    return push_dataset_to_ckan(
+        catalog, owner_org, dataset_origin_identifier,
+        portal_url, apikey, catalog_id=None, demote_superThemes=False,
+        demote_themes=False, download_strategy=download_strategy,
+        generate_new_access_url=generate_new_access_url,
+        origin_tz=origin_tz, dst_tz=dst_tz
+    )
 
 
 def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                             portal_url, apikey, catalog_id,
                             download_strategy=None,
-                            origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+                            origin_tz=DEFAULT_TIMEZONE,
+                            dst_tz=DEFAULT_TIMEZONE):
     """Federa la metadata de un dataset en el portal pasado por parámetro.
 
         Args:
@@ -338,8 +342,8 @@ def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
                 bool. Sobre las distribuciones que evalúa True, descarga el
                 recurso en el downloadURL y lo sube al portal de destino.
                 Por default no sube ninguna distribución.
-            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako) el
-                cual identifica el timezone del emisor del DataJson.
+            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako)
+                el cual identifica el timezone del emisor del DataJson.
             dst_tz(str): Timezone de destino, un string
                 (EJ: Antarctica/Palmer) el cual identifica el timezone del
                 receptor del DataJson, comunmente el timezone del servidor.
@@ -356,7 +360,8 @@ def harvest_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
 def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
                             dataset_list=None, owner_org=None,
                             download_strategy=None,
-                            origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+                            origin_tz=DEFAULT_TIMEZONE,
+                            dst_tz=DEFAULT_TIMEZONE):
     """Federa los datasets de un catálogo al portal pasado por parámetro.
 
         Args:
@@ -374,8 +379,8 @@ def harvest_catalog_to_ckan(catalog, portal_url, apikey, catalog_id,
                 bool. Sobre las distribuciones que evalúa True, descarga el
                 recurso en el downloadURL y lo sube al portal de destino.
                 Por default no sube ninguna distribución.
-            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako) el
-                cual identifica el timezone del emisor del DataJson.
+            origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako)
+                el cual identifica el timezone del emisor del DataJson.
             dst_tz(str): Timezone de destino, un string
                 (EJ: Antarctica/Palmer) el cual identifica el timezone del
                 receptor del DataJson, comunmente el timezone del servidor.
@@ -713,8 +718,8 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                     distribuciones cuyo accessURL se regenerar en el portal de
                     destino. Para el resto, el portal debe mantiene el valor
                     pasado en el DataJson.
-                origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako) el
-                    cual identifica el timezone del emisor del DataJson.
+                origin_tz(str): Timezone de origen, un string (EJ: Africa/Bamako)
+                    el cual identifica el timezone del emisor del DataJson.
                 dst_tz(str): Timezone de destino, un string
                     (EJ: Antarctica/Palmer) el cual identifica el timezone del
                     receptor del DataJson, comunmente el timezone del servidor.
