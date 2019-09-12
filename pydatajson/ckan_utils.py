@@ -9,7 +9,7 @@ import logging
 import pytz
 from dateutil import parser
 
-from pydatajson.constants import DEFAULT_TIMEZONE
+from pydatajson import constants
 from .helpers import title_to_name
 from . import custom_exceptions as ce
 
@@ -25,8 +25,7 @@ def append_attribute_to_extra(package, dataset, attribute, serialize=False):
 
 
 def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
-                           demote_superThemes=True, demote_themes=True,
-                           origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+                           demote_superThemes=True, demote_themes=True):
     package = dict()
     package['extras'] = []
 
@@ -49,7 +48,7 @@ def map_dataset_to_package(catalog, dataset, owner_org, catalog_id=None,
 
     distributions = dataset['distribution']
     package['resources'] = map_distributions_to_resources(
-        distributions, catalog_id, origin_tz=origin_tz, dst_tz=dst_tz)
+        distributions, catalog_id)
 
     super_themes = dataset['superTheme']
     append_attribute_to_extra(package, dataset, 'superTheme', serialize=True)
@@ -118,22 +117,18 @@ def _get_theme_label(catalog, theme):
     return label
 
 
-def convert_iso_string_to_default_timezone(date_string, origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+def convert_iso_string_to_default_timezone(date_string):
     date_time = parser.parse(date_string)
 
-    dest_timezone = pytz.timezone(dst_tz)
     if date_time.tzinfo is not None:
-        date_time = date_time.astimezone(dest_timezone)
-    else:
-        origin_timezone = pytz.timezone(origin_tz)
-        date_time = date_time.replace(tzinfo=origin_timezone)
-        date_time = date_time.astimezone(dest_timezone)
+        timezone = pytz.timezone(constants.DEFAULT_TIMEZONE)
+        date_time = date_time.astimezone(timezone)
+        date_time = date_time.replace(tzinfo=None)
 
-    date_time = date_time.replace(tzinfo=None)
     return date_time.isoformat()
 
 
-def map_distributions_to_resources(distributions, catalog_id=None, origin_tz=DEFAULT_TIMEZONE, dst_tz=DEFAULT_TIMEZONE):
+def map_distributions_to_resources(distributions, catalog_id=None):
     resources = []
     for distribution in distributions:
         resource = dict()
@@ -143,18 +138,14 @@ def map_distributions_to_resources(distributions, catalog_id=None, origin_tz=DEF
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
         resource['created'] = \
-            convert_iso_string_to_default_timezone(distribution['issued'],
-                                                   origin_tz=origin_tz,
-                                                   dst_tz=dst_tz)
+            convert_iso_string_to_default_timezone(distribution['issued'])
         #       Recomendados y opcionales
         resource['description'] = distribution.get('description')
         resource['format'] = distribution.get('format')
         last_modified = distribution.get('modified')
         if last_modified:
             resource['last_modified'] = \
-                convert_iso_string_to_default_timezone(last_modified,
-                                                       origin_tz=origin_tz,
-                                                       dst_tz=dst_tz)
+                convert_iso_string_to_default_timezone(last_modified)
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
         resource['accessURL'] = distribution.get('accessURL')
