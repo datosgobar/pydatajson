@@ -10,19 +10,20 @@ una red de catálogos.
 from __future__ import print_function, absolute_import
 from __future__ import unicode_literals, with_statement
 
-import logging
 import json
+import logging
 import os
-from datetime import datetime
 from collections import Counter
+from datetime import datetime
 
 from six import string_types
 
+from pydatajson.helpers import fields_to_uppercase
 from . import helpers
 from . import readers
+from .indicator_generators import FederationIndicatorsGenerator
 from .reporting import generate_datasets_summary
 from .search import get_datasets, get_distributions
-from .indicator_generators import FederationIndicatorsGenerator
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -132,7 +133,7 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
     # Agrego la cuenta de los formatos de las distribuciones
     if not only_numeric:
         if 'dataset' in catalog:
-            format_count = count_fields(get_distributions(catalog), 'format')
+            format_count = fields_to_uppercase(count_fields(get_distributions(catalog), 'format'))
             type_count = count_fields(get_distributions(catalog), 'type')
             license_count = count_fields(get_datasets(catalog), 'license')
         else:

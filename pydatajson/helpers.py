@@ -544,3 +544,21 @@ def filter_by_likely_publisher(central_datasets, catalog_datasets):
 def title_in_dataset_list(dataset, dataset_list):
     return (dataset.get('title'), dataset.get('landingPage')) \
                    in dataset_list
+
+
+def fields_to_uppercase(fields):
+    uppercase_fields = fields.copy()
+
+    for key in fields:
+        lower_key = key.lower()
+        upper_key = key.upper()
+        # Veo si una key existe en minuscula y en mayuscula, tanto en el dict original como en la copia que devuelve
+        if all(k in fields for k in (lower_key, upper_key)) and \
+                all(k in uppercase_fields for k in (lower_key, upper_key)):
+            lowercase_counts = fields[lower_key]
+            uppercase_counts = fields[upper_key]
+
+            uppercase_fields.pop(lower_key)
+            uppercase_fields[upper_key] = lowercase_counts + uppercase_counts
+
+    return uppercase_fields
