@@ -119,9 +119,9 @@ def _get_theme_label(catalog, theme):
     return label
 
 
-def convert_iso_string_to_default_timezone(date_string,
-                                           origin_tz=DEFAULT_TIMEZONE,
-                                           dst_tz=DEFAULT_TIMEZONE):
+def convert_iso_string_to_dst_timezone(date_string,
+                                       origin_tz=DEFAULT_TIMEZONE,
+                                       dst_tz=DEFAULT_TIMEZONE):
     date_time = parser.parse(date_string)
 
     dest_timezone = pytz.timezone(dst_tz)
@@ -150,18 +150,18 @@ def map_distributions_to_resources(distributions, catalog_id=None,
         resource['name'] = distribution['title']
         resource['url'] = distribution['downloadURL']
         resource['created'] = \
-            convert_iso_string_to_default_timezone(distribution['issued'],
-                                                   origin_tz=origin_tz,
-                                                   dst_tz=dst_tz)
+            convert_iso_string_to_dst_timezone(distribution['issued'],
+                                               origin_tz=origin_tz,
+                                               dst_tz=dst_tz)
         #       Recomendados y opcionales
         resource['description'] = distribution.get('description')
         resource['format'] = distribution.get('format')
         last_modified = distribution.get('modified')
         if last_modified:
             resource['last_modified'] = \
-                convert_iso_string_to_default_timezone(last_modified,
-                                                       origin_tz=origin_tz,
-                                                       dst_tz=dst_tz)
+                convert_iso_string_to_dst_timezone(last_modified,
+                                                   origin_tz=origin_tz,
+                                                   dst_tz=dst_tz)
         resource['mimetype'] = distribution.get('mediaType')
         resource['size'] = distribution.get('byteSize')
         resource['accessURL'] = distribution.get('accessURL')

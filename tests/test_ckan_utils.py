@@ -367,43 +367,43 @@ class DatetimeConversionTests(unittest.TestCase):
     def test_timezone_is_set_to_default_if_none_given(self):
         date = '2018-01-29T17:14:09.291510'
         expected_date = '2018-01-29T17:14:09.291510'
-        res = convert_iso_string_to_default_timezone(date)
+        res = convert_iso_string_to_dst_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_maintained_if_given(self):
         date = '2018-01-29T14:14:09.291510+03:00'
         expected_date = '2018-01-29T08:14:09.291510'
-        res = convert_iso_string_to_default_timezone(date)
+        res = convert_iso_string_to_dst_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_is_set_to_default_if_none_given_without_ms(self):
         date = '2018-01-29T17:14:09'
         expected_date = '2018-01-29T17:14:09'
-        res = convert_iso_string_to_default_timezone(date)
+        res = convert_iso_string_to_dst_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_maintained_if_given_without_ms(self):
         date = '2018-01-29T14:14:09-06:00'
         expected_date = '2018-01-29T17:14:09'
-        res = convert_iso_string_to_default_timezone(date)
+        res = convert_iso_string_to_dst_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_is_set_to_default_if_none_given_without_seconds(self):
         date = '2018-01-29T17:14'
         expected_date = '2018-01-29T17:14:00'
-        res = convert_iso_string_to_default_timezone(date)
+        res = convert_iso_string_to_dst_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_maintained_if_given_without_seconds(self):
         date = '2018-01-29T14:14+04:00'
         expected_date = '2018-01-29T07:14:00'
-        res = convert_iso_string_to_default_timezone(date)
+        res = convert_iso_string_to_dst_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_is_set_to_default_if_none_given_without_time(self):
         date = '2018-01-29'
         expected_date = '2018-01-29T00:00:00'
-        res = convert_iso_string_to_default_timezone(date)
+        res = convert_iso_string_to_dst_timezone(date)
         self.assertEqual(res, expected_date)
 
     def test_timezone_is_set_to_dst_tz_with_default_origin_tz(self):
@@ -416,7 +416,7 @@ class DatetimeConversionTests(unittest.TestCase):
                           expected_date_new_york,
                           expected_date_london]
         res_dates = [
-            convert_iso_string_to_default_timezone(
+            convert_iso_string_to_dst_timezone(
                 date, dst_tz=self.dates[key]
             ) for key in self.dates
         ]
@@ -433,7 +433,7 @@ class DatetimeConversionTests(unittest.TestCase):
                           expected_date_new_york,
                           expected_date_london]
         res_dates = [
-            convert_iso_string_to_default_timezone(
+            convert_iso_string_to_dst_timezone(
                 date, dst_tz=self.dates[key]
             ) for key in self.dates
         ]
@@ -450,7 +450,7 @@ class DatetimeConversionTests(unittest.TestCase):
                           expected_date_new_york,
                           expected_date_london]
         res_dates = [
-            convert_iso_string_to_default_timezone(
+            convert_iso_string_to_dst_timezone(
                 date,
                 origin_tz=self.dates['tz_london'],  # GMT+1
                 dst_tz=self.dates[key]
@@ -469,7 +469,7 @@ class DatetimeConversionTests(unittest.TestCase):
                           expected_date_new_york,
                           expected_date_london]
         res_dates = [
-            convert_iso_string_to_default_timezone(
+            convert_iso_string_to_dst_timezone(
                 date,
                 origin_tz=self.dates['tz_london'],  # GMT+1
                 dst_tz=self.dates[key]
@@ -488,7 +488,7 @@ class DatetimeConversionTests(unittest.TestCase):
                           expected_date_new_york,
                           expected_date_london]
         res_dates = [
-            convert_iso_string_to_default_timezone(
+            convert_iso_string_to_dst_timezone(
                 date,
                 origin_tz=self.dates['tz_new_york'],  # GMT-4
                 dst_tz=self.dates[key]
