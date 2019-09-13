@@ -502,5 +502,5 @@ class DatetimeConversionTests(unittest.TestCase):
             self.assertEqual(
                 expected_dates[i],
                 dates[i],
-                msg="dst_tz: %s" % list(self.dates.values())[i]
+                msg="dst_tz: %s" % self.dates[list(self.dates)[i]]
             )
