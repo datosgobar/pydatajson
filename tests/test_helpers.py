@@ -3,14 +3,17 @@
 
 """Tests del modulo pydatajson."""
 
-from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import unicode_literals
 from __future__ import with_statement
 
 import os.path
 import unittest
+
 import nose
 import openpyxl as pyxl
+
+from pydatajson.helpers import fields_to_uppercase
 from .context import pydatajson
 
 
@@ -164,7 +167,6 @@ class HelpersTestCase(unittest.TestCase):
 
     def test_add_dicts(self):
         # Testea la función auxiliar para sumar campos de dicts recursivamente
-        from pydatajson.helpers import add_dicts
 
         one_dict = {
             "distribuciones_formatos_cant": {
@@ -220,6 +222,21 @@ class HelpersTestCase(unittest.TestCase):
                 "Exportación en $   de tomates  año 2017 (*)"),
             "exportacion-tomates-ano-2017"
         )
+
+    def test_fields_to_uppercase_returns_unique_uppercase_keys(self):
+        fields = {
+            'csv': 10,
+            'CSV': 20,
+            'json': 30,
+            'JSON': 40
+        }
+
+        expected = {
+            'CSV': 30,
+            'JSON': 70
+        }
+
+        self.assertEqual(fields_to_uppercase(fields), expected)
 
 
 if __name__ == '__main__':
