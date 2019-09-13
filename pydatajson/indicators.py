@@ -389,10 +389,10 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
         if not periodicity:
             continue
         # Si la periodicity es eventual, se considera como actualizado
-        if periodicity == 'eventual':
+        if periodicity in ('eventual', 'EVENTUAL'):
             actualizados += 1
-            prev_periodicity = periodicity_amount.get(periodicity, 0)
-            periodicity_amount[periodicity] = prev_periodicity + 1
+            prev_periodicity = periodicity_amount.get('EVENTUAL', 0)
+            periodicity_amount['EVENTUAL'] = prev_periodicity + 1
             continue
 
         # dataset sin fecha de última actualización es desactualizado
