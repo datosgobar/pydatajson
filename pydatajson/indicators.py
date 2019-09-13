@@ -570,5 +570,5 @@ def count_fields(targets, field):
     return Counter([target.get(field) or 'None' for target in targets])
 
 
-def eventual_periodicity(periodicity):
+def _eventual_periodicity(periodicity):
     return periodicity in ('eventual', 'EVENTUAL')
