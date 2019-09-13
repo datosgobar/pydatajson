@@ -133,7 +133,8 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
     # Agrego la cuenta de los formatos de las distribuciones
     if not only_numeric:
         if 'dataset' in catalog:
-            format_count = fields_to_uppercase(count_fields(get_distributions(catalog), 'format'))
+            format_count = count_fields(get_distributions(catalog), 'format')
+            format_count = fields_to_uppercase(format_count)
             type_count = count_fields(get_distributions(catalog), 'type')
             license_count = count_fields(get_datasets(catalog), 'license')
         else:

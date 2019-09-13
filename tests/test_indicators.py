@@ -87,7 +87,7 @@ class TestIndicatorsTestCase(object):
             'datasets_frecuencia_cant': {
                 'R/P1W': 1,
                 'R/P1M': 1,
-                'eventual': 1
+                'EVENTUAL': 1
             },
         }
 
