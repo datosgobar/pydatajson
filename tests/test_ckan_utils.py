@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import sys
 import unittest
 import os
 from .context import pydatajson
@@ -498,9 +499,12 @@ class DatetimeConversionTests(unittest.TestCase):
         self._assert_dates_equal(expected_dates, res_dates)
 
     def _assert_dates_equal(self, expected_dates, dates):
+        values = list(self.dates.values()) \
+            if sys.version_info[0] >= 3 \
+            else self.dates.values()
         for i in range(max(len(expected_dates), len(dates))):
             self.assertEqual(
                 expected_dates[i],
                 dates[i],
-                msg="dst_tz: %s" % self.dates[list(self.dates)[i]]
+                msg="dst_tz: %s" % values[i]
             )
