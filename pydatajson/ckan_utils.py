@@ -130,8 +130,10 @@ def convert_iso_string_to_default_timezone(date_string,
     else:
         origin_timezone = pytz.timezone(origin_tz)
         date_time = date_time.replace(tzinfo=origin_timezone)
+        origin_timezone.normalize(date_time)
         date_time = date_time.astimezone(dest_timezone)
 
+    dest_timezone.normalize(date_time)
     date_time = date_time.replace(tzinfo=None)
     return date_time.isoformat()
 
