@@ -499,9 +499,7 @@ class DatetimeConversionTests(unittest.TestCase):
         self._assert_dates_equal(expected_dates, res_dates)
 
     def _assert_dates_equal(self, expected_dates, dates):
-        values = list(self.dates.values()) \
-            if sys.version_info[0] >= 3 \
-            else self.dates.values()
+        values = [self.dates[k] for k in self.dates]
         for i in range(max(len(expected_dates), len(dates))):
             self.assertEqual(
                 expected_dates[i],
