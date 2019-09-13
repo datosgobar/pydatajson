@@ -552,12 +552,10 @@ def fields_to_uppercase(fields):
     for key in fields:
         lower_key = key.lower()
         upper_key = key.upper()
-        # Veo si una key existe en minuscula y en mayuscula,
-        # tanto en el dict original como en la copia que devuelve
-        if all(k in fields for k in (lower_key, upper_key)) and \
-                all(k in uppercase_fields for k in (lower_key, upper_key)):
+
+        if lower_key in fields and lower_key in uppercase_fields:
             lowercase_counts = fields[lower_key]
-            uppercase_counts = fields[upper_key]
+            uppercase_counts = fields.get(upper_key, 0)
 
             uppercase_fields.pop(lower_key)
             uppercase_fields[upper_key] = lowercase_counts + uppercase_counts

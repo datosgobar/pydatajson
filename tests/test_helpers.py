@@ -238,6 +238,31 @@ class HelpersTestCase(unittest.TestCase):
 
         self.assertEqual(fields_to_uppercase(fields), expected)
 
+    def test_fields_to_uppercase_keeps_uppercase_fields_intact(self):
+        fields = {
+            'CSV': 30,
+            'JSON': 70
+        }
+
+        expected = {
+            'CSV': 30,
+            'JSON': 70
+        }
+
+        self.assertEqual(fields_to_uppercase(fields), expected)
+
+    def test_fields_to_uppercase_modifies_all_lowercase_fields(self):
+        fields = {
+            'csv': 10,
+            'json': 30,
+        }
+
+        expected = {
+            'CSV': 10,
+            'JSON': 30
+        }
+
+        self.assertEqual(fields_to_uppercase(fields), expected)
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
