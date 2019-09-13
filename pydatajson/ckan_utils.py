@@ -6,8 +6,7 @@ import json
 import re
 import logging
 
-import pytz
-from dateutil import parser
+from dateutil import parser, tz
 
 from pydatajson.constants import DEFAULT_TIMEZONE
 from .helpers import title_to_name
@@ -124,16 +123,14 @@ def convert_iso_string_to_dst_timezone(date_string,
                                        dst_tz=DEFAULT_TIMEZONE):
     date_time = parser.parse(date_string)
 
-    dest_timezone = pytz.timezone(dst_tz)
+    dest_timezone = tz.gettz(dst_tz)
     if date_time.tzinfo is not None:
         date_time = date_time.astimezone(dest_timezone)
     else:
-        origin_timezone = pytz.timezone(origin_tz)
+        origin_timezone = tz.gettz(origin_tz)
         date_time = date_time.replace(tzinfo=origin_timezone)
-        origin_timezone.normalize(date_time)
         date_time = date_time.astimezone(dest_timezone)
 
-    dest_timezone.normalize(date_time)
     date_time = date_time.replace(tzinfo=None)
     return date_time.isoformat()
 

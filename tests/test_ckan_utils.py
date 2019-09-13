@@ -2,12 +2,12 @@
 
 from __future__ import unicode_literals
 
-import sys
-import unittest
 import os
-from .context import pydatajson
+import unittest
+
 from pydatajson.ckan_utils import *
 from pydatajson.helpers import title_to_name
+from .context import pydatajson
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 
@@ -204,7 +204,7 @@ class DatasetConversionTestCase(unittest.TestCase):
             self.dataset,
             'owner',
             catalog_id=self.catalog_id)
-#       dataset attributes are included in extras
+        #       dataset attributes are included in extras
         extra_attrs = [
             'issued',
             'modified',
@@ -273,7 +273,7 @@ class DatasetConversionTestCase(unittest.TestCase):
                 ('created', 'issued'), ('last_modified', 'modified')]
             for fst, snd in time_attributes:
                 if distribution.get(snd):
-                    dist_time = parser.parse(distribution.get(snd))\
+                    dist_time = parser.parse(distribution.get(snd)) \
                         .replace(tzinfo=None)
                     self.assertEqual(dist_time.isoformat(), resource.get(fst))
                 else:
@@ -358,7 +358,6 @@ class ThemeConversionTests(unittest.TestCase):
 
 
 class DatetimeConversionTests(unittest.TestCase):
-
     dates = {
         'tz_bs_as': 'America/Buenos_Aires',  # GMT-3
         'tz_new_york': 'America/New_York',  # GMT-4
@@ -410,19 +409,22 @@ class DatetimeConversionTests(unittest.TestCase):
     def test_timezone_is_set_to_dst_tz_with_default_origin_tz(self):
         date = '2018-06-29T17:14:09.291510'
         expected_date_bs_as = '2018-06-29T17:14:09.291510'
-        expected_date_new_york = '2018-06-29T17:08:09.291510'
-        expected_date_london = '2018-06-29T22:08:09.291510'
+        expected_date_new_york = '2018-06-29T16:14:09.291510'
+        expected_date_london = '2018-06-29T21:14:09.291510'
 
-        expected_dates = [expected_date_bs_as,
-                          expected_date_new_york,
-                          expected_date_london]
-        res_dates = [
-            convert_iso_string_to_dst_timezone(
-                date, dst_tz=self.dates[key]
-            ) for key in self.dates
-        ]
+        res_bs_as = convert_iso_string_to_dst_timezone(
+            date, dst_tz=self.dates['tz_bs_as']
+        )
+        res_new_york = convert_iso_string_to_dst_timezone(
+            date, dst_tz=self.dates['tz_new_york']
+        )
+        res_london = convert_iso_string_to_dst_timezone(
+            date, dst_tz=self.dates['tz_london']
+        )
 
-        self._assert_dates_equal(expected_dates, res_dates)
+        self.assertEqual(expected_date_bs_as, res_bs_as)
+        self.assertEqual(expected_date_new_york, res_new_york)
+        self.assertEqual(expected_date_london, res_london)
 
     def test_timezone_is_set_to_dst_tz_with_date_tz(self):
         date = '2018-06-29T17:14:09.291510+04:00'
@@ -430,35 +432,45 @@ class DatetimeConversionTests(unittest.TestCase):
         expected_date_new_york = '2018-06-29T09:14:09.291510'
         expected_date_london = '2018-06-29T14:14:09.291510'
 
-        expected_dates = [expected_date_bs_as,
-                          expected_date_new_york,
-                          expected_date_london]
-        res_dates = [
-            convert_iso_string_to_dst_timezone(
-                date, dst_tz=self.dates[key]
-            ) for key in self.dates
-        ]
+        res_bs_as = convert_iso_string_to_dst_timezone(
+            date, dst_tz=self.dates['tz_bs_as']
+        )
+        res_new_york = convert_iso_string_to_dst_timezone(
+            date, dst_tz=self.dates['tz_new_york']
+        )
+        res_london = convert_iso_string_to_dst_timezone(
+            date, dst_tz=self.dates['tz_london']
+        )
 
-        self._assert_dates_equal(expected_dates, res_dates)
+        self.assertEqual(expected_date_bs_as, res_bs_as)
+        self.assertEqual(expected_date_new_york, res_new_york)
+        self.assertEqual(expected_date_london, res_london)
 
     def test_date_timezone_is_set_to_given_origin_tz_without_date_tz(self):
         date = '2018-06-29T17:14:09.291510'
-        expected_date_bs_as = '2018-06-29T14:15:09.291510'
-        expected_date_new_york = '2018-06-29T13:15:09.291510'
+        expected_date_bs_as = '2018-06-29T13:14:09.291510'
+        expected_date_new_york = '2018-06-29T12:14:09.291510'
         expected_date_london = '2018-06-29T17:14:09.291510'
 
-        expected_dates = [expected_date_bs_as,
-                          expected_date_new_york,
-                          expected_date_london]
-        res_dates = [
-            convert_iso_string_to_dst_timezone(
-                date,
-                origin_tz=self.dates['tz_london'],  # GMT+1
-                dst_tz=self.dates[key]
-            ) for key in self.dates
-        ]
+        res_bs_as = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_london'],  # GMT+1,
+            dst_tz=self.dates['tz_bs_as']
+        )
+        res_new_york = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_london'],  # GMT+1,
+            dst_tz=self.dates['tz_new_york']
+        )
+        res_london = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_london'],  # GMT+1,
+            dst_tz=self.dates['tz_london']
+        )
 
-        self._assert_dates_equal(expected_dates, res_dates)
+        self.assertEqual(expected_date_bs_as, res_bs_as)
+        self.assertEqual(expected_date_new_york, res_new_york)
+        self.assertEqual(expected_date_london, res_london)
 
     def test_date_timezone_is_set_to_date_tz_despite_the_origin_tz(self):
         date = '2018-06-29T17:14:09.291510-03:00'
@@ -466,43 +478,48 @@ class DatetimeConversionTests(unittest.TestCase):
         expected_date_new_york = '2018-06-29T16:14:09.291510'
         expected_date_london = '2018-06-29T21:14:09.291510'
 
-        expected_dates = [expected_date_bs_as,
-                          expected_date_new_york,
-                          expected_date_london]
-        res_dates = [
-            convert_iso_string_to_dst_timezone(
-                date,
-                origin_tz=self.dates['tz_london'],  # GMT+1
-                dst_tz=self.dates[key]
-            ) for key in self.dates
-        ]
+        res_bs_as = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_london'],  # GMT+1,
+            dst_tz=self.dates['tz_bs_as']
+        )
+        res_new_york = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_london'],  # GMT+1,
+            dst_tz=self.dates['tz_new_york']
+        )
+        res_london = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_london'],  # GMT+1,
+            dst_tz=self.dates['tz_london']
+        )
 
-        self._assert_dates_equal(expected_dates, res_dates)
+        self.assertEqual(expected_date_bs_as, res_bs_as)
+        self.assertEqual(expected_date_new_york, res_new_york)
+        self.assertEqual(expected_date_london, res_london)
 
     def test_res_date_is_congruent_to_given_origin_and_dst_tzs(self):
         date = '2018-06-29T15:14:09.291510'
-        expected_date_bs_as = '2018-06-29T17:10:09.291510'
+        expected_date_bs_as = '2018-06-29T16:14:09.291510'
         expected_date_new_york = '2018-06-29T15:14:09.291510'
-        expected_date_london = '2018-06-29T21:10:09.291510'
+        expected_date_london = '2018-06-29T20:14:09.291510'
 
-        expected_dates = [expected_date_bs_as,
-                          expected_date_new_york,
-                          expected_date_london]
-        res_dates = [
-            convert_iso_string_to_dst_timezone(
-                date,
-                origin_tz=self.dates['tz_new_york'],  # GMT-4
-                dst_tz=self.dates[key]
-            ) for key in self.dates
-        ]
+        res_bs_as = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_new_york'],  # GMT-4,
+            dst_tz=self.dates['tz_bs_as']
+        )
+        res_new_york = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_new_york'],  # GMT-4,
+            dst_tz=self.dates['tz_new_york']
+        )
+        res_london = convert_iso_string_to_dst_timezone(
+            date,
+            origin_tz=self.dates['tz_new_york'],  # GMT-4,
+            dst_tz=self.dates['tz_london']
+        )
 
-        self._assert_dates_equal(expected_dates, res_dates)
-
-    def _assert_dates_equal(self, expected_dates, dates):
-        values = [self.dates[k] for k in self.dates]
-        for i in range(max(len(expected_dates), len(dates))):
-            self.assertEqual(
-                expected_dates[i],
-                dates[i],
-                msg="dst_tz: %s" % values[i]
-            )
+        self.assertEqual(expected_date_bs_as, res_bs_as)
+        self.assertEqual(expected_date_new_york, res_new_york)
+        self.assertEqual(expected_date_london, res_london)
