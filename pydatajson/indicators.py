@@ -391,7 +391,7 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
         if not periodicity:
             continue
         # Si la periodicity es eventual, se considera como actualizado
-        if periodicity in ('eventual', 'EVENTUAL'):
+        if _eventual_periodicity(periodicity):
             actualizados += 1
             prev_periodicity = periodicity_amount.get('EVENTUAL', 0)
             periodicity_amount['EVENTUAL'] = prev_periodicity + 1
@@ -568,3 +568,7 @@ def count_fields(targets, field):
     """Cuenta la cantidad de values en el key
     especificado de una lista de  diccionarios"""
     return Counter([target.get(field) or 'None' for target in targets])
+
+
+def eventual_periodicity(periodicity):
+    return periodicity in ('eventual', 'EVENTUAL')
