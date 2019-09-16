@@ -10,19 +10,20 @@ una red de catálogos.
 from __future__ import print_function, absolute_import
 from __future__ import unicode_literals, with_statement
 
-import logging
 import json
+import logging
 import os
-from datetime import datetime
 from collections import Counter
+from datetime import datetime
 
 from six import string_types
 
+from pydatajson.helpers import fields_to_uppercase
 from . import helpers
 from . import readers
+from .indicator_generators import FederationIndicatorsGenerator
 from .reporting import generate_datasets_summary
 from .search import get_datasets, get_distributions
-from .indicator_generators import FederationIndicatorsGenerator
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -133,6 +134,7 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
     if not only_numeric:
         if 'dataset' in catalog:
             format_count = count_fields(get_distributions(catalog), 'format')
+            format_count = fields_to_uppercase(format_count)
             type_count = count_fields(get_distributions(catalog), 'type')
             license_count = count_fields(get_datasets(catalog), 'license')
         else:
@@ -389,10 +391,10 @@ def _generate_date_indicators(catalog, tolerance=0.2, only_numeric=False):
         if not periodicity:
             continue
         # Si la periodicity es eventual, se considera como actualizado
-        if periodicity == 'eventual':
+        if _eventual_periodicity(periodicity):
             actualizados += 1
-            prev_periodicity = periodicity_amount.get(periodicity, 0)
-            periodicity_amount[periodicity] = prev_periodicity + 1
+            prev_periodicity = periodicity_amount.get('EVENTUAL', 0)
+            periodicity_amount['EVENTUAL'] = prev_periodicity + 1
             continue
 
         # dataset sin fecha de última actualización es desactualizado
@@ -566,3 +568,7 @@ def count_fields(targets, field):
     """Cuenta la cantidad de values en el key
     especificado de una lista de  diccionarios"""
     return Counter([target.get(field) or 'None' for target in targets])
+
+
+def _eventual_periodicity(periodicity):
+    return periodicity in ('eventual', 'EVENTUAL')

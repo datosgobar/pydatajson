@@ -544,3 +544,20 @@ def filter_by_likely_publisher(central_datasets, catalog_datasets):
 def title_in_dataset_list(dataset, dataset_list):
     return (dataset.get('title'), dataset.get('landingPage')) \
                    in dataset_list
+
+
+def fields_to_uppercase(fields):
+    uppercase_fields = fields.copy()
+
+    for key in fields:
+        lower_key = key.lower()
+        upper_key = key.upper()
+
+        if lower_key in fields and lower_key in uppercase_fields:
+            lowercase_counts = fields[lower_key]
+            uppercase_counts = fields.get(upper_key, 0)
+
+            uppercase_fields.pop(lower_key)
+            uppercase_fields[upper_key] = lowercase_counts + uppercase_counts
+
+    return uppercase_fields

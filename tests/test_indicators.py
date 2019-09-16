@@ -9,6 +9,8 @@ import os.path
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal
 
+from pydatajson.indicators import _eventual_periodicity
+
 try:
     import mock
 except ImportError:
@@ -87,7 +89,7 @@ class TestIndicatorsTestCase(object):
             'datasets_frecuencia_cant': {
                 'R/P1W': 1,
                 'R/P1M': 1,
-                'eventual': 1
+                'EVENTUAL': 1
             },
         }
 
@@ -624,3 +626,8 @@ class TestIndicatorsTestCase(object):
 
         for k, v in expected.items():
             assert_equal(indicators[k], v)
+
+    def test_eventual_periodicity(self):
+        assert_true(_eventual_periodicity('eventual'))
+        assert_true(_eventual_periodicity('EVENTUAL'))
+        assert_false(_eventual_periodicity('not eventual'))
