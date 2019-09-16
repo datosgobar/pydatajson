@@ -124,12 +124,11 @@ def convert_iso_string_to_dst_timezone(date_string,
     date_time = parser.parse(date_string)
 
     dest_timezone = tz.gettz(dst_tz)
-    if date_time.tzinfo is not None:
-        date_time = date_time.astimezone(dest_timezone)
-    else:
+    if date_time.tzinfo is None:
         origin_timezone = tz.gettz(origin_tz)
         date_time = date_time.replace(tzinfo=origin_timezone)
-        date_time = date_time.astimezone(dest_timezone)
+
+    date_time = date_time.astimezone(dest_timezone)
 
     date_time = date_time.replace(tzinfo=None)
     return date_time.isoformat()
