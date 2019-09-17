@@ -1,5 +1,10 @@
 Versiones
 =========
+0.4.47 (2019-09-17)
+-------------------
+* Implementación de timezones para los nodos de origen y destino en una federación
+
+
 0.4.46 (2019-08-16)
 -------------------
 * Fix a lecturas de catálogos XLSX en contextos concurrentes
