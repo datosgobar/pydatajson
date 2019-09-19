@@ -15,6 +15,10 @@ import mimetypes
 import logging
 from collections import Counter
 
+import requests
+
+from pydatajson.constants import VALID_STATUS_CODES
+
 try:
     from urlparse import urlparse
 except ImportError:
@@ -125,7 +129,9 @@ class Validator(object):
     def _validators(self):
         return [
             self._theme_ids_not_repeated,
-            self._consistent_distribution_fields
+            self._consistent_distribution_fields,
+            self._validate_landing_pages,
+            self._validate_distributions_urls
         ]
 
     def _theme_ids_not_repeated(self, catalog):
@@ -212,6 +218,41 @@ class Validator(object):
 
         return new_response
 
+    def _validate_landing_pages(self, catalog):
+        datasets = catalog.get('dataset')
+
+        for dataset_idx, dataset in enumerate(datasets):
+            dataset_title = dataset.get('title')
+            landing_page = dataset.get('landingPage')
+
+            valid, status_code = self._validate_url(landing_page)
+            if not valid:
+                yield ce.BrokenLandingPageError(dataset_idx, dataset_title,
+                                                landing_page, status_code)
+
+    def _validate_distributions_urls(self, catalog):
+        datasets = catalog.get('dataset')
+
+        for dataset_idx, dataset in enumerate(datasets):
+            distributions = dataset.get('distribution')
+
+            for distribution_idx, distribution in enumerate(distributions):
+                distribution_title = distribution.get('title')
+                access_url = distribution.get('accessUrl')
+                download_url = distribution.get('downloadUrl')
+
+                access_url_is_valid, status_code = self._validate_url(access_url)
+                download_url_is_valid, status_code = self._validate_url(download_url)
+                if not access_url_is_valid:
+                    yield ce.BrokenAccessUrlError(dataset_idx, distribution_idx,
+                                                  distribution_title, access_url, status_code)
+                if not download_url_is_valid:
+                    yield ce.BrokenDownloadUrlError(dataset_idx, distribution_idx,
+                                                    distribution_title, download_url, status_code)
+
+    def _validate_url(self, url):
+        response = requests.head(url)
+        return response.status_code in VALID_STATUS_CODES, response.status_code
 
 def is_valid_catalog(catalog, validator=None):
     """Valida que un archivo `data.json` cumpla con el schema definido.

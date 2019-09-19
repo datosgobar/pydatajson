@@ -61,7 +61,20 @@ def dataset_error(options=None):
                             "message": options['message'],
                             "error_code": options['error_code'],
                             "validator_value": options['validator_value'],
-                        }
+                        },
+                        # Agrego este dict
+                        {
+                            "error_code": 2,
+                            "message": "Dataset (Sistema de contrataciones electrónicas) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
+                            "validator": "brokenLink",
+                            "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
+                            "path": [
+                                "dataset",
+                                0,
+                                "landingPage"
+                            ],
+                            "instance": None
+                        } #
                     ],
                     "title": options['dataset_title']
                 }

@@ -40,7 +40,20 @@ def distribution_error():
                                 "issued",
                                 "identifier"
                             ]
-                        }
+                        },
+                        # Agrego este dict
+                        {
+                            "error_code": 2,
+                            "message": "Dataset (Sistema de contrataciones electrónicas) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
+                            "validator": "brokenLink",
+                            "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
+                            "path": [
+                                "dataset",
+                                0,
+                                "landingPage"
+                            ],
+                            "instance": None
+                        } #
                     ],
                     "title": "Sistema de contrataciones electrónicas"
                 }
