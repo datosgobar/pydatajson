@@ -60,7 +60,6 @@ class TestDataJsonTestCase(object):
 
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
-
         print(text_type(json.dumps(
             response_dict, indent=4, separators=(",", ": "),
             ensure_ascii=False

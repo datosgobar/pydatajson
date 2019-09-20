@@ -6,6 +6,22 @@ from __future__ import unicode_literals
 from tests.support.utils import jsonschema_str
 
 
+BROKEN_LINK_ERROR = {
+    "error_code": 2,
+    "message": "Dataset (Sistema de contrataciones electrónicas) con 'landingPage' "
+               "(http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra)"
+               " inválida (301)",
+    "validator": "brokenLink",
+    "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
+    "path": [
+        "dataset",
+        0,
+        "landingPage"
+    ],
+    "instance": None
+}
+
+
 def dataset_error(options=None):
     default_options = {
         "dataset_title": "Sistema de contrataciones electrónicas",
@@ -65,7 +81,7 @@ def dataset_error(options=None):
                         # Agrego este dict
                         {
                             "error_code": 2,
-                            "message": "Dataset (Sistema de contrataciones electrónicas) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
+                            "message": f"Dataset ({options['dataset_title']}) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
                             "validator": "brokenLink",
                             "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
                             "path": [
@@ -81,6 +97,23 @@ def dataset_error(options=None):
             ]
         }
     }
+
+
+def update_dataset_error(error_report, options):
+    new_dataset_error = {
+        "error_code": options['error_code'],
+        "message": options['message'],
+        "validator": options['validator'],
+        "validator_value": options['validator_value'],
+        "path": options['path'],
+        "instance": options['instance']
+    }
+
+    if error_report['error']['dataset'][0]['status'] != 'ERROR':
+        error_report['error']['dataset'][0]['status'] = 'ERROR'
+    error_report['error']['dataset'][0]['errors'].append(new_dataset_error)
+
+    return error_report
 
 
 def missing_dataset_title():

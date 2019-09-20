@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 
+from tests.support.factories.dataset_errors import update_dataset_error, BROKEN_LINK_ERROR
 from tests.support.utils import jsonschema_str
 
 
@@ -33,7 +34,7 @@ def gen_error(catalog_error, dataset_error):
 
 
 def multiple_missing_descriptions():
-    return gen_error({
+    error_report = gen_error({
         "instance": None,
         "validator": "required",
         "path": [],
@@ -67,9 +68,11 @@ def multiple_missing_descriptions():
         ]
     })
 
+    update_dataset_error(error_report, BROKEN_LINK_ERROR)
+
 
 def invalid_multiple_fields_type():
-    return gen_error({
+    error_report = gen_error({
         "instance": [
             "Ministerio de Modernización",
             "datos@modernizacion.gob.ar"
@@ -107,3 +110,5 @@ def invalid_multiple_fields_type():
             }
         ]
     })
+
+    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
