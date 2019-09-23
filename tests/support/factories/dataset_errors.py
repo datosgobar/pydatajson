@@ -6,22 +6,6 @@ from __future__ import unicode_literals
 from tests.support.utils import jsonschema_str
 
 
-BROKEN_LINK_ERROR = {
-    "error_code": 2,
-    "message": "Dataset (Sistema de contrataciones electrónicas) con 'landingPage' "
-               "(http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra)"
-               " inválida (301)",
-    "validator": "brokenLink",
-    "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
-    "path": [
-        "dataset",
-        0,
-        "landingPage"
-    ],
-    "instance": None
-}
-
-
 def dataset_error(options=None):
     default_options = {
         "dataset_title": "Sistema de contrataciones electrónicas",
@@ -77,20 +61,7 @@ def dataset_error(options=None):
                             "message": options['message'],
                             "error_code": options['error_code'],
                             "validator_value": options['validator_value'],
-                        },
-                        # Agrego este dict
-                        {
-                            "error_code": 2,
-                            "message": f"Dataset ({options['dataset_title']}) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
-                            "validator": "brokenLink",
-                            "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
-                            "path": [
-                                "dataset",
-                                0,
-                                "landingPage"
-                            ],
-                            "instance": None
-                        } #
+                        }
                     ],
                     "title": options['dataset_title']
                 }

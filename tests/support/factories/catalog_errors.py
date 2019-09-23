@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from tests.support.factories.dataset_errors import update_dataset_error, BROKEN_LINK_ERROR
+from tests.support.factories.dataset_errors import update_dataset_error
 from tests.support.utils import jsonschema_str
 
 
@@ -64,20 +64,16 @@ def missing_catalog_dataset():
 
 
 def missing_catalog_title():
-    error_report = catalog_error({
+    return catalog_error({
         'message': "%s is a required property" % jsonschema_str('title'),
         'title': None,
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def missing_catalog_description():
-    error_report = catalog_error({
+    return catalog_error({
         'message': "%s is a required property" % jsonschema_str('description'),
     })
-
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
 
 
 def invalid_catalog_publisher_type():
@@ -113,7 +109,7 @@ def invalid_publisher_mbox_format():
 
 
 def null_catalog_publisher():
-    error_report = catalog_error({
+    return catalog_error({
         "error_code": 2,
         "message": "None is not of type %s" % jsonschema_str('object'),
         "path": ['publisher'],
@@ -121,11 +117,9 @@ def null_catalog_publisher():
         "validator_value": 'object',
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def empty_mandatory_string():
-    error_report = catalog_error({
+    return catalog_error({
         "error_code": 2,
         "message": "%s is too short" % jsonschema_str(''),
         "path": ['description'],
@@ -134,11 +128,9 @@ def empty_mandatory_string():
         "instance": "",
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def malformed_date():
-    error_report = catalog_error({
+    return catalog_error({
         "instance": "2016/04/14",
         "validator": "anyOf",
         "path": [
@@ -166,11 +158,9 @@ def malformed_date():
         ]
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def malformed_datetime():
-    error_report = catalog_error({
+    return catalog_error({
         "instance": "2016-04-1419:48:05.433640-03:00",
         "validator": "anyOf",
         "path": [
@@ -198,11 +188,9 @@ def malformed_datetime():
         ]
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def malformed_datetime2():
-    error_report =  catalog_error({
+    return catalog_error({
         "instance": "2016-04-54T19:48:05.433640-03:00",
         "validator": "anyOf",
         "path": [
@@ -230,11 +218,9 @@ def malformed_datetime2():
         ]
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def malformed_email():
-    error_report = catalog_error({
+    return catalog_error({
         "instance": "datosATmodernizacion.gob.ar",
         "validator": "format",
         "path": [
@@ -248,11 +234,9 @@ def malformed_email():
         "validator_value": "email"
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def malformed_uri():
-    error_report =  catalog_error({
+    return catalog_error({
         "instance": "datos.gob.ar/superThemeTaxonomy.json",
         "validator": "format",
         "path": [
@@ -265,11 +249,9 @@ def malformed_uri():
         "validator_value": "uri"
     })
 
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
-
 
 def invalid_theme_taxonomy():
-    error_report = catalog_error({
+    return catalog_error({
         "instance": None,
         "validator": "repeatedValue",
         "path": [
@@ -281,8 +263,6 @@ def invalid_theme_taxonomy():
         "error_code": 2,
         "validator_value": "Chequea ids duplicados en themeTaxonomy"
     })
-
-    return update_dataset_error(error_report, BROKEN_LINK_ERROR)
 
 
 def missing_dataset():
