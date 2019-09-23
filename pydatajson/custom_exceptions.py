@@ -123,8 +123,8 @@ class BrokenAccessUrlError(BaseValidationError):
         validator = "brokenLink"
         message = "Distribution ({}) con 'accessUrl' ({}) inválida ({})".\
             format(distribution_title, broken_url, status_code)
-        validator_value = f"Chequea que el 'accessUrl' devuelva un status " \
-                          f"code válido"
+        validator_value = "Chequea que el 'accessUrl' devuelva un status " \
+                          "code válido"
         path = ['dataset', dataset_idx, 'distribution', distribution_idx,
                 'accessUrl']
 
@@ -139,8 +139,8 @@ class BrokenDownloadUrlError(BaseValidationError):
         validator = "brokenLink"
         message = "Distribution ({}) con 'downloadUrl' ({}) inválida ({})".\
             format(distribution_title, broken_url, status_code)
-        validator_value = f"Chequea que el 'downloadUrl' devuelva un status " \
-                          f"code válido"
+        validator_value = "Chequea que el 'downloadUrl' devuelva un status " \
+                          "code válido"
         path = ['dataset', dataset_idx, 'distribution', distribution_idx,
                 'downloadUrl']
 
