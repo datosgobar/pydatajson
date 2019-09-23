@@ -2,10 +2,10 @@
     "status": "ERROR", 
     "error": {
         "catalog": {
-            "status": "OK", 
-            "errors": [], 
+            "status": "OK",
+            "errors": [],
             "title": "Datos Argentina"
-        }, 
+        },
         "dataset": [
             {
                 "status": "ERROR", 
@@ -24,8 +24,20 @@
                         "message": "distribution '1.1' tiene distintas extensiones: format ('text/csv') y downloadURL ('.pdf')", 
                         "error_code": 2, 
                         "validator_value": "Chequea format y la extension del downloadURL"
+                    },
+                    {
+                        "error_code": 2,
+                        "message": "Dataset (Sistema de contrataciones electrónicas) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
+                        "validator": "brokenLink",
+                        "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
+                        "path": [
+                            "dataset",
+                            0,
+                            "landingPage"
+                        ],
+                        "instance": null
                     }
-                ], 
+                ],
                 "title": "Sistema de contrataciones electr\u00f3nicas"
             }, 
             {
@@ -58,7 +70,7 @@
                         "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3ca' tiene distintas extensiones: format ('CSV') y downloadURL ('.puntos')", 
                         "error_code": 2, 
                         "validator_value": "Chequea format y la extension del downloadURL"
-                    }, 
+                    },
                     {
                         "instance": null, 
                         "validator": "mismatchedValue", 
@@ -71,6 +83,18 @@
                         "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3ca' tiene distintas extensiones: format ('CSV') y fileName ('.xls')", 
                         "error_code": 2, 
                         "validator_value": "Chequea format y la extension del fileName"
+                    },
+                    {
+                        "error_code": 2,
+                        "message": "Dataset (Sistema de contrataciones electrónicas (sin datos)) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
+                        "validator": "brokenLink",
+                        "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
+                        "path": [
+                            "dataset",
+                            1,
+                            "landingPage"
+                        ],
+                        "instance": null
                     }
                 ], 
                 "title": "Sistema de contrataciones electr\u00f3nicas (sin datos)"

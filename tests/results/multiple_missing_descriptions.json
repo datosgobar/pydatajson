@@ -8,7 +8,7 @@
                     "instance": null,
                     "validator": "required",
                     "path": [],
-                    "message": "u'description' is a required property",
+                    "message": "'description' is a required property",
                     "error_code": 1,
                     "validator_value": [
                         "dataset",
@@ -34,7 +34,7 @@
                             "dataset",
                             0
                         ],
-                        "message": "u'description' is a required property",
+                        "message": "'description' is a required property",
                         "error_code": 1,
                         "validator_value": [
                             "title",
@@ -43,8 +43,21 @@
                             "superTheme",
                             "distribution",
                             "accrualPeriodicity",
-                            "issued"
+                            "issued",
+                            "identifier"
                         ]
+                    },
+                    {
+                        "error_code": 2,
+                        "message": "Dataset (Sistema de contrataciones electrónicas) con 'landingPage' (http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra) inválida (301)",
+                        "validator": "brokenLink",
+                        "validator_value": "Chequea que la 'landingPage' devuelva un status code válido",
+                        "path": [
+                            "dataset",
+                            0,
+                            "landingPage"
+                        ],
+                        "instance": null
                     }
                 ],
                 "title": "Sistema de contrataciones electrónicas"
