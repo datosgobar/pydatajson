@@ -145,13 +145,15 @@ class TestDataJsonTestCase(object):
             (u'dataset_temporal', u'2015-01-01/2015-12-31'),
             (u'notas', u'No tiene distribuciones con datos.')])]
 
+    LANDING_PAGE = 'http://datos.gob.ar/dataset/' \
+                   'sistema-de-contrataciones-electronicas-argentina-compra'
+
     @requests_mock.mock()
     def test_catalog_report_harvest_good(self, m):
         """catalog_report() marcará para cosecha los datasets con metadata
         válida si harvest='valid'."""
 
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
 
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
@@ -173,8 +175,7 @@ class TestDataJsonTestCase(object):
         """catalog_report() marcará para cosecha los datasets con metadata
         válida si harvest='valid'."""
 
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -195,8 +196,7 @@ class TestDataJsonTestCase(object):
         """catalog_report() no marcará ningún dataset para cosecha si
         harvest='none'."""
 
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
 
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
@@ -217,8 +217,7 @@ class TestDataJsonTestCase(object):
         """catalog_report() marcará todo dataset para cosecha si
         harvest='all'."""
 
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
 
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
@@ -240,8 +239,7 @@ class TestDataJsonTestCase(object):
         `report` si harvest='report'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
 
         # Compruebo que no se harvestee nada si el reporte no incluye el
         # dataset del catálogo

@@ -9,10 +9,10 @@ Contiene los métodos para validar el perfil de metadatos de un catálogo.
 from __future__ import unicode_literals, print_function
 from __future__ import with_statement, absolute_import
 
+import logging
+import mimetypes
 import os
 import platform
-import mimetypes
-import logging
 from collections import Counter
 
 import requests
@@ -241,18 +241,27 @@ class Validator(object):
                 access_url = distribution.get('accessUrl')
                 download_url = distribution.get('downloadUrl')
 
-                access_url_is_valid, status_code = self._validate_url(access_url)
-                download_url_is_valid, status_code = self._validate_url(download_url)
+                access_url_is_valid, access_url_status_code = \
+                    self._validate_url(access_url)
+                download_url_is_valid, download_url_status_code = \
+                    self._validate_url(download_url)
                 if not access_url_is_valid:
-                    yield ce.BrokenAccessUrlError(dataset_idx, distribution_idx,
-                                                  distribution_title, access_url, status_code)
+                    yield ce.BrokenAccessUrlError(dataset_idx,
+                                                  distribution_idx,
+                                                  distribution_title,
+                                                  access_url,
+                                                  access_url_status_code)
                 if not download_url_is_valid:
-                    yield ce.BrokenDownloadUrlError(dataset_idx, distribution_idx,
-                                                    distribution_title, download_url, status_code)
+                    yield ce.BrokenDownloadUrlError(dataset_idx,
+                                                    distribution_idx,
+                                                    distribution_title,
+                                                    download_url,
+                                                    download_url_status_code)
 
     def _validate_url(self, url):
         response = requests.head(url)
         return response.status_code in VALID_STATUS_CODES, response.status_code
+
 
 def is_valid_catalog(catalog, validator=None):
     """Valida que un archivo `data.json` cumpla con el schema definido.

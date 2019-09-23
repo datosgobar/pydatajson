@@ -14,7 +14,6 @@ try:
 except ImportError:
     from urllib.parse import urlparse
 
-from requests.exceptions import InvalidURL
 
 class BaseValidationError(object):
     """Estructura para errores de validación personalizados."""
@@ -107,9 +106,10 @@ class BrokenLandingPageError(BaseValidationError):
     def __init__(self, dataset_idx, dataset_title, broken_url, status_code):
 
         validator = "brokenLink"
-        message = f"Dataset ({dataset_title}) con 'landingPage' ({broken_url}) " \
-                  f"inválida ({status_code})"
-        validator_value = f"Chequea que la 'landingPage' devuelva un status code válido"
+        message = "Dataset ({}) con 'landingPage' ({}) inválida ({})".format(
+            dataset_title, broken_url, status_code)
+        validator_value = "Chequea que la 'landingPage' devuelva un status " \
+                          "code válido"
         path = ['dataset', dataset_idx, 'landingPage']
 
         super(BrokenLandingPageError, self).__init__(
@@ -118,11 +118,13 @@ class BrokenLandingPageError(BaseValidationError):
 
 class BrokenAccessUrlError(BaseValidationError):
 
-    def __init__(self, dataset_idx, distribution_idx, distribution_title, broken_url, status_code):
+    def __init__(self, dataset_idx, distribution_idx,
+                 distribution_title, broken_url, status_code):
         validator = "brokenLink"
-        message = f"Distribution ({distribution_title}) con 'accessUrl' ({broken_url}) " \
-                  f"inválida ({status_code})"
-        validator_value = f"Chequea que el 'accessUrl' devuelva un status code válido"
+        message = "Distribution ({}) con 'accessUrl' ({}) inválida ({})".\
+            format(distribution_title, broken_url, status_code)
+        validator_value = f"Chequea que el 'accessUrl' devuelva un status " \
+                          f"code válido"
         path = ['dataset', dataset_idx, 'distribution', distribution_idx,
                 'accessUrl']
 
@@ -132,11 +134,13 @@ class BrokenAccessUrlError(BaseValidationError):
 
 class BrokenDownloadUrlError(BaseValidationError):
 
-    def __init__(self, dataset_idx, distribution_idx, distribution_title, broken_url, status_code):
+    def __init__(self, dataset_idx, distribution_idx, distribution_title,
+                 broken_url, status_code):
         validator = "brokenLink"
-        message = f"Distribution ({distribution_title}) con 'downloadUrl' ({broken_url}) " \
-                  f"inválida ({status_code})"
-        validator_value = f"Chequea que el 'downloadUrl' devuelva un status code válido"
+        message = "Distribution ({}) con 'downloadUrl' ({}) inválida ({})".\
+            format(distribution_title, broken_url, status_code)
+        validator_value = f"Chequea que el 'downloadUrl' devuelva un status " \
+                          f"code válido"
         path = ['dataset', dataset_idx, 'distribution', distribution_idx,
                 'downloadUrl']
 

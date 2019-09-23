@@ -32,6 +32,8 @@ class TestDataJsonTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
+    LANDING_PAGE = 'http://datos.gob.ar/dataset/' \
+                   'sistema-de-contrataciones-electronicas-argentina-compra'
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -79,8 +81,7 @@ class TestDataJsonTestCase(object):
     # Tests de inputs válidos
     @requests_mock.mock()
     def test_validity(self, m):
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
         for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
             yield self.run_case, filename, value_or_none
 
@@ -318,8 +319,7 @@ class TestDataJsonTestCase(object):
         """Prueba que la regex de validación de
         dataset["accrualPeriodicity"] sea correcta."""
 
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
 
         datajson_path = "tests/samples/full_data.json"
         datajson = json.load(open(datajson_path))
@@ -347,8 +347,7 @@ class TestDataJsonTestCase(object):
 
     @requests_mock.mock()
     def test_valid_catalog_list_format(self, m):
-        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
-              text='data')
+        m.get(self.LANDING_PAGE, text='data')
         report_list = self.dj.validate_catalog(fmt='list')
         assert_true(len(report_list['catalog']) == 1)
         assert_true(report_list['catalog'][0]['catalog_status'] == 'OK')
