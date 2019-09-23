@@ -372,3 +372,18 @@ class TestDataJsonTestCase(object):
                 error['message'] in [
                     reported['dataset_error_message'] for reported
                     in report_list['dataset']])
+
+    @requests_mock.mock()
+    def test_urls_with_status_code_200_is_valid(self, m):
+        m.get(self.LANDING_PAGE, text='data', status_code=200)
+        assert_true(self.dj.is_valid_catalog())
+
+    @requests_mock.mock()
+    def test_urls_with_status_code_203_is_valid(self, m):
+        m.get(self.LANDING_PAGE, text='data', status_code=203)
+        assert_true(self.dj.is_valid_catalog())
+
+    @requests_mock.mock()
+    def test_urls_with_status_code_302_is_valid(self, m):
+        m.get(self.LANDING_PAGE, text='data', status_code=302)
+        assert_true(self.dj.is_valid_catalog())
