@@ -13,7 +13,7 @@ import vcr
 from nose.tools import assert_true, assert_false, assert_equal
 from nose.tools import assert_list_equal, assert_raises
 from six import iteritems
-
+import requests_mock
 
 try:
     import mock
@@ -145,9 +145,14 @@ class TestDataJsonTestCase(object):
             (u'dataset_temporal', u'2015-01-01/2015-12-31'),
             (u'notas', u'No tiene distribuciones con datos.')])]
 
-    def test_catalog_report_harvest_good(self):
+    @requests_mock.mock()
+    def test_catalog_report_harvest_good(self, m):
         """catalog_report() marcará para cosecha los datasets con metadata
         válida si harvest='valid'."""
+
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
+
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -163,9 +168,13 @@ class TestDataJsonTestCase(object):
         # Compruebo que toda la lista sea la esperada
         assert_list_equal(actual, expected)
 
-    def test_catalog_report_harvest_valid(self):
+    @requests_mock.mock()
+    def test_catalog_report_harvest_valid(self, m):
         """catalog_report() marcará para cosecha los datasets con metadata
         válida si harvest='valid'."""
+
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -181,9 +190,14 @@ class TestDataJsonTestCase(object):
         print(actual)
         assert_list_equal(actual, expected)
 
-    def test_catalog_report_harvest_none(self):
+    @requests_mock.mock()
+    def test_catalog_report_harvest_none(self, m):
         """catalog_report() no marcará ningún dataset para cosecha si
         harvest='none'."""
+
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
+
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -198,9 +212,14 @@ class TestDataJsonTestCase(object):
         # Compruebo que toda la lista sea la esperada
         assert_list_equal(actual, expected)
 
-    def test_catalog_report_harvest_all(self):
+    @requests_mock.mock()
+    def test_catalog_report_harvest_all(self, m):
         """catalog_report() marcará todo dataset para cosecha si
         harvest='all'."""
+
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
+
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -215,10 +234,14 @@ class TestDataJsonTestCase(object):
         # Compruebo que toda la lista sea la esperada
         assert_list_equal(actual, expected)
 
-    def test_catalog_report_harvest_report(self):
+    @requests_mock.mock()
+    def test_catalog_report_harvest_report(self, m):
         """catalog_report() marcará para cosecha los datasets presentes en
         `report` si harvest='report'."""
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
+
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
 
         # Compruebo que no se harvestee nada si el reporte no incluye el
         # dataset del catálogo
