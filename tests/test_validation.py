@@ -5,7 +5,7 @@ from __future__ import print_function, unicode_literals, with_statement
 import json
 import os.path
 import re
-
+import requests_mock
 import vcr
 from nose.tools import assert_true, assert_false, assert_dict_equal,\
     assert_regexp_matches
@@ -50,7 +50,6 @@ class TestDataJsonTestCase(object):
         del cls.dj
 
     def run_case(self, case_filename, expected_dict=None):
-
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         result_path = os.path.join(self.RESULTS_DIR, case_filename + ".json")
 
@@ -60,7 +59,6 @@ class TestDataJsonTestCase(object):
 
         response_bool = self.dj.is_valid_catalog(sample_path)
         response_dict = self.dj.validate_catalog(sample_path)
-
         print(text_type(json.dumps(
             response_dict, indent=4, separators=(",", ": "),
             ensure_ascii=False
@@ -79,7 +77,10 @@ class TestDataJsonTestCase(object):
     # Tests de CAMPOS REQUERIDOS
 
     # Tests de inputs válidos
-    def test_validity(self):
+    @requests_mock.mock()
+    def test_validity(self, m):
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
         for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
             yield self.run_case, filename, value_or_none
 
@@ -312,9 +313,13 @@ class TestDataJsonTestCase(object):
                 yield self.validate_contains_message, BAD_DATAJSON_URL2,\
                       path, regex
 
-    def test_correctness_of_accrualPeriodicity_regex(self):
+    @requests_mock.mock()
+    def test_correctness_of_accrualPeriodicity_regex(self, m):
         """Prueba que la regex de validación de
         dataset["accrualPeriodicity"] sea correcta."""
+
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
 
         datajson_path = "tests/samples/full_data.json"
         datajson = json.load(open(datajson_path))
@@ -340,7 +345,10 @@ class TestDataJsonTestCase(object):
             res = self.dj.is_valid_catalog(datajson)
             assert_false(res, msg=value)
 
-    def test_valid_catalog_list_format(self):
+    @requests_mock.mock()
+    def test_valid_catalog_list_format(self, m):
+        m.get('http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra',
+              text='data')
         report_list = self.dj.validate_catalog(fmt='list')
         assert_true(len(report_list['catalog']) == 1)
         assert_true(report_list['catalog'][0]['catalog_status'] == 'OK')
