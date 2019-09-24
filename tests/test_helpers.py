@@ -12,8 +12,11 @@ import unittest
 
 import nose
 import openpyxl as pyxl
+import requests_mock
 
-from pydatajson.helpers import fields_to_uppercase
+from requests.exceptions import ConnectionError, Timeout
+
+from pydatajson.helpers import fields_to_uppercase, is_working_url
 from .context import pydatajson
 
 
@@ -263,6 +266,32 @@ class HelpersTestCase(unittest.TestCase):
         }
 
         self.assertEqual(fields_to_uppercase(fields), expected)
+
+    @requests_mock.Mocker()
+    def test_validate_valid_url(self, req_mock):
+        req_mock.head('http://test.com/')
+        self.assertTrue(is_working_url('http://test.com/'))
+
+    @requests_mock.Mocker()
+    def test_validate_invalid_url(self, req_mock):
+        req_mock.head('http://test.com/', status_code=400)
+        self.assertFalse(is_working_url('http://test.com/'))
+
+    @requests_mock.Mocker()
+    def test_validate_url_with_exception(self, req_mock):
+        req_mock.head('http://test.com/', exc=ConnectionError)
+        self.assertFalse(is_working_url('http://test.com/'))
+
+    @requests_mock.Mocker()
+    def validate_url_with_timeout(self, req_mock):
+        req_mock.head('http://test.com/', exc=Timeout)
+        self.assertFalse(is_working_url('http://test.com/'))
+
+    def test_validate_malformed_values(self):
+        self.assertFalse(is_working_url('malformed_value'))
+        self.assertFalse(is_working_url(''))
+        self.assertFalse(is_working_url(None))
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)

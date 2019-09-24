@@ -15,12 +15,16 @@ import logging
 import tempfile
 
 from contextlib import contextmanager
+
+import requests
 from openpyxl import load_workbook
+from requests import RequestException
 from six.moves.urllib_parse import urlparse
 
 from six import string_types, iteritems
 from unidecode import unidecode
 
+from pydatajson.constants import VALID_STATUS_CODES
 from pydatajson.download import download_to_file
 
 logger = logging.getLogger('pydatajson.helpers')
@@ -561,3 +565,11 @@ def fields_to_uppercase(fields):
             uppercase_fields[upper_key] = lowercase_counts + uppercase_counts
 
     return uppercase_fields
+
+
+def is_working_url(url):
+    try:
+        response = requests.head(url, timeout=3)
+        return response.status_code in VALID_STATUS_CODES
+    except RequestException:
+        return False

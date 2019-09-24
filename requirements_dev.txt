@@ -15,4 +15,4 @@ pycallgraph
 setuptools>=38.6
 wheel>=0.31
 vcrpy
-requests-mock==1.7.0
+requests_mock
