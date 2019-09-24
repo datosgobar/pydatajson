@@ -21,8 +21,8 @@ from six import string_types
 from pydatajson.helpers import fields_to_uppercase
 from . import helpers
 from . import readers
-from .indicator_generators import FederationIndicatorsGenerator
-from .reporting import generate_datasets_summary
+from .federation_indicators_generator import FederationIndicatorsGenerator
+from pydatajson.status_indicators_generator import StatusIndicatorsGenerator
 from .search import get_datasets, get_distributions
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -286,49 +286,28 @@ def _generate_status_indicators(catalog, validator=None):
         'datasets_con_datos_pct': None
     }
     try:
-        summary = generate_datasets_summary(catalog, validator=validator)
+        generator = StatusIndicatorsGenerator(catalog, validator=validator)
     except Exception as e:
         msg = u'Error generando resumen del catálogo {}: {}'.format(
             catalog['title'], str(e))
         logger.warning(msg)
         return result
 
-    cant_ok = 0
-    cant_error = 0
-    cant_data = 0
-    cant_without_data = 0
-    cant_distribuciones = 0
-    datasets_total = len(summary)
-    for dataset in summary:
-        cant_distribuciones += dataset['cant_distribuciones']
-
-        # chequea si el dataset tiene datos
-        if dataset['tiene_datos'] == "SI":
-            cant_data += 1
-        else:  # == "ERROR"
-            cant_without_data += 1
-
-        # chequea estado de los metadatos
-        if dataset['estado_metadatos'] == "OK":
-            cant_ok += 1
-        else:  # == "ERROR"
-            cant_error += 1
-
-    datasets_ok_pct = 0
-    datasets_with_data_pct = 0
-    if datasets_total:
-        datasets_ok_pct = round(float(cant_ok) / datasets_total, 4)
-        datasets_with_data_pct = round(float(cant_data) / datasets_total, 4)
-
     result.update({
-        'datasets_cant': datasets_total,
-        'distribuciones_cant': cant_distribuciones,
-        'datasets_meta_ok_cant': cant_ok,
-        'datasets_meta_error_cant': cant_error,
-        'datasets_meta_ok_pct': datasets_ok_pct,
-        'datasets_con_datos_cant': cant_data,
-        'datasets_sin_datos_cant': cant_without_data,
-        'datasets_con_datos_pct': datasets_with_data_pct
+        'datasets_cant': generator.datasets_cant(),
+        'distribuciones_cant': generator.distribuciones_cant(),
+        'datasets_meta_ok_cant': generator.datasets_meta_ok_cant(),
+        'datasets_meta_error_cant': generator.datasets_meta_error_cant(),
+        'datasets_meta_ok_pct': generator.datasets_meta_ok_pct(),
+        'datasets_con_datos_cant': generator.datasets_con_datos_cant(),
+        'datasets_sin_datos_cant': generator.datasets_sin_datos_cant(),
+        'datasets_con_datos_pct': generator.datasets_con_datos_pct(),
+        'distribuciones_download_url_ok_cant':
+            generator.distribuciones_download_url_ok_cant(),
+        'distribuciones_download_url_error_cant':
+            generator.distribuciones_download_url_error_cant(),
+        'distribuciones_download_url_ok_pct':
+            generator.distribuciones_download_url_ok_pct(),
 
     })
     return result
