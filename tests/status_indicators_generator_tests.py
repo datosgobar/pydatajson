@@ -103,7 +103,13 @@ class TestStatusIndicatorsGeneratorTestCase(unittest.TestCase):
         self.assertEqual(None, self.gen_empty.datasets_con_datos_pct())
 
     @requests_mock.Mocker()
-    def test_distribuciones_download_url_ok_cant(self, req_mock):
+    def test_just_distribuciones_download_url_ok_cant(self, req_mock):
+        req_mock.head(requests_mock.ANY, text='resp')
+        self.assertEqual(
+            56, self.gen_justicia.distribuciones_download_url_ok_cant())
+
+    @requests_mock.Mocker()
+    def test_full_distribuciones_download_url_ok_cant(self, req_mock):
         req_mock.head(re.compile('/convocatorias-abiertas-anio-2015.pdf'),
                       status_code=404)
         req_mock.head(re.compile('/convocatorias-abiertas-anio-2015.csv'),
@@ -111,10 +117,7 @@ class TestStatusIndicatorsGeneratorTestCase(unittest.TestCase):
         self.assertEqual(
             1, self.gen_full_data.distribuciones_download_url_ok_cant())
 
-        req_mock.head(requests_mock.ANY, text='resp')
-        self.assertEqual(
-            56, self.gen_justicia.distribuciones_download_url_ok_cant())
-
+    def test_empty_distribuciones_download_url_ok_cant(self):
         self.assertEqual(
             0, self.gen_empty.distribuciones_download_url_ok_cant())
 
