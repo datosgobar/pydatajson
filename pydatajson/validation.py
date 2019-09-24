@@ -18,6 +18,7 @@ from collections import Counter
 import requests
 
 from pydatajson.constants import VALID_STATUS_CODES
+from pydatajson.helpers import is_working_url
 
 try:
     from urlparse import urlparse
@@ -220,12 +221,13 @@ class Validator(object):
 
     def _validate_landing_pages(self, catalog):
         datasets = catalog.get('dataset')
+        datasets = list(filter(lambda x: 'landingPage' in x, datasets))
 
         for dataset_idx, dataset in enumerate(datasets):
             dataset_title = dataset.get('title')
             landing_page = dataset.get('landingPage')
 
-            valid, status_code = self._validate_url(landing_page)
+            valid, status_code = is_working_url(landing_page)
             if not valid:
                 yield ce.BrokenLandingPageError(dataset_idx, dataset_title,
                                                 landing_page, status_code)
@@ -238,13 +240,13 @@ class Validator(object):
 
             for distribution_idx, distribution in enumerate(distributions):
                 distribution_title = distribution.get('title')
-                access_url = distribution.get('accessUrl')
-                download_url = distribution.get('downloadUrl')
+                access_url = distribution.get('accessURL')
+                download_url = distribution.get('downloadURL')
 
                 access_url_is_valid, access_url_status_code = \
-                    self._validate_url(access_url)
+                    is_working_url(access_url)
                 download_url_is_valid, download_url_status_code = \
-                    self._validate_url(download_url)
+                    is_working_url(download_url)
                 if not access_url_is_valid:
                     yield ce.BrokenAccessUrlError(dataset_idx,
                                                   distribution_idx,
@@ -258,9 +260,6 @@ class Validator(object):
                                                     download_url,
                                                     download_url_status_code)
 
-    def _validate_url(self, url):
-        response = requests.head(url)
-        return response.status_code in VALID_STATUS_CODES, response.status_code
 
 
 def is_valid_catalog(catalog, validator=None):

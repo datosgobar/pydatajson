@@ -5,9 +5,9 @@ from __future__ import print_function, unicode_literals, with_statement
 import json
 import os.path
 import re
-import requests_mock
+
 import vcr
-from nose.tools import assert_true, assert_false, assert_dict_equal,\
+from nose.tools import assert_true, assert_false, assert_dict_equal, \
     assert_regexp_matches
 from six import iteritems, text_type
 
@@ -27,13 +27,20 @@ my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='once')
 
-
+@mock.patch('pydatajson.validation.is_working_url', return_value=(True, 200))
 class TestDataJsonTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
     LANDING_PAGE = 'http://datos.gob.ar/dataset/' \
                    'sistema-de-contrataciones-electronicas-argentina-compra'
+    ACCESS_URL = "http://datos.gob.ar/dataset/" \
+                 "sistema-de-contrataciones-electronicas-argentina-compra/" \
+                 "archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a"
+    DOWNLOAD_URL = "http://186.33.211.253/dataset/" \
+                   "99db6631-d1c9-470b-a73e-c62daa32c420/resource/" \
+                   "4b7447cb-31ff-4352-96c3-589d212e1cc9/download/" \
+                   "convocatorias-abiertas-anio-2015.csv"
 
     @classmethod
     def get_sample(cls, sample_filename):
@@ -79,13 +86,11 @@ class TestDataJsonTestCase(object):
     # Tests de CAMPOS REQUERIDOS
 
     # Tests de inputs válidos
-    @requests_mock.mock()
-    def test_validity(self, m):
-        m.get(self.LANDING_PAGE, text='data')
+    def test_validity(self, _mock_validation):
         for filename, value_or_none in iteritems(TEST_FILE_RESPONSES):
             yield self.run_case, filename, value_or_none
 
-    def test_validity_of_invalid_dataset_type(self):
+    def test_validity_of_invalid_dataset_type(self, _mock_validation):
         """
         Validación ante un campo 'dataset' inválido en un catalogo
         :return:
@@ -98,7 +103,7 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_invalid_dataset_theme_type(self):
+    def test_invalid_dataset_theme_type(self, _mock_validation):
         case_filename = "invalid_dataset_theme_type"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
@@ -107,7 +112,7 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_invalid_empty_super_theme_list(self):
+    def test_invalid_empty_super_theme_list(self, _mock_validation):
         case_filename = "empty_super_theme_list"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
@@ -115,7 +120,7 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_invalid_keywords(self):
+    def test_invalid_keywords(self, _mock_validation):
         case_filename = "invalid_keywords"
         expected_valid = False
         path = ['error', 'dataset', 1, 'errors', 0, 'message']
@@ -125,7 +130,7 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_invalid_whitespace_emails(self):
+    def test_invalid_whitespace_emails(self, _mock_validation):
         case_filename = "invalid_whitespace_emails"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
@@ -139,7 +144,7 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_invalid_multiple_emails(self):
+    def test_invalid_multiple_emails(self, _mock_validation):
         case_filename = "invalid_multiple_emails"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
@@ -153,7 +158,7 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_several_assorted_errors(self):
+    def test_several_assorted_errors(self, _mock_validation):
         case_filename = "several_assorted_errors"
         expected_errors = [
             (
@@ -255,7 +260,7 @@ class TestDataJsonTestCase(object):
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         self.validate_contains_message(sample_path, path, regex)
 
-    def validate_contains_message(self, datajson, path, regex):
+    def validate_contains_message(self, datajson, path, regex, _mock_validation):
         response_bool = self.dj.is_valid_catalog(datajson)
         response_dict = self.dj.validate_catalog(datajson)
 
@@ -270,13 +275,13 @@ class TestDataJsonTestCase(object):
         assert_true(any(matches))
 
     @my_vcr.use_cassette('test_validate_bad_remote_datajson')
-    def test_validate_invalid_remote_datajson_is_invalid(self):
+    def test_validate_invalid_remote_datajson_is_invalid(self, _mock_validation):
         """ Testea `is_valid_catalog` contra un data.json remoto invalido."""
 
         res = self.dj.is_valid_catalog(BAD_DATAJSON_URL)
         assert_false(res)
 
-    def test_validate_invalid_remote_datajson_has_errors(self):
+    def test_validate_invalid_remote_datajson_has_errors(self, _mock_validation):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
 
         errors = [(
@@ -295,13 +300,13 @@ class TestDataJsonTestCase(object):
 
     # Tests contra una URL REMOTA
     @my_vcr.use_cassette('test_validate_bad_remote_datajson2')
-    def test_validate_invalid_remote_datajson_is_invalid2(self):
+    def test_validate_invalid_remote_datajson_is_invalid2(self, _mock_validation):
         """ Testea `is_valid_catalog` contra un data.json remoto invalido."""
 
         res = self.dj.is_valid_catalog(BAD_DATAJSON_URL2)
         assert_false(res)
 
-    def test_validate_invalid_remote_datajson_has_errors2(self):
+    def test_validate_invalid_remote_datajson_has_errors2(self, _mock_validation):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
         errors = [
             ([
@@ -314,12 +319,9 @@ class TestDataJsonTestCase(object):
                 yield self.validate_contains_message, BAD_DATAJSON_URL2,\
                       path, regex
 
-    @requests_mock.mock()
-    def test_correctness_of_accrualPeriodicity_regex(self, m):
+    def test_correctness_of_accrualPeriodicity_regex(self, _mock_validation):
         """Prueba que la regex de validación de
         dataset["accrualPeriodicity"] sea correcta."""
-
-        m.get(self.LANDING_PAGE, text='data')
 
         datajson_path = "tests/samples/full_data.json"
         datajson = json.load(open(datajson_path))
@@ -345,9 +347,7 @@ class TestDataJsonTestCase(object):
             res = self.dj.is_valid_catalog(datajson)
             assert_false(res, msg=value)
 
-    @requests_mock.mock()
-    def test_valid_catalog_list_format(self, m):
-        m.get(self.LANDING_PAGE, text='data')
+    def test_valid_catalog_list_format(self, _mock_validation):
         report_list = self.dj.validate_catalog(fmt='list')
         assert_true(len(report_list['catalog']) == 1)
         assert_true(report_list['catalog'][0]['catalog_status'] == 'OK')
@@ -355,7 +355,7 @@ class TestDataJsonTestCase(object):
         for report in report_list['dataset']:
             assert_true(report['dataset_status'] == 'OK')
 
-    def test_invalid_catalog_list_format(self):
+    def test_invalid_catalog_list_format(self, _mock_validation):
         catalog = pydatajson.DataJson(
             self.get_sample("several_assorted_errors.json"))
         report_list = catalog.validate_catalog(fmt='list')
@@ -373,17 +373,15 @@ class TestDataJsonTestCase(object):
                     reported['dataset_error_message'] for reported
                     in report_list['dataset']])
 
-    @requests_mock.mock()
-    def test_urls_with_status_code_200_is_valid(self, m):
-        m.get(self.LANDING_PAGE, text='data', status_code=200)
+    def test_urls_with_status_code_200_is_valid(self, _mock_validation):
         assert_true(self.dj.is_valid_catalog())
 
-    @requests_mock.mock()
-    def test_urls_with_status_code_203_is_valid(self, m):
-        m.get(self.LANDING_PAGE, text='data', status_code=203)
+    def test_urls_with_status_code_203_is_valid(self, _mock_validation):
         assert_true(self.dj.is_valid_catalog())
 
-    @requests_mock.mock()
-    def test_urls_with_status_code_302_is_valid(self, m):
-        m.get(self.LANDING_PAGE, text='data', status_code=302)
+    def test_urls_with_status_code_302_is_valid(self, _mock_validation):
         assert_true(self.dj.is_valid_catalog())
+
+    # Overridear el patch para que 'is_working_url' devuelva (False, 'status code desconocido')
+    def tests_urls_with_invalid_status_codes_are_not_valid(self, _mock_validation, _):
+        assert_false(self.dj.is_valid_catalog())
