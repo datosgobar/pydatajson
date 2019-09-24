@@ -99,18 +99,18 @@ pydatajson.federation module
     :undoc-members:
     :show-inheritance:
 
-pydatajson.helpers module
--------------------------
+pydatajson.federation\_indicators\_generator module
+---------------------------------------------------
 
-.. automodule:: pydatajson.helpers
+.. automodule:: pydatajson.federation_indicators_generator
     :members:
     :undoc-members:
     :show-inheritance:
 
-pydatajson.indicator\_generators module
----------------------------------------
+pydatajson.helpers module
+-------------------------
 
-.. automodule:: pydatajson.indicator_generators
+.. automodule:: pydatajson.helpers
     :members:
     :undoc-members:
     :show-inheritance:
@@ -143,6 +143,14 @@ pydatajson.search module
 ------------------------
 
 .. automodule:: pydatajson.search
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pydatajson.status\_indicators\_generator module
+-----------------------------------------------
+
+.. automodule:: pydatajson.status_indicators_generator
     :members:
     :undoc-members:
     :show-inheritance:

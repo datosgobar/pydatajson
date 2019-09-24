@@ -1,5 +1,10 @@
 Versiones
 =========
+0.4.48 (2019-09-24)
+-------------------
+* Se calcula 3 nuevos indicadores en base al `downloadURL` de las distribuciones.
+
+
 0.4.47 (2019-09-17)
 -------------------
 * Implementación de timezones para los nodos de origen y destino en una federación
