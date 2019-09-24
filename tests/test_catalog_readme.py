@@ -38,7 +38,9 @@ class TestDataJsonTestCase(object):
         cls.catalog = cls.get_sample("several_datasets_for_harvest.json")
 
     @my_vcr.use_cassette()
-    def test_generate_readme(self):
+    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
+                return_value=True)
+    def test_generate_readme(self, _mock_check):
         with io.open(os.path.join(self.RESULTS_DIR, "catalog_readme.md"), 'r',
                      encoding='utf-8') as expected_readme_file:
             expected_readme = expected_readme_file.read()
@@ -46,7 +48,9 @@ class TestDataJsonTestCase(object):
             assert_equal(expected_readme, readme)
 
     @my_vcr.use_cassette()
-    def test_readme_file_write(self):
+    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
+                return_value=True)
+    def test_readme_file_write(self, _mock_check):
         actual_filename = os.path.join(self.TEMP_DIR, "catalog_readme.md")
         expected_filename = os.path.join(self.RESULTS_DIR, "catalog_readme.md")
         generate_readme(self.catalog, export_path=actual_filename)
@@ -61,8 +65,10 @@ revíselo manualmente""".format(actual_filename)
         assert_true(comparison)
 
     @my_vcr.use_cassette()
+    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
+                return_value=True)
     @mock.patch('pydatajson.indicators._federation_indicators')
-    def test_readme_null_indicators(self, mock_indicators):
+    def test_readme_null_indicators(self, mock_indicators, _mock_check):
         mock_indicators.return_value = {
             'datasets_federados_cant': None,
             'datasets_federados_pct': None,
