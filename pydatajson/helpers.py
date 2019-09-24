@@ -572,4 +572,4 @@ def is_working_url(url):
         response = requests.head(url, timeout=1)
         return response.status_code in VALID_STATUS_CODES, response.status_code
     except RequestException:
-        return False, 'status code desconocido'
+        return False, None

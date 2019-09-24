@@ -261,7 +261,6 @@ class Validator(object):
                                                     download_url_status_code)
 
 
-
 def is_valid_catalog(catalog, validator=None):
     """Valida que un archivo `data.json` cumpla con el schema definido.
 

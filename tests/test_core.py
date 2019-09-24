@@ -575,7 +575,11 @@ class TestDataJsonTestCase(object):
         """Genera informe conciso sobre datasets correctamente."""
         catalog = os.path.join(self.SAMPLES_DIR,
                                "several_datasets_for_harvest.json")
-        actual = self.dj.generate_datasets_summary(catalog)
+
+        with mock.patch('pydatajson.validation.is_working_url',
+                        return_value=(True, 200)):
+            actual = self.dj.generate_datasets_summary(catalog)
+
         expected = [
             OrderedDict([('indice', 0),
                          ('titulo',

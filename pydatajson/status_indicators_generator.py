@@ -53,7 +53,7 @@ class StatusIndicatorsGenerator(object):
         result = 0
         for dataset in self.catalog.get('dataset', []):
             for distribution in dataset.get('distribution', []):
-                valid = is_working_url(distribution.get('downloadURL', ''))
+                valid, _ = is_working_url(distribution.get('downloadURL', ''))
                 result += valid
         # Guardo el resultado una vez calculado
         self.download_url_ok = result
