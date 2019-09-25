@@ -221,7 +221,7 @@ class Validator(object):
 
     def _validate_landing_pages(self, catalog):
         datasets = catalog.get('dataset')
-        datasets = list(filter(lambda x: 'landingPage' in x, datasets))
+        datasets = filter(lambda x: x.get('landingPage'), datasets)
 
         for dataset_idx, dataset in enumerate(datasets):
             dataset_title = dataset.get('title')
