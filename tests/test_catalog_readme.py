@@ -46,7 +46,6 @@ class TestDataJsonTestCase(object):
     def tearDown(cls):
         cls.requests_mock.stop()
 
-
     @my_vcr.use_cassette()
     def test_generate_readme(self):
         with io.open(os.path.join(self.RESULTS_DIR, "catalog_readme.md"), 'r',
