@@ -571,5 +571,6 @@ def is_working_url(url):
     try:
         response = requests.head(url, timeout=1)
         return response.status_code in VALID_STATUS_CODES, response.status_code
-    except RequestException:
+    except (RequestException, Exception):
+        # TODO: Atrapar Exception. test_bad_summary le 'pega' a una lista y requests se vuelve loco
         return False, None

@@ -70,23 +70,6 @@ def dataset_error(options=None):
     }
 
 
-def update_dataset_error(error_report, options):
-    new_dataset_error = {
-        "error_code": options['error_code'],
-        "message": options['message'],
-        "validator": options['validator'],
-        "validator_value": options['validator_value'],
-        "path": options['path'],
-        "instance": options['instance']
-    }
-
-    if error_report['error']['dataset'][0]['status'] != 'ERROR':
-        error_report['error']['dataset'][0]['status'] = 'ERROR'
-    error_report['error']['dataset'][0]['errors'].append(new_dataset_error)
-
-    return error_report
-
-
 def missing_dataset_title():
     return dataset_error({
         "instance": None,

@@ -86,7 +86,7 @@ class Validator(object):
         try:
             for error in self._custom_errors(catalog):
                 errors.append(error)
-        except:
+        except Exception as e:
             logger.warning("Error de validación")
         return errors
 

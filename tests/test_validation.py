@@ -39,15 +39,15 @@ class TestDataJsonTestCase(object):
         return os.path.join(cls.SAMPLES_DIR, sample_filename)
 
     def setUp(self):
-        self.requests_mock = requests_mock.Mocker()
-        self.requests_mock.start()
-        self.requests_mock.get(requests_mock.ANY, real_http=True)
-        self.requests_mock.head(requests_mock.ANY, status_code=200)
         self.dj = pydatajson.DataJson(self.get_sample("full_data.json"))
         self.catalog = pydatajson.readers.read_catalog(
             self.get_sample("full_data.json"))
         self.maxDiff = None
         self.longMessage = True
+        self.requests_mock = requests_mock.Mocker()
+        self.requests_mock.start()
+        self.requests_mock.get(requests_mock.ANY, real_http=True)
+        self.requests_mock.head(requests_mock.ANY, status_code=200)
 
     def tearDown(self):
         del self.dj

@@ -3,7 +3,6 @@
 
 from __future__ import unicode_literals
 
-from tests.support.factories.dataset_errors import update_dataset_error
 from tests.support.utils import jsonschema_str
 
 
