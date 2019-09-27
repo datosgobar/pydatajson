@@ -8,7 +8,7 @@
                     "instance": null,
                     "validator": "required",
                     "path": [],
-                    "message": "u'description' is a required property",
+                    "message": "'description' is a required property",
                     "error_code": 1,
                     "validator_value": [
                         "dataset",
@@ -34,7 +34,7 @@
                             "dataset",
                             0
                         ],
-                        "message": "u'description' is a required property",
+                        "message": "'description' is a required property",
                         "error_code": 1,
                         "validator_value": [
                             "title",
@@ -43,7 +43,8 @@
                             "superTheme",
                             "distribution",
                             "accrualPeriodicity",
-                            "issued"
+                            "issued",
+                            "identifier"
                         ]
                     }
                 ],

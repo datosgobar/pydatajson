@@ -569,7 +569,7 @@ def fields_to_uppercase(fields):
 
 def is_working_url(url):
     try:
-        response = requests.head(url, timeout=3)
-        return response.status_code in VALID_STATUS_CODES
-    except RequestException:
-        return False
+        response = requests.head(url, timeout=1)
+        return response.status_code in VALID_STATUS_CODES, response.status_code
+    except (RequestException, Exception):
+        return False, None

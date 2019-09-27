@@ -6,6 +6,7 @@ import json
 import os.path
 import re
 
+import requests_mock
 import vcr
 from nose.tools import assert_true, assert_false, assert_dict_equal,\
     assert_regexp_matches
@@ -37,17 +38,20 @@ class TestDataJsonTestCase(object):
     def get_sample(cls, sample_filename):
         return os.path.join(cls.SAMPLES_DIR, sample_filename)
 
-    @classmethod
-    def setUp(cls):
-        cls.dj = pydatajson.DataJson(cls.get_sample("full_data.json"))
-        cls.catalog = pydatajson.readers.read_catalog(
-            cls.get_sample("full_data.json"))
-        cls.maxDiff = None
-        cls.longMessage = True
+    def setUp(self):
+        self.dj = pydatajson.DataJson(self.get_sample("full_data.json"))
+        self.catalog = pydatajson.readers.read_catalog(
+            self.get_sample("full_data.json"))
+        self.maxDiff = None
+        self.longMessage = True
+        self.requests_mock = requests_mock.Mocker()
+        self.requests_mock.start()
+        self.requests_mock.get(requests_mock.ANY, real_http=True)
+        self.requests_mock.head(requests_mock.ANY, status_code=200)
 
-    @classmethod
-    def tearDown(cls):
-        del cls.dj
+    def tearDown(self):
+        del self.dj
+        self.requests_mock.stop()
 
     def run_case(self, case_filename, expected_dict=None):
 

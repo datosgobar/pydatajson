@@ -270,27 +270,28 @@ class HelpersTestCase(unittest.TestCase):
     @requests_mock.Mocker()
     def test_validate_valid_url(self, req_mock):
         req_mock.head('http://test.com/')
-        self.assertTrue(is_working_url('http://test.com/'))
+        self.assertEqual((True, 200), is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
     def test_validate_invalid_url(self, req_mock):
         req_mock.head('http://test.com/', status_code=400)
-        self.assertFalse(is_working_url('http://test.com/'))
+        self.assertEqual((False, 400), is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
     def test_validate_url_with_exception(self, req_mock):
         req_mock.head('http://test.com/', exc=ConnectionError)
-        self.assertFalse(is_working_url('http://test.com/'))
+        self.assertEqual((False, None), is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
     def validate_url_with_timeout(self, req_mock):
         req_mock.head('http://test.com/', exc=Timeout)
-        self.assertFalse(is_working_url('http://test.com/'))
+        self.assertEqual((False, None), is_working_url('http://test.com/'))
 
     def test_validate_malformed_values(self):
-        self.assertFalse(is_working_url('malformed_value'))
-        self.assertFalse(is_working_url(''))
-        self.assertFalse(is_working_url(None))
+
+        self.assertEqual((False, None), is_working_url('malformed_value'))
+        self.assertEqual((False, None), is_working_url(''))
+        self.assertEqual((False, None), is_working_url(None))
 
 
 if __name__ == '__main__':

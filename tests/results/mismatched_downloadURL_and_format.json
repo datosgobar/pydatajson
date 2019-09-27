@@ -2,10 +2,10 @@
     "status": "ERROR", 
     "error": {
         "catalog": {
-            "status": "OK", 
-            "errors": [], 
+            "status": "OK",
+            "errors": [],
             "title": "Datos Argentina"
-        }, 
+        },
         "dataset": [
             {
                 "status": "ERROR", 
@@ -25,7 +25,7 @@
                         "error_code": 2, 
                         "validator_value": "Chequea format y la extension del downloadURL"
                     }
-                ], 
+                ],
                 "title": "Sistema de contrataciones electr\u00f3nicas"
             }, 
             {
@@ -58,7 +58,7 @@
                         "message": "distribution 'd_7d4d816f-3a40-476e-ab71-d48a3f0eb3ca' tiene distintas extensiones: format ('CSV') y downloadURL ('.puntos')", 
                         "error_code": 2, 
                         "validator_value": "Chequea format y la extension del downloadURL"
-                    }, 
+                    },
                     {
                         "instance": null, 
                         "validator": "mismatchedValue", 

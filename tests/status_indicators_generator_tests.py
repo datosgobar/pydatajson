@@ -23,12 +23,14 @@ class TestStatusIndicatorsGeneratorTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.gen_justicia = StatusIndicatorsGenerator(
-            cls.get_sample('catalogo_justicia.json'))
-        cls.gen_full_data = StatusIndicatorsGenerator(
-            cls.get_sample('full_data.json'))
-        cls.gen_empty = StatusIndicatorsGenerator(
-            cls.get_sample('invalid_catalog_empty.json'))
+        with mock.patch('pydatajson.validation.is_working_url',
+                        return_value=(True, 200)):
+            cls.gen_justicia = StatusIndicatorsGenerator(
+                cls.get_sample('catalogo_justicia.json'))
+            cls.gen_full_data = StatusIndicatorsGenerator(
+                cls.get_sample('full_data.json'))
+            cls.gen_empty = StatusIndicatorsGenerator(
+                cls.get_sample('invalid_catalog_empty.json'))
 
     def test_just_datasets_cant(self):
         self.assertEqual(16, self.gen_justicia.datasets_cant())

@@ -13,7 +13,7 @@ import vcr
 from nose.tools import assert_true, assert_false, assert_equal
 from nose.tools import assert_list_equal, assert_raises
 from six import iteritems
-
+import requests_mock
 
 try:
     import mock
@@ -44,10 +44,15 @@ class TestDataJsonTestCase(object):
             cls.get_sample("full_data.json"))
         cls.maxDiff = None
         cls.longMessage = True
+        cls.requests_mock = requests_mock.Mocker()
+        cls.requests_mock.start()
+        cls.requests_mock.get(requests_mock.ANY, real_http=True)
+        cls.requests_mock.head(requests_mock.ANY, status_code=200)
 
     @classmethod
     def tearDown(cls):
         del (cls.dj)
+        cls.requests_mock.stop()
 
     # TESTS DE catalog_report
     # Reporte esperado para "full_data.json", con harvest = 0
@@ -145,9 +150,13 @@ class TestDataJsonTestCase(object):
             (u'dataset_temporal', u'2015-01-01/2015-12-31'),
             (u'notas', u'No tiene distribuciones con datos.')])]
 
+    LANDING_PAGE = 'http://datos.gob.ar/dataset/' \
+                   'sistema-de-contrataciones-electronicas-argentina-compra'
+
     def test_catalog_report_harvest_good(self):
         """catalog_report() marcará para cosecha los datasets con metadata
         válida si harvest='valid'."""
+
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -166,6 +175,7 @@ class TestDataJsonTestCase(object):
     def test_catalog_report_harvest_valid(self):
         """catalog_report() marcará para cosecha los datasets con metadata
         válida si harvest='valid'."""
+
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -184,6 +194,7 @@ class TestDataJsonTestCase(object):
     def test_catalog_report_harvest_none(self):
         """catalog_report() no marcará ningún dataset para cosecha si
         harvest='none'."""
+
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         actual = self.dj.catalog_report(
@@ -554,7 +565,11 @@ class TestDataJsonTestCase(object):
         """Genera informe conciso sobre datasets correctamente."""
         catalog = os.path.join(self.SAMPLES_DIR,
                                "several_datasets_for_harvest.json")
-        actual = self.dj.generate_datasets_summary(catalog)
+
+        with mock.patch('pydatajson.validation.is_working_url',
+                        return_value=(True, 200)):
+            actual = self.dj.generate_datasets_summary(catalog)
+
         expected = [
             OrderedDict([('indice', 0),
                          ('titulo',

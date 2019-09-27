@@ -6,6 +6,7 @@ from __future__ import print_function, unicode_literals, with_statement
 
 import os.path
 
+import requests_mock
 import vcr
 from nose.tools import assert_true, assert_false, assert_equal
 
@@ -45,15 +46,18 @@ class TestIndicatorsTestCase(object):
             cls.get_sample("full_data.json"))
         cls.maxDiff = None
         cls.longMessage = True
+        cls.requests_mock = requests_mock.Mocker()
+        cls.requests_mock.start()
+        cls.requests_mock.get(requests_mock.ANY, real_http=True)
+        cls.requests_mock.head(requests_mock.ANY, status_code=200)
 
     @classmethod
     def tearDown(cls):
         del (cls.dj)
+        cls.requests_mock.stop()
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_generate_catalog_indicators(self, _validate_mock):
+    def test_generate_catalog_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
@@ -76,9 +80,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_date_indicators(self, _validate_mock):
+    def test_date_indicators(self):
         from datetime import datetime
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
@@ -101,9 +103,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_format_indicators(self, _validate_mock):
+    def test_format_indicators(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
@@ -121,9 +121,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_license_indicators(self, _validate_mock):
+    def test_license_indicators(self):
         catalog = os.path.join(
             self.SAMPLES_DIR,
             "several_datasets_with_licenses.json")
@@ -142,9 +140,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_no_licenses_indicators(self, _validate_mock):
+    def test_no_licenses_indicators(self):
         # No tienen licencias
         catalog = os.path.join(
             self.SAMPLES_DIR,
@@ -153,9 +149,7 @@ class TestIndicatorsTestCase(object):
         assert_equal(indicators['datasets_licencias_cant'], {'None': 3})
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_field_indicators_on_min_catalog(self, _validate_mock):
+    def test_field_indicators_on_min_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
 
         # Se espera un único catálogo como resultado, índice 0
@@ -170,9 +164,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_field_indicators_on_full_catalog(self, _validate_mock):
+    def test_field_indicators_on_full_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
         # Se espera un único catálogo como resultado, índice 0
@@ -187,9 +179,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_federation_indicators_same_catalog(self, _validate_mock):
+    def test_federation_indicators_same_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog, catalog)[1]
@@ -207,9 +197,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_federation_indicators_no_datasets(self, _validate_mock):
+    def test_federation_indicators_no_datasets(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         central = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
         indicators = self.dj.generate_catalogs_indicators(catalog, central)[1]
@@ -230,10 +218,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_federation_indicators_removed_datasets(self, _validate_mock):
-
+    def test_federation_indicators_removed_datasets(self):
         # CASO 1
         # se buscan los datasets federados en el central que fueron eliminados
         # en el específico pero no se encuentran porque el publisher.name no
@@ -275,9 +260,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_network_indicators(self, _validate_mock):
+    def test_network_indicators(self):
         one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
 
@@ -322,9 +305,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(network_indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_network_license_indicators(self, _validate_mock):
+    def test_network_license_indicators(self):
         one_catalog = os.path.join(
             self.SAMPLES_DIR,
             "several_datasets_with_licenses.json")
@@ -351,9 +332,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(network_indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_network_type_indicators(self, _validate_mock):
+    def test_network_type_indicators(self):
         one_catalog = os.path.join(
             self.SAMPLES_DIR,
             "several_datasets_with_types.json")
@@ -384,9 +363,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(network_indicators[k], v, k)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_types_indicators(self, _validate_mock):
+    def test_types_indicators(self):
         catalog = os.path.join(
             self.SAMPLES_DIR,
             "several_datasets_with_types.json")
@@ -406,9 +383,7 @@ class TestIndicatorsTestCase(object):
         for k, v in expected.items():
             assert_equal(indicators[k], v)
 
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_network_federation_indicators(self, _validate_mock):
+    def test_network_federation_indicators(self):
         one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         other_catalog = os.path.join(self.SAMPLES_DIR, "full_data.json")
         central = one_catalog
@@ -428,9 +403,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(network_indicators[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_indicators_invalid_periodicity(self, _validate_mock):
+    def test_indicators_invalid_periodicity(self):
         catalog = os.path.join(self.SAMPLES_DIR,
                                "malformed_accrualperiodicity.json")
 
@@ -448,9 +421,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v, k)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_indicators_missing_periodicity(self, _validate_mock):
+    def test_indicators_missing_periodicity(self):
         catalog = os.path.join(self.SAMPLES_DIR, "missing_periodicity.json")
 
         # Dataset con periodicidad faltante no aporta valores para indicadores
@@ -466,9 +437,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v, k)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_indicators_missing_dataset(self, _validate_mock):
+    def test_indicators_missing_dataset(self):
         catalog = os.path.join(self.SAMPLES_DIR, "missing_dataset.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
@@ -490,9 +459,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indicators[k], v, k)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_last_updated_indicator_missing_issued_field(self, _validate_mock):
+    def test_last_updated_indicator_missing_issued_field(self):
         from datetime import datetime
         catalog = os.path.join(self.SAMPLES_DIR, "minimum_data.json")
 
@@ -507,9 +474,7 @@ class TestIndicatorsTestCase(object):
         for k, v in expected.items():
             assert_equal(indicators[k], v, k)
 
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_dataset_is_updated(self, _validate_mock):
+    def test_dataset_is_updated(self):
         catalog = os.path.join(self.SAMPLES_DIR, "catalogo_justicia.json")
 
         # Datasset con periodicity mensual vencida
@@ -521,9 +486,7 @@ class TestIndicatorsTestCase(object):
         assert_true(self.dj.dataset_is_updated(catalog, dataset))
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_date_network_indicators_empty_catalog(self, _validate_mock):
+    def test_date_network_indicators_empty_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "invalid_catalog_empty.json")
         indics, network_indics = self.dj.generate_catalogs_indicators(
             [catalog,
@@ -533,9 +496,7 @@ class TestIndicatorsTestCase(object):
         for k, v in network_indics.items():
             assert_true(v is not None)
 
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_unreachable_catalogs(self, _validate_mock):
+    def test_unreachable_catalogs(self):
         catalog = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
         indics, network_indics = self.dj.generate_catalogs_indicators(
             [catalog,
@@ -545,9 +506,7 @@ class TestIndicatorsTestCase(object):
         assert_equal({}, network_indics)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_valid_and_unreachable_catalogs(self, _validate_mock):
+    def test_valid_and_unreachable_catalogs(self):
         valid = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         unreachable = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
 
@@ -566,9 +525,7 @@ class TestIndicatorsTestCase(object):
         for k, v in expected.items():
             assert_true(indicators[k], v)
 
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_unreachable_central_catalog(self, _validate_mock):
+    def test_unreachable_central_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         unreachable = os.path.join(self.SAMPLES_DIR, "invalid/path.json")
         indics = self.dj.generate_catalogs_indicators(
@@ -591,12 +548,10 @@ class TestIndicatorsTestCase(object):
             assert_equal(indics[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
     @mock.patch('pydatajson.status_indicators_generator.'
                 'generate_datasets_summary', autospec=True)
-    def test_bad_summary(self, mock_summary, _validate_mock):
-        mock_summary.side_effect = Exception('bad summary')
+    def test_bad_summary(self, mock_summary):
+        mock_summary.side_effect = Exception("bad summary")
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         indics = self.dj.generate_catalogs_indicators(catalog)[0][0]
         expected = {
@@ -610,9 +565,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indics[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_bad_date_indicators(self, _validate_mock):
+    def test_bad_date_indicators(self):
         catalog = self.dj
         catalog['issued'] = catalog['modified'] = 'invalid_date'
         indics = self.dj.generate_catalogs_indicators()[0][0]
@@ -627,9 +580,7 @@ class TestIndicatorsTestCase(object):
             assert_equal(indics[k], v)
 
     @my_vcr.use_cassette()
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_no_title_nor_identifier_catalog(self, _validate_mock):
+    def test_no_title_nor_identifier_catalog(self):
         catalog = DataJson(
             os.path.join(
                 self.SAMPLES_DIR,
@@ -639,9 +590,7 @@ class TestIndicatorsTestCase(object):
         assert_equal(indics['title'], 'no-title')
         assert_equal(indics['identifier'], 'no-id')
 
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_node_indicators_no_central_catalog(self, _validate_mock):
+    def test_node_indicators_no_central_catalog(self):
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
         node_indicators, network_indicators = \
             self.dj.generate_catalogs_indicators(catalog)
@@ -657,9 +606,7 @@ class TestIndicatorsTestCase(object):
             assert_true(fed_ind not in node_indicators[0])
             assert_true(fed_ind not in network_indicators)
 
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                return_value=True)
-    def test_federation_indicators_by_id(self, _validate_mock):
+    def test_federation_indicators_by_id(self):
         catalogs = [
             os.path.join(self.SAMPLES_DIR, "federated_1.json"),
             os.path.join(self.SAMPLES_DIR, "federated_2.json"),
@@ -689,13 +636,12 @@ class TestIndicatorsTestCase(object):
         assert_true(_eventual_periodicity('EVENTUAL'))
         assert_false(_eventual_periodicity('not eventual'))
 
-    @mock.patch('pydatajson.status_indicators_generator.is_working_url',
-                side_effect=[x % 2 == 0 for x in range(0, 6)])
-    def test_validate_download_url_indicator(self, _validate_mock):
+    def test_validate_download_url_indicator(self):
+
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
         indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
 
-        assert_equal(indicators['distribuciones_download_url_ok_cant'], 3)
-        assert_equal(indicators['distribuciones_download_url_error_cant'], 3)
-        assert_equal(indicators['distribuciones_download_url_ok_pct'], 0.5)
+        assert_equal(indicators['distribuciones_download_url_ok_cant'], 4)
+        assert_equal(indicators['distribuciones_download_url_error_cant'], 2)
+        assert_equal(indicators['distribuciones_download_url_ok_pct'], 0.6667)

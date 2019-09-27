@@ -9,11 +9,16 @@ Contiene los métodos para validar el perfil de metadatos de un catálogo.
 from __future__ import unicode_literals, print_function
 from __future__ import with_statement, absolute_import
 
+import logging
+import mimetypes
 import os
 import platform
-import mimetypes
-import logging
 from collections import Counter
+
+import requests
+
+from pydatajson.constants import VALID_STATUS_CODES
+from pydatajson.helpers import is_working_url
 
 try:
     from urlparse import urlparse
@@ -81,7 +86,7 @@ class Validator(object):
         try:
             for error in self._custom_errors(catalog):
                 errors.append(error)
-        except:
+        except Exception as e:
             logger.warning("Error de validación")
         return errors
 
@@ -125,7 +130,9 @@ class Validator(object):
     def _validators(self):
         return [
             self._theme_ids_not_repeated,
-            self._consistent_distribution_fields
+            self._consistent_distribution_fields,
+            self._validate_landing_pages,
+            self._validate_distributions_urls
         ]
 
     def _theme_ids_not_repeated(self, catalog):
@@ -211,6 +218,47 @@ class Validator(object):
         position["errors"].append(error_info)
 
         return new_response
+
+    def _validate_landing_pages(self, catalog):
+        datasets = catalog.get('dataset')
+        datasets = filter(lambda x: x.get('landingPage'), datasets)
+
+        for dataset_idx, dataset in enumerate(datasets):
+            dataset_title = dataset.get('title')
+            landing_page = dataset.get('landingPage')
+
+            valid, status_code = is_working_url(landing_page)
+            if not valid:
+                yield ce.BrokenLandingPageError(dataset_idx, dataset_title,
+                                                landing_page, status_code)
+
+    def _validate_distributions_urls(self, catalog):
+        datasets = catalog.get('dataset')
+
+        for dataset_idx, dataset in enumerate(datasets):
+            distributions = dataset.get('distribution')
+
+            for distribution_idx, distribution in enumerate(distributions):
+                distribution_title = distribution.get('title')
+                access_url = distribution.get('accessURL')
+                download_url = distribution.get('downloadURL')
+
+                access_url_is_valid, access_url_status_code = \
+                    is_working_url(access_url)
+                download_url_is_valid, download_url_status_code = \
+                    is_working_url(download_url)
+                if not access_url_is_valid:
+                    yield ce.BrokenAccessUrlError(dataset_idx,
+                                                  distribution_idx,
+                                                  distribution_title,
+                                                  access_url,
+                                                  access_url_status_code)
+                if not download_url_is_valid:
+                    yield ce.BrokenDownloadUrlError(dataset_idx,
+                                                    distribution_idx,
+                                                    distribution_title,
+                                                    download_url,
+                                                    download_url_status_code)
 
 
 def is_valid_catalog(catalog, validator=None):
