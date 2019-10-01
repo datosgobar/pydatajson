@@ -6,6 +6,7 @@ de la API de CKAN.
 
 from __future__ import print_function, unicode_literals
 import logging
+import traceback
 from ckanapi.errors import NotFound, CKANAPIError
 
 from pydatajson.constants import REQUESTS_TIMEOUT, DEFAULT_TIMEZONE
@@ -748,15 +749,20 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
     for org in org_list:
         print("Restaurando organizacion {}".format(org))
 
-        response = origin_portal.action.organization_show(
-            id=org, include_datasets=True)
-        datasets = [package['id'] for package in response['packages']]
-        pushed_datasets = restore_organization_to_ckan(
-            catalog, org, destination_portal_url, apikey,
-            dataset_list=datasets, download_strategy=download_strategy,
-            generate_new_access_url=generate_new_access_url,
-            origin_tz=origin_tz, dst_tz=dst_tz
-        )
-        res[org] = pushed_datasets
+        try:
+            response = origin_portal.action.organization_show(
+                id=org, include_datasets=True)
+            datasets = [package['id'] for package in response['packages']]
+
+            pushed_datasets = restore_organization_to_ckan(
+                catalog, org, destination_portal_url, apikey,
+                dataset_list=datasets, download_strategy=download_strategy,
+                generate_new_access_url=generate_new_access_url,
+                origin_tz=origin_tz, dst_tz=dst_tz
+            )
+            res[org] = pushed_datasets
+        except Exception as e:
+            print(e)
+            print(traceback.print_exc())
 
     return res
