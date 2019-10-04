@@ -17,7 +17,8 @@ from collections import Counter
 
 import requests
 
-from pydatajson.constants import VALID_STATUS_CODES
+from pydatajson import threading_helper
+from pydatajson.constants import VALID_STATUS_CODES, CANT_THREADS_BROKEN_URL_VALIDATOR
 from pydatajson.helpers import is_working_url
 
 try:
@@ -235,6 +236,8 @@ class Validator(object):
     def _validate_distributions_urls(self, catalog):
         datasets = catalog.get('dataset')
 
+        metadata = []
+        urls = []
         for dataset_idx, dataset in enumerate(datasets):
             distributions = dataset.get('distribution')
 
@@ -243,22 +246,47 @@ class Validator(object):
                 access_url = distribution.get('accessURL')
                 download_url = distribution.get('downloadURL')
 
-                access_url_is_valid, access_url_status_code = \
-                    is_working_url(access_url)
-                download_url_is_valid, download_url_status_code = \
-                    is_working_url(download_url)
-                if not access_url_is_valid:
-                    yield ce.BrokenAccessUrlError(dataset_idx,
-                                                  distribution_idx,
-                                                  distribution_title,
-                                                  access_url,
-                                                  access_url_status_code)
-                if not download_url_is_valid:
-                    yield ce.BrokenDownloadUrlError(dataset_idx,
-                                                    distribution_idx,
-                                                    distribution_title,
-                                                    download_url,
-                                                    download_url_status_code)
+                metadata.append({
+                    "dataset_idx": dataset_idx,
+                    "dist_idx": distribution_idx,
+                    "dist_title": distribution_title
+                })
+                urls += [access_url, download_url]
+
+        # sync_res = []
+        # for url in urls:
+        #     sync_res.append(is_working_url(url))
+
+        sync_res = threading_helper\
+            .apply_threading(urls,
+                             is_working_url,
+                             CANT_THREADS_BROKEN_URL_VALIDATOR)
+
+        for i in range(len(metadata)):
+            actual_metadata = metadata[i]
+            dataset_idx = actual_metadata["dataset_idx"]
+            distribution_idx = actual_metadata["dist_idx"]
+            distribution_title = actual_metadata["dist_title"]
+
+            k = i*2
+            access_url = urls[k]
+            download_url = urls[k+1]
+
+            access_url_is_valid, access_url_status_code = sync_res[k]
+            download_url_is_valid, download_url_status_code = sync_res[k+1]
+
+            if not access_url_is_valid:
+                yield ce.BrokenAccessUrlError(dataset_idx,
+                                              distribution_idx,
+                                              distribution_title,
+                                              access_url,
+                                              access_url_status_code)
+            if not download_url_is_valid:
+                yield ce.BrokenDownloadUrlError(dataset_idx,
+                                                distribution_idx,
+                                                distribution_title,
+                                                download_url,
+                                                download_url_status_code)
 
 
 def is_valid_catalog(catalog, validator=None):
