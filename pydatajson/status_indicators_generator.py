@@ -1,5 +1,5 @@
 from pydatajson import threading_helper
-from pydatajson.constants import CANT_THREADS_BROKEN_URL_VALIDATOR
+from pydatajson import constants
 from pydatajson.helpers import is_working_url
 from pydatajson.readers import read_catalog
 from pydatajson.reporting import generate_datasets_summary
@@ -60,7 +60,7 @@ class StatusIndicatorsGenerator(object):
             async_results += threading_helper\
                 .apply_threading(distribution_urls,
                                  is_working_url,
-                                 CANT_THREADS_BROKEN_URL_VALIDATOR)
+                                 constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
 
         result = 0
         for res, _ in async_results:

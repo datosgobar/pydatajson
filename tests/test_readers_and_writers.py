@@ -7,11 +7,12 @@ from __future__ import print_function, unicode_literals, with_statement
 
 import os.path
 import unittest
+from tempfile import NamedTemporaryFile
+
 import nose
 import vcr
 
-from tempfile import NamedTemporaryFile
-
+from pydatajson import constants
 from tests.support.factories.xlsx import CSV_TABLE, WRITE_XLSX_TABLE
 from tests.support.factories.xlsx import READ_XLSX_TABLE
 
@@ -50,10 +51,12 @@ class ReadersAndWritersTestCase(unittest.TestCase):
         cls.dj = DataJson()
         cls.maxDiff = None
         cls.longMessage = True
+        constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
     @classmethod
     def tearDown(cls):
         del (cls.dj)
+        constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 10
 
     # TESTS DE READ_TABLE y WRITE_TABLE
 

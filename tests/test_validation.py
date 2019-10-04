@@ -12,6 +12,7 @@ from nose.tools import assert_true, assert_false, assert_dict_equal,\
     assert_regexp_matches
 from six import iteritems, text_type
 
+from pydatajson import constants
 from tests.support.factories.core_files import TEST_FILE_RESPONSES
 from .support.constants import BAD_DATAJSON_URL, BAD_DATAJSON_URL2
 from .support.utils import jsonschema_str
@@ -45,6 +46,7 @@ class TestDataJsonTestCase(object):
         self.maxDiff = None
         self.longMessage = True
         self.requests_mock = requests_mock.Mocker()
+        constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
         self.requests_mock.start()
         self.requests_mock.get(requests_mock.ANY, real_http=True)
         self.requests_mock.head(requests_mock.ANY, status_code=200)
@@ -52,6 +54,7 @@ class TestDataJsonTestCase(object):
     def tearDown(self):
         del self.dj
         self.requests_mock.stop()
+        constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 10
 
     def run_case(self, case_filename, expected_dict=None):
 
