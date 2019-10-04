@@ -28,6 +28,10 @@ from pydatajson.custom_exceptions import NonParseableCatalog
 from tests import xl_methods
 import openpyxl as pyxl
 
+import pydatajson.constants
+pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
+
+
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join(
                      "tests", "cassetes", "readers_and_writers"),
@@ -51,12 +55,10 @@ class ReadersAndWritersTestCase(unittest.TestCase):
         cls.dj = DataJson()
         cls.maxDiff = None
         cls.longMessage = True
-        constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
     @classmethod
     def tearDown(cls):
         del (cls.dj)
-        constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 10
 
     # TESTS DE READ_TABLE y WRITE_TABLE
 

@@ -15,8 +15,6 @@ import os
 import platform
 from collections import Counter
 
-import requests
-
 from pydatajson import threading_helper
 from pydatajson import constants
 from pydatajson.helpers import is_working_url
