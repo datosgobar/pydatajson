@@ -91,8 +91,8 @@ def read_catalog(catalog, default_values=None, catalog_format=None,
                 catalog_dict = read_xlsx_catalog(catalog,
                                                  verify=verify,
                                                  timeout=timeout)
-            except openpyxl_exceptions + \
-                    (ValueError, AssertionError, IOError, BadZipfile) as e:
+            except openpyxl_exceptions + (KeyError, ValueError, AssertionError,
+                                          IOError, BadZipfile) as e:
                 raise ce.NonParseableCatalog(catalog, str(e))
         elif catalog_format == "json":
             try:
@@ -459,7 +459,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 '{}' (fila #{} de la hoja "Field"). Este campo no figurara en
                 el data.json de salida.""".format(
                     unidecode(field["dataset_title"]),
-                    unidecode(field["field_title"]), idx + 2))
+                    unidecode(field.get("field_title", "sin title")), idx + 2))
 
         elif distribution_index is None:
             logger.warning(
@@ -467,7 +467,7 @@ pudo asignar a un dataset, y no figurara en el data.json de salida.""".format(
                 campo'{}' (fila #{} de la hoja "Field"). Este campo no figurara
                 en el data.json de salida.""".format(
                     unidecode(field["distribution_title"]),
-                    unidecode(field["field_title"]), idx + 2))
+                    unidecode(field.get("field_title", )), idx + 2))
 
         else:
             dataset = catalog["catalog_dataset"][dataset_index]
@@ -539,10 +539,11 @@ def read_suffixless_catalog(catalog):
     try:
         catalog_dict = read_xlsx_catalog(catalog)
         return catalog_dict
-    except openpyxl_exceptions + (ValueError, AssertionError,
-                                  IOError, BadZipfile):
-        raise ce.NonParseableCatalog(
-            catalog, 'No es posible discernir el formato del catalogo')
+    except openpyxl_exceptions + (KeyError, ValueError, AssertionError,
+                                  IOError, BadZipfile) as e:
+        msg = 'No es posible discernir el formato del catalogo: {}'\
+            .format(str(e))
+        raise ce.NonParseableCatalog(catalog, msg)
 
 
 def read_table(path):

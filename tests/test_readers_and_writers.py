@@ -322,6 +322,12 @@ revíselo manualmente""".format(temp_filename)
         self.assertTrue('theme' not in written_dataset)
         self.assertTrue('field' not in written_distribution)
 
+    @nose.tools.raises(NonParseableCatalog)
+    def test_missing_mandatory_field_on_xlsx_catalog_raises(self):
+        sample = self.get_sample(
+            'catalogo-justicia-missing-distribution-identifier.xlsx')
+        pydatajson.readers.read_catalog(sample)
+
 
 if __name__ == '__main__':
     nose.run(defaultTest=__name__)
