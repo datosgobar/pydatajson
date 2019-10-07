@@ -29,6 +29,7 @@ from tests import xl_methods
 import openpyxl as pyxl
 
 import pydatajson.constants
+pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
 my_vcr = vcr.VCR(
     path_transformer=vcr.VCR.ensure_suffix('.yaml'),
@@ -42,10 +43,6 @@ class ReadersAndWritersTestCase(unittest.TestCase):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = os.path.join("tests", "results")
     TEMP_DIR = os.path.join("tests", "temp")
-
-    @classmethod
-    def setUpClass(cls):
-        pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
     @classmethod
     def get_sample(cls, sample_filename):
