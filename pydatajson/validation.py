@@ -251,10 +251,6 @@ class Validator(object):
                 })
                 urls += [access_url, download_url]
 
-        # sync_res = []
-        # for url in urls:
-        #     sync_res.append(is_working_url(url))
-
         sync_res = threading_helper\
             .apply_threading(urls,
                              is_working_url,
