@@ -30,12 +30,12 @@ import openpyxl as pyxl
 
 import pydatajson.constants
 
-
-
-my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                 cassette_library_dir=os.path.join(
-                     "tests", "cassetes", "readers_and_writers"),
-                 record_mode='once')
+my_vcr = vcr.VCR(
+    path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+    cassette_library_dir=os.path.join(
+        "tests", "cassetes", "readers_and_writers"),
+    record_mode='once'
+)
 
 
 class ReadersAndWritersTestCase(unittest.TestCase):
