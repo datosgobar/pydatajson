@@ -25,7 +25,6 @@ from .context import pydatajson
 from .support.decorators import RESULTS_DIR
 
 import pydatajson.constants
-pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
 
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
@@ -37,6 +36,10 @@ class TestDataJsonTestCase(object):
     SAMPLES_DIR = os.path.join("tests", "samples")
     RESULTS_DIR = RESULTS_DIR
     TEMP_DIR = os.path.join("tests", "temp")
+
+    @classmethod
+    def setUpClass(cls):
+        pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
     @classmethod
     def get_sample(cls, sample_filename):
