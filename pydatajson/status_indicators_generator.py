@@ -1,3 +1,5 @@
+from pydatajson import threading_helper
+from pydatajson import constants
 from pydatajson.helpers import is_working_url
 from pydatajson.readers import read_catalog
 from pydatajson.reporting import generate_datasets_summary
@@ -50,11 +52,20 @@ class StatusIndicatorsGenerator(object):
             round(float(self.distribuciones_download_url_ok_cant()) / total, 4)
 
     def _validate_download_urls(self):
-        result = 0
+        async_results = []
         for dataset in self.catalog.get('dataset', []):
-            for distribution in dataset.get('distribution', []):
-                valid, _ = is_working_url(distribution.get('downloadURL', ''))
-                result += valid
+            distribution_urls = \
+                [distribution.get('downloadURL', '')
+                 for distribution in dataset.get('distribution', [])]
+            async_results += threading_helper\
+                .apply_threading(distribution_urls,
+                                 is_working_url,
+                                 constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
+
+        result = 0
+        for res, _ in async_results:
+            result += res
+
         # Guardo el resultado una vez calculado
         self.download_url_ok = result
         return result

@@ -7,11 +7,12 @@ from __future__ import print_function, unicode_literals, with_statement
 
 import os.path
 import unittest
+from tempfile import NamedTemporaryFile
+
 import nose
 import vcr
 
-from tempfile import NamedTemporaryFile
-
+from pydatajson import constants
 from tests.support.factories.xlsx import CSV_TABLE, WRITE_XLSX_TABLE
 from tests.support.factories.xlsx import READ_XLSX_TABLE
 
@@ -27,10 +28,15 @@ from pydatajson.custom_exceptions import NonParseableCatalog
 from tests import xl_methods
 import openpyxl as pyxl
 
-my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-                 cassette_library_dir=os.path.join(
-                     "tests", "cassetes", "readers_and_writers"),
-                 record_mode='once')
+import pydatajson.constants
+pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
+
+my_vcr = vcr.VCR(
+    path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+    cassette_library_dir=os.path.join(
+        "tests", "cassetes", "readers_and_writers"),
+    record_mode='once'
+)
 
 
 class ReadersAndWritersTestCase(unittest.TestCase):

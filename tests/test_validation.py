@@ -24,6 +24,9 @@ import io
 from .context import pydatajson
 from .support.decorators import RESULTS_DIR
 
+import pydatajson.constants
+pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
+
 my_vcr = vcr.VCR(path_transformer=vcr.VCR.ensure_suffix('.yaml'),
                  cassette_library_dir=os.path.join("tests", "cassetes"),
                  record_mode='once')

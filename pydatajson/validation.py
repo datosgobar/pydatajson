@@ -15,9 +15,8 @@ import os
 import platform
 from collections import Counter
 
-import requests
-
-from pydatajson.constants import VALID_STATUS_CODES
+from pydatajson import threading_helper
+from pydatajson import constants
 from pydatajson.helpers import is_working_url
 
 try:
@@ -223,11 +222,29 @@ class Validator(object):
         datasets = catalog.get('dataset')
         datasets = filter(lambda x: x.get('landingPage'), datasets)
 
-        for dataset_idx, dataset in enumerate(datasets):
-            dataset_title = dataset.get('title')
-            landing_page = dataset.get('landingPage')
+        metadata = []
+        urls = []
 
-            valid, status_code = is_working_url(landing_page)
+        for dataset_idx, dataset in enumerate(datasets):
+            metadata.append({
+                "dataset_idx": dataset_idx,
+                "dataset_title": dataset.get('title'),
+                "landing_page": dataset.get('landingPage'),
+            })
+            urls.append(dataset.get('landingPage'))
+
+        sync_res = threading_helper\
+            .apply_threading(urls,
+                             is_working_url,
+                             constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
+
+        for i in range(len(sync_res)):
+            valid, status_code = sync_res[i]
+            act_metadata = metadata[i]
+            dataset_idx = act_metadata["dataset_idx"]
+            dataset_title = act_metadata["dataset_title"]
+            landing_page = act_metadata["landing_page"]
+
             if not valid:
                 yield ce.BrokenLandingPageError(dataset_idx, dataset_title,
                                                 landing_page, status_code)
@@ -235,6 +252,8 @@ class Validator(object):
     def _validate_distributions_urls(self, catalog):
         datasets = catalog.get('dataset')
 
+        metadata = []
+        urls = []
         for dataset_idx, dataset in enumerate(datasets):
             distributions = dataset.get('distribution')
 
@@ -243,22 +262,43 @@ class Validator(object):
                 access_url = distribution.get('accessURL')
                 download_url = distribution.get('downloadURL')
 
-                access_url_is_valid, access_url_status_code = \
-                    is_working_url(access_url)
-                download_url_is_valid, download_url_status_code = \
-                    is_working_url(download_url)
-                if not access_url_is_valid:
-                    yield ce.BrokenAccessUrlError(dataset_idx,
-                                                  distribution_idx,
-                                                  distribution_title,
-                                                  access_url,
-                                                  access_url_status_code)
-                if not download_url_is_valid:
-                    yield ce.BrokenDownloadUrlError(dataset_idx,
-                                                    distribution_idx,
-                                                    distribution_title,
-                                                    download_url,
-                                                    download_url_status_code)
+                metadata.append({
+                    "dataset_idx": dataset_idx,
+                    "dist_idx": distribution_idx,
+                    "dist_title": distribution_title
+                })
+                urls += [access_url, download_url]
+
+        sync_res = threading_helper\
+            .apply_threading(urls,
+                             is_working_url,
+                             constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
+
+        for i in range(len(metadata)):
+            actual_metadata = metadata[i]
+            dataset_idx = actual_metadata["dataset_idx"]
+            distribution_idx = actual_metadata["dist_idx"]
+            distribution_title = actual_metadata["dist_title"]
+
+            k = i*2
+            access_url = urls[k]
+            download_url = urls[k+1]
+
+            access_url_is_valid, access_url_status_code = sync_res[k]
+            download_url_is_valid, download_url_status_code = sync_res[k+1]
+
+            if not access_url_is_valid:
+                yield ce.BrokenAccessUrlError(dataset_idx,
+                                              distribution_idx,
+                                              distribution_title,
+                                              access_url,
+                                              access_url_status_code)
+            if not download_url_is_valid:
+                yield ce.BrokenDownloadUrlError(dataset_idx,
+                                                distribution_idx,
+                                                distribution_title,
+                                                download_url,
+                                                download_url_status_code)
 
 
 def is_valid_catalog(catalog, validator=None):
