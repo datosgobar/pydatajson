@@ -155,6 +155,14 @@ pydatajson.status\_indicators\_generator module
     :undoc-members:
     :show-inheritance:
 
+pydatajson.threading\_helper module
+-----------------------------------
+
+.. automodule:: pydatajson.threading_helper
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pydatajson.time\_series module
 ------------------------------
 

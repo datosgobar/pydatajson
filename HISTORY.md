@@ -1,5 +1,10 @@
 Versiones
 =========
+
+0.4.49 (2019-09-24)
+-------------------
+* Optimización de tiempo de ejecución de validaciones, usando threads.
+
 0.4.48 (2019-09-24)
 -------------------
 * Se calcula 3 nuevos indicadores en base al `downloadURL` de las distribuciones.
