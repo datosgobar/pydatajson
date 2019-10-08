@@ -8,6 +8,7 @@ from __future__ import print_function, unicode_literals
 import logging
 import traceback
 from ckanapi.errors import NotFound, CKANAPIError
+from requests import RequestException
 
 from pydatajson.constants import REQUESTS_TIMEOUT, DEFAULT_TIMEZONE
 from pydatajson.custom_exceptions import NumericDistributionIdentifierError
@@ -688,7 +689,7 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                                   origin_tz=origin_tz,
                                                   dst_tz=dst_tz)
             restored.append(restored_id)
-        except (CKANAPIError, KeyError, AttributeError,
+        except (CKANAPIError, KeyError, AttributeError, RequestException,
                 NumericDistributionIdentifierError) as e:
             logger.exception('Ocurrió un error restaurando el dataset {}: {}'
                              .format(dataset_id, str(e)))
