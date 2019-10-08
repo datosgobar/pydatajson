@@ -1,4 +1,7 @@
+import time
 from unittest import TestCase
+
+import nose
 
 from pydatajson.threading_helper import apply_threading
 
@@ -14,3 +17,11 @@ class ThreadingTests(TestCase):
         result = apply_threading(elements, function, 3)
 
         self.assertEqual(result, [1, 4, 9, 16])
+
+    def test_broken_function(self):
+        elements = [1, 2, 3, 0]
+
+        def divide(x):
+            return 6/x
+        with self.assertRaises(ZeroDivisionError):  # Es "sincrónico"!
+            apply_threading(elements, divide, 3)
