@@ -1,7 +1,6 @@
-import time
+# -*- coding: utf-8 -*-
 from unittest import TestCase
 
-import nose
 
 from pydatajson.threading_helper import apply_threading
 
