@@ -557,12 +557,12 @@ def fields_to_uppercase(fields):
         lower_key = key.lower()
         upper_key = key.upper()
 
-        if lower_key in fields and lower_key in uppercase_fields:
-            lowercase_counts = fields[lower_key]
-            uppercase_counts = fields.get(upper_key, 0)
+        if not key.isupper():
+            lowercase_counts = uppercase_fields.pop(lower_key, 0)
+            uppercase_counts = uppercase_fields.pop(upper_key, 0)
+            counts = uppercase_fields.pop(key, 0)
 
-            uppercase_fields.pop(lower_key)
-            uppercase_fields[upper_key] = lowercase_counts + uppercase_counts
+            uppercase_fields[upper_key] = uppercase_counts + lowercase_counts + counts
 
     return uppercase_fields
 
