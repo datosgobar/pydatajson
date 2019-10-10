@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.50 (2019-10-10)
+-------------------
+* Bugfix de cálculo de indicadores de `downloadURL` en indicadores de red.
+* Fields con mayúsculas y minúsculas mixtasse muestran en mayúsculas en indicadores. 
 
 0.4.49 (2019-09-24)
 -------------------
