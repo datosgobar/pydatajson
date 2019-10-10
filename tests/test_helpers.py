@@ -267,6 +267,23 @@ class HelpersTestCase(unittest.TestCase):
 
         self.assertEqual(fields_to_uppercase(fields), expected)
 
+    def test_fields_to_uppercase_modifies_mixed_fields(self):
+        fields = {
+            'csv': 5,
+            'Csv': 10,
+            'CSV': 7,
+            'Json': 30,
+            'GeoJSON': 47,
+        }
+
+        expected = {
+            'CSV': 22,
+            'JSON': 30,
+            'GEOJSON': 47
+        }
+
+        self.assertEqual(fields_to_uppercase(fields), expected)
+
     @requests_mock.Mocker()
     def test_validate_valid_url(self, req_mock):
         req_mock.head('http://test.com/')

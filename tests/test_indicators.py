@@ -113,7 +113,7 @@ class TestIndicatorsTestCase(object):
                 'CSV': 1,
                 'XLSX': 1,
                 'PDF': 1,
-                'None': 3
+                'NONE': 3
             }
         }
 
@@ -286,7 +286,7 @@ class TestIndicatorsTestCase(object):
                 'CSV': 2,
                 'XLSX': 1,
                 'PDF': 2,
-                'None': 3
+                'NONE': 3
             },
             'distribuciones_tipos_cant': {
                 'file': 1,
