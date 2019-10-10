@@ -241,6 +241,9 @@ def _network_indicator_percentages(fields, network_indicators):
         'datasets_con_datos_pct':
             (network_indicators.get('datasets_con_datos_cant'),
              network_indicators.get('datasets_sin_datos_cant')),
+        'distribuciones_download_url_ok_pct':
+            (network_indicators.get('distribuciones_download_url_ok_cant'),
+             network_indicators.get('distribuciones_download_url_error_cant')),
     }
 
     for indicator in percentages:

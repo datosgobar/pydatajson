@@ -299,6 +299,9 @@ class TestIndicatorsTestCase(object):
             },
             'campos_optativos_pct': 0.3256,
             'campos_recomendados_pct': 0.5072,
+            'distribuciones_download_url_ok_cant': 6,
+            'distribuciones_download_url_error_cant': 2,
+            'distribuciones_download_url_ok_pct': 0.75
         }
 
         for k, v in expected.items():
