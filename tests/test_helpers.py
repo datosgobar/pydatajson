@@ -267,7 +267,7 @@ class HelpersTestCase(unittest.TestCase):
 
         self.assertEqual(fields_to_uppercase(fields), expected)
 
-    def test_fields_to_uppercase_modifies_mixed__fields(self):
+    def test_fields_to_uppercase_modifies_mixed_fields(self):
         fields = {
             'csv': 5,
             'Csv': 10,

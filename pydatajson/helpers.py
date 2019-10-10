@@ -562,7 +562,8 @@ def fields_to_uppercase(fields):
             uppercase_counts = uppercase_fields.pop(upper_key, 0)
             counts = uppercase_fields.pop(key, 0)
 
-            uppercase_fields[upper_key] = uppercase_counts + lowercase_counts + counts
+            uppercase_fields[upper_key] = \
+                uppercase_counts + lowercase_counts + counts
 
     return uppercase_fields
 
