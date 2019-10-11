@@ -957,7 +957,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
     def generate_catalogs_indicators(self, catalogs=None,
                                      central_catalog=None,
-                                     identifier_search=False):
+                                     identifier_search=False,
+                                     broken_links=False):
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
             catalogs, central_catalog, identifier_search=identifier_search,

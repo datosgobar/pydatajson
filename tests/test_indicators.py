@@ -643,7 +643,8 @@ class TestIndicatorsTestCase(object):
 
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        indicators = self.dj.generate_catalogs_indicators(catalog,
+                                                          broken_links=True)[0][0]
 
         assert_equal(indicators['distribuciones_download_url_ok_cant'], 4)
         assert_equal(indicators['distribuciones_download_url_error_cant'], 2)
