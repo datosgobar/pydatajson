@@ -1,7 +1,7 @@
 import os
 
 import requests_mock
-from nose.tools import assert_true, assert_false, assert_raises
+from nose.tools import assert_true, assert_false
 from requests import Timeout
 
 import pydatajson
@@ -33,18 +33,27 @@ class TestDataJsonTestCase(object):
         self.requests_mock.stop()
 
     def test_urls_with_status_code_200_is_valid(self):
-        assert_true(self.dj.is_valid_catalog())
+        assert_true(self.dj.is_valid_catalog(broken_links=True))
 
     def test_urls_with_status_code_203_is_valid(self):
-        assert_true(self.dj.is_valid_catalog())
+        self.requests_mock.head(requests_mock.ANY, status_code=203)
+        assert_true(self.dj.is_valid_catalog(broken_links=True))
 
     def test_urls_with_status_code_302_is_valid(self):
+        self.requests_mock.head(requests_mock.ANY, status_code=302)
+        assert_true(self.dj.is_valid_catalog(broken_links=True))
+
+    def test_urls_with_invalid_status_codes_are_not_valid(self):
+        self.requests_mock.head(requests_mock.ANY, status_code=404)
+        assert_false(self.dj.is_valid_catalog(broken_links=True))
+
+    def test_throws_exception(self):
+        self.requests_mock.head(requests_mock.ANY, exc=Timeout)
+        assert_false(self.dj.is_valid_catalog(broken_links=True))
+
+    def test_validation_without_flag_does_not_validate_urls(self):
         assert_true(self.dj.is_valid_catalog())
 
-    def tests_urls_with_invalid_status_codes_are_not_valid(self):
+    def test_validation_with_flag_does_validate_urls(self):
         self.requests_mock.head(requests_mock.ANY, status_code=404)
-        assert_false(self.dj.is_valid_catalog())
-
-    def tests_throws_exception(self):
-        self.requests_mock.head(requests_mock.ANY, exc=Timeout)
-        assert_false(self.dj.is_valid_catalog())
+        assert_false(self.dj.is_valid_catalog(broken_links=True))
