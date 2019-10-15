@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.51 (2019-10-15)
+-------------------
+* Los métodos de validaciones e indicadores ahora aceptan un flag que determina si validar o no campos con URLs.
+
 0.4.50 (2019-10-10)
 -------------------
 * Bugfix de cálculo de indicadores de `downloadURL` en indicadores de red.
