@@ -43,11 +43,6 @@ def generate_numeric_indicators(catalog, validator=None):
                                 only_numeric=True)[1]
 
 
-def generate_urls_indicators(catalog, validator=None):
-    return _generate_indicators(catalog, validator=validator,
-                                broken_links=True)[1]
-
-
 def generate_catalogs_indicators(catalogs, central_catalog=None,
                                  identifier_search=False,
                                  broken_links=False,

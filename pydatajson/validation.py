@@ -58,12 +58,12 @@ class Validator(object):
         return jsonschema.Draft4Validator(
             schema=schema, resolver=resolver, format_checker=format_checker)
 
-    def is_valid(self, catalog, broken_links):
-        return not self._get_errors(catalog, broken_links)
+    def is_valid(self, catalog, broken_links=False):
+        return not self._get_errors(catalog, broken_links=broken_links)
 
     def validate_catalog(self, catalog, only_errors=False, broken_links=False):
         default_response = self._default_response(catalog)
-        errors = self._get_errors(catalog, broken_links)
+        errors = self._get_errors(catalog, broken_links=broken_links)
 
         response = default_response.copy()
         for error in errors:
@@ -78,12 +78,13 @@ class Validator(object):
 
         return response
 
-    def _get_errors(self, catalog, broken_links):
+    def _get_errors(self, catalog, broken_links=False):
         errors = list(
             self.jsonschema_validator.iter_errors(catalog)
         )
         try:
-            for error in self._custom_errors(catalog, broken_links):
+            for error in self._custom_errors(catalog,
+                                             broken_links=broken_links):
                 errors.append(error)
         except Exception as e:
             logger.warning("Error de validación")

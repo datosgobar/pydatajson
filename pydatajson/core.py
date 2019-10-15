@@ -250,7 +250,7 @@ class DataJson(dict):
             bool: True si el data.json cumple con el schema, sino False.
         """
         catalog = self._read_catalog(catalog) if catalog else self
-        return self.validator.is_valid(catalog, broken_links)
+        return self.validator.is_valid(catalog, broken_links=broken_links)
 
     @staticmethod
     def _update_validation_response(error, response):
