@@ -8,7 +8,8 @@ import os.path
 
 import requests_mock
 import vcr
-from nose.tools import assert_true, assert_false, assert_equal
+from nose.tools import assert_true, assert_false, assert_equal, \
+    assert_not_in, assert_in
 
 from pydatajson.indicators import _eventual_periodicity
 
@@ -266,8 +267,8 @@ class TestIndicatorsTestCase(object):
 
         indicators, network_indicators = self.dj.generate_catalogs_indicators([
             one_catalog,
-            other_catalog
-        ])
+            other_catalog,
+        ], broken_links=True)
 
         # Esperado: suma de los indicadores individuales
         # No se testean los indicadores de actualización porque las fechas no
@@ -643,8 +644,64 @@ class TestIndicatorsTestCase(object):
 
         catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
 
-        indicators = self.dj.generate_catalogs_indicators(catalog)[0][0]
+        indicators = self.dj.generate_catalogs_indicators(
+            catalog, broken_links=True)[0][0]
 
         assert_equal(indicators['distribuciones_download_url_ok_cant'], 4)
         assert_equal(indicators['distribuciones_download_url_error_cant'], 2)
         assert_equal(indicators['distribuciones_download_url_ok_pct'], 0.6667)
+
+    def test_indicators_does_not_include_urls_by_default(self):
+        one_catalog = os.path.join(self.SAMPLES_DIR, "several_datasets.json")
+
+        indicator = self.dj.generate_catalogs_indicators([
+            one_catalog,
+        ])[0][0]
+
+        expected = {
+            'datasets_cant': 3,
+            'distribuciones_cant': 6,
+            'datasets_meta_ok_cant': 2,
+            'datasets_meta_error_cant': 1,
+            'datasets_meta_ok_pct': 0.6667,
+            'datasets_con_datos_cant': 2,
+            'datasets_sin_datos_cant': 1,
+            'datasets_con_datos_pct': 0.6667,
+            'datasets_desactualizados_cant': 2,
+            'datasets_actualizados_cant': 1,
+            'datasets_actualizados_pct': 0.3333,
+            'catalogo_ultima_actualizacion_dias': 1279,
+            'datasets_frecuencia_cant': {
+                'R/P1W': 1,
+                'EVENTUAL': 1,
+                'R/P1M': 1
+            },
+            'distribuciones_formatos_cant': {
+                'NONE': 3,
+                'XLSX': 1,
+                'PDF': 1,
+                'CSV': 1
+            },
+            'distribuciones_tipos_cant': {
+                'None': 6
+            },
+            'datasets_licencias_cant': {
+                'None': 3
+            },
+            'campos_recomendados_pct': 0.0972,
+            'campos_optativos_pct': 0.0,
+            'title': 'Cosechando Datos Argentina',
+            'identifier': '7d4d816f-3a40-476e-ab71-d48a3f0eb3c8'
+        }
+
+        not_expected = {
+            'distribuciones_download_url_ok_cant': 4,
+            'distribuciones_download_url_error_cant': 2,
+            'distribuciones_download_url_ok_pct': 0.6667,
+        }
+
+        for k, _ in expected.items():
+            assert_in(k, indicator)
+
+        for k, _ in not_expected.items():
+            assert_not_in(k, indicator)

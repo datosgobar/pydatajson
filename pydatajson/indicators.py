@@ -45,6 +45,7 @@ def generate_numeric_indicators(catalog, validator=None):
 
 def generate_catalogs_indicators(catalogs, central_catalog=None,
                                  identifier_search=False,
+                                 broken_links=False,
                                  validator=None):
     """Genera una lista de diccionarios con varios indicadores sobre
     los catálogos provistos, tales como la cantidad de datasets válidos,
@@ -82,7 +83,7 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
             continue
 
         fields_count, result = _generate_indicators(
-            catalog, validator=validator)
+            catalog, validator=validator, broken_links=broken_links)
         if central_catalog:
             result.update(_federation_indicators(
                 catalog, central_catalog, identifier_search=identifier_search))
@@ -111,7 +112,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
     return indicators_list, network_indicators
 
 
-def _generate_indicators(catalog, validator=None, only_numeric=False):
+def _generate_indicators(catalog, validator=None, only_numeric=False,
+                         broken_links=False):
     """Genera los indicadores de un catálogo individual.
 
     Args:
@@ -125,6 +127,11 @@ def _generate_indicators(catalog, validator=None, only_numeric=False):
 
     # Obtengo summary para los indicadores del estado de los metadatos
     result.update(_generate_status_indicators(catalog, validator=validator))
+
+    # Genero indicadores relacionados con validacion de urls
+    if broken_links:
+        result.update(_generate_valid_urls_indicators(catalog,
+                                                      validator=validator))
 
     # Genero los indicadores relacionados con fechas, y los agrego
     result.update(
@@ -305,13 +312,6 @@ def _generate_status_indicators(catalog, validator=None):
         'datasets_con_datos_cant': generator.datasets_con_datos_cant(),
         'datasets_sin_datos_cant': generator.datasets_sin_datos_cant(),
         'datasets_con_datos_pct': generator.datasets_con_datos_pct(),
-        'distribuciones_download_url_ok_cant':
-            generator.distribuciones_download_url_ok_cant(),
-        'distribuciones_download_url_error_cant':
-            generator.distribuciones_download_url_error_cant(),
-        'distribuciones_download_url_ok_pct':
-            generator.distribuciones_download_url_ok_pct(),
-
     })
     return result
 
@@ -554,3 +554,34 @@ def count_fields(targets, field):
 
 def _eventual_periodicity(periodicity):
     return periodicity in ('eventual', 'EVENTUAL')
+
+
+def _generate_valid_urls_indicators(catalog, validator=None):
+    """Genera indicadores sobre el estado de las urls de distribuciones
+
+    Args:
+        catalog (dict): diccionario de un data.json parseado
+
+    Returns:
+        dict: indicadores sobre las urls de las distribuciones del catálogo
+    """
+
+    result = {}
+    try:
+        generator = StatusIndicatorsGenerator(catalog, validator=validator)
+    except Exception as e:
+        msg = u'Error generando resumen del catálogo {}: {}'.format(
+            catalog['title'], str(e))
+        logger.warning(msg)
+        return result
+
+    result.update({
+        'distribuciones_download_url_ok_cant':
+            generator.distribuciones_download_url_ok_cant(),
+        'distribuciones_download_url_error_cant':
+            generator.distribuciones_download_url_error_cant(),
+        'distribuciones_download_url_ok_pct':
+            generator.distribuciones_download_url_ok_pct(),
+    })
+
+    return result

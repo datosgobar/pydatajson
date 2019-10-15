@@ -235,7 +235,7 @@ class DataJson(dict):
 
         logger.warning("No se encontro la distribucion {}.".format(identifier))
 
-    def is_valid_catalog(self, catalog=None):
+    def is_valid_catalog(self, catalog=None, broken_links=False):
         """Valida que un archivo `data.json` cumpla con el schema definido.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -250,7 +250,7 @@ class DataJson(dict):
             bool: True si el data.json cumple con el schema, sino False.
         """
         catalog = self._read_catalog(catalog) if catalog else self
-        return self.validator.is_valid(catalog)
+        return self.validator.is_valid(catalog, broken_links=broken_links)
 
     @staticmethod
     def _update_validation_response(error, response):
@@ -290,7 +290,7 @@ class DataJson(dict):
         return new_response
 
     def validate_catalog(self, catalog=None, only_errors=False, fmt="dict",
-                         export_path=None):
+                         export_path=None, broken_links=False):
         """Analiza un data.json registrando los errores que encuentra.
 
         Chequea que el data.json tiene todos los campos obligatorios y que
@@ -342,7 +342,8 @@ class DataJson(dict):
         """
         catalog = self._read_catalog(catalog) if catalog else self
 
-        validation = self.validator.validate_catalog(catalog, only_errors)
+        validation = self.validator.validate_catalog(catalog, only_errors,
+                                                     broken_links)
         if export_path:
             fmt = 'table'
 
@@ -957,11 +958,12 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
 
     def generate_catalogs_indicators(self, catalogs=None,
                                      central_catalog=None,
-                                     identifier_search=False):
+                                     identifier_search=False,
+                                     broken_links=False):
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
             catalogs, central_catalog, identifier_search=identifier_search,
-            validator=self.validator)
+            validator=self.validator, broken_links=broken_links)
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos
