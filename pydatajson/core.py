@@ -342,7 +342,8 @@ class DataJson(dict):
         """
         catalog = self._read_catalog(catalog) if catalog else self
 
-        validation = self.validator.validate_catalog(catalog, only_errors, broken_links)
+        validation = self.validator.validate_catalog(catalog, only_errors,
+                                                     broken_links)
         if export_path:
             fmt = 'table'
 
@@ -962,7 +963,7 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
             catalogs, central_catalog, identifier_search=identifier_search,
-            validator=self.validator)
+            validator=self.validator, broken_links=broken_links)
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos

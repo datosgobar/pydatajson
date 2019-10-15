@@ -117,7 +117,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
     return indicators_list, network_indicators
 
 
-def _generate_indicators(catalog, validator=None, only_numeric=False, broken_links=False):
+def _generate_indicators(catalog, validator=None, only_numeric=False,
+                         broken_links=False):
     """Genera los indicadores de un catálogo individual.
 
     Args:
@@ -134,7 +135,8 @@ def _generate_indicators(catalog, validator=None, only_numeric=False, broken_lin
 
     # Genero indicadores relacionados con validacion de urls
     if broken_links:
-        result.update(_generate_valid_urls_indicators(catalog, validator=validator))
+        result.update(_generate_valid_urls_indicators(catalog,
+                                                      validator=validator))
 
     # Genero los indicadores relacionados con fechas, y los agrego
     result.update(
