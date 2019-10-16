@@ -300,9 +300,9 @@ class HelpersTestCase(unittest.TestCase):
         self.assertEqual((False, None), is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
-    def validate_url_with_timeout(self, req_mock):
+    def test_validate_url_with_timeout(self, req_mock):
         req_mock.head('http://test.com/', exc=Timeout)
-        self.assertEqual((False, None), is_working_url('http://test.com/'))
+        self.assertEqual((False, 408), is_working_url('http://test.com/'))
 
     def test_validate_malformed_values(self):
 
