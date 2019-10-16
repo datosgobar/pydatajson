@@ -18,13 +18,13 @@ from contextlib import contextmanager
 
 import requests
 from openpyxl import load_workbook
-from requests import RequestException
+from requests import RequestException, Timeout
 from six.moves.urllib_parse import urlparse
 
 from six import string_types, iteritems
 from unidecode import unidecode
 
-from pydatajson.constants import VALID_STATUS_CODES
+from pydatajson.constants import INVALID_STATUS_CODES_REGEX, EXCEPTION_STATUS_CODES
 from pydatajson.download import download_to_file
 
 logger = logging.getLogger('pydatajson.helpers')
@@ -571,6 +571,13 @@ def fields_to_uppercase(fields):
 def is_working_url(url):
     try:
         response = requests.head(url, timeout=1)
-        return response.status_code in VALID_STATUS_CODES, response.status_code
+        matches = []
+        if response.status_code not in EXCEPTION_STATUS_CODES:
+            matches = \
+                [re.match(pattern, str(response.status_code)) is not None
+                 for pattern in INVALID_STATUS_CODES_REGEX]
+        return True not in matches, response.status_code
+    except Timeout:
+        return False, 408
     except (RequestException, Exception):
         return False, None
