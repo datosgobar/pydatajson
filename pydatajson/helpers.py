@@ -24,7 +24,9 @@ from six.moves.urllib_parse import urlparse
 from six import string_types, iteritems
 from unidecode import unidecode
 
-from pydatajson.constants import INVALID_STATUS_CODES_REGEX, EXCEPTION_STATUS_CODES
+from pydatajson.constants import \
+    INVALID_STATUS_CODES_REGEX, \
+    EXCEPTION_STATUS_CODES
 from pydatajson.download import download_to_file
 
 logger = logging.getLogger('pydatajson.helpers')
