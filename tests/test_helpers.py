@@ -295,10 +295,11 @@ class HelpersTestCase(unittest.TestCase):
         self.assertEqual((False, 400), is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
-    def test_validate_locked_response(self, req_mock):
-        locked_status_code = 429
-        req_mock.head('http://test.com/', status_code=locked_status_code)
-        self.assertEqual((True, locked_status_code),
+    def test_validate_too_many_requests_response(self, req_mock):
+        too_many_request_status_code = 429
+        req_mock.head('http://test.com/',
+                      status_code=too_many_request_status_code)
+        self.assertEqual((True, too_many_request_status_code),
                          is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
