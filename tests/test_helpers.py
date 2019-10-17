@@ -295,14 +295,22 @@ class HelpersTestCase(unittest.TestCase):
         self.assertEqual((False, 400), is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
+    def test_validate_too_many_requests_response(self, req_mock):
+        too_many_request_status_code = 429
+        req_mock.head('http://test.com/',
+                      status_code=too_many_request_status_code)
+        self.assertEqual((True, too_many_request_status_code),
+                         is_working_url('http://test.com/'))
+
+    @requests_mock.Mocker()
     def test_validate_url_with_exception(self, req_mock):
         req_mock.head('http://test.com/', exc=ConnectionError)
         self.assertEqual((False, None), is_working_url('http://test.com/'))
 
     @requests_mock.Mocker()
-    def validate_url_with_timeout(self, req_mock):
+    def test_validate_url_with_timeout(self, req_mock):
         req_mock.head('http://test.com/', exc=Timeout)
-        self.assertEqual((False, None), is_working_url('http://test.com/'))
+        self.assertEqual((False, 408), is_working_url('http://test.com/'))
 
     def test_validate_malformed_values(self):
 
