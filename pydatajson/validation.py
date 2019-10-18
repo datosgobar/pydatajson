@@ -10,29 +10,24 @@ from __future__ import unicode_literals, print_function
 from __future__ import with_statement, absolute_import
 
 import logging
-import mimetypes
 import os
 import platform
-from collections import Counter
-
-from pydatajson import threading_helper
-from pydatajson import constants
-from pydatajson.helpers import is_working_url
-
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
 
 import jsonschema
 
-from . import custom_exceptions as ce
+from pydatajson.validators.consistent_distribution_fields_validator \
+    import ConsistentDistributionFieldsValidator
+from pydatajson.validators.distribution_urls_validator \
+    import DistributionUrlsValidator
+from pydatajson.validators.landing_pages_validator \
+    import LandingPagesValidator
+from pydatajson.validators.theme_ids_not_repeated_validator \
+    import ThemeIdsNotRepeatedValidator
 from . import readers
 
 ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 ABSOLUTE_SCHEMA_DIR = os.path.join(ABSOLUTE_PROJECT_DIR, "schemas")
 DEFAULT_CATALOG_SCHEMA_FILENAME = "catalog.json"
-EXTENSIONS_EXCEPTIONS = ["zip", "php", "asp", "aspx"]
 
 logger = logging.getLogger('pydatajson')
 
@@ -58,12 +53,12 @@ class Validator(object):
         return jsonschema.Draft4Validator(
             schema=schema, resolver=resolver, format_checker=format_checker)
 
-    def is_valid(self, catalog, broken_links=False):
-        return not self._get_errors(catalog, broken_links=broken_links)
+    def is_valid(self, catalog, broken_links=False, verify_ssl=True):
+        return not self._get_errors(catalog, broken_links=broken_links, verify_ssl=verify_ssl)
 
-    def validate_catalog(self, catalog, only_errors=False, broken_links=False):
+    def validate_catalog(self, catalog, only_errors=False, broken_links=False, verify_ssl=True):
         default_response = self._default_response(catalog)
-        errors = self._get_errors(catalog, broken_links=broken_links)
+        errors = self._get_errors(catalog, broken_links=broken_links, verify_ssl=verify_ssl)
 
         response = default_response.copy()
         for error in errors:
@@ -78,13 +73,14 @@ class Validator(object):
 
         return response
 
-    def _get_errors(self, catalog, broken_links=False):
+    def _get_errors(self, catalog, broken_links=False, verify_ssl=True):
         errors = list(
             self.jsonschema_validator.iter_errors(catalog)
         )
         try:
             for error in self._custom_errors(catalog,
-                                             broken_links=broken_links):
+                                             broken_links=broken_links,
+                                             verify_ssl=verify_ssl):
                 errors.append(error)
         except Exception as e:
             logger.warning("Error de validación")
@@ -115,74 +111,28 @@ class Validator(object):
             }
         }
 
-    def _custom_errors(self, catalog, broken_links=False):
+    # noinspection PyTypeChecker
+    def _custom_errors(self, catalog, broken_links=False, verify_ssl=True):
         """Realiza validaciones sin usar el jsonschema.
 
         En esta función se agregan bloques de código en python que realizan
         validaciones complicadas o imposibles de especificar usando jsonschema
         """
-        validators = self._validators()
+        validators = self._validators_for_catalog(catalog)
         if broken_links:
-            validators.append(self._validate_landing_pages)
-            validators.append(self._validate_distributions_urls)
+            validators.append(LandingPagesValidator(catalog, verify_ssl))
+            validators.append(DistributionUrlsValidator(catalog, verify_ssl))
 
         for validator in validators:
-            for error in validator(catalog):
+            for error in validator.validate():
                 yield error
 
-    def _validators(self):
+    @staticmethod
+    def _validators_for_catalog(catalog):
         return [
-            self._theme_ids_not_repeated,
-            self._consistent_distribution_fields
+            ThemeIdsNotRepeatedValidator(catalog),
+            ConsistentDistributionFieldsValidator(catalog)
         ]
-
-    def _theme_ids_not_repeated(self, catalog):
-        if "themeTaxonomy" in catalog:
-            theme_ids = [theme["id"] for theme in catalog["themeTaxonomy"]]
-            dups = self._find_dups(theme_ids)
-            if len(dups) > 0:
-                yield ce.ThemeIdRepeated(dups)
-
-    def _consistent_distribution_fields(self, catalog):
-        for dataset_idx, dataset in enumerate(catalog["dataset"]):
-            for distribution_idx, distribution in enumerate(
-                    dataset["distribution"]):
-                for attribute in ['downloadURL', 'fileName']:
-                    if not self.format_matches_extension(distribution,
-                                                         attribute):
-                        yield ce.ExtensionError(dataset_idx, distribution_idx,
-                                                distribution, attribute)
-
-    def format_matches_extension(self, distribution, attribute):
-        """Chequea si una extensión podría corresponder a un formato dado."""
-
-        if attribute in distribution and "format" in distribution:
-            if "/" in distribution['format']:
-                possible_format_extensions = mimetypes.guess_all_extensions(
-                    distribution['format'])
-            else:
-                possible_format_extensions = [
-                    '.' + distribution['format'].lower()
-                ]
-
-            file_name = urlparse(distribution[attribute]).path
-            extension = os.path.splitext(file_name)[-1].lower()
-
-            if attribute == 'downloadURL' and not extension:
-                return True
-
-            # hay extensiones exceptuadas porque enmascaran otros formatos
-            if extension.lower().replace(".", "") in EXTENSIONS_EXCEPTIONS:
-                return True
-
-            if extension not in possible_format_extensions:
-                return False
-
-        return True
-
-    def _find_dups(self, elements):
-        return [item for item, count in Counter(elements).items()
-                if count > 1]
 
     def _update_validation_response(self, error, response):
         """Actualiza la respuesta por default acorde a un error de
@@ -220,90 +170,8 @@ class Validator(object):
 
         return new_response
 
-    def _validate_landing_pages(self, catalog):
-        datasets = catalog.get('dataset')
-        datasets = filter(lambda x: x.get('landingPage'), datasets)
 
-        metadata = []
-        urls = []
-
-        for dataset_idx, dataset in enumerate(datasets):
-            metadata.append({
-                "dataset_idx": dataset_idx,
-                "dataset_title": dataset.get('title'),
-                "landing_page": dataset.get('landingPage'),
-            })
-            urls.append(dataset.get('landingPage'))
-
-        sync_res = threading_helper\
-            .apply_threading(urls,
-                             is_working_url,
-                             constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
-
-        for i in range(len(sync_res)):
-            valid, status_code = sync_res[i]
-            act_metadata = metadata[i]
-            dataset_idx = act_metadata["dataset_idx"]
-            dataset_title = act_metadata["dataset_title"]
-            landing_page = act_metadata["landing_page"]
-
-            if not valid:
-                yield ce.BrokenLandingPageError(dataset_idx, dataset_title,
-                                                landing_page, status_code)
-
-    def _validate_distributions_urls(self, catalog):
-        datasets = catalog.get('dataset')
-
-        metadata = []
-        urls = []
-        for dataset_idx, dataset in enumerate(datasets):
-            distributions = dataset.get('distribution')
-
-            for distribution_idx, distribution in enumerate(distributions):
-                distribution_title = distribution.get('title')
-                access_url = distribution.get('accessURL')
-                download_url = distribution.get('downloadURL')
-
-                metadata.append({
-                    "dataset_idx": dataset_idx,
-                    "dist_idx": distribution_idx,
-                    "dist_title": distribution_title
-                })
-                urls += [access_url, download_url]
-
-        sync_res = threading_helper\
-            .apply_threading(urls,
-                             is_working_url,
-                             constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
-
-        for i in range(len(metadata)):
-            actual_metadata = metadata[i]
-            dataset_idx = actual_metadata["dataset_idx"]
-            distribution_idx = actual_metadata["dist_idx"]
-            distribution_title = actual_metadata["dist_title"]
-
-            k = i*2
-            access_url = urls[k]
-            download_url = urls[k+1]
-
-            access_url_is_valid, access_url_status_code = sync_res[k]
-            download_url_is_valid, download_url_status_code = sync_res[k+1]
-
-            if not access_url_is_valid:
-                yield ce.BrokenAccessUrlError(dataset_idx,
-                                              distribution_idx,
-                                              distribution_title,
-                                              access_url,
-                                              access_url_status_code)
-            if not download_url_is_valid:
-                yield ce.BrokenDownloadUrlError(dataset_idx,
-                                                distribution_idx,
-                                                distribution_title,
-                                                download_url,
-                                                download_url_status_code)
-
-
-def is_valid_catalog(catalog, validator=None):
+def is_valid_catalog(catalog, validator=None, verify_ssl=True):
     """Valida que un archivo `data.json` cumpla con el schema definido.
 
     Chequea que el data.json tiene todos los campos obligatorios y que
@@ -323,11 +191,12 @@ def is_valid_catalog(catalog, validator=None):
         else:
             validator = Validator()
 
-    return validator.is_valid(catalog)
+    return validator.is_valid(catalog, verify_ssl=verify_ssl)
 
 
 def validate_catalog(catalog, only_errors=False, fmt="dict",
-                     export_path=None, validator=None):
+                     export_path=None, validator=None,
+                     verify_ssl=True):
     """Analiza un data.json registrando los errores que encuentra.
 
     Chequea que el data.json tiene todos los campos obligatorios y que
@@ -385,4 +254,4 @@ def validate_catalog(catalog, only_errors=False, fmt="dict",
         else:
             validator = Validator()
 
-    return validator.validate_catalog(catalog, only_errors)
+    return validator.validate_catalog(catalog, only_errors, verify_ssl=verify_ssl)

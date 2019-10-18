@@ -19,10 +19,10 @@ from datetime import datetime
 from six import string_types
 
 from pydatajson.helpers import fields_to_uppercase
+from pydatajson.status_indicators_generator import StatusIndicatorsGenerator
 from . import helpers
 from . import readers
 from .federation_indicators_generator import FederationIndicatorsGenerator
-from pydatajson.status_indicators_generator import StatusIndicatorsGenerator
 from .search import get_datasets, get_distributions
 
 CENTRAL_CATALOG = "http://datos.gob.ar/data.json"
@@ -46,7 +46,8 @@ def generate_numeric_indicators(catalog, validator=None):
 def generate_catalogs_indicators(catalogs, central_catalog=None,
                                  identifier_search=False,
                                  broken_links=False,
-                                 validator=None):
+                                 validator=None,
+                                 verify_ssl=True):
     """Genera una lista de diccionarios con varios indicadores sobre
     los catálogos provistos, tales como la cantidad de datasets válidos,
     días desde su última fecha actualizada, entre otros.
@@ -83,7 +84,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
             continue
 
         fields_count, result = _generate_indicators(
-            catalog, validator=validator, broken_links=broken_links)
+            catalog, validator=validator,
+            broken_links=broken_links, verify_ssl=verify_ssl)
         if central_catalog:
             result.update(_federation_indicators(
                 catalog, central_catalog, identifier_search=identifier_search))
@@ -113,7 +115,7 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
 
 
 def _generate_indicators(catalog, validator=None, only_numeric=False,
-                         broken_links=False):
+                         broken_links=False, verify_ssl=True):
     """Genera los indicadores de un catálogo individual.
 
     Args:
@@ -126,12 +128,14 @@ def _generate_indicators(catalog, validator=None, only_numeric=False,
     result = {}
 
     # Obtengo summary para los indicadores del estado de los metadatos
-    result.update(_generate_status_indicators(catalog, validator=validator))
+    result.update(_generate_status_indicators(catalog, validator=validator,
+                                              verify_ssl=verify_ssl))
 
     # Genero indicadores relacionados con validacion de urls
     if broken_links:
         result.update(_generate_valid_urls_indicators(catalog,
-                                                      validator=validator))
+                                                      validator=validator,
+                                                      verify_ssl=verify_ssl))
 
     # Genero los indicadores relacionados con fechas, y los agrego
     result.update(
@@ -275,7 +279,7 @@ def _network_indicator_percentages(fields, network_indicators):
         })
 
 
-def _generate_status_indicators(catalog, validator=None):
+def _generate_status_indicators(catalog, validator=None, verify_ssl=True):
     """Genera indicadores básicos sobre el estado de un catálogo
 
     Args:
@@ -296,7 +300,7 @@ def _generate_status_indicators(catalog, validator=None):
         'datasets_con_datos_pct': None
     }
     try:
-        generator = StatusIndicatorsGenerator(catalog, validator=validator)
+        generator = StatusIndicatorsGenerator(catalog, validator=validator, verify_ssl=verify_ssl)
     except Exception as e:
         msg = u'Error generando resumen del catálogo {}: {}'.format(
             catalog['title'], str(e))
@@ -556,7 +560,7 @@ def _eventual_periodicity(periodicity):
     return periodicity in ('eventual', 'EVENTUAL')
 
 
-def _generate_valid_urls_indicators(catalog, validator=None):
+def _generate_valid_urls_indicators(catalog, validator=None, verify_ssl=True):
     """Genera indicadores sobre el estado de las urls de distribuciones
 
     Args:
@@ -568,7 +572,7 @@ def _generate_valid_urls_indicators(catalog, validator=None):
 
     result = {}
     try:
-        generator = StatusIndicatorsGenerator(catalog, validator=validator)
+        generator = StatusIndicatorsGenerator(catalog, validator=validator, verify_ssl=verify_ssl)
     except Exception as e:
         msg = u'Error generando resumen del catálogo {}: {}'.format(
             catalog['title'], str(e))

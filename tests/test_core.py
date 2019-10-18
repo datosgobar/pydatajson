@@ -9,17 +9,16 @@ from collections import OrderedDict
 from pprint import pprint
 
 import nose
+import requests_mock
 import vcr
-from nose.tools import assert_true, assert_false, assert_equal
+from nose.tools import assert_false, assert_equal
 from nose.tools import assert_list_equal, assert_raises
 from six import iteritems
-import requests_mock
 
 try:
     import mock
 except ImportError:
     from unittest import mock
-import filecmp
 from .context import pydatajson
 from .support.decorators import load_expected_result, RESULTS_DIR
 
@@ -566,8 +565,9 @@ class TestDataJsonTestCase(object):
         catalog = os.path.join(self.SAMPLES_DIR,
                                "several_datasets_for_harvest.json")
 
-        with mock.patch('pydatajson.validation.is_working_url',
-                        return_value=(True, 200)):
+        with mock.patch(
+                'pydatajson.validators.url_validator.UrlValidator.is_working_url',
+                return_value=(True, 200)):
             actual = self.dj.generate_datasets_summary(catalog)
 
         expected = [

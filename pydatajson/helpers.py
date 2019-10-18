@@ -3,30 +3,23 @@
 
 """Métodos auxiliares"""
 
-from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import unicode_literals
 from __future__ import with_statement
 
-from datetime import datetime
-import os
 import json
-import re
 import logging
+import os
+import re
 import tempfile
-
 from contextlib import contextmanager
+from datetime import datetime
 
-import requests
 from openpyxl import load_workbook
-from requests import RequestException, Timeout
-from six.moves.urllib_parse import urlparse
-
 from six import string_types, iteritems
+from six.moves.urllib_parse import urlparse
 from unidecode import unidecode
 
-from pydatajson.constants import \
-    INVALID_STATUS_CODES_REGEX, \
-    EXCEPTION_STATUS_CODES
 from pydatajson.download import download_to_file
 
 logger = logging.getLogger('pydatajson.helpers')
@@ -49,14 +42,13 @@ DATA_FORMATS = [
 
 
 def count_distribution_formats_dataset(dataset):
-
     formats = {}
     for distribution in dataset['distribution']:
-            # 'format' es recomendado, no obligatorio. Puede no estar.
+        # 'format' es recomendado, no obligatorio. Puede no estar.
         distribution_format = distribution.get('format', None)
 
         if distribution_format:
-                # Si no está en el diccionario, devuelvo 0
+            # Si no está en el diccionario, devuelvo 0
             count = formats.get(distribution_format, 0)
 
             formats[distribution_format] = count + 1
@@ -549,7 +541,7 @@ def filter_by_likely_publisher(central_datasets, catalog_datasets):
 
 def title_in_dataset_list(dataset, dataset_list):
     return (dataset.get('title'), dataset.get('landingPage')) \
-                   in dataset_list
+           in dataset_list
 
 
 def fields_to_uppercase(fields):
@@ -568,18 +560,3 @@ def fields_to_uppercase(fields):
                 uppercase_counts + lowercase_counts + counts
 
     return uppercase_fields
-
-
-def is_working_url(url):
-    try:
-        response = requests.head(url, timeout=1)
-        matches = []
-        if response.status_code not in EXCEPTION_STATUS_CODES:
-            matches = \
-                [re.match(pattern, str(response.status_code)) is not None
-                 for pattern in INVALID_STATUS_CODES_REGEX]
-        return True not in matches, response.status_code
-    except Timeout:
-        return False, 408
-    except (RequestException, Exception):
-        return False, None
