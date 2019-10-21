@@ -15,8 +15,7 @@ class DistributionDownloadUrlsValidator(UrlValidator):
             async_results += threading_helper \
                 .apply_threading(distribution_urls,
                                  self.is_working_url,
-                                 constants.CANT_THREADS_BROKEN_URL_VALIDATOR,
-                                 verify_ssl=self.verify_ssl)
+                                 constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
 
         result = 0
         for res, _ in async_results:

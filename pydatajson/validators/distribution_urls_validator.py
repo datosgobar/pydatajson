@@ -30,8 +30,7 @@ class DistributionUrlsValidator(UrlValidator):
         sync_res = threading_helper \
             .apply_threading(urls,
                              self.is_working_url,
-                             constants.CANT_THREADS_BROKEN_URL_VALIDATOR,
-                             verify_ssl=self.verify_ssl)
+                             constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
 
         for i in range(len(metadata)):
             actual_metadata = metadata[i]

@@ -18,10 +18,9 @@ class UrlValidator(SimpleValidator):
     def validate(self):
         raise NotImplementedError
 
-    @staticmethod
-    def is_working_url(url, verify_ssl=True):
+    def is_working_url(self, url):
         try:
-            response = requests.head(url, timeout=1, verify=verify_ssl)
+            response = requests.head(url, timeout=1, verify=self.verify_ssl)
             matches = []
             if response.status_code not in EXCEPTION_STATUS_CODES:
                 matches = \
