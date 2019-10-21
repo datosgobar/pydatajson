@@ -12,7 +12,7 @@ from pydatajson.validators.simple_validator import SimpleValidator
 class UrlValidator(SimpleValidator):
 
     def __init__(self, catalog, verify_ssl):
-        super().__init__(catalog)
+        super(UrlValidator, self).__init__(catalog)
         self.verify_ssl = verify_ssl
 
     def validate(self):
