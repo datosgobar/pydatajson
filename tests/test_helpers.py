@@ -12,11 +12,8 @@ import unittest
 
 import nose
 import openpyxl as pyxl
-import requests_mock
 
-from requests.exceptions import ConnectionError, Timeout
-
-from pydatajson.helpers import fields_to_uppercase, is_working_url
+from pydatajson.helpers import fields_to_uppercase
 from .context import pydatajson
 
 
@@ -283,40 +280,6 @@ class HelpersTestCase(unittest.TestCase):
         }
 
         self.assertEqual(fields_to_uppercase(fields), expected)
-
-    @requests_mock.Mocker()
-    def test_validate_valid_url(self, req_mock):
-        req_mock.head('http://test.com/')
-        self.assertEqual((True, 200), is_working_url('http://test.com/'))
-
-    @requests_mock.Mocker()
-    def test_validate_invalid_url(self, req_mock):
-        req_mock.head('http://test.com/', status_code=400)
-        self.assertEqual((False, 400), is_working_url('http://test.com/'))
-
-    @requests_mock.Mocker()
-    def test_validate_too_many_requests_response(self, req_mock):
-        too_many_request_status_code = 429
-        req_mock.head('http://test.com/',
-                      status_code=too_many_request_status_code)
-        self.assertEqual((True, too_many_request_status_code),
-                         is_working_url('http://test.com/'))
-
-    @requests_mock.Mocker()
-    def test_validate_url_with_exception(self, req_mock):
-        req_mock.head('http://test.com/', exc=ConnectionError)
-        self.assertEqual((False, None), is_working_url('http://test.com/'))
-
-    @requests_mock.Mocker()
-    def test_validate_url_with_timeout(self, req_mock):
-        req_mock.head('http://test.com/', exc=Timeout)
-        self.assertEqual((False, 408), is_working_url('http://test.com/'))
-
-    def test_validate_malformed_values(self):
-
-        self.assertEqual((False, None), is_working_url('malformed_value'))
-        self.assertEqual((False, None), is_working_url(''))
-        self.assertEqual((False, None), is_working_url(None))
 
 
 if __name__ == '__main__':
