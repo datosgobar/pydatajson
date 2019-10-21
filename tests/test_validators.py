@@ -1,5 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from __future__ import print_function, unicode_literals, with_statement
 
 import json
@@ -7,7 +7,7 @@ import os.path
 import unittest
 
 import requests_mock
-from requests import Timeout
+from requests import Timeout, ConnectionError
 
 from pydatajson.validators.consistent_distribution_fields_validator import ConsistentDistributionFieldsValidator
 from pydatajson.validators.distribution_urls_validator import DistributionUrlsValidator
@@ -32,7 +32,7 @@ class ValidatorsTestCase(unittest.TestCase):
     def get_sample(cls, sample_filename):
         return os.path.join(cls.SAMPLES_DIR, sample_filename)
 
-    def setUp(self) -> None:
+    def setUp(self):
         catalog_path = self.get_sample("full_data.json")
         self.catalog = json.load(open(catalog_path))
         self.test_url = "http://www.test.com/"
