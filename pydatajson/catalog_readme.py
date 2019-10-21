@@ -23,7 +23,8 @@ ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "templates")
 
 
-def generate_catalog_readme(_datajson, catalog, export_path=None, verify_ssl=True):
+def generate_catalog_readme(_datajson, catalog,
+                            export_path=None, verify_ssl=True):
     """Este método está para mantener retrocompatibilidad con versiones
     anteriores. Se ignora el argumento _data_json."""
     return generate_readme(catalog, export_path, verify_ssl=verify_ssl)

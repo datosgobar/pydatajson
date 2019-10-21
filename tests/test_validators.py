@@ -9,10 +9,15 @@ import unittest
 import requests_mock
 from requests import Timeout, ConnectionError
 
-from pydatajson.validators.consistent_distribution_fields_validator import ConsistentDistributionFieldsValidator
-from pydatajson.validators.distribution_urls_validator import DistributionUrlsValidator
-from pydatajson.validators.landing_pages_validator import LandingPagesValidator
-from pydatajson.validators.theme_ids_not_repeated_validator import ThemeIdsNotRepeatedValidator
+from pydatajson.validators \
+    .consistent_distribution_fields_validator \
+    import ConsistentDistributionFieldsValidator
+from pydatajson.validators.distribution_urls_validator \
+    import DistributionUrlsValidator
+from pydatajson.validators.landing_pages_validator \
+    import LandingPagesValidator
+from pydatajson.validators.theme_ids_not_repeated_validator \
+    import ThemeIdsNotRepeatedValidator
 from pydatajson.validators.url_validator import UrlValidator
 
 try:
@@ -96,7 +101,9 @@ class ValidatorsTestCase(unittest.TestCase):
         lp_validator = \
             LandingPagesValidator(self.catalog, True)
         with mock.patch(
-                'pydatajson.validators.url_validator.UrlValidator.is_working_url',
+                'pydatajson'
+                '.validators'
+                '.url_validator.UrlValidator.is_working_url',
                 return_value=(True, 200)):
             res = lp_validator.validate()
             self.assertEqual(0, len(list(res)))
@@ -105,7 +112,9 @@ class ValidatorsTestCase(unittest.TestCase):
         lp_validator = \
             LandingPagesValidator(self.catalog, True)
         with mock.patch(
-                'pydatajson.validators.url_validator.UrlValidator.is_working_url',
+                'pydatajson'
+                '.validators'
+                '.url_validator.UrlValidator.is_working_url',
                 return_value=(False, 400)):
             res = lp_validator.validate()
             self.assertNotEqual(0, len(list(res)))
@@ -114,7 +123,9 @@ class ValidatorsTestCase(unittest.TestCase):
         ddu_validator = \
             DistributionUrlsValidator(self.catalog, True)
         with mock.patch(
-                'pydatajson.validators.url_validator.UrlValidator.is_working_url',
+                'pydatajson'
+                '.validators'
+                '.url_validator.UrlValidator.is_working_url',
                 return_value=(True, 200)):
             res = ddu_validator.validate()
             self.assertEqual(0, len(list(res)))
@@ -123,7 +134,9 @@ class ValidatorsTestCase(unittest.TestCase):
         ddu_validator = \
             DistributionUrlsValidator(self.catalog, True)
         with mock.patch(
-                'pydatajson.validators.url_validator.UrlValidator.is_working_url',
+                'pydatajson'
+                '.validators'
+                '.url_validator.UrlValidator.is_working_url',
                 return_value=(False, 400)):
             res = ddu_validator.validate()
             self.assertNotEqual(0, len(list(res)))

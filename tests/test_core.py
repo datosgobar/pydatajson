@@ -566,7 +566,8 @@ class TestDataJsonTestCase(object):
                                "several_datasets_for_harvest.json")
 
         with mock.patch(
-                'pydatajson.validators.url_validator.UrlValidator.is_working_url',
+                'pydatajson.validators.url_validator'
+                '.UrlValidator.is_working_url',
                 return_value=(True, 200)):
             actual = self.dj.generate_datasets_summary(catalog)
 

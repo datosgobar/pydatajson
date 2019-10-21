@@ -5,7 +5,8 @@ import re
 import requests
 from requests import RequestException, Timeout
 
-from pydatajson.constants import EXCEPTION_STATUS_CODES, INVALID_STATUS_CODES_REGEX
+from pydatajson.constants import EXCEPTION_STATUS_CODES, \
+    INVALID_STATUS_CODES_REGEX
 from pydatajson.validators.simple_validator import SimpleValidator
 
 

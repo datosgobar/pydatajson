@@ -10,7 +10,8 @@ class ThemeIdsNotRepeatedValidator(SimpleValidator):
 
     def validate(self):
         if "themeTaxonomy" in self.catalog:
-            theme_ids = [theme["id"] for theme in self.catalog["themeTaxonomy"]]
+            theme_ids = [theme["id"]
+                         for theme in self.catalog["themeTaxonomy"]]
             dups = self._find_dups(theme_ids)
             if len(dups) > 0:
                 yield ce.ThemeIdRepeated(dups)

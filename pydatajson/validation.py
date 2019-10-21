@@ -54,11 +54,15 @@ class Validator(object):
             schema=schema, resolver=resolver, format_checker=format_checker)
 
     def is_valid(self, catalog, broken_links=False, verify_ssl=True):
-        return not self._get_errors(catalog, broken_links=broken_links, verify_ssl=verify_ssl)
+        return not self._get_errors(catalog,
+                                    broken_links=broken_links,
+                                    verify_ssl=verify_ssl)
 
-    def validate_catalog(self, catalog, only_errors=False, broken_links=False, verify_ssl=True):
+    def validate_catalog(self, catalog, only_errors=False,
+                         broken_links=False, verify_ssl=True):
         default_response = self._default_response(catalog)
-        errors = self._get_errors(catalog, broken_links=broken_links, verify_ssl=verify_ssl)
+        errors = self._get_errors(catalog, broken_links=broken_links,
+                                  verify_ssl=verify_ssl)
 
         response = default_response.copy()
         for error in errors:
@@ -254,4 +258,6 @@ def validate_catalog(catalog, only_errors=False, fmt="dict",
         else:
             validator = Validator()
 
-    return validator.validate_catalog(catalog, only_errors, verify_ssl=verify_ssl)
+    return validator.validate_catalog(catalog,
+                                      only_errors,
+                                      verify_ssl=verify_ssl)

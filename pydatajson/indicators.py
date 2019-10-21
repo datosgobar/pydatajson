@@ -300,7 +300,9 @@ def _generate_status_indicators(catalog, validator=None, verify_ssl=True):
         'datasets_con_datos_pct': None
     }
     try:
-        generator = StatusIndicatorsGenerator(catalog, validator=validator, verify_ssl=verify_ssl)
+        generator = StatusIndicatorsGenerator(catalog,
+                                              validator=validator,
+                                              verify_ssl=verify_ssl)
     except Exception as e:
         msg = u'Error generando resumen del catálogo {}: {}'.format(
             catalog['title'], str(e))
@@ -572,7 +574,10 @@ def _generate_valid_urls_indicators(catalog, validator=None, verify_ssl=True):
 
     result = {}
     try:
-        generator = StatusIndicatorsGenerator(catalog, validator=validator, verify_ssl=verify_ssl)
+        generator = \
+            StatusIndicatorsGenerator(catalog,
+                                      validator=validator,
+                                      verify_ssl=verify_ssl)
     except Exception as e:
         msg = u'Error generando resumen del catálogo {}: {}'.format(
             catalog['title'], str(e))

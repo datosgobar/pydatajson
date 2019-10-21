@@ -1,6 +1,8 @@
 from pydatajson.readers import read_catalog
 from pydatajson.reporting import generate_datasets_summary
-from pydatajson.validators.distribution_download_urls_validator import DistributionDownloadUrlsValidator
+from pydatajson.validators\
+    .distribution_download_urls_validator \
+    import DistributionDownloadUrlsValidator
 
 
 class StatusIndicatorsGenerator(object):
