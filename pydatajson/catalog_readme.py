@@ -6,14 +6,14 @@ from __future__ import unicode_literals
 from __future__ import with_statement
 
 import io
-import os
 import logging
+import os
 
 from six import string_types
 
 from pydatajson.helpers import traverse_dict
-from pydatajson.readers import read_catalog
 from pydatajson.indicators import generate_catalogs_indicators
+from pydatajson.readers import read_catalog
 from pydatajson.validation import validate_catalog
 
 logger = logging.getLogger('pydatajson')
@@ -23,13 +23,14 @@ ABSOLUTE_PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_PATH = os.path.join(ABSOLUTE_PROJECT_DIR, "templates")
 
 
-def generate_catalog_readme(_datajson, catalog, export_path=None):
+def generate_catalog_readme(_datajson, catalog,
+                            export_path=None, verify_ssl=True):
     """Este método está para mantener retrocompatibilidad con versiones
     anteriores. Se ignora el argumento _data_json."""
-    return generate_readme(catalog, export_path)
+    return generate_readme(catalog, export_path, verify_ssl=verify_ssl)
 
 
-def generate_readme(catalog, export_path=None):
+def generate_readme(catalog, export_path=None, verify_ssl=True):
     """Genera una descripción textual en formato Markdown sobre los
     metadatos generales de un catálogo (título, editor, fecha de
     publicación, et cetera), junto con:
@@ -59,7 +60,7 @@ def generate_readme(catalog, export_path=None):
         catalog_path_or_url = None
 
     catalog = read_catalog(catalog)
-    validation = validate_catalog(catalog)
+    validation = validate_catalog(catalog, verify_ssl=verify_ssl)
     # Solo necesito indicadores para un catalogo
     indicators = generate_catalogs_indicators(
         catalog, CENTRAL_CATALOG)[0][0]

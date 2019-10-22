@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-
 from pydatajson.threading_helper import apply_threading
 
 
@@ -21,6 +20,7 @@ class ThreadingTests(TestCase):
         elements = [1, 2, 3, 0]
 
         def divide(x):
-            return 6/x
+            return 6 / x
+
         with self.assertRaises(ZeroDivisionError):  # Es "sincrónico"!
             apply_threading(elements, divide, 3)

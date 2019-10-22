@@ -12,9 +12,9 @@ from __future__ import unicode_literals
 from __future__ import with_statement
 
 import json
+import logging
 import os.path
 import sys
-import logging
 from collections import OrderedDict
 from datetime import datetime
 
@@ -25,17 +25,17 @@ from six.moves.urllib_parse import urljoin
 from pydatajson.response_formatters import format_response
 from pydatajson.validation import Validator, \
     DEFAULT_CATALOG_SCHEMA_FILENAME, ABSOLUTE_SCHEMA_DIR
+from . import backup
+from . import catalog_readme
 from . import documentation, constants
+from . import federation
 from . import helpers
 from . import indicators
 from . import readers
 from . import search
 from . import time_series
-from . import writers
-from . import federation
 from . import transformation
-from . import backup
-from . import catalog_readme
+from . import writers
 
 logger = logging.getLogger('pydatajson')
 
@@ -250,7 +250,9 @@ class DataJson(dict):
             bool: True si el data.json cumple con el schema, sino False.
         """
         catalog = self._read_catalog(catalog) if catalog else self
-        return self.validator.is_valid(catalog, broken_links=broken_links)
+        return self.validator.is_valid(catalog,
+                                       broken_links=broken_links,
+                                       verify_ssl=self.verify_ssl)
 
     @staticmethod
     def _update_validation_response(error, response):
@@ -342,8 +344,10 @@ class DataJson(dict):
         """
         catalog = self._read_catalog(catalog) if catalog else self
 
-        validation = self.validator.validate_catalog(catalog, only_errors,
-                                                     broken_links)
+        validation = self.validator.validate_catalog(catalog,
+                                                     only_errors,
+                                                     broken_links,
+                                                     self.verify_ssl)
         if export_path:
             fmt = 'table'
 
@@ -963,7 +967,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
             catalogs, central_catalog, identifier_search=identifier_search,
-            validator=self.validator, broken_links=broken_links)
+            validator=self.validator, broken_links=broken_links,
+            verify_ssl=self.verify_ssl)
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-import unittest
 import re
+import unittest
 
 import requests_mock
 
@@ -23,8 +23,10 @@ class TestStatusIndicatorsGeneratorTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with mock.patch('pydatajson.validation.is_working_url',
-                        return_value=(True, 200)):
+        with mock.patch(
+                'pydatajson.validators'
+                '.url_validator.UrlValidator.is_working_url',
+                return_value=(True, 200)):
             cls.gen_justicia = StatusIndicatorsGenerator(
                 cls.get_sample('catalogo_justicia.json'))
             cls.gen_full_data = StatusIndicatorsGenerator(

@@ -6,19 +6,19 @@
 Contiene los métodos para generar reportes sobre un catálogo.
 """
 
-from __future__ import unicode_literals, print_function,\
+from __future__ import unicode_literals, print_function, \
     with_statement, absolute_import
 
 from collections import OrderedDict
 
 from pydatajson import writers
+from . import helpers
+from . import readers
 from .validation import validate_catalog
 
-from . import readers
-from . import helpers
 
-
-def generate_datasets_summary(catalog, export_path=None, validator=None):
+def generate_datasets_summary(catalog, export_path=None,
+                              validator=None, verify_ssl=True):
     """Genera un informe sobre los datasets presentes en un catálogo,
     indicando para cada uno:
         - Índice en la lista catalog["dataset"]
@@ -53,7 +53,9 @@ def generate_datasets_summary(catalog, export_path=None, validator=None):
         datasets = []
 
     validation = validate_catalog(
-        catalog, validator=validator)["error"]["dataset"]
+        catalog,
+        validator=validator,
+        verify_ssl=verify_ssl)["error"]["dataset"]
 
     def info_dataset(index, dataset):
         """Recolecta información básica de un dataset."""

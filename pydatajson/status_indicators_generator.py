@@ -1,17 +1,19 @@
-from pydatajson import threading_helper
-from pydatajson import constants
-from pydatajson.helpers import is_working_url
 from pydatajson.readers import read_catalog
 from pydatajson.reporting import generate_datasets_summary
+from pydatajson.validators\
+    .distribution_download_urls_validator \
+    import DistributionDownloadUrlsValidator
 
 
 class StatusIndicatorsGenerator(object):
 
-    def __init__(self, catalog, validator=None):
+    def __init__(self, catalog, validator=None, verify_ssl=True):
         self.download_url_ok = None
         self.catalog = read_catalog(catalog)
         self.summary = generate_datasets_summary(self.catalog,
-                                                 validator=validator)
+                                                 validator=validator,
+                                                 verify_ssl=verify_ssl)
+        self.verify_url = verify_ssl
 
     def datasets_cant(self):
         return len(self.summary)
@@ -38,7 +40,12 @@ class StatusIndicatorsGenerator(object):
         return self._get_dataset_percentage(self.datasets_con_datos_cant)
 
     def distribuciones_download_url_ok_cant(self):
-        return self.download_url_ok or self._validate_download_urls()
+        if self.download_url_ok:
+            return self.download_url_ok
+        validator = DistributionDownloadUrlsValidator(
+            self.catalog, self.verify_url)
+        self.download_url_ok = validator.validate()
+        return self.download_url_ok
 
     def distribuciones_download_url_error_cant(self):
         return self.distribuciones_cant() - \
@@ -50,25 +57,6 @@ class StatusIndicatorsGenerator(object):
             return None
         return \
             round(float(self.distribuciones_download_url_ok_cant()) / total, 4)
-
-    def _validate_download_urls(self):
-        async_results = []
-        for dataset in self.catalog.get('dataset', []):
-            distribution_urls = \
-                [distribution.get('downloadURL', '')
-                 for distribution in dataset.get('distribution', [])]
-            async_results += threading_helper\
-                .apply_threading(distribution_urls,
-                                 is_working_url,
-                                 constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
-
-        result = 0
-        for res, _ in async_results:
-            result += res
-
-        # Guardo el resultado una vez calculado
-        self.download_url_ok = result
-        return result
 
     def _get_dataset_percentage(self, indicator):
         total = self.datasets_cant()
