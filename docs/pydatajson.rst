@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
     pydatajson.response_formatters
+    pydatajson.validators
 
 Submodules
 ----------

@@ -1,5 +1,10 @@
 Versiones
 =========
+0.4.52 (2019-10-22)
+-------------------
+* Validación electiva de urls con certificados SSL, enviando verify_ssl=False desactiva la validacion de certificados válidos
+* Se modifica el criterio de urls validas, ahora solo las urls 4xx y 5xx son invalidas (a excepcion de 429)
+
 0.4.51 (2019-10-15)
 -------------------
 * Los métodos de validaciones e indicadores ahora aceptan un flag que determina si validar o no campos con URLs.
