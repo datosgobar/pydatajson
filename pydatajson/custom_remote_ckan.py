@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from ckanapi import RemoteCKAN
 
 from pydatajson.constants import REQUESTS_TIMEOUT

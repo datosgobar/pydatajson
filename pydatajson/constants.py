@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 REQUESTS_TIMEOUT = 30
 DEFAULT_TIMEZONE = "America/Buenos_Aires"
 

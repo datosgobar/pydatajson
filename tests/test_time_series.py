@@ -1,13 +1,16 @@
-from __future__ import unicode_literals
+# -*- coding: utf-8 -*-
+
 from __future__ import print_function
+from __future__ import unicode_literals
 from __future__ import with_statement
 
 import os.path
 import unittest
+
 from pydatajson.core import DataJson
-from pydatajson.time_series import get_distribution_time_index,\
-    distribution_has_time_index, dataset_has_time_series
 from pydatajson.custom_exceptions import DistributionTimeIndexNonExistentError
+from pydatajson.time_series import get_distribution_time_index, \
+    distribution_has_time_index, dataset_has_time_series
 
 SAMPLES_DIR = os.path.join("tests", "samples")
 

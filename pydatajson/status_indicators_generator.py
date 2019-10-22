@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pydatajson.readers import read_catalog
 from pydatajson.reporting import generate_datasets_summary
 from pydatajson.validators\

@@ -1,11 +1,15 @@
-import unittest
+# -*- coding: utf-8 -*-
+
 import os
+import unittest
+
 import vcr
 from ckanapi import RemoteCKAN
 from ckanapi.errors import NotFound
-from pydatajson.helpers import title_to_name
-from pydatajson.federation import push_dataset_to_ckan,\
+
+from pydatajson.federation import push_dataset_to_ckan, \
     remove_datasets_from_ckan
+from pydatajson.helpers import title_to_name
 from .context import pydatajson
 
 SAMPLES_DIR = os.path.join("tests", "samples")
