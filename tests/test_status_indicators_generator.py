@@ -162,3 +162,20 @@ class TestStatusIndicatorsGeneratorTestCase(unittest.TestCase):
     def test_empty_distribuciones_download_url_ok_pct(self):
         self.assertEqual(
             None, self.gen_empty.distribuciones_download_url_ok_pct())
+
+    @requests_mock.Mocker()
+    def test_check_url_default_timeout(self, req_mock):
+        req_mock.head(requests_mock.ANY, text='resp')
+        self.gen_justicia.distribuciones_download_url_ok_pct()
+        for request in req_mock.request_history:
+            self.assertEqual(1, request.timeout)
+
+    @requests_mock.Mocker()
+    def test_check_url_override_timeout(self, req_mock):
+        generator = StatusIndicatorsGenerator(
+            self.get_sample('catalogo_justicia.json'), url_check_timeout=10)
+        req_mock.head(requests_mock.ANY, text='resp')
+        generator.distribuciones_download_url_ok_pct()
+        for request in req_mock.request_history:
+            self.assertEqual(10, request.timeout)
+

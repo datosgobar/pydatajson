@@ -188,3 +188,10 @@ class ValidatorsTestCase(unittest.TestCase):
                 return_value=['convocatorias']):
             res = tinr_validator.validate()
             self.assertNotEqual(0, len(list(res)))
+
+    @requests_mock.Mocker()
+    def test_url_check_timeout(self, req_mock):
+        url_validator = UrlValidator(self.catalog, True, 100)
+        req_mock.head(self.test_url)
+        url_validator.is_working_url(self.test_url)
+        self.assertEqual(100, req_mock.request_history[0].timeout)
