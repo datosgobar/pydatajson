@@ -17,8 +17,8 @@ from . import readers
 from .validation import validate_catalog
 
 
-def generate_datasets_summary(catalog, export_path=None,
-                              validator=None, verify_ssl=True):
+def generate_datasets_summary(catalog, export_path=None, validator=None,
+                              verify_ssl=True, url_check_timeout=1):
     """Genera un informe sobre los datasets presentes en un catálogo,
     indicando para cada uno:
         - Índice en la lista catalog["dataset"]
@@ -53,9 +53,8 @@ def generate_datasets_summary(catalog, export_path=None,
         datasets = []
 
     validation = validate_catalog(
-        catalog,
-        validator=validator,
-        verify_ssl=verify_ssl)["error"]["dataset"]
+        catalog, validator=validator, verify_ssl=verify_ssl,
+        url_check_timeout=url_check_timeout)["error"]["dataset"]
 
     def info_dataset(index, dataset):
         """Recolecta información básica de un dataset."""

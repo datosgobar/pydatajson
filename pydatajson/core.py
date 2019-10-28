@@ -54,7 +54,8 @@ class DataJson(dict):
     def __init__(self, catalog=None, schema_filename=None, schema_dir=None,
                  default_values=None, catalog_format=None,
                  validator_class=Validator, verify_ssl=False,
-                 requests_timeout=constants.REQUESTS_TIMEOUT):
+                 requests_timeout=constants.REQUESTS_TIMEOUT,
+                 url_check_timeout=constants.DEFAULT_CHECK_TIMEOUT):
         """Lee un catálogo y crea un objeto con funciones para manipularlo.
 
         Salvo que se indique lo contrario, se utiliza como default el schema
@@ -81,6 +82,7 @@ class DataJson(dict):
         """
         self.verify_ssl = verify_ssl
         self.requests_timeout = requests_timeout
+        self.url_check_timeout = url_check_timeout
         # se construye el objeto DataJson con la interfaz de un dicconario
         if catalog:
 
@@ -245,14 +247,15 @@ class DataJson(dict):
         Args:
             catalog (str o dict): Catálogo (dict, JSON o XLSX) a ser validado.
                 Si no se pasa, valida este catálogo.
+            broken_links(bool): Activa el checkeo de estados de urls
 
         Returns:
             bool: True si el data.json cumple con el schema, sino False.
         """
         catalog = self._read_catalog(catalog) if catalog else self
-        return self.validator.is_valid(catalog,
-                                       broken_links=broken_links,
-                                       verify_ssl=self.verify_ssl)
+        return self.validator.is_valid(
+            catalog, broken_links=broken_links, verify_ssl=self.verify_ssl,
+            url_check_timeout=self.url_check_timeout)
 
     @staticmethod
     def _update_validation_response(error, response):
@@ -344,10 +347,9 @@ class DataJson(dict):
         """
         catalog = self._read_catalog(catalog) if catalog else self
 
-        validation = self.validator.validate_catalog(catalog,
-                                                     only_errors,
-                                                     broken_links,
-                                                     self.verify_ssl)
+        validation = self.validator.validate_catalog(
+            catalog, only_errors, broken_links, self.verify_ssl,
+            self.url_check_timeout)
         if export_path:
             fmt = 'table'
 
@@ -968,7 +970,8 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
         return indicators.generate_catalogs_indicators(
             catalogs, central_catalog, identifier_search=identifier_search,
             validator=self.validator, broken_links=broken_links,
-            verify_ssl=self.verify_ssl)
+            verify_ssl=self.verify_ssl,
+            url_check_timeout=self.url_check_timeout)
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos

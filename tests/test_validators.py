@@ -46,27 +46,27 @@ class ValidatorsTestCase(unittest.TestCase):
         self.tinr_validator = \
             ThemeIdsNotRepeatedValidator(self.catalog)
         self.ddu_validator = \
-            DistributionUrlsValidator(self.catalog, True)
+            DistributionUrlsValidator(self.catalog, True, 1)
         self.lp_validator = \
-            LandingPagesValidator(self.catalog, True)
+            LandingPagesValidator(self.catalog, True, 1)
 
     @requests_mock.Mocker()
     def test_is_working_url_valid_url(self, req_mock):
-        url_validator = UrlValidator(self.catalog, True)
+        url_validator = UrlValidator(self.catalog, True, 1)
         req_mock.head(self.test_url)
         self.assertEqual(
             (True, 200), url_validator.is_working_url(self.test_url))
 
     @requests_mock.Mocker()
     def test_is_working_url_invalid_url(self, req_mock):
-        url_validator = UrlValidator(self.catalog, True)
+        url_validator = UrlValidator(self.catalog, True, 1)
         req_mock.head(self.test_url, status_code=400)
         self.assertEqual(
             (False, 400), url_validator.is_working_url(self.test_url))
 
     @requests_mock.Mocker()
     def test_is_working_url_too_many_requests_response(self, req_mock):
-        url_validator = UrlValidator(self.catalog, True)
+        url_validator = UrlValidator(self.catalog, True, 1)
         too_many_request_status_code = 429
         req_mock.head(self.test_url,
                       status_code=too_many_request_status_code)
@@ -76,20 +76,20 @@ class ValidatorsTestCase(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test_is_working_url_url_with_exception(self, req_mock):
-        url_validator = UrlValidator(self.catalog, True)
+        url_validator = UrlValidator(self.catalog, True, 1)
         req_mock.head(self.test_url, exc=ConnectionError)
         self.assertEqual(
             (False, None), url_validator.is_working_url(self.test_url))
 
     @requests_mock.Mocker()
     def test_is_working_url_url_with_timeout(self, req_mock):
-        url_validator = UrlValidator(self.catalog, True)
+        url_validator = UrlValidator(self.catalog, True, 1)
         req_mock.head(self.test_url, exc=Timeout)
         self.assertEqual(
             (False, 408), url_validator.is_working_url(self.test_url))
 
     def test_is_working_url_malformed_values(self):
-        url_validator = UrlValidator(self.catalog, True)
+        url_validator = UrlValidator(self.catalog, True, 1)
         self.assertEqual(
             (False, None), url_validator.is_working_url('malformed_value'))
         self.assertEqual(
@@ -99,7 +99,7 @@ class ValidatorsTestCase(unittest.TestCase):
 
     def test_valid_landing_page_validator(self):
         lp_validator = \
-            LandingPagesValidator(self.catalog, True)
+            LandingPagesValidator(self.catalog, True, 1)
         with mock.patch(
                 'pydatajson'
                 '.validators'
@@ -110,7 +110,7 @@ class ValidatorsTestCase(unittest.TestCase):
 
     def test_invalid_landing_page_validator(self):
         lp_validator = \
-            LandingPagesValidator(self.catalog, True)
+            LandingPagesValidator(self.catalog, True, 1)
         with mock.patch(
                 'pydatajson'
                 '.validators'
@@ -121,7 +121,7 @@ class ValidatorsTestCase(unittest.TestCase):
 
     def test_valid_distribution_url_validator(self):
         ddu_validator = \
-            DistributionUrlsValidator(self.catalog, True)
+            DistributionUrlsValidator(self.catalog, True, 1)
         with mock.patch(
                 'pydatajson'
                 '.validators'
@@ -132,7 +132,7 @@ class ValidatorsTestCase(unittest.TestCase):
 
     def test_invalid_distribution_url_validator(self):
         ddu_validator = \
-            DistributionUrlsValidator(self.catalog, True)
+            DistributionUrlsValidator(self.catalog, True, 1)
         with mock.patch(
                 'pydatajson'
                 '.validators'

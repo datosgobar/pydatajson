@@ -9,13 +9,15 @@ from pydatajson.validators\
 
 class StatusIndicatorsGenerator(object):
 
-    def __init__(self, catalog, validator=None, verify_ssl=True):
+    def __init__(self, catalog, validator=None, verify_ssl=True,
+                 url_check_timeout=1):
         self.download_url_ok = None
         self.catalog = read_catalog(catalog)
         self.summary = generate_datasets_summary(self.catalog,
                                                  validator=validator,
                                                  verify_ssl=verify_ssl)
         self.verify_url = verify_ssl
+        self.url_check_timeout = url_check_timeout
 
     def datasets_cant(self):
         return len(self.summary)
@@ -45,7 +47,7 @@ class StatusIndicatorsGenerator(object):
         if self.download_url_ok:
             return self.download_url_ok
         validator = DistributionDownloadUrlsValidator(
-            self.catalog, self.verify_url)
+            self.catalog, self.verify_url, self.url_check_timeout)
         self.download_url_ok = validator.validate()
         return self.download_url_ok
 
