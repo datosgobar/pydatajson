@@ -178,4 +178,3 @@ class TestStatusIndicatorsGeneratorTestCase(unittest.TestCase):
         generator.distribuciones_download_url_ok_pct()
         for request in req_mock.request_history:
             self.assertEqual(10, request.timeout)
-
