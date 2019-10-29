@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.53 (2019-10-29)
+-------------------
+* Parametrización del timeout en los heads que chequean urls
+
 0.4.52 (2019-10-22)
 -------------------
 * Validación electiva de urls con certificados SSL, enviando verify_ssl=False desactiva la validacion de certificados válidos
