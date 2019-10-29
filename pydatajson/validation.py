@@ -53,16 +53,21 @@ class Validator(object):
         return jsonschema.Draft4Validator(
             schema=schema, resolver=resolver, format_checker=format_checker)
 
-    def is_valid(self, catalog, broken_links=False, verify_ssl=True):
+    def is_valid(self, catalog, broken_links=False, verify_ssl=True,
+                 url_check_timeout=1):
         return not self._get_errors(catalog,
                                     broken_links=broken_links,
-                                    verify_ssl=verify_ssl)
+                                    verify_ssl=verify_ssl,
+                                    url_check_timeout=url_check_timeout)
 
     def validate_catalog(self, catalog, only_errors=False,
-                         broken_links=False, verify_ssl=True):
+                         broken_links=False, verify_ssl=True,
+                         url_check_timeout=1):
+
         default_response = self._default_response(catalog)
         errors = self._get_errors(catalog, broken_links=broken_links,
-                                  verify_ssl=verify_ssl)
+                                  verify_ssl=verify_ssl,
+                                  url_check_timeout=url_check_timeout)
 
         response = default_response.copy()
         for error in errors:
@@ -77,14 +82,16 @@ class Validator(object):
 
         return response
 
-    def _get_errors(self, catalog, broken_links=False, verify_ssl=True):
+    def _get_errors(self, catalog, broken_links=False, verify_ssl=True,
+                    url_check_timeout=1):
         errors = list(
             self.jsonschema_validator.iter_errors(catalog)
         )
         try:
-            for error in self._custom_errors(catalog,
-                                             broken_links=broken_links,
-                                             verify_ssl=verify_ssl):
+            for error in self._custom_errors(
+                    catalog, broken_links=broken_links,
+                    verify_ssl=verify_ssl,
+                    url_check_timeout=url_check_timeout):
                 errors.append(error)
         except Exception as e:
             logger.warning("Error de validación")
@@ -116,7 +123,8 @@ class Validator(object):
         }
 
     # noinspection PyTypeChecker
-    def _custom_errors(self, catalog, broken_links=False, verify_ssl=True):
+    def _custom_errors(self, catalog, broken_links=False, verify_ssl=True,
+                       url_check_timeout=1):
         """Realiza validaciones sin usar el jsonschema.
 
         En esta función se agregan bloques de código en python que realizan
@@ -124,8 +132,10 @@ class Validator(object):
         """
         validators = self._validators_for_catalog(catalog)
         if broken_links:
-            validators.append(LandingPagesValidator(catalog, verify_ssl))
-            validators.append(DistributionUrlsValidator(catalog, verify_ssl))
+            validators.append(LandingPagesValidator(catalog, verify_ssl,
+                                                    url_check_timeout))
+            validators.append(DistributionUrlsValidator(catalog, verify_ssl,
+                                                        url_check_timeout))
 
         for validator in validators:
             for error in validator.validate():
@@ -175,7 +185,8 @@ class Validator(object):
         return new_response
 
 
-def is_valid_catalog(catalog, validator=None, verify_ssl=True):
+def is_valid_catalog(catalog, validator=None, verify_ssl=True,
+                     url_check_timeout=1):
     """Valida que un archivo `data.json` cumpla con el schema definido.
 
     Chequea que el data.json tiene todos los campos obligatorios y que
@@ -195,12 +206,13 @@ def is_valid_catalog(catalog, validator=None, verify_ssl=True):
         else:
             validator = Validator()
 
-    return validator.is_valid(catalog, verify_ssl=verify_ssl)
+    return validator.is_valid(catalog, verify_ssl=verify_ssl,
+                              url_check_timeout=url_check_timeout)
 
 
 def validate_catalog(catalog, only_errors=False, fmt="dict",
                      export_path=None, validator=None,
-                     verify_ssl=True):
+                     verify_ssl=True, url_check_timeout=1):
     """Analiza un data.json registrando los errores que encuentra.
 
     Chequea que el data.json tiene todos los campos obligatorios y que
@@ -260,4 +272,5 @@ def validate_catalog(catalog, only_errors=False, fmt="dict",
 
     return validator.validate_catalog(catalog,
                                       only_errors,
-                                      verify_ssl=verify_ssl)
+                                      verify_ssl=verify_ssl,
+                                      url_check_timeout=url_check_timeout)

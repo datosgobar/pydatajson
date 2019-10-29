@@ -12,16 +12,19 @@ from pydatajson.validators.simple_validator import SimpleValidator
 
 class UrlValidator(SimpleValidator):
 
-    def __init__(self, catalog, verify_ssl):
+    def __init__(self, catalog, verify_ssl, url_check_timeout):
         super(UrlValidator, self).__init__(catalog)
         self.verify_ssl = verify_ssl
+        self.url_check_timeout = url_check_timeout
 
     def validate(self):
         raise NotImplementedError
 
     def is_working_url(self, url):
         try:
-            response = requests.head(url, timeout=1, verify=self.verify_ssl)
+            response = requests.head(url,
+                                     timeout=self.url_check_timeout,
+                                     verify=self.verify_ssl)
             matches = []
             if response.status_code not in EXCEPTION_STATUS_CODES:
                 matches = \

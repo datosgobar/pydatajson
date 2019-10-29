@@ -47,7 +47,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
                                  identifier_search=False,
                                  broken_links=False,
                                  validator=None,
-                                 verify_ssl=True):
+                                 verify_ssl=True,
+                                 url_check_timeout=1):
     """Genera una lista de diccionarios con varios indicadores sobre
     los catálogos provistos, tales como la cantidad de datasets válidos,
     días desde su última fecha actualizada, entre otros.
@@ -85,7 +86,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
 
         fields_count, result = _generate_indicators(
             catalog, validator=validator,
-            broken_links=broken_links, verify_ssl=verify_ssl)
+            broken_links=broken_links, verify_ssl=verify_ssl,
+            url_check_timeout=url_check_timeout)
         if central_catalog:
             result.update(_federation_indicators(
                 catalog, central_catalog, identifier_search=identifier_search))
@@ -115,7 +117,8 @@ def generate_catalogs_indicators(catalogs, central_catalog=None,
 
 
 def _generate_indicators(catalog, validator=None, only_numeric=False,
-                         broken_links=False, verify_ssl=True):
+                         broken_links=False, verify_ssl=True,
+                         url_check_timeout=1):
     """Genera los indicadores de un catálogo individual.
 
     Args:
@@ -133,9 +136,9 @@ def _generate_indicators(catalog, validator=None, only_numeric=False,
 
     # Genero indicadores relacionados con validacion de urls
     if broken_links:
-        result.update(_generate_valid_urls_indicators(catalog,
-                                                      validator=validator,
-                                                      verify_ssl=verify_ssl))
+        result.update(_generate_valid_urls_indicators(
+            catalog, validator=validator, verify_ssl=verify_ssl,
+            url_check_timeout=url_check_timeout))
 
     # Genero los indicadores relacionados con fechas, y los agrego
     result.update(
@@ -562,7 +565,8 @@ def _eventual_periodicity(periodicity):
     return periodicity in ('eventual', 'EVENTUAL')
 
 
-def _generate_valid_urls_indicators(catalog, validator=None, verify_ssl=True):
+def _generate_valid_urls_indicators(catalog, validator=None, verify_ssl=True,
+                                    url_check_timeout=1):
     """Genera indicadores sobre el estado de las urls de distribuciones
 
     Args:
@@ -575,9 +579,9 @@ def _generate_valid_urls_indicators(catalog, validator=None, verify_ssl=True):
     result = {}
     try:
         generator = \
-            StatusIndicatorsGenerator(catalog,
-                                      validator=validator,
-                                      verify_ssl=verify_ssl)
+            StatusIndicatorsGenerator(
+                catalog, validator=validator, verify_ssl=verify_ssl,
+                url_check_timeout=url_check_timeout)
     except Exception as e:
         msg = u'Error generando resumen del catálogo {}: {}'.format(
             catalog['title'], str(e))
