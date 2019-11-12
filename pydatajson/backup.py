@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Módulo con funciones auxiliares para hacer backups de catálogos."""
+"""Módulo con funciones auxiliares para hacer backups de catálogos.
+
+pydatajson backup https://monitoreo.datos.gob.ar/nodes.json ~/datos-argentina-backup/
+"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
