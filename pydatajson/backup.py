@@ -81,11 +81,12 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     include_data=include_data,
                     use_short_path=use_short_path)
                 print("Backup de '{}' finalizado.".format(catalog_id))
-            except Exception:
+            except Exception as e:
                 logger.exception(
                     "ERROR en {} ({})".format(catalog, catalog_id))
+                print(e)
                 print(
-                    "Backup de '{}' terminó con errores.".format(catalog.get("identifier")))
+                    "Backup de '{}' terminó con errores.".format(catalog_id))
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
@@ -246,8 +247,11 @@ def main(catalogs_url, backup_dir, include_data=True, use_short_path=True,
     include_data = bool(int(include_data))
     nodos = requests.get(catalogs_url).json()
 
-    nodos_dict = {row[1]["catalogo_id"]: row[1][
-        "catalogo_url_json"] for row in nodos.iterrows()}
+    nodos_dict = {
+        catalog["id"]: catalog["url_json"]
+        for jurisdiction in nodos["jurisdictions"]
+        for catalog in jurisdiction["catalogs"]
+    }
 
     make_catalogs_backup(
         nodos_dict,
