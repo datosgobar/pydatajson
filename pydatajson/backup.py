@@ -9,6 +9,7 @@ from __future__ import with_statement
 import os
 import sys
 import logging
+import requests
 
 import pydatajson
 from .helpers import ensure_dir_exists
@@ -51,6 +52,8 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
 
     if isinstance(catalogs, list):
         for catalog in catalogs:
+            print("Haciendo backup de '{}'...".format(
+                catalog.get("identifier")))
             try:
                 make_catalog_backup(
                     catalog,
@@ -59,11 +62,16 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     include_metadata_xlsx=include_metadata_xlsx,
                     include_data=include_data,
                     use_short_path=use_short_path)
+                print("Backup de '{}' finalizado.".format(
+                    catalog.get("identifier")))
             except Exception:
                 logger.exception("ERROR en {}".format(catalog))
+                print(
+                    "Backup de '{}' terminó con errores.".format(catalog_id))
 
     elif isinstance(catalogs, dict):
-        for catalog_id, catalog in catalogs.iteritems():
+        for catalog_id, catalog in catalogs.items():
+            print("Haciendo backup de '{}'...".format(catalog_id))
             try:
                 make_catalog_backup(
                     catalog, catalog_id,
@@ -72,9 +80,12 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
                     include_metadata_xlsx=include_metadata_xlsx,
                     include_data=include_data,
                     use_short_path=use_short_path)
+                print("Backup de '{}' finalizado.".format(catalog_id))
             except Exception:
                 logger.exception(
                     "ERROR en {} ({})".format(catalog, catalog_id))
+                print(
+                    "Backup de '{}' terminó con errores.".format(catalog.get("identifier")))
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
@@ -134,8 +145,8 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
         distributions_num = len(distributions)
 
         for index, distribution in enumerate(distributions):
-            logger.info("Descargando distribución {} de {} ({})".format(
-                index + 1, distributions_num, catalog_identifier))
+            print("Descargando distribución {} de {} ({})".format(
+                index + 1, distributions_num, catalog_identifier), end="\r")
 
             dataset_id = distribution["dataset_identifier"]
 
@@ -224,7 +235,8 @@ def get_catalog_path(catalog_id, catalogs_dir=CATALOGS_DIR, fmt="json"):
             fmt))
 
 
-def main(catalogs, include_data=True, use_short_path=True):
+def main(catalogs_url, backup_dir, include_data=True, use_short_path=True,
+         zip_backup=True):
     """Permite hacer backups de uno o más catálogos por línea de comandos.
 
     Args:
@@ -232,8 +244,30 @@ def main(catalogs, include_data=True, use_short_path=True):
             locales) para hacer backups.
     """
     include_data = bool(int(include_data))
-    make_catalogs_backup(catalogs.split(
-        ","), include_data=include_data, use_short_path=use_short_path)
+    nodos = requests.get(catalogs_url).json()
+
+    nodos_dict = {row[1]["catalogo_id"]: row[1][
+        "catalogo_url_json"] for row in nodos.iterrows()}
+
+    make_catalogs_backup(
+        nodos_dict,
+        local_catalogs_dir=backup_dir,
+        include_data=include_data,
+        use_short_path=use_short_path,
+        include_metadata_xlsx=True
+    )
+
+    def zipdir(path, ziph):
+        # ziph is zipfile handle
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                ziph.write(os.path.join(root, file))
+
+    if zip_backup:
+        catalog_dir = os.path.join(backup_dir, "catalog")
+        zipf = zipfile.ZipFile(catalog_dir + ".zip", 'w', zipfile.ZIP_DEFLATED)
+        zipdir(catalog_dir, zipf)
+        zipf.close()
 
 
 if __name__ == '__main__':
