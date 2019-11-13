@@ -13,6 +13,7 @@ import os
 import sys
 import logging
 import requests
+import zipfile
 
 import pydatajson
 from .helpers import ensure_dir_exists
