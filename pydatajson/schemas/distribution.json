@@ -31,7 +31,7 @@
               { "$ref": "mixed-types.json#stringOrNull" },
               { "anyOf": [
                   { "not": { "type": "string" } },
-                  { "pattern": "^[0-9a-zA-Z-._]+$" }
+                  { "pattern": "^.+$" }
                 ]
               }
           ]

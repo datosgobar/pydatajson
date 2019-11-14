@@ -194,11 +194,6 @@ class TestDataJsonTestCase(object):
             ),
             (
                 ['error', 'dataset', 0, 'errors', ],
-                "%s is not valid under any of the given schemas"
-                % jsonschema_str('convocatoriasabiertasduranteela.*o.csv')
-            ),
-            (
-                ['error', 'dataset', 0, 'errors', ],
                 "\[.*\] is not of type %s" % jsonschema_str('object')
             ),
             (
