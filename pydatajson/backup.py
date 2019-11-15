@@ -148,6 +148,8 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
     if include_data:
         distributions = catalog.distributions
         distributions_num = len(distributions)
+        success_download = 0
+        failed_download = 0
 
         for index, distribution in enumerate(distributions):
             print("Descargando distribución {} de {} ({})".format(
@@ -189,7 +191,18 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
                     ensure_dir_exists(os.path.dirname(file_path))
 
                     # decarga el archivo
-                    download_to_file(distribution_download_url, file_path)
+                    try:
+                        download_to_file(distribution_download_url, file_path)
+                        success_download += 1
+                    except Exception as e:
+                        print(e)
+                        print("No se pudo descargar exitosamente {}".format(
+                            distribution_download_url))
+                        failed_download += 1
+        print("Se descargaron {} distribuciones de '{}' exitosamente.".format(
+            success_download, catalog_identifier))
+        print("No se descargaron {} distribuciones de '{}' exitosamente.".format(
+            success_download, catalog_identifier))
 
 
 def get_distribution_dir(catalog_id, dataset_id, distribution_id,
