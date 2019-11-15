@@ -3,7 +3,8 @@
 
 """Módulo con funciones auxiliares para hacer backups de catálogos.
 
-pydatajson backup https://monitoreo.datos.gob.ar/nodes.json ~/datos-argentina-backup/
+pydatajson backup https://monitoreo.datos.gob.ar/nodes.json
+~/datos-argentina-backup/
 """
 
 from __future__ import unicode_literals
