@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.58 (2019-11-20)
+-------------------
+* Fix de estilo de codigo
+
 0.4.57 (2019-11-20)
 -------------------
 * Validación de fileName de distribuciones es menos estricto

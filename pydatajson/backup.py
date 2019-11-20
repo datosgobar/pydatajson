@@ -202,8 +202,8 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
                         failed_download += 1
         print("Se descargaron {} distribuciones de '{}' exitosamente.".format(
             success_download, catalog_identifier))
-        print("No se descargaron {} distribuciones de '{}' exitosamente.".format(
-            success_download, catalog_identifier))
+        print("No se descargaron {} distribuciones de '{}' exitosamente."
+              .format(success_download, catalog_identifier))
 
 
 def get_distribution_dir(catalog_id, dataset_id, distribution_id,
