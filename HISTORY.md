@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.57 (2019-11-20)
+-------------------
+* Validación de fileName de distribuciones es menos estricto
+
 0.4.53 (2019-10-29)
 -------------------
 * Parametrización del timeout en los heads que chequean urls
