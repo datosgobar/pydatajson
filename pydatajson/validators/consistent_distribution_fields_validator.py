@@ -50,6 +50,10 @@ class ConsistentDistributionFieldsValidator(SimpleValidator):
                 return True
 
             if extension not in possible_format_extensions:
+                for poss_format in possible_format_extensions:
+                    ext_incl_format = poss_format.lower() in extension.lower()
+                    format_incl_ext = extension.lower() in poss_format.lower()
+                    return True
                 return False
 
         return True

@@ -19,7 +19,7 @@
                 "name": { "$ref": "mixed-types.json#nonEmptyString" },
                 "mbox": {
                     "anyOf": [
-                        { "type": "string", "pattern": "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" },
+                        { "type": "string", "pattern": "^[ ]*[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*[ ]*$" },
                         { "$ref": "mixed-types.json#emptyValue" }
                     ]
                 }
@@ -56,7 +56,7 @@
                 "fn": { "$ref": "mixed-types.json#stringOrNull" },
                 "hasEmail": {
                     "anyOf": [
-                        { "type": "string", "pattern": "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" },
+                        { "type": "string", "pattern": "^[ ]*[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*[ ]*$" },
                         { "$ref": "mixed-types.json#emptyValue" }
                     ]
                 }
