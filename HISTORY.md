@@ -1,5 +1,12 @@
 Versiones
 =========
+0.4.59 (2019-11-21)
+-------------------
+* Validación de formatos y extensiones es menos restrictiva.
+* Mail para catálogo ya no es obligatorio.
+* Temporal se puede usar con sólo una fecha de comienzo (sin final).
+* Se admiten espacios iniciales o finales en los mails.
+
 0.4.58 (2019-11-20)
 -------------------
 * Fix de estilo de codigo
