@@ -120,13 +120,13 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_valid_empty_filename_list(self):
+    def test_valid_empty_filename(self):
         case_filename = "border_cases_ditribution_filenames"
         expected_valid = True
         sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
         self.validate_valid(sample_path, expected_valid)
 
-    def test_invalid_numeric_filename_list(self):
+    def test_invalid_numeric_filename(self):
         case_filename = "invalid_ditribution_filenames"
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
