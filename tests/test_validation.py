@@ -8,7 +8,7 @@ import re
 
 import requests_mock
 import vcr
-from nose.tools import assert_true, assert_false, assert_dict_equal,\
+from nose.tools import assert_true, assert_false, assert_dict_equal, \
     assert_regexp_matches
 from six import iteritems, text_type
 
@@ -117,6 +117,20 @@ class TestDataJsonTestCase(object):
         expected_valid = False
         path = ['error', 'dataset', 0, 'errors', 0, 'message']
         regex = "\[\] is too short"
+        self.validate_message_with_file(
+            case_filename, expected_valid, path, regex)
+
+    def test_valid_empty_filename_list(self):
+        case_filename = "border_cases_ditribution_filenames"
+        expected_valid = True
+        sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
+        self.validate_valid(sample_path, expected_valid)
+
+    def test_invalid_numeric_filename_list(self):
+        case_filename = "invalid_ditribution_filenames"
+        expected_valid = False
+        path = ['error', 'dataset', 0, 'errors', 0, 'message']
+        regex = "4 is not valid under any of the given schemas"
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
