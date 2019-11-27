@@ -12,10 +12,11 @@ from pydatajson.validators.simple_validator import SimpleValidator
 
 class UrlValidator(SimpleValidator):
 
-    def __init__(self, catalog, verify_ssl, url_check_timeout):
+    def __init__(self, catalog, verify_ssl, url_check_timeout, threads_count):
         super(UrlValidator, self).__init__(catalog)
         self.verify_ssl = verify_ssl
         self.url_check_timeout = url_check_timeout
+        self.threads_count = threads_count
 
     def validate(self):
         raise NotImplementedError
