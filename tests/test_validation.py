@@ -144,19 +144,12 @@ class TestDataJsonTestCase(object):
         self.validate_message_with_file(
             case_filename, expected_valid, path, regex)
 
-    def test_invalid_whitespace_emails(self):
-        case_filename = "invalid_whitespace_emails"
-        expected_valid = False
-        path = ['error', 'dataset', 0, 'errors', 0, 'message']
-        regex = "%s is not valid under any of the given schemas" \
-                % (jsonschema_str(' whitespace@mail.com'), )
-        self.validate_message_with_file(
-            case_filename, expected_valid, path, regex)
-        path = ['error', 'dataset', 1, 'errors', 0, 'message']
-        regex = "%s is not valid under any of the given schemas" \
-                % (jsonschema_str('trailspace@mail.com '),)
-        self.validate_message_with_file(
-            case_filename, expected_valid, path, regex)
+    def test_valid_whitespace_emails(self):
+        case_filename = "valid_whitespace_emails"
+        expected_valid = True
+        sample_path = os.path.join(self.SAMPLES_DIR, case_filename + ".json")
+        self.validate_valid(
+            sample_path, expected_valid)
 
     def test_invalid_multiple_emails(self):
         case_filename = "invalid_multiple_emails"
@@ -182,11 +175,6 @@ class TestDataJsonTestCase(object):
             (
                 ['error', 'catalog', 'errors', ],
                 "789 is not valid under any of the given schemas"
-            ),
-            (
-                ['error', 'catalog', 'errors', ], "%s is not a %s"
-                % (jsonschema_str('datosmodernizacion.gob.ar'),
-                   jsonschema_str('email'))
             ),
             (
                 ['error', 'catalog', 'errors', ],
@@ -296,12 +284,7 @@ class TestDataJsonTestCase(object):
         errors = [(
                     ['error', 'catalog', 'errors', ],
                     "%s is too short" % jsonschema_str('')
-                   ),
-                  (
-                    ['error', 'catalog', 'errors', ],
-                    "%s is not a %s" % (jsonschema_str(''),
-                                        jsonschema_str('email'))
-                  )]
+                   )]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson'):
                 yield self.validate_contains_message, BAD_DATAJSON_URL,\
@@ -317,12 +300,8 @@ class TestDataJsonTestCase(object):
 
     def test_validate_invalid_remote_datajson_has_errors2(self):
         """ Testea `validate_catalog` contra un data.json remoto invalido."""
-        errors = [
-            ([
-                'error', 'catalog', 'errors', ], "%s is not a %s" %
-                (jsonschema_str(''), jsonschema_str('email'))), ([
-                    'error', 'catalog', 'errors', ], "%s is too short" %
-                jsonschema_str('')), ]
+        errors = [(['error', 'catalog', 'errors', ],
+                   "%s is too short" % jsonschema_str(''))]
         for path, regex in errors:
             with my_vcr.use_cassette('test_validate_bad_remote_datajson2'):
                 yield self.validate_contains_message, BAD_DATAJSON_URL2,\

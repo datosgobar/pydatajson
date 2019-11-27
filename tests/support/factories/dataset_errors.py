@@ -147,6 +147,12 @@ def malformed_temporal():
                 "type": "string"
             },
             {
+                "pattern":
+                    "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)"
+                    "?(([+-]\\d\\d:\\d\\d)|Z)?)$",
+                "type": "string"
+            },
+            {
                 "type": "null"
             },
             {
@@ -175,6 +181,11 @@ def malformed_temporal2():
                            "(T\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?)"
                            "?(([+-]\\d\\d:\\d\\d)|Z)?)\\/"
                            "(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d"
+                           "\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
+                "type": "string"
+            },
+            {
+                "pattern": "^(\\d{4}-\\d\\d-\\d\\d(T\\d\\d:\\d\\d:\\d"
                            "\\d(\\.\\d+)?)?(([+-]\\d\\d:\\d\\d)|Z)?)$",
                 "type": "string"
             },

@@ -8,7 +8,7 @@ from .catalog_errors import missing_catalog_title, \
     missing_catalog_dataset, invalid_catalog_publisher_type, \
     invalid_publisher_mbox_format, null_catalog_publisher, \
     empty_mandatory_string, malformed_date, malformed_datetime, \
-    malformed_datetime2, malformed_email, malformed_uri, \
+    malformed_datetime2, malformed_uri, \
     invalid_theme_taxonomy, missing_dataset
 from .dataset_errors import missing_dataset_title, \
     missing_dataset_description, \
@@ -83,7 +83,6 @@ TEST_FROM_GENERATED_RESULT = {
     'empty_mandatory_string': empty_mandatory_string(),
     'malformed_datetime': malformed_datetime(),
     'malformed_datetime2': malformed_datetime2(),
-    'malformed_email': malformed_email(),
     'malformed_uri': malformed_uri(),
     'invalid_themeTaxonomy': invalid_theme_taxonomy(),
     'missing_dataset': missing_dataset(),
