@@ -12,7 +12,6 @@ from tempfile import NamedTemporaryFile
 import nose
 import vcr
 
-from pydatajson import constants
 from tests.support.factories.xlsx import CSV_TABLE, WRITE_XLSX_TABLE
 from tests.support.factories.xlsx import READ_XLSX_TABLE
 
@@ -28,8 +27,6 @@ from pydatajson.custom_exceptions import NonParseableCatalog
 from tests import xl_methods
 import openpyxl as pyxl
 
-import pydatajson.constants
-pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
 my_vcr = vcr.VCR(
     path_transformer=vcr.VCR.ensure_suffix('.yaml'),

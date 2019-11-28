@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from pydatajson import threading_helper, constants
+from pydatajson import threading_helper
 from pydatajson.validators.url_validator import UrlValidator
 
 
@@ -15,7 +15,7 @@ class DistributionDownloadUrlsValidator(UrlValidator):
             async_results += threading_helper \
                 .apply_threading(distribution_urls,
                                  self.is_working_url,
-                                 constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
+                                 self.threads_count)
 
         result = 0
         for res, _ in async_results:

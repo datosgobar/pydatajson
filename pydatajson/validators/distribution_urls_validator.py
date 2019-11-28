@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pydatajson.custom_exceptions as ce
-from pydatajson import threading_helper, constants
+from pydatajson import threading_helper
 from pydatajson.validators.url_validator import UrlValidator
 
 
@@ -30,7 +30,7 @@ class DistributionUrlsValidator(UrlValidator):
         sync_res = threading_helper \
             .apply_threading(urls,
                              self.is_working_url,
-                             constants.CANT_THREADS_BROKEN_URL_VALIDATOR)
+                             self.threads_count)
 
         for i in range(len(metadata)):
             actual_metadata = metadata[i]

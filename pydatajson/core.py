@@ -965,13 +965,15 @@ El reporte no contiene la clave obligatoria {}. Pruebe con otro archivo.
     def generate_catalogs_indicators(self, catalogs=None,
                                      central_catalog=None,
                                      identifier_search=False,
-                                     broken_links=False):
+                                     broken_links=False,
+                                     broken_links_threads=1):
         catalogs = catalogs or self
         return indicators.generate_catalogs_indicators(
             catalogs, central_catalog, identifier_search=identifier_search,
             validator=self.validator, broken_links=broken_links,
             verify_ssl=self.verify_ssl,
-            url_check_timeout=self.url_check_timeout)
+            url_check_timeout=self.url_check_timeout,
+            broken_links_threads=broken_links_threads)
 
     def _count_fields_recursive(self, dataset, fields):
         """Cuenta la información de campos optativos/recomendados/requeridos
