@@ -28,8 +28,6 @@ from pydatajson.custom_exceptions import NonParseableCatalog
 from tests import xl_methods
 import openpyxl as pyxl
 
-import pydatajson.constants
-pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
 
 my_vcr = vcr.VCR(
     path_transformer=vcr.VCR.ensure_suffix('.yaml'),

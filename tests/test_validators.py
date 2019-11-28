@@ -25,10 +25,6 @@ try:
 except ImportError:
     from unittest import mock
 
-import pydatajson.constants
-
-pydatajson.constants.CANT_THREADS_BROKEN_URL_VALIDATOR = 1
-
 
 class ValidatorsTestCase(unittest.TestCase):
     SAMPLES_DIR = os.path.join("tests", "samples")
