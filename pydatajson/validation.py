@@ -63,12 +63,13 @@ class Validator(object):
 
     def validate_catalog(self, catalog, only_errors=False,
                          broken_links=False, verify_ssl=True,
-                         url_check_timeout=1):
+                         url_check_timeout=1, broken_links_threads=1):
 
         default_response = self._default_response(catalog)
         errors = self._get_errors(catalog, broken_links=broken_links,
                                   verify_ssl=verify_ssl,
-                                  url_check_timeout=url_check_timeout)
+                                  url_check_timeout=url_check_timeout,
+                                  broken_links_threads=broken_links_threads)
 
         response = default_response.copy()
         for error in errors:
