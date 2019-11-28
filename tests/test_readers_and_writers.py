@@ -12,7 +12,6 @@ from tempfile import NamedTemporaryFile
 import nose
 import vcr
 
-from pydatajson import constants
 from tests.support.factories.xlsx import CSV_TABLE, WRITE_XLSX_TABLE
 from tests.support.factories.xlsx import READ_XLSX_TABLE
 
