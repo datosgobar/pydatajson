@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.61 (2019-11-28)
+-------------------
+* Fix de la parametrización de threads.
+
 0.4.60 (2019-11-28)
 -------------------
 * Parametrización de cantidad de threads a usar en validación de urls.
