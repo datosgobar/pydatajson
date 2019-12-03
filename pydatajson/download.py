@@ -36,7 +36,8 @@ def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY):
     timeout = 2
     for i in range(1, tries + 1):
         try:
-            return requests.get(url, timeout=timeout ** i, verify=False).content
+            return requests.get(url, timeout=timeout ** i,
+                                verify=False).content
         except requests.TooManyRedirects as e:
             raise e
         except Exception as e:
