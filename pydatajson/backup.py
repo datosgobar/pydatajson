@@ -162,7 +162,7 @@ def download_data(catalog, catalog_identifier, include_datasets,
             distribution_download_url[idx:]
         )
 
-        # si no espicifica un formato, toma de distribution_file_name
+        # si no especifica un formato, toma de distribution_file_name
         # asume que formato está al menos en distribution_file_name
         distribution_format = distribution.get(
             "format",
