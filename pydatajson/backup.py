@@ -249,8 +249,7 @@ def get_catalog_path(catalog_id, catalogs_dir=CATALOGS_DIR, fmt="json"):
 
 
 def download_all(catalogs_url, backup_dir, include_data=True,
-                 use_short_path=True,
-                 zip_backup=True):
+                 use_short_path=True):
     include_data = bool(int(include_data))
     nodos = requests.get(catalogs_url, verify=False).json()
 
@@ -268,18 +267,6 @@ def download_all(catalogs_url, backup_dir, include_data=True,
         include_metadata_xlsx=True
     )
 
-    def zipdir(path, ziph):
-        # ziph is zipfile handle
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                ziph.write(os.path.join(root, file))
-
-    if zip_backup:
-        catalog_dir = os.path.join(backup_dir, "catalog")
-        zipf = zipfile.ZipFile(catalog_dir + ".zip", 'w', zipfile.ZIP_DEFLATED)
-        zipdir(catalog_dir, zipf)
-        zipf.close()
-
 
 def main(*args):
     backup_dir = os.path.join(os.getcwd(), 'backup')
@@ -287,6 +274,7 @@ def main(*args):
     parser = argparse.ArgumentParser()
     parser.add_argument('--all', action='store_true')
     parser.add_argument('catalog', nargs='?')
+    parser.add_argument('--zip', action='store_true', required=False)
 
     import sys
     if sys.argv[1] == 'backup':
@@ -294,17 +282,30 @@ def main(*args):
     else:
         args = sys.argv[1:]
     args = parser.parse_args(args=args)
-    if not args.all and not args.catalog:
+    if (not args.all and not args.catalog) and not args.zip:
         return print("Uso: backup.py --all ó backup.py <catalog_url>")
 
-    if args.all and args.catalog:
+    if (args.all and args.catalog) and not args.zip:
         return print("Solo se puede especificar uno de :--all o catalog")
 
     if args.all:
-        return download_all(CATALOGS_URL, backup_dir)
+        download_all(CATALOGS_URL, backup_dir)
 
-    return make_catalog_backup(args.catalog, local_catalogs_dir=backup_dir)
+    elif args.catalog:
+        make_catalog_backup(args.catalog, local_catalogs_dir=backup_dir)
 
+    def zipdir(path, ziph):
+        # ziph is zipfile handle
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                ziph.write(os.path.join(root, file))
+
+    if args.zip:
+        print("Comprimiendo...")
+        catalog_dir = os.path.join(backup_dir, "catalog")
+        zipf = zipfile.ZipFile(catalog_dir + ".zip", 'w', zipfile.ZIP_DEFLATED)
+        zipdir(catalog_dir, zipf)
+        zipf.close()
 
 if __name__ == '__main__':
     main()
