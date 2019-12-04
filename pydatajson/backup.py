@@ -11,16 +11,17 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 import os
-import sys
+import argparse
 import logging
 import requests
 import zipfile
 
 import pydatajson
-from .helpers import ensure_dir_exists
-from .download import download_to_file
+from pydatajson.helpers import ensure_dir_exists
+from pydatajson.download import download_to_file
 
 CATALOGS_DIR = ""
+CATALOGS_URL = 'http://monitoreo.datos.gob.ar/nodes.json'
 
 logger = logging.getLogger('pydatajson')
 
@@ -55,49 +56,29 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
         None
     """
 
-    if isinstance(catalogs, list):
-        for catalog in catalogs:
-            print("Haciendo backup de '{}'...".format(
-                catalog.get("identifier")))
-            try:
-                make_catalog_backup(
-                    catalog,
-                    local_catalogs_dir=local_catalogs_dir,
-                    include_metadata=include_metadata,
-                    include_metadata_xlsx=include_metadata_xlsx,
-                    include_data=include_data,
-                    use_short_path=use_short_path)
-                print("Backup de '{}' finalizado.".format(
-                    catalog.get("identifier")))
-            except Exception:
-                logger.exception("ERROR en {}".format(catalog))
-                print(
-                    "Backup de '{}' terminó con errores.".format(catalog_id))
-
-    elif isinstance(catalogs, dict):
-        for catalog_id, catalog in catalogs.items():
-            print("Haciendo backup de '{}'...".format(catalog_id))
-            try:
-                make_catalog_backup(
-                    catalog, catalog_id,
-                    local_catalogs_dir=local_catalogs_dir,
-                    include_metadata=include_metadata,
-                    include_metadata_xlsx=include_metadata_xlsx,
-                    include_data=include_data,
-                    use_short_path=use_short_path)
-                print("Backup de '{}' finalizado.".format(catalog_id))
-            except Exception as e:
-                logger.exception(
-                    "ERROR en {} ({})".format(catalog, catalog_id))
-                print(e)
-                print(
-                    "Backup de '{}' terminó con errores.".format(catalog_id))
+    for catalog_id, catalog in catalogs.items():
+        print("Haciendo backup de '{}'...".format(catalog_id))
+        try:
+            make_catalog_backup(
+                catalog, catalog_id,
+                local_catalogs_dir=local_catalogs_dir,
+                include_metadata=include_metadata,
+                include_metadata_xlsx=include_metadata_xlsx,
+                include_data=include_data,
+                use_short_path=use_short_path)
+            print("Backup de '{}' finalizado.".format(catalog_id))
+        except Exception as e:
+            logger.exception(
+                "ERROR en {} ({})".format(catalog, catalog_id))
+            print(e)
+            print(
+                "Backup de '{}' terminó con errores.".format(catalog_id))
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
                         include_metadata=True, include_data=True,
                         include_datasets=None,
-                        include_distribution_formats=['CSV', 'XLS'],
+                        include_distribution_formats=None,
                         include_metadata_xlsx=True, use_short_path=False):
     """Realiza una copia local de los datos y metadatos de un catálogo.
 
@@ -130,80 +111,90 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
     catalog_identifier = catalog_id if catalog_id else catalog["identifier"]
 
     if include_metadata:
-        logger.info(
-            "Descargando catálogo {}".format(
-                catalog_identifier.ljust(30)))
-
-        # catálogo en json
-        catalog_path = get_catalog_path(catalog_identifier, local_catalogs_dir)
-        ensure_dir_exists(os.path.dirname(catalog_path))
-        catalog.to_json(catalog_path)
-
-        if include_metadata_xlsx:
-            # catálogo en xlsx
-            catalog_path = get_catalog_path(
-                catalog_identifier, local_catalogs_dir, fmt="xlsx")
-            ensure_dir_exists(os.path.dirname(catalog_path))
-            catalog.to_xlsx(catalog_path)
+        download_metadata(catalog, catalog_identifier, include_metadata_xlsx,
+                          local_catalogs_dir)
 
     if include_data:
-        distributions = catalog.distributions
-        distributions_num = len(distributions)
-        success_download = 0
-        failed_download = 0
+        download_data(catalog, catalog_identifier, include_datasets,
+                      include_distribution_formats, local_catalogs_dir,
+                      use_short_path)
 
-        for index, distribution in enumerate(distributions):
-            print("Descargando distribución {} de {} ({})".format(
-                index + 1, distributions_num, catalog_identifier), end="\r")
 
-            dataset_id = distribution["dataset_identifier"]
+def download_metadata(catalog, catalog_identifier, include_metadata_xlsx,
+                      local_catalogs_dir):
+    logger.info(
+        "Descargando catálogo {}".format(
+            catalog_identifier.ljust(30)))
+    # catálogo en json
+    catalog_path = get_catalog_path(catalog_identifier, local_catalogs_dir)
+    ensure_dir_exists(os.path.dirname(catalog_path))
+    catalog.to_json(catalog_path)
+    if include_metadata_xlsx:
+        # catálogo en xlsx
+        catalog_path = get_catalog_path(
+            catalog_identifier, local_catalogs_dir, fmt="xlsx")
+        ensure_dir_exists(os.path.dirname(catalog_path))
+        catalog.to_xlsx(catalog_path)
 
-            if include_datasets and (dataset_id not in include_datasets):
-                pass
-            else:
-                distribution_id = distribution["identifier"]
-                distribution_download_url = distribution["downloadURL"]
 
-                # si no se especifica un file name, se toma de la URL
-                distribution_file_name = distribution.get(
-                    "fileName",
-                    distribution_download_url[
-                        distribution_download_url.rfind("/") + 1:]
-                )
+def download_data(catalog, catalog_identifier, include_datasets,
+                  include_distribution_formats, local_catalogs_dir,
+                  use_short_path):
+    distributions = catalog.distributions
+    distributions_num = len(distributions)
+    success_download = 0
+    failed_download = 0
+    for index, distribution in enumerate(distributions):
+        print("Descargando distribución {} de {} ({})".format(
+            index + 1, distributions_num, catalog_identifier), end="\r")
 
-                # si no espicifica un formato, toma de distribution_file_name
-                # asume que formato está al menos en distribution_file_name
-                distribution_format = distribution.get(
-                    "format",
-                    distribution_file_name[
-                        distribution_file_name.rfind(".") + 1:]
-                )
-                if (include_distribution_formats and
-                        (distribution_format
-                            not in include_distribution_formats)):
-                    pass
-                else:
+        dataset_id = distribution["dataset_identifier"]
 
-                    # genera el path local donde descargar el archivo
-                    file_path = get_distribution_path(
-                        catalog_identifier, dataset_id, distribution_id,
-                        distribution_file_name, local_catalogs_dir,
-                        use_short_path=use_short_path)
-                    ensure_dir_exists(os.path.dirname(file_path))
+        if include_datasets and (dataset_id not in include_datasets):
+            continue
+        distribution_id = distribution["identifier"]
+        distribution_download_url = distribution["downloadURL"]
 
-                    # decarga el archivo
-                    try:
-                        download_to_file(distribution_download_url, file_path)
-                        success_download += 1
-                    except Exception as e:
-                        print(e)
-                        print("No se pudo descargar exitosamente {}".format(
-                            distribution_download_url))
-                        failed_download += 1
-        print("Se descargaron {} distribuciones de '{}' exitosamente.".format(
-            success_download, catalog_identifier))
-        print("No se descargaron {} distribuciones de '{}' exitosamente."
-              .format(success_download, catalog_identifier))
+        # si no se especifica un file name, se toma de la URL
+        idx = distribution_download_url.rfind("/") + 1
+        distribution_file_name = distribution.get(
+            "fileName",
+            distribution_download_url[idx:]
+        )
+
+        # si no especifica un formato, toma de distribution_file_name
+        # asume que formato está al menos en distribution_file_name
+        distribution_format = distribution.get(
+            "format",
+            distribution_file_name[distribution_file_name.rfind(".") + 1:]
+        )
+        if (include_distribution_formats and
+                (distribution_format
+                 not in include_distribution_formats)):
+            continue
+
+        # genera el path local donde descargar el archivo
+        file_path = get_distribution_path(
+            catalog_identifier, dataset_id, distribution_id,
+            distribution_file_name, local_catalogs_dir,
+            use_short_path=use_short_path)
+        ensure_dir_exists(os.path.dirname(file_path))
+
+        # decarga el archivo
+        try:
+            download_to_file(distribution_download_url, file_path)
+            success_download += 1
+            print("Descarga de {} OK".format(distribution_download_url))
+        except Exception as e:
+            print("No se pudo descargar exitosamente {}".format(
+                distribution_download_url))
+            print("Error: {}".format(e))
+            failed_download += 1
+
+    print("Se descargaron {} distribuciones de '{}' exitosamente.".format(
+        success_download, catalog_identifier))
+    print("No se descargaron {} distribuciones de '{}' exitosamente."
+          .format(failed_download, catalog_identifier))
 
 
 def get_distribution_dir(catalog_id, dataset_id, distribution_id,
@@ -254,14 +245,9 @@ def get_catalog_path(catalog_id, catalogs_dir=CATALOGS_DIR, fmt="json"):
             fmt))
 
 
-def main(catalogs_url, backup_dir, include_data=True, use_short_path=True,
-         zip_backup=True):
-    """Permite hacer backups de uno o más catálogos por línea de comandos.
-
-    Args:
-        catalogs (str): Lista de catálogos separados por coma (URLs o paths
-            locales) para hacer backups.
-    """
+def download_all(catalogs_url, backup_dir, include_data=True,
+                 use_short_path=True,
+                 zip_backup=True):
     include_data = bool(int(include_data))
     nodos = requests.get(catalogs_url).json()
 
@@ -292,6 +278,25 @@ def main(catalogs_url, backup_dir, include_data=True, use_short_path=True,
         zipf.close()
 
 
+def _argparser():
+    backup_dir = os.path.join(os.getcwd(), 'backup')
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--all', action='store_true')
+    parser.add_argument('catalog', nargs='?')
+
+    args = parser.parse_args()
+    if not args.all and not args.catalog:
+        return print("Uso: backup.py --all ó backup.py <catalog_url>")
+
+    if args.all and args.catalog:
+        return print("Solo se puede especificar uno de :--all o catalog")
+
+    if args.all:
+        return download_all(CATALOGS_URL, backup_dir)
+
+    return make_catalog_backup(args.catalog, local_catalogs_dir=backup_dir)
+
+
 if __name__ == '__main__':
-    args = sys.argv[1:] if len(sys.argv > 1) else []
-    main(*args)
+    _argparser()

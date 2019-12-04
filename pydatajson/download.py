@@ -12,18 +12,17 @@ import requests
 import time
 import sys
 
-DEFAULT_TRIES = 1
+DEFAULT_TRIES = 3
 RETRY_DELAY = 1
 
 
-def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY,
-             try_timeout=None, proxies=None, verify=True):
+def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY):
     """
     Descarga un archivo a través del protocolo HTTP, en uno o más intentos.
 
     Args:
         url (str): URL (schema HTTP) del archivo a descargar.
-        tries (int): Intentos a realizar (default: 1).
+        tries (int): Intentos a realizar (default: 3).
         retry_delay (int o float): Tiempo a esperar, en segundos, entre cada
             intento.
         try_timeout (int o float): Tiempo máximo a esperar por intento.
@@ -34,16 +33,15 @@ def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY,
     Returns:
         bytes: Contenido del archivo
     """
-    for i in range(tries):
+    timeout = 2
+    for i in range(1, tries + 1):
         try:
-            return requests.get(url, timeout=try_timeout, proxies=proxies,
-                                verify=verify).content
+            return requests.get(url, timeout=timeout ** i,
+                                verify=False).content
+        except requests.TooManyRedirects as e:
+            raise e
         except Exception as e:
             download_exception = e
-
-            if i < tries - 1:
-                time.sleep(retry_delay)
-
     raise download_exception
 
 
