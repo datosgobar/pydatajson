@@ -173,6 +173,9 @@ def download_data(catalog, catalog_identifier, include_datasets,
                  not in include_distribution_formats)):
             continue
 
+        if distribution.get('type') not in ('file', 'file.upload'):
+            continue
+
         # genera el path local donde descargar el archivo
         file_path = get_distribution_path(
             catalog_identifier, dataset_id, distribution_id,
@@ -249,7 +252,7 @@ def download_all(catalogs_url, backup_dir, include_data=True,
                  use_short_path=True,
                  zip_backup=True):
     include_data = bool(int(include_data))
-    nodos = requests.get(catalogs_url).json()
+    nodos = requests.get(catalogs_url, verify=False).json()
 
     nodos_dict = {
         catalog["id"]: catalog["url_json"]
@@ -278,14 +281,19 @@ def download_all(catalogs_url, backup_dir, include_data=True,
         zipf.close()
 
 
-def _argparser():
+def main(*args):
     backup_dir = os.path.join(os.getcwd(), 'backup')
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--all', action='store_true')
     parser.add_argument('catalog', nargs='?')
 
-    args = parser.parse_args()
+    import sys
+    if sys.argv[1] == 'backup':
+        args = sys.argv[2:]
+    else:
+        args = sys.argv[1:]
+    args = parser.parse_args(args=args)
     if not args.all and not args.catalog:
         return print("Uso: backup.py --all ó backup.py <catalog_url>")
 
@@ -299,4 +307,4 @@ def _argparser():
 
 
 if __name__ == '__main__':
-    _argparser()
+    main()
