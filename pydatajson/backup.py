@@ -105,7 +105,10 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
         None
     """
 
-    catalog = pydatajson.DataJson(catalog)
+    try:
+        catalog = pydatajson.DataJson(catalog, catalog_format="json")
+    except:
+        catalog = pydatajson.DataJson(catalog, catalog_format="xlsx")
     catalog_identifier = catalog_id if catalog_id else catalog["identifier"]
 
     if include_metadata:
@@ -266,7 +269,7 @@ def download_all(catalogs_url, backup_dir, include_data=True,
         include_data=include_data,
         use_short_path=use_short_path,
         include_metadata_xlsx=True)),
-            nodos_dict.keys())
+        nodos_dict.keys())
 
 
 def main(*args):
