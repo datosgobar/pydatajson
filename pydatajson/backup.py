@@ -11,6 +11,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import with_statement
 import os
+import time
 import argparse
 import logging
 import requests
@@ -142,7 +143,7 @@ def download_metadata(catalog, catalog_identifier, include_metadata_xlsx,
 
 def download_data(catalog, catalog_identifier, include_datasets,
                   include_distribution_formats, local_catalogs_dir,
-                  use_short_path):
+                  use_short_path, delay=0.05):
     distributions = catalog.distributions
     distributions_num = len(distributions)
     success_download = 0
@@ -156,47 +157,54 @@ def download_data(catalog, catalog_identifier, include_datasets,
         if include_datasets and (dataset_id not in include_datasets):
             continue
         distribution_id = distribution["identifier"]
-        distribution_download_url = distribution["downloadURL"]
+        if "downloadURL" in distribution:
+            distribution_download_url = distribution["downloadURL"]
 
-        # si no se especifica un file name, se toma de la URL
-        idx = distribution_download_url.rfind("/") + 1
-        distribution_file_name = distribution.get(
-            "fileName",
-            distribution_download_url[idx:]
-        )
+            # si no se especifica un file name, se toma de la URL
+            idx = distribution_download_url.rfind("/") + 1
+            distribution_file_name = distribution.get(
+                "fileName",
+                distribution_download_url[idx:]
+            )
 
-        # si no especifica un formato, toma de distribution_file_name
-        # asume que formato está al menos en distribution_file_name
-        distribution_format = distribution.get(
-            "format",
-            distribution_file_name[distribution_file_name.rfind(".") + 1:]
-        )
-        if (include_distribution_formats and
-                (distribution_format
-                 not in include_distribution_formats)):
-            continue
+            # si no especifica un formato, toma de distribution_file_name
+            # asume que formato está al menos en distribution_file_name
+            distribution_format = distribution.get(
+                "format",
+                distribution_file_name[distribution_file_name.rfind(".") + 1:]
+            )
+            if (include_distribution_formats and
+                    (distribution_format
+                     not in include_distribution_formats)):
+                continue
 
-        if distribution.get('type', 'file') not in ('file', 'file.upload'):
-            continue
+            if distribution.get('type', 'file') not in ('file', 'file.upload'):
+                continue
 
-        import socket
-        # genera el path local donde descargar el archivo
-        file_path = get_distribution_path(
-            catalog_identifier, dataset_id, distribution_id,
-            distribution_file_name, local_catalogs_dir,
-            use_short_path=use_short_path)
-        ensure_dir_exists(os.path.dirname(file_path))
+            import socket
+            # genera el path local donde descargar el archivo
+            file_path = get_distribution_path(
+                catalog_identifier, dataset_id, distribution_id,
+                distribution_file_name, local_catalogs_dir,
+                use_short_path=use_short_path)
+            ensure_dir_exists(os.path.dirname(file_path))
 
-        # decarga el archivo
-        try:
-            download_to_file(distribution_download_url, file_path)
-            success_download += 1
-            print("Descarga de {} OK".format(distribution_download_url))
-        except Exception as e:
-            print("No se pudo descargar exitosamente {}".format(
-                distribution_download_url))
-            print("Error: {}".format(e))
-            failed_download += 1
+            # decarga el archivo
+            try:
+                download_to_file(distribution_download_url, file_path)
+                success_download += 1
+                print("Descarga de {} OK".format(distribution_download_url))
+            except Exception as e:
+                print("No se pudo descargar exitosamente {}".format(
+                    distribution_download_url))
+                print("Error: {}".format(e))
+                failed_download += 1
+        else:
+            print("La distribucion '{}' del catalogo '{}' no tiene URL".format(
+                catalog_identifier, distribution_id))
+
+        # evita sobrecargar al servidor en la iteración de requests
+        time.sleep(delay)
 
     print("Se descargaron {} distribuciones de '{}' exitosamente.".format(
         success_download, catalog_identifier))
