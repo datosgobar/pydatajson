@@ -9,6 +9,7 @@ import logging
 import traceback
 from ckanapi.errors import NotFound, CKANAPIError
 from requests import RequestException
+import time
 
 from pydatajson.constants import REQUESTS_TIMEOUT, DEFAULT_TIMEZONE
 from pydatajson.custom_exceptions import NumericDistributionIdentifierError
@@ -58,6 +59,9 @@ def push_dataset_to_ckan(catalog, owner_org, dataset_origin_identifier,
             str: El id del dataset en el catálogo de destino.
     """
     dataset = catalog.get_dataset(dataset_origin_identifier)
+    if not dataset:
+        print(dataset_origin_identifier, "no está en el catálogo.")
+
     ckan_portal = RemoteCKAN(portal_url, apikey=apikey,
                              verify_ssl=catalog.verify_ssl,
                              requests_timeout=catalog.requests_timeout)
@@ -595,7 +599,8 @@ def restore_organizations_to_ckan(catalog, organizations, portal_url, apikey,
                                   download_strategy=None,
                                   generate_new_access_url=None,
                                   origin_tz=DEFAULT_TIMEZONE,
-                                  dst_tz=DEFAULT_TIMEZONE):
+                                  dst_tz=DEFAULT_TIMEZONE,
+                                  time_delay=0.1):
     """Restaura los datasets indicados para c/organización de un catálogo al
         portal pasado. Si hay temas presentes en el DataJson que no están en el
         portal de CKAN, los genera. Las organizaciones ya deben estar creadas.
@@ -620,6 +625,8 @@ def restore_organizations_to_ckan(catalog, organizations, portal_url, apikey,
             dst_tz(str): Timezone de destino, un string
                 (EJ: Antarctica/Palmer) el cual identifica el timezone del
                 receptor del DataJson, comunmente el timezone del servidor.
+            time_delay(int): Segundos que espera entre cada request para no
+                saturar al CKAN de destino.
         Returns:
             list(str): La lista de ids de datasets subidos.
     """
@@ -631,7 +638,8 @@ def restore_organizations_to_ckan(catalog, organizations, portal_url, apikey,
             apikey,
             dataset_list=organizations[org],
             origin_tz=origin_tz,
-            dst_tz=dst_tz
+            dst_tz=dst_tz,
+            time_delay=time_delay
         )
         pushed_datasets[org] = org_pushed_datasets
 
@@ -642,7 +650,8 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                  dataset_list=None, download_strategy=None,
                                  generate_new_access_url=None,
                                  origin_tz=DEFAULT_TIMEZONE,
-                                 dst_tz=DEFAULT_TIMEZONE):
+                                 dst_tz=DEFAULT_TIMEZONE,
+                                 time_delay=0.1):
     """Restaura los datasets de la organización de un catálogo al portal pasado
        por parámetro. Si hay temas presentes en el DataJson que no están en el
        portal de CKAN, los genera.
@@ -668,6 +677,8 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
             dst_tz(str): Timezone de destino, un string
                 (EJ: Antarctica/Palmer) el cual identifica el timezone del
                 receptor del DataJson, comunmente el timezone del servidor.
+            time_delay(int): Segundos que espera entre cada request para no
+                saturar al CKAN de destino.
         Returns:
             list(str): La lista de ids de datasets subidos.
     """
@@ -689,6 +700,7 @@ def restore_organization_to_ckan(catalog, owner_org, portal_url, apikey,
                                                   origin_tz=origin_tz,
                                                   dst_tz=dst_tz)
             restored.append(restored_id)
+            time.sleep(time_delay)
         except (CKANAPIError, KeyError, AttributeError, RequestException,
                 NumericDistributionIdentifierError) as e:
             logger.exception('Ocurrió un error restaurando el dataset {}: {}'
@@ -700,7 +712,8 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                             apikey, download_strategy=None,
                             generate_new_access_url=None,
                             origin_tz=DEFAULT_TIMEZONE,
-                            dst_tz=DEFAULT_TIMEZONE):
+                            dst_tz=DEFAULT_TIMEZONE,
+                            time_delay=0.1):
     """Restaura los datasets de un catálogo original al portal pasado
        por parámetro. Si hay temas presentes en el DataJson que no están en
        el portal de CKAN, los genera.
@@ -727,6 +740,8 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                 dst_tz(str): Timezone de destino, un string
                     (EJ: Antarctica/Palmer) el cual identifica el timezone del
                     receptor del DataJson, comunmente el timezone del servidor.
+                time_delay(int): Segundos que espera entre cada request para no
+                    saturar al CKAN de destino.
             Returns:
                 dict: Diccionario con key organización y value la lista de ids
                     de datasets subidos a esa organización
@@ -759,7 +774,7 @@ def restore_catalog_to_ckan(catalog, origin_portal_url, destination_portal_url,
                 catalog, org, destination_portal_url, apikey,
                 dataset_list=datasets, download_strategy=download_strategy,
                 generate_new_access_url=generate_new_access_url,
-                origin_tz=origin_tz, dst_tz=dst_tz
+                origin_tz=origin_tz, dst_tz=dst_tz, time_delay=time_delay
             )
             res[org] = pushed_datasets
         except Exception as e:

@@ -15,7 +15,7 @@ from .helpers import parse_repeating_time_interval
 
 __author__ = """Datos Argentina"""
 __email__ = 'datos@modernizacion.gob.ar'
-__version__ = '0.4.61'
+__version__ = '0.4.62'
 
 """
 Logger base para librería pydatajson
