@@ -16,7 +16,7 @@ DEFAULT_TRIES = 3
 RETRY_DELAY = 1
 
 
-def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY):
+def download(url, file_path, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY):
     """
     Descarga un archivo a través del protocolo HTTP, en uno o más intentos.
 
@@ -36,13 +36,19 @@ def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY):
     timeout = 2
     for i in range(1, tries + 1):
         try:
-            return requests.get(url, timeout=timeout ** i,
-                                verify=False).content
+            with requests.get(url, timeout=timeout ** i, stream=True,
+                              verify=False) as r:
+                r.raise_for_status()
+                with open(file_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        if chunk:  # filter out keep-alive new chunks
+                            f.write(chunk)
+
         except requests.TooManyRedirects as e:
             raise e
         except Exception as e:
             download_exception = e
-    raise download_exception
+            raise download_exception
 
 
 def download_to_file(url, file_path, **kwargs):
@@ -56,9 +62,7 @@ def download_to_file(url, file_path, **kwargs):
             en el path especificado, se sobrescribirá con nuevos contenidos.
         kwargs: Parámetros para download().
     """
-    content = download(url, **kwargs)
-    with open(file_path, "wb") as f:
-        f.write(content)
+    content = download(url, file_path, **kwargs)
 
 
 if __name__ == '__main__':

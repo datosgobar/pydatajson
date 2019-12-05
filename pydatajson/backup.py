@@ -106,9 +106,11 @@ def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
     """
 
     try:
-        catalog = pydatajson.DataJson(catalog, catalog_format="json")
+        catalog = pydatajson.DataJson(
+            catalog, catalog_format="json", verify_ssl=False)
     except:
-        catalog = pydatajson.DataJson(catalog, catalog_format="xlsx")
+        catalog = pydatajson.DataJson(
+            catalog, catalog_format="xlsx", verify_ssl=False)
     catalog_identifier = catalog_id if catalog_id else catalog["identifier"]
 
     if include_metadata:
