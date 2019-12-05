@@ -26,7 +26,7 @@ CATALOGS_URL = 'http://monitoreo.datos.gob.ar/nodes.json'
 logger = logging.getLogger('pydatajson')
 
 
-def make_catalogs_backup(catalogs, local_catalogs_dir="",
+def make_catalogs_backup(catalog, catalog_id, local_catalogs_dir="",
                          include_metadata=True, include_data=True,
                          include_metadata_xlsx=False, use_short_path=False):
     """Realiza una copia local de los datos y metadatos de un catálogo.
@@ -55,24 +55,22 @@ def make_catalogs_backup(catalogs, local_catalogs_dir="",
     Return:
         None
     """
-
-    for catalog_id, catalog in catalogs.items():
-        print("Haciendo backup de '{}'...".format(catalog_id))
-        try:
-            make_catalog_backup(
-                catalog, catalog_id,
-                local_catalogs_dir=local_catalogs_dir,
-                include_metadata=include_metadata,
-                include_metadata_xlsx=include_metadata_xlsx,
-                include_data=include_data,
-                use_short_path=use_short_path)
-            print("Backup de '{}' finalizado.".format(catalog_id))
-        except Exception as e:
-            logger.exception(
-                "ERROR en {} ({})".format(catalog, catalog_id))
-            print(e)
-            print(
-                "Backup de '{}' terminó con errores.".format(catalog_id))
+    print("Haciendo backup de '{}'...".format(catalog_id))
+    try:
+        make_catalog_backup(
+            catalog, catalog_id,
+            local_catalogs_dir=local_catalogs_dir,
+            include_metadata=include_metadata,
+            include_metadata_xlsx=include_metadata_xlsx,
+            include_data=include_data,
+            use_short_path=use_short_path)
+        print("Backup de '{}' finalizado.".format(catalog_id))
+    except Exception as e:
+        logger.exception(
+            "ERROR en {} ({})".format(catalog, catalog_id))
+        print(e)
+        print(
+            "Backup de '{}' terminó con errores.".format(catalog_id))
 
 
 def make_catalog_backup(catalog, catalog_id=None, local_catalogs_dir="",
@@ -173,9 +171,10 @@ def download_data(catalog, catalog_identifier, include_datasets,
                  not in include_distribution_formats)):
             continue
 
-        if distribution.get('type') not in ('file', 'file.upload'):
+        if distribution.get('type', 'file') not in ('file', 'file.upload'):
             continue
 
+        import socket
         # genera el path local donde descargar el archivo
         file_path = get_distribution_path(
             catalog_identifier, dataset_id, distribution_id,
@@ -259,13 +258,15 @@ def download_all(catalogs_url, backup_dir, include_data=True,
         for catalog in jurisdiction["catalogs"]
     }
 
-    make_catalogs_backup(
-        nodos_dict,
+    import multiprocessing
+    pool = multiprocessing.pool.ThreadPool(processes=len(nodos_dict))
+    pool.map(lambda catalog_id: (make_catalogs_backup(
+        nodos_dict[catalog_id], catalog_id,
         local_catalogs_dir=backup_dir,
         include_data=include_data,
         use_short_path=use_short_path,
-        include_metadata_xlsx=True
-    )
+        include_metadata_xlsx=True)),
+            nodos_dict.keys())
 
 
 def main(*args):
@@ -306,6 +307,7 @@ def main(*args):
         zipf = zipfile.ZipFile(catalog_dir + ".zip", 'w', zipfile.ZIP_DEFLATED)
         zipdir(catalog_dir, zipf)
         zipf.close()
+
 
 if __name__ == '__main__':
     main()
