@@ -143,7 +143,7 @@ def download_metadata(catalog, catalog_identifier, include_metadata_xlsx,
 
 def download_data(catalog, catalog_identifier, include_datasets,
                   include_distribution_formats, local_catalogs_dir,
-                  use_short_path, delay=0.05):
+                  use_short_path, delay=0.3):
     distributions = catalog.distributions
     distributions_num = len(distributions)
     success_download = 0

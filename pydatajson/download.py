@@ -33,7 +33,7 @@ def download(url, file_path, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY):
     Returns:
         bytes: Contenido del archivo
     """
-    timeout = 5
+    timeout = 10
     for i in range(1, tries + 1):
         try:
             with requests.get(url, timeout=timeout ** i, stream=True,
