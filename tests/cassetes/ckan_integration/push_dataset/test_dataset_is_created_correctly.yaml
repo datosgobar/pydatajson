@@ -2,16 +2,23 @@ interactions:
 - request:
     body: '{}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['2']
-      Content-Type: [application/json]
-      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
     method: POST
     uri: http://localhost:8080/api/action/license_list
   response:
-    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
         "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
         "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
         "False", "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
@@ -81,17 +88,27 @@ interactions:
         "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
         "False", "title": "Otra (No abierta)", "url": "", "is_generic": "True", "is_okd_compliant":
         false, "is_osi_compliant": false, "domain_content": "False", "domain_software":
-        "False", "id": "other-closed"}]}'}
+        "False", "id": "other-closed"}]}'
     headers:
-      cache-control: [no-cache]
-      connection: [Keep-Alive]
-      content-length: ['5727']
-      content-type: [application/json;charset=utf-8]
-      date: ['Tue, 06 Mar 2018 17:22:02 GMT']
-      keep-alive: ['timeout=5, max=100']
-      pragma: [no-cache]
-      server: [Apache/2.4.7 (Ubuntu)]
-    status: {code: 200, message: OK}
+      cache-control:
+      - no-cache
+      connection:
+      - Keep-Alive
+      content-length:
+      - '5727'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 06 Mar 2018 17:22:02 GMT
+      keep-alive:
+      - timeout=5, max=100
+      pragma:
+      - no-cache
+      server:
+      - Apache/2.4.7 (Ubuntu)
+    status:
+      code: 200
+      message: OK
 - request:
     body: '{"url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
       "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
@@ -141,28 +158,45 @@ interactions:
       en el sistema de contrataciones electr\u00f3nicas"}], "name": "sistema-contrataciones-electronicas",
       "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar"}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['4017']
-      Content-Type: [application/json]
-      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4017'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
     method: POST
     uri: http://localhost:8080/api/action/package_update
   response:
-    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
         "success": false, "error": {"message": "No encontrado: No se ha encontrado
-        el paquete.", "__type": "Not Found Error"}}'}
+        el paquete.", "__type": "Not Found Error"}}'
     headers:
-      cache-control: [no-cache]
-      connection: [Keep-Alive]
-      content-length: ['195']
-      content-type: [application/json;charset=utf-8]
-      date: ['Tue, 06 Mar 2018 17:22:02 GMT']
-      keep-alive: ['timeout=5, max=99']
-      pragma: [no-cache]
-      server: [Apache/2.4.7 (Ubuntu)]
-    status: {code: 404, message: Not Found}
+      cache-control:
+      - no-cache
+      connection:
+      - Keep-Alive
+      content-length:
+      - '195'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 06 Mar 2018 17:22:02 GMT
+      keep-alive:
+      - timeout=5, max=99
+      pragma:
+      - no-cache
+      server:
+      - Apache/2.4.7 (Ubuntu)
+    status:
+      code: 404
+      message: Not Found
 - request:
     body: '{"url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
       "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
@@ -212,16 +246,23 @@ interactions:
       en el sistema de contrataciones electr\u00f3nicas"}], "name": "sistema-contrataciones-electronicas",
       "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar"}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['4017']
-      Content-Type: [application/json]
-      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4017'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
     method: POST
     uri: http://localhost:8080/api/action/package_create
   response:
-    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
         "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
         "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
@@ -290,30 +331,47 @@ interactions:
         "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
         {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
         {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
-        de contrataciones electr\u00f3nicas", "revision_id": "5ca4c05d-d346-4b33-9779-3f092e24f0b6"}}'}
+        de contrataciones electr\u00f3nicas", "revision_id": "5ca4c05d-d346-4b33-9779-3f092e24f0b6"}}'
     headers:
-      cache-control: [no-cache]
-      connection: [Keep-Alive]
-      content-length: ['6138']
-      content-type: [application/json;charset=utf-8]
-      date: ['Tue, 06 Mar 2018 17:22:02 GMT']
-      keep-alive: ['timeout=5, max=98']
-      pragma: [no-cache]
-      server: [Apache/2.4.7 (Ubuntu)]
-    status: {code: 200, message: OK}
+      cache-control:
+      - no-cache
+      connection:
+      - Keep-Alive
+      content-length:
+      - '6138'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 06 Mar 2018 17:22:02 GMT
+      keep-alive:
+      - timeout=5, max=98
+      pragma:
+      - no-cache
+      server:
+      - Apache/2.4.7 (Ubuntu)
+    status:
+      code: 200
+      message: OK
 - request:
     body: '{}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['2']
-      Content-Type: [application/json]
-      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
     method: POST
     uri: http://localhost:8080/api/action/license_list
   response:
-    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
         "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
         "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
         "False", "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
@@ -383,17 +441,27 @@ interactions:
         "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
         "False", "title": "Otra (No abierta)", "url": "", "is_generic": "True", "is_okd_compliant":
         false, "is_osi_compliant": false, "domain_content": "False", "domain_software":
-        "False", "id": "other-closed"}]}'}
+        "False", "id": "other-closed"}]}'
     headers:
-      Cache-Control: [no-cache]
-      Connection: [Keep-Alive]
-      Content-Length: ['5727']
-      Content-Type: [application/json;charset=utf-8]
-      Date: ['Tue, 06 Mar 2018 17:23:03 GMT']
-      Keep-Alive: ['timeout=5, max=100']
-      Pragma: [no-cache]
-      Server: [Apache/2.4.7 (Ubuntu)]
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-cache
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '5727'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 06 Mar 2018 17:23:03 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+    status:
+      code: 200
+      message: OK
 - request:
     body: '{"extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
       {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "super_theme", "value":
@@ -440,28 +508,45 @@ interactions:
       {"name": "Contrataciones"}, {"name": "Compras"}, {"name": "Convocatorias"}],
       "owner_org": "oficina-de-muestra", "license_id": "notspecified"}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['4017']
-      Content-Type: [application/json]
-      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4017'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
     method: POST
     uri: http://localhost:8080/api/action/package_update
   response:
-    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
         "success": false, "error": {"message": "No encontrado: No se ha encontrado
-        el paquete.", "__type": "Not Found Error"}}'}
+        el paquete.", "__type": "Not Found Error"}}'
     headers:
-      Cache-Control: [no-cache]
-      Connection: [Keep-Alive]
-      Content-Length: ['195']
-      Content-Type: [application/json;charset=utf-8]
-      Date: ['Tue, 06 Mar 2018 17:23:03 GMT']
-      Keep-Alive: ['timeout=5, max=99']
-      Pragma: [no-cache]
-      Server: [Apache/2.4.7 (Ubuntu)]
-    status: {code: 404, message: Not Found}
+      Cache-Control:
+      - no-cache
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '195'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 06 Mar 2018 17:23:03 GMT
+      Keep-Alive:
+      - timeout=5, max=99
+      Pragma:
+      - no-cache
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+    status:
+      code: 404
+      message: Not Found
 - request:
     body: '{"extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
       {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "super_theme", "value":
@@ -508,16 +593,23 @@ interactions:
       {"name": "Contrataciones"}, {"name": "Compras"}, {"name": "Convocatorias"}],
       "owner_org": "oficina-de-muestra", "license_id": "notspecified"}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['4017']
-      Content-Type: [application/json]
-      User-Agent: ['ckanapi/4.0 (+https://github.com/ckan/ckanapi)']
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4017'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
     method: POST
     uri: http://localhost:8080/api/action/package_create
   response:
-    body: {string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
         "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
         "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
         Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
@@ -586,15 +678,2119 @@ interactions:
         "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
         {"key": "spatial", "value": "ARG"}, {"key": "super_theme", "value": "[\"econ\"]"},
         {"key": "temporal", "value": "2015-01-01/2015-12-31"}], "title": "Sistema
-        de contrataciones electr\u00f3nicas", "revision_id": "7b2b6f0e-4d8c-41d3-b2b9-198267cebcd9"}}'}
+        de contrataciones electr\u00f3nicas", "revision_id": "7b2b6f0e-4d8c-41d3-b2b9-198267cebcd9"}}'
     headers:
-      Cache-Control: [no-cache]
-      Connection: [Keep-Alive]
-      Content-Length: ['6138']
-      Content-Type: [application/json;charset=utf-8]
-      Date: ['Tue, 06 Mar 2018 17:23:03 GMT']
-      Keep-Alive: ['timeout=5, max=98']
-      Pragma: [no-cache]
-      Server: [Apache/2.4.7 (Ubuntu)]
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-cache
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '6138'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 06 Mar 2018 17:23:03 GMT
+      Keep-Alive:
+      - timeout=5, max=98
+      Pragma:
+      - no-cache
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/license_list
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+        "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
+        "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "domain_content":
+        false, "domain_software": false, "id": "notspecified"}, {"status": "active",
+        "legacy_ids": ["ODC-PDDL-1.0", "odc-pddl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Open Data Commons Public Domain Dedication and Licence 1.0 (PDDL)", "url":
+        "https://opendefinition.org/licenses/odc-pddl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "PDDL-1.0"}, {"status": "active", "legacy_ids": ["odc-odbl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Open Database License 1.0 (ODbL)", "url":
+        "https://opendefinition.org/licenses/odc-odbl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "ODbL-1.0"}, {"status": "active", "legacy_ids": ["odc-by"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Attribution License 1.0", "url": "https://opendefinition.org/licenses/odc-by",
+        "domain_content": false, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Open Data Commons", "domain_software": false, "id": "ODC-BY-1.0"},
+        {"status": "active", "legacy_ids": ["cc-by"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-4.0"},
+        {"status": "active", "legacy_ids": ["cc-by-sa"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution Share-Alike 4.0", "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-SA-4.0"},
+        {"status": "active", "legacy_ids": ["gfdl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": false, "title":
+        "GNU Free Documentation License 1.3 sin textos de cubierta ni secciones invariantes",
+        "url": "https://opendefinition.org/licenses/gfdl", "domain_content": true,
+        "is_okd_compliant": true, "is_osi_compliant": false, "maintainer": "Free Software
+        Foundation", "domain_software": false, "id": "GFDL-1.3-no-cover-texts-no-invariant-sections"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Abierta)", "url": "", "is_generic": true, "is_okd_compliant": true, "is_osi_compliant":
+        false, "domain_content": true, "domain_software": false, "id": "other-open"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Dominio P\u00fablico)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-pd"}, {"status": "active", "maintainer": "", "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "Otra (Atribuci\u00f3n)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-at"}, {"status": "active", "legacy_ids": ["uk-ogl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Government Licence 2.0 (United Kingdom)", "is_generic":
+        false, "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "UK Government", "domain_software": true, "id": "OGL-UK-2.0"},
+        {"status": "active", "legacy_ids": ["cc-nc"], "od_conformance": "rejected",
+        "family": "Creative Commons", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Creative Commons Attribution-NonCommercial 4.0 (cualquiera)",
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/", "domain_content":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "maintainer":
+        "Creative Commons", "domain_software": false, "id": "CC-BY-NC-4.0"}, {"status":
+        "active", "maintainer": "", "od_conformance": "not reviewed", "family": "",
+        "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra (No
+        comercial)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-nc"},
+        {"status": "active", "maintainer": "", "od_conformance": "not reviewed", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (No abierta)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-closed"}]}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '5597'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:27:03 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"author_email": "onc@modernizacion.gob.ar", "license_id": "notspecified",
+      "groups": [{"name": "econ"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"}, {"key":
+      "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value": "[\"econ\"]"},
+      {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"}, {"key": "temporal",
+      "value": "2015-01-01/2015-12-31"}, {"key": "source", "value": "Ministerio de
+      modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key": "spatial",
+      "value": "ARG"}], "notes": "Datos correspondientes al Sistema de Contrataciones
+      Electr\u00f3nicas (Argentina Compra)", "private": false, "maintainer_email":
+      "onc-compraselectronicas@modernizacion.gob.ar", "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+      "resources": [{"id": "datos-argentina_1.1", "attributesDescription": "[{\"type\":
+      \"integer\", \"title\": \"procedimiento_id\", \"id\": \"proc12\", \"description\":
+      \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\"}, {\"type\":
+      \"integer\", \"title\": \"organismo_unidad_operativa_contrataciones_id\", \"description\":
+      \"Identificador \\u00fanico del organismo que realiza la convocatoria. Organismo
+      de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad operativa
+      de contrataciones.\"}, {\"type\": \"integer\", \"title\": \"unidad_operativa_contrataciones_id\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\"},
+      {\"type\": \"string\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\",
+      \"description\": \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\"},
+      {\"type\": \"string\", \"title\": \"unidad_operativa_contrataciones_desc\",
+      \"description\": \"Unidad operativa de contrataciones.\"}, {\"type\": \"string\",
+      \"title\": \"tipo_procedimiento_contratacion\", \"description\": \"Tipo de procedimiento
+      al que se adecua la contrataci\\u00f3n.\"}, {\"type\": \"date\", \"title\":
+      \"ejercicio_procedimiento_anio\", \"description\": \"A\\u00f1o en el que se
+      inici\\u00f3 el proceso de la convocatoria.\"}, {\"type\": \"date\", \"title\":
+      \"fecha_publicacion_convocatoria\", \"description\": \"Fecha de publicaci\\u00f3n
+      de la convocatoria en formato AAAA-MM-DD, ISO 8601.\"}, {\"type\": \"string\",
+      \"title\": \"modalidad_convocatoria\", \"description\": \"Modalidad bajo la
+      cual se realiza la convocatoria.\"}, {\"type\": \"string\", \"title\": \"clase_convocatoria\",
+      \"description\": \"Clase de la convocatoria.\"}, {\"type\": \"string\", \"title\":
+      \"objeto_convocatoria\", \"description\": \"Objeto/objetivo de la convocatoria\"}]",
+      "last_modified": "2016-04-19T19:48:05.433640", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "mimetype": "text/csv", "description": "Listado de las convocatorias abiertas
+      durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "size": 5120, "name": "Convocatorias abiertas durante el a\u00f1o 2015", "created":
+      "2016-04-14T19:48:05.433640"}], "author": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones",
+      "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
+      {"name": "bienes y compras"}, {"name": "Contrataciones"}, {"name": "Adquisici\u00f3n"},
+      {"name": "Convocatorias"}], "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "title": "Sistema de contrataciones
+      electr\u00f3nicas", "name": "datos-argentina-sistema-contrataciones-electronicas",
+      "owner_org": "oficina-de-muestra"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_update
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+        "success": false, "error": {"message": "No encontrado: No se ha encontrado
+        el paquete.", "__type": "Not Found Error"}}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '195'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:27:03 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"author_email": "onc@modernizacion.gob.ar", "license_id": "notspecified",
+      "groups": [{"name": "econ"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"}, {"key":
+      "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value": "[\"econ\"]"},
+      {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"}, {"key": "temporal",
+      "value": "2015-01-01/2015-12-31"}, {"key": "source", "value": "Ministerio de
+      modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key": "spatial",
+      "value": "ARG"}], "notes": "Datos correspondientes al Sistema de Contrataciones
+      Electr\u00f3nicas (Argentina Compra)", "private": false, "maintainer_email":
+      "onc-compraselectronicas@modernizacion.gob.ar", "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+      "resources": [{"id": "datos-argentina_1.1", "attributesDescription": "[{\"type\":
+      \"integer\", \"title\": \"procedimiento_id\", \"id\": \"proc12\", \"description\":
+      \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\"}, {\"type\":
+      \"integer\", \"title\": \"organismo_unidad_operativa_contrataciones_id\", \"description\":
+      \"Identificador \\u00fanico del organismo que realiza la convocatoria. Organismo
+      de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad operativa
+      de contrataciones.\"}, {\"type\": \"integer\", \"title\": \"unidad_operativa_contrataciones_id\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\"},
+      {\"type\": \"string\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\",
+      \"description\": \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\"},
+      {\"type\": \"string\", \"title\": \"unidad_operativa_contrataciones_desc\",
+      \"description\": \"Unidad operativa de contrataciones.\"}, {\"type\": \"string\",
+      \"title\": \"tipo_procedimiento_contratacion\", \"description\": \"Tipo de procedimiento
+      al que se adecua la contrataci\\u00f3n.\"}, {\"type\": \"date\", \"title\":
+      \"ejercicio_procedimiento_anio\", \"description\": \"A\\u00f1o en el que se
+      inici\\u00f3 el proceso de la convocatoria.\"}, {\"type\": \"date\", \"title\":
+      \"fecha_publicacion_convocatoria\", \"description\": \"Fecha de publicaci\\u00f3n
+      de la convocatoria en formato AAAA-MM-DD, ISO 8601.\"}, {\"type\": \"string\",
+      \"title\": \"modalidad_convocatoria\", \"description\": \"Modalidad bajo la
+      cual se realiza la convocatoria.\"}, {\"type\": \"string\", \"title\": \"clase_convocatoria\",
+      \"description\": \"Clase de la convocatoria.\"}, {\"type\": \"string\", \"title\":
+      \"objeto_convocatoria\", \"description\": \"Objeto/objetivo de la convocatoria\"}]",
+      "last_modified": "2016-04-19T19:48:05.433640", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "mimetype": "text/csv", "description": "Listado de las convocatorias abiertas
+      durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "size": 5120, "name": "Convocatorias abiertas durante el a\u00f1o 2015", "created":
+      "2016-04-14T19:48:05.433640"}], "author": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones",
+      "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
+      {"name": "bienes y compras"}, {"name": "Contrataciones"}, {"name": "Adquisici\u00f3n"},
+      {"name": "Convocatorias"}], "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "title": "Sistema de contrataciones
+      electr\u00f3nicas", "name": "datos-argentina-sistema-contrataciones-electronicas",
+      "owner_org": "oficina-de-muestra"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_create
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
+        "success": false, "error": {"message": "Acceso denegado: El usuario  no est\u00e1
+        autorizado para crear paquetes", "__type": "Authorization Error"}}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '225'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:27:03 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 403
+      message: Forbidden
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/license_list
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+        "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
+        "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "domain_content":
+        false, "domain_software": false, "id": "notspecified"}, {"status": "active",
+        "legacy_ids": ["ODC-PDDL-1.0", "odc-pddl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Open Data Commons Public Domain Dedication and Licence 1.0 (PDDL)", "url":
+        "https://opendefinition.org/licenses/odc-pddl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "PDDL-1.0"}, {"status": "active", "legacy_ids": ["odc-odbl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Open Database License 1.0 (ODbL)", "url":
+        "https://opendefinition.org/licenses/odc-odbl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "ODbL-1.0"}, {"status": "active", "legacy_ids": ["odc-by"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Attribution License 1.0", "url": "https://opendefinition.org/licenses/odc-by",
+        "domain_content": false, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Open Data Commons", "domain_software": false, "id": "ODC-BY-1.0"},
+        {"status": "active", "legacy_ids": ["cc-by"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-4.0"},
+        {"status": "active", "legacy_ids": ["cc-by-sa"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution Share-Alike 4.0", "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-SA-4.0"},
+        {"status": "active", "legacy_ids": ["gfdl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": false, "title":
+        "GNU Free Documentation License 1.3 sin textos de cubierta ni secciones invariantes",
+        "url": "https://opendefinition.org/licenses/gfdl", "domain_content": true,
+        "is_okd_compliant": true, "is_osi_compliant": false, "maintainer": "Free Software
+        Foundation", "domain_software": false, "id": "GFDL-1.3-no-cover-texts-no-invariant-sections"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Abierta)", "url": "", "is_generic": true, "is_okd_compliant": true, "is_osi_compliant":
+        false, "domain_content": true, "domain_software": false, "id": "other-open"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Dominio P\u00fablico)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-pd"}, {"status": "active", "maintainer": "", "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "Otra (Atribuci\u00f3n)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-at"}, {"status": "active", "legacy_ids": ["uk-ogl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Government Licence 2.0 (United Kingdom)", "is_generic":
+        false, "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "UK Government", "domain_software": true, "id": "OGL-UK-2.0"},
+        {"status": "active", "legacy_ids": ["cc-nc"], "od_conformance": "rejected",
+        "family": "Creative Commons", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Creative Commons Attribution-NonCommercial 4.0 (cualquiera)",
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/", "domain_content":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "maintainer":
+        "Creative Commons", "domain_software": false, "id": "CC-BY-NC-4.0"}, {"status":
+        "active", "maintainer": "", "od_conformance": "not reviewed", "family": "",
+        "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra (No
+        comercial)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-nc"},
+        {"status": "active", "maintainer": "", "od_conformance": "not reviewed", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (No abierta)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-closed"}]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5597'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:27:50 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
+      {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value":
+      "[\"econ\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+      {"key": "temporal", "value": "2015-01-01/2015-12-31"}, {"key": "source", "value":
+      "Ministerio de modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key":
+      "spatial", "value": "ARG"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "name": "datos-argentina-sistema-contrataciones-electronicas", "title": "Sistema
+      de contrataciones electr\u00f3nicas", "private": false, "notes": "Datos correspondientes
+      al Sistema de Contrataciones Electr\u00f3nicas (Argentina Compra)", "author":
+      "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n Administrativa.
+      Oficina Nacional de Contrataciones", "owner_org": "oficina-de-muestra", "resources":
+      [{"id": "datos-argentina_1.1", "name": "Convocatorias abiertas durante el a\u00f1o
+      2015", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "created": "2016-04-14T19:48:05.433640", "description": "Listado de las convocatorias
+      abiertas durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "last_modified": "2016-04-19T19:48:05.433640", "mimetype":
+      "text/csv", "size": 5120, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "attributesDescription": "[{\"title\": \"procedimiento_id\", \"type\": \"integer\",
+      \"id\": \"proc12\", \"description\": \"Identificador \\u00fanico del procedimiento
+      de contrataci\\u00f3n\"}, {\"type\": \"integer\", \"description\": \"Identificador
+      \\u00fanico del organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\"}, {\"type\": \"integer\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"title\": \"unidad_operativa_contrataciones_id\"}, {\"type\": \"string\", \"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+      {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+      \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+      \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+      \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+      {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+      \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+      de la convocatoria\", \"title\": \"objeto_convocatoria\"}]"}], "groups": [{"name":
+      "econ"}], "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+      "author_email": "onc@modernizacion.gob.ar", "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar",
+      "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
+      {"name": "bienes y compras"}, {"name": "Contrataciones"}, {"name": "Adquisici\u00f3n"},
+      {"name": "Convocatorias"}], "license_id": "notspecified"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_update
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+        "success": false, "error": {"message": "No encontrado: No se ha encontrado
+        el paquete.", "__type": "Not Found Error"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '195'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:27:50 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
+      {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value":
+      "[\"econ\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+      {"key": "temporal", "value": "2015-01-01/2015-12-31"}, {"key": "source", "value":
+      "Ministerio de modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key":
+      "spatial", "value": "ARG"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "name": "datos-argentina-sistema-contrataciones-electronicas", "title": "Sistema
+      de contrataciones electr\u00f3nicas", "private": false, "notes": "Datos correspondientes
+      al Sistema de Contrataciones Electr\u00f3nicas (Argentina Compra)", "author":
+      "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n Administrativa.
+      Oficina Nacional de Contrataciones", "owner_org": "oficina-de-muestra", "resources":
+      [{"id": "datos-argentina_1.1", "name": "Convocatorias abiertas durante el a\u00f1o
+      2015", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "created": "2016-04-14T19:48:05.433640", "description": "Listado de las convocatorias
+      abiertas durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "last_modified": "2016-04-19T19:48:05.433640", "mimetype":
+      "text/csv", "size": 5120, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "attributesDescription": "[{\"title\": \"procedimiento_id\", \"type\": \"integer\",
+      \"id\": \"proc12\", \"description\": \"Identificador \\u00fanico del procedimiento
+      de contrataci\\u00f3n\"}, {\"type\": \"integer\", \"description\": \"Identificador
+      \\u00fanico del organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\"}, {\"type\": \"integer\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"title\": \"unidad_operativa_contrataciones_id\"}, {\"type\": \"string\", \"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+      {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+      \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+      \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+      \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+      {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+      \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+      de la convocatoria\", \"title\": \"objeto_convocatoria\"}]"}], "groups": [{"name":
+      "econ"}], "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+      "author_email": "onc@modernizacion.gob.ar", "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar",
+      "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
+      {"name": "bienes y compras"}, {"name": "Contrataciones"}, {"name": "Adquisici\u00f3n"},
+      {"name": "Convocatorias"}], "license_id": "notspecified"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_create
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
+        "success": false, "error": {"message": "Acceso denegado: El usuario  no est\u00e1
+        autorizado para crear paquetes", "__type": "Authorization Error"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '225'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:27:50 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 403
+      message: Forbidden
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/license_list
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+        "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
+        "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "domain_content":
+        false, "domain_software": false, "id": "notspecified"}, {"status": "active",
+        "legacy_ids": ["ODC-PDDL-1.0", "odc-pddl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Open Data Commons Public Domain Dedication and Licence 1.0 (PDDL)", "url":
+        "https://opendefinition.org/licenses/odc-pddl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "PDDL-1.0"}, {"status": "active", "legacy_ids": ["odc-odbl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Open Database License 1.0 (ODbL)", "url":
+        "https://opendefinition.org/licenses/odc-odbl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "ODbL-1.0"}, {"status": "active", "legacy_ids": ["odc-by"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Attribution License 1.0", "url": "https://opendefinition.org/licenses/odc-by",
+        "domain_content": false, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Open Data Commons", "domain_software": false, "id": "ODC-BY-1.0"},
+        {"status": "active", "legacy_ids": ["cc-by"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-4.0"},
+        {"status": "active", "legacy_ids": ["cc-by-sa"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution Share-Alike 4.0", "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-SA-4.0"},
+        {"status": "active", "legacy_ids": ["gfdl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": false, "title":
+        "GNU Free Documentation License 1.3 sin textos de cubierta ni secciones invariantes",
+        "url": "https://opendefinition.org/licenses/gfdl", "domain_content": true,
+        "is_okd_compliant": true, "is_osi_compliant": false, "maintainer": "Free Software
+        Foundation", "domain_software": false, "id": "GFDL-1.3-no-cover-texts-no-invariant-sections"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Abierta)", "url": "", "is_generic": true, "is_okd_compliant": true, "is_osi_compliant":
+        false, "domain_content": true, "domain_software": false, "id": "other-open"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Dominio P\u00fablico)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-pd"}, {"status": "active", "maintainer": "", "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "Otra (Atribuci\u00f3n)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-at"}, {"status": "active", "legacy_ids": ["uk-ogl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Government Licence 2.0 (United Kingdom)", "is_generic":
+        false, "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "UK Government", "domain_software": true, "id": "OGL-UK-2.0"},
+        {"status": "active", "legacy_ids": ["cc-nc"], "od_conformance": "rejected",
+        "family": "Creative Commons", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Creative Commons Attribution-NonCommercial 4.0 (cualquiera)",
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/", "domain_content":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "maintainer":
+        "Creative Commons", "domain_software": false, "id": "CC-BY-NC-4.0"}, {"status":
+        "active", "maintainer": "", "od_conformance": "not reviewed", "family": "",
+        "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra (No
+        comercial)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-nc"},
+        {"status": "active", "maintainer": "", "od_conformance": "not reviewed", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (No abierta)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-closed"}]}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '5597'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:30:48 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"resources": [{"resource_type": "file", "last_modified": "2016-04-19T19:48:05.433640",
+      "fileName": "convocatoriasabiertasduranteelao.csv", "format": "CSV", "name":
+      "Convocatorias abiertas durante el a\u00f1o 2015", "mimetype": "text/csv", "id":
+      "datos-argentina_1.1", "size": 5120, "attributesDescription": "[{\"type\": \"integer\",
+      \"title\": \"procedimiento_id\", \"description\": \"Identificador \\u00fanico
+      del procedimiento de contrataci\\u00f3n\", \"id\": \"proc12\"}, {\"type\": \"integer\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\", \"description\":
+      \"Identificador \\u00fanico del organismo que realiza la convocatoria. Organismo
+      de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad operativa
+      de contrataciones.\"}, {\"type\": \"integer\", \"title\": \"unidad_operativa_contrataciones_id\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\"},
+      {\"type\": \"string\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\",
+      \"description\": \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\"},
+      {\"type\": \"string\", \"title\": \"unidad_operativa_contrataciones_desc\",
+      \"description\": \"Unidad operativa de contrataciones.\"}, {\"type\": \"string\",
+      \"title\": \"tipo_procedimiento_contratacion\", \"description\": \"Tipo de procedimiento
+      al que se adecua la contrataci\\u00f3n.\"}, {\"type\": \"date\", \"title\":
+      \"ejercicio_procedimiento_anio\", \"description\": \"A\\u00f1o en el que se
+      inici\\u00f3 el proceso de la convocatoria.\"}, {\"type\": \"date\", \"title\":
+      \"fecha_publicacion_convocatoria\", \"description\": \"Fecha de publicaci\\u00f3n
+      de la convocatoria en formato AAAA-MM-DD, ISO 8601.\"}, {\"type\": \"string\",
+      \"title\": \"modalidad_convocatoria\", \"description\": \"Modalidad bajo la
+      cual se realiza la convocatoria.\"}, {\"type\": \"string\", \"title\": \"clase_convocatoria\",
+      \"description\": \"Clase de la convocatoria.\"}, {\"type\": \"string\", \"title\":
+      \"objeto_convocatoria\", \"description\": \"Objeto/objetivo de la convocatoria\"}]",
+      "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "description": "Listado de las convocatorias abiertas durante el a\u00f1o 2015
+      en el sistema de contrataciones electr\u00f3nicas", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "created": "2016-04-14T19:48:05.433640"}], "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar",
+      "author_email": "onc@modernizacion.gob.ar", "author": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones",
+      "private": false, "license_id": "notspecified", "name": "datos-argentina-sistema-contrataciones-electronicas",
+      "groups": [{"name": "econ"}], "tags": [{"name": "bienes"}, {"name": "compras"},
+      {"name": "contrataciones"}, {"name": "bienes y compras"}, {"name": "Contrataciones"},
+      {"name": "Adquisici\u00f3n"}, {"name": "Convocatorias"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "owner_org": "oficina-de-muestra", "extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
+      {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value":
+      "[\"econ\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+      {"key": "temporal", "value": "2015-01-01/2015-12-31"}, {"key": "source", "value":
+      "Ministerio de modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key":
+      "spatial", "value": "ARG"}], "notes": "Datos correspondientes al Sistema de
+      Contrataciones Electr\u00f3nicas (Argentina Compra)", "title": "Sistema de contrataciones
+      electr\u00f3nicas", "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_update
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+        "success": false, "error": {"message": "No encontrado: No se ha encontrado
+        el paquete.", "__type": "Not Found Error"}}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '195'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:30:48 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"resources": [{"resource_type": "file", "last_modified": "2016-04-19T19:48:05.433640",
+      "fileName": "convocatoriasabiertasduranteelao.csv", "format": "CSV", "name":
+      "Convocatorias abiertas durante el a\u00f1o 2015", "mimetype": "text/csv", "id":
+      "datos-argentina_1.1", "size": 5120, "attributesDescription": "[{\"type\": \"integer\",
+      \"title\": \"procedimiento_id\", \"description\": \"Identificador \\u00fanico
+      del procedimiento de contrataci\\u00f3n\", \"id\": \"proc12\"}, {\"type\": \"integer\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\", \"description\":
+      \"Identificador \\u00fanico del organismo que realiza la convocatoria. Organismo
+      de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad operativa
+      de contrataciones.\"}, {\"type\": \"integer\", \"title\": \"unidad_operativa_contrataciones_id\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\"},
+      {\"type\": \"string\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\",
+      \"description\": \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\"},
+      {\"type\": \"string\", \"title\": \"unidad_operativa_contrataciones_desc\",
+      \"description\": \"Unidad operativa de contrataciones.\"}, {\"type\": \"string\",
+      \"title\": \"tipo_procedimiento_contratacion\", \"description\": \"Tipo de procedimiento
+      al que se adecua la contrataci\\u00f3n.\"}, {\"type\": \"date\", \"title\":
+      \"ejercicio_procedimiento_anio\", \"description\": \"A\\u00f1o en el que se
+      inici\\u00f3 el proceso de la convocatoria.\"}, {\"type\": \"date\", \"title\":
+      \"fecha_publicacion_convocatoria\", \"description\": \"Fecha de publicaci\\u00f3n
+      de la convocatoria en formato AAAA-MM-DD, ISO 8601.\"}, {\"type\": \"string\",
+      \"title\": \"modalidad_convocatoria\", \"description\": \"Modalidad bajo la
+      cual se realiza la convocatoria.\"}, {\"type\": \"string\", \"title\": \"clase_convocatoria\",
+      \"description\": \"Clase de la convocatoria.\"}, {\"type\": \"string\", \"title\":
+      \"objeto_convocatoria\", \"description\": \"Objeto/objetivo de la convocatoria\"}]",
+      "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "description": "Listado de las convocatorias abiertas durante el a\u00f1o 2015
+      en el sistema de contrataciones electr\u00f3nicas", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "created": "2016-04-14T19:48:05.433640"}], "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar",
+      "author_email": "onc@modernizacion.gob.ar", "author": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones",
+      "private": false, "license_id": "notspecified", "name": "datos-argentina-sistema-contrataciones-electronicas",
+      "groups": [{"name": "econ"}], "tags": [{"name": "bienes"}, {"name": "compras"},
+      {"name": "contrataciones"}, {"name": "bienes y compras"}, {"name": "Contrataciones"},
+      {"name": "Adquisici\u00f3n"}, {"name": "Convocatorias"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "owner_org": "oficina-de-muestra", "extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
+      {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value":
+      "[\"econ\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+      {"key": "temporal", "value": "2015-01-01/2015-12-31"}, {"key": "source", "value":
+      "Ministerio de modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key":
+      "spatial", "value": "ARG"}], "notes": "Datos correspondientes al Sistema de
+      Contrataciones Electr\u00f3nicas (Argentina Compra)", "title": "Sistema de contrataciones
+      electr\u00f3nicas", "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_create
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_create",
+        "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
+        "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
+        Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
+        "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 7, "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+        "metadata_created": "2019-12-03T18:30:48.340427", "metadata_modified": "2019-12-03T18:30:48.340434",
+        "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
+        "state": "active", "version": null, "creator_user_id": "ee798972-8702-4a19-9a60-9842390f93b0",
+        "type": "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
+        "[{\"type\": \"integer\", \"title\": \"procedimiento_id\", \"description\":
+        \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\", \"id\":
+        \"proc12\"}, {\"type\": \"integer\", \"title\": \"organismo_unidad_operativa_contrataciones_id\",
+        \"description\": \"Identificador \\u00fanico del organismo que realiza la
+        convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece
+        la unidad operativa de contrataciones.\"}, {\"type\": \"integer\", \"title\":
+        \"unidad_operativa_contrataciones_id\", \"description\": \"Identificador \\u00fanico
+        de la unidad operativa de contrataciones\"}, {\"type\": \"string\", \"title\":
+        \"organismo_unidad_operativa_contrataciones_desc\", \"description\": \"Organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\"}, {\"type\": \"string\",
+        \"title\": \"unidad_operativa_contrataciones_desc\", \"description\": \"Unidad
+        operativa de contrataciones.\"}, {\"type\": \"string\", \"title\": \"tipo_procedimiento_contratacion\",
+        \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\"},
+        {\"type\": \"date\", \"title\": \"ejercicio_procedimiento_anio\", \"description\":
+        \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\"}, {\"type\":
+        \"date\", \"title\": \"fecha_publicacion_convocatoria\", \"description\":
+        \"Fecha de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO
+        8601.\"}, {\"type\": \"string\", \"title\": \"modalidad_convocatoria\", \"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\"}, {\"type\": \"string\",
+        \"title\": \"clase_convocatoria\", \"description\": \"Clase de la convocatoria.\"},
+        {\"type\": \"string\", \"title\": \"objeto_convocatoria\", \"description\":
+        \"Objeto/objetivo de la convocatoria\"}]", "package_id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+        "datastore_active": false, "id": "datos-argentina_1.1", "size": 5120, "state":
+        "active", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "hash": "", "description": "Listado de las convocatorias abiertas durante
+        el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
+        "CSV", "fileName": "convocatoriasabiertasduranteelao.csv", "mimetype_inner":
+        null, "url_type": null, "mimetype": "text/csv", "cache_url": null, "name":
+        "Convocatorias abiertas durante el a\u00f1o 2015", "created": "2016-04-14T19:48:05.433640",
+        "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "4d2e5af5-a9b0-4928-afe3-0e8b459a1878", "resource_type": "file"}], "num_resources":
+        1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "Adquisici\u00f3n",
+        "id": "ad788921-bdfd-41f1-9527-f4eed3c1a54f", "name": "Adquisici\u00f3n"},
+        {"vocabulary_id": null, "state": "active", "display_name": "Contrataciones",
+        "id": "f877b153-1be7-41ed-838a-3cde2a0daed5", "name": "Contrataciones"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "Convocatorias", "id": "0be90207-6698-4d7a-8dec-440a50422451",
+        "name": "Convocatorias"}, {"vocabulary_id": null, "state": "active", "display_name":
+        "bienes", "id": "7e968a57-c3f5-49a2-9d1f-821c171b3a91", "name": "bienes"},
+        {"vocabulary_id": null, "state": "active", "display_name": "bienes y compras",
+        "id": "37e455cd-7ef3-4718-8bfe-a8f305cd907f", "name": "bienes y compras"},
+        {"vocabulary_id": null, "state": "active", "display_name": "compras", "id":
+        "a2a73b63-e42d-4164-8186-f08fdc858e1a", "name": "compras"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "contrataciones", "id": "47fad266-8915-4b7a-a955-9f6792ddcacf",
+        "name": "contrataciones"}], "groups": [{"display_name": "Econom\u00eda y finanzas",
+        "description": "Econom\u00eda y finanzas", "image_display_url": "", "title":
+        "Econom\u00eda y finanzas", "id": "3a1b3d84-a435-4b65-9c56-009a67875457",
+        "name": "econ"}], "license_id": "notspecified", "relationships_as_subject":
+        [], "organization": {"description": "", "created": "2019-12-03T15:25:02.131925",
+        "title": "oficina-de-muestra", "name": "oficina-de-muestra", "is_organization":
+        true, "state": "active", "image_url": "", "revision_id": "334d36f2-b44c-449b-80fe-58ad8542392e",
+        "type": "organization", "id": "c480b513-1d86-4f68-a551-6b8b4b75aea8", "approval_status":
+        "approved"}, "name": "datos-argentina-sistema-contrataciones-electronicas",
+        "isopen": false, "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+        "notes": "Datos correspondientes al Sistema de Contrataciones Electr\u00f3nicas
+        (Argentina Compra)", "owner_org": "c480b513-1d86-4f68-a551-6b8b4b75aea8",
+        "extras": [{"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "issued",
+        "value": "2016-04-14T19:48:05.433640-03:00"}, {"key": "language", "value":
+        "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+        {"key": "source", "value": "Ministerio de modernizacion"}, {"key": "spatial",
+        "value": "ARG"}, {"key": "superTheme", "value": "[\"econ\"]"}, {"key": "temporal",
+        "value": "2015-01-01/2015-12-31"}], "title": "Sistema de contrataciones electr\u00f3nicas",
+        "revision_id": "4d2e5af5-a9b0-4928-afe3-0e8b459a1878"}}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '6431'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:30:51 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"resource_type": "file", "last_modified": "2016-04-19T19:48:05.433640",
+      "size": 5120, "format": "CSV", "name": "Convocatorias abiertas durante el a\u00f1o
+      2015", "mimetype": "text/csv", "id": "datos-argentina_1.1", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "attributesDescription": "[{\"type\": \"integer\", \"title\": \"procedimiento_id\",
+      \"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\",
+      \"id\": \"proc12\"}, {\"type\": \"integer\", \"title\": \"organismo_unidad_operativa_contrataciones_id\",
+      \"description\": \"Identificador \\u00fanico del organismo que realiza la convocatoria.
+      Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad
+      operativa de contrataciones.\"}, {\"type\": \"integer\", \"title\": \"unidad_operativa_contrataciones_id\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\"},
+      {\"type\": \"string\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\",
+      \"description\": \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\"},
+      {\"type\": \"string\", \"title\": \"unidad_operativa_contrataciones_desc\",
+      \"description\": \"Unidad operativa de contrataciones.\"}, {\"type\": \"string\",
+      \"title\": \"tipo_procedimiento_contratacion\", \"description\": \"Tipo de procedimiento
+      al que se adecua la contrataci\\u00f3n.\"}, {\"type\": \"date\", \"title\":
+      \"ejercicio_procedimiento_anio\", \"description\": \"A\\u00f1o en el que se
+      inici\\u00f3 el proceso de la convocatoria.\"}, {\"type\": \"date\", \"title\":
+      \"fecha_publicacion_convocatoria\", \"description\": \"Fecha de publicaci\\u00f3n
+      de la convocatoria en formato AAAA-MM-DD, ISO 8601.\"}, {\"type\": \"string\",
+      \"title\": \"modalidad_convocatoria\", \"description\": \"Modalidad bajo la
+      cual se realiza la convocatoria.\"}, {\"type\": \"string\", \"title\": \"clase_convocatoria\",
+      \"description\": \"Clase de la convocatoria.\"}, {\"type\": \"string\", \"title\":
+      \"objeto_convocatoria\", \"description\": \"Objeto/objetivo de la convocatoria\"}]",
+      "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "description": "Listado de las convocatorias abiertas durante el a\u00f1o 2015
+      en el sistema de contrataciones electr\u00f3nicas", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "created": "2016-04-14T19:48:05.433640"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2625'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/resource_patch
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=resource_patch",
+        "success": true, "result": {"cache_last_updated": null, "attributesDescription":
+        "[{\"type\": \"integer\", \"title\": \"procedimiento_id\", \"description\":
+        \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\", \"id\":
+        \"proc12\"}, {\"type\": \"integer\", \"title\": \"organismo_unidad_operativa_contrataciones_id\",
+        \"description\": \"Identificador \\u00fanico del organismo que realiza la
+        convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece
+        la unidad operativa de contrataciones.\"}, {\"type\": \"integer\", \"title\":
+        \"unidad_operativa_contrataciones_id\", \"description\": \"Identificador \\u00fanico
+        de la unidad operativa de contrataciones\"}, {\"type\": \"string\", \"title\":
+        \"organismo_unidad_operativa_contrataciones_desc\", \"description\": \"Organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\"}, {\"type\": \"string\",
+        \"title\": \"unidad_operativa_contrataciones_desc\", \"description\": \"Unidad
+        operativa de contrataciones.\"}, {\"type\": \"string\", \"title\": \"tipo_procedimiento_contratacion\",
+        \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\"},
+        {\"type\": \"date\", \"title\": \"ejercicio_procedimiento_anio\", \"description\":
+        \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\"}, {\"type\":
+        \"date\", \"title\": \"fecha_publicacion_convocatoria\", \"description\":
+        \"Fecha de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO
+        8601.\"}, {\"type\": \"string\", \"title\": \"modalidad_convocatoria\", \"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\"}, {\"type\": \"string\",
+        \"title\": \"clase_convocatoria\", \"description\": \"Clase de la convocatoria.\"},
+        {\"type\": \"string\", \"title\": \"objeto_convocatoria\", \"description\":
+        \"Objeto/objetivo de la convocatoria\"}]", "package_id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+        "datastore_active": false, "id": "datos-argentina_1.1", "size": 5120, "state":
+        "active", "mimetype": "text/csv", "hash": "", "description": "Listado de las
+        convocatorias abiertas durante el a\u00f1o 2015 en el sistema de contrataciones
+        electr\u00f3nicas", "format": "CSV", "fileName": "convocatoriasabiertasduranteelao.csv",
+        "mimetype_inner": null, "url_type": null, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "cache_url": null, "name": "Convocatorias abiertas durante el a\u00f1o 2015",
+        "created": "2016-04-14T19:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "de59b562-969e-480b-9efd-22bf4008c1a9", "resource_type": "file"}}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '3017'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:30:53 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/license_list
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+        "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
+        "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "domain_content":
+        false, "domain_software": false, "id": "notspecified"}, {"status": "active",
+        "legacy_ids": ["ODC-PDDL-1.0", "odc-pddl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Open Data Commons Public Domain Dedication and Licence 1.0 (PDDL)", "url":
+        "https://opendefinition.org/licenses/odc-pddl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "PDDL-1.0"}, {"status": "active", "legacy_ids": ["odc-odbl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Open Database License 1.0 (ODbL)", "url":
+        "https://opendefinition.org/licenses/odc-odbl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "ODbL-1.0"}, {"status": "active", "legacy_ids": ["odc-by"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Attribution License 1.0", "url": "https://opendefinition.org/licenses/odc-by",
+        "domain_content": false, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Open Data Commons", "domain_software": false, "id": "ODC-BY-1.0"},
+        {"status": "active", "legacy_ids": ["cc-by"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-4.0"},
+        {"status": "active", "legacy_ids": ["cc-by-sa"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution Share-Alike 4.0", "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-SA-4.0"},
+        {"status": "active", "legacy_ids": ["gfdl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": false, "title":
+        "GNU Free Documentation License 1.3 sin textos de cubierta ni secciones invariantes",
+        "url": "https://opendefinition.org/licenses/gfdl", "domain_content": true,
+        "is_okd_compliant": true, "is_osi_compliant": false, "maintainer": "Free Software
+        Foundation", "domain_software": false, "id": "GFDL-1.3-no-cover-texts-no-invariant-sections"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Abierta)", "url": "", "is_generic": true, "is_okd_compliant": true, "is_osi_compliant":
+        false, "domain_content": true, "domain_software": false, "id": "other-open"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Dominio P\u00fablico)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-pd"}, {"status": "active", "maintainer": "", "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "Otra (Atribuci\u00f3n)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-at"}, {"status": "active", "legacy_ids": ["uk-ogl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Government Licence 2.0 (United Kingdom)", "is_generic":
+        false, "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "UK Government", "domain_software": true, "id": "OGL-UK-2.0"},
+        {"status": "active", "legacy_ids": ["cc-nc"], "od_conformance": "rejected",
+        "family": "Creative Commons", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Creative Commons Attribution-NonCommercial 4.0 (cualquiera)",
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/", "domain_content":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "maintainer":
+        "Creative Commons", "domain_software": false, "id": "CC-BY-NC-4.0"}, {"status":
+        "active", "maintainer": "", "od_conformance": "not reviewed", "family": "",
+        "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra (No
+        comercial)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-nc"},
+        {"status": "active", "maintainer": "", "od_conformance": "not reviewed", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (No abierta)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-closed"}]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5597'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:31:56 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
+      {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value":
+      "[\"econ\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+      {"key": "temporal", "value": "2015-01-01/2015-12-31"}, {"key": "source", "value":
+      "Ministerio de modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key":
+      "spatial", "value": "ARG"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "name": "datos-argentina-sistema-contrataciones-electronicas", "title": "Sistema
+      de contrataciones electr\u00f3nicas", "private": false, "notes": "Datos correspondientes
+      al Sistema de Contrataciones Electr\u00f3nicas (Argentina Compra)", "author":
+      "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n Administrativa.
+      Oficina Nacional de Contrataciones", "owner_org": "oficina-de-muestra", "resources":
+      [{"id": "datos-argentina_1.1", "name": "Convocatorias abiertas durante el a\u00f1o
+      2015", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "created": "2016-04-14T19:48:05.433640", "description": "Listado de las convocatorias
+      abiertas durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "last_modified": "2016-04-19T19:48:05.433640", "mimetype":
+      "text/csv", "size": 5120, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "attributesDescription": "[{\"title\": \"procedimiento_id\", \"type\": \"integer\",
+      \"id\": \"proc12\", \"description\": \"Identificador \\u00fanico del procedimiento
+      de contrataci\\u00f3n\"}, {\"type\": \"integer\", \"description\": \"Identificador
+      \\u00fanico del organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\"}, {\"type\": \"integer\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"title\": \"unidad_operativa_contrataciones_id\"}, {\"type\": \"string\", \"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+      {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+      \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+      \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+      \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+      {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+      \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+      de la convocatoria\", \"title\": \"objeto_convocatoria\"}]"}], "groups": [{"name":
+      "econ"}], "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+      "author_email": "onc@modernizacion.gob.ar", "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar",
+      "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
+      {"name": "bienes y compras"}, {"name": "Contrataciones"}, {"name": "Adquisici\u00f3n"},
+      {"name": "Convocatorias"}], "license_id": "notspecified"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_update
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+        "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
+        "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
+        Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
+        "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 7, "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+        "metadata_created": "2019-12-03T18:30:48.340427", "metadata_modified": "2019-12-03T18:31:56.168019",
+        "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
+        "state": "active", "version": null, "creator_user_id": "ee798972-8702-4a19-9a60-9842390f93b0",
+        "type": "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
+        "[{\"title\": \"procedimiento_id\", \"type\": \"integer\", \"id\": \"proc12\",
+        \"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico del organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_id\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico de la
+        unidad operativa de contrataciones\", \"title\": \"unidad_operativa_contrataciones_id\"},
+        {\"type\": \"string\", \"description\": \"Organismo que realiza la convocatoria.
+        Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad
+        operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+        {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+        \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+        \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+        \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+        \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+        \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+        de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+        \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+        {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+        \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+        de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
+        "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777", "datastore_active":
+        false, "id": "datos-argentina_1.1", "size": 5120, "state": "active", "accessURL":
+        "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "hash": "", "description": "Listado de las convocatorias abiertas durante
+        el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
+        "CSV", "fileName": "convocatoriasabiertasduranteelao.csv", "mimetype_inner":
+        null, "url_type": null, "mimetype": "text/csv", "cache_url": null, "name":
+        "Convocatorias abiertas durante el a\u00f1o 2015", "created": "2016-04-14T19:48:05.433640",
+        "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "be6f366d-b138-4421-bd06-49e24f2a8bcd", "resource_type": "file"}], "num_resources":
+        1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "Adquisici\u00f3n",
+        "id": "ad788921-bdfd-41f1-9527-f4eed3c1a54f", "name": "Adquisici\u00f3n"},
+        {"vocabulary_id": null, "state": "active", "display_name": "Contrataciones",
+        "id": "f877b153-1be7-41ed-838a-3cde2a0daed5", "name": "Contrataciones"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "Convocatorias", "id": "0be90207-6698-4d7a-8dec-440a50422451",
+        "name": "Convocatorias"}, {"vocabulary_id": null, "state": "active", "display_name":
+        "bienes", "id": "7e968a57-c3f5-49a2-9d1f-821c171b3a91", "name": "bienes"},
+        {"vocabulary_id": null, "state": "active", "display_name": "bienes y compras",
+        "id": "37e455cd-7ef3-4718-8bfe-a8f305cd907f", "name": "bienes y compras"},
+        {"vocabulary_id": null, "state": "active", "display_name": "compras", "id":
+        "a2a73b63-e42d-4164-8186-f08fdc858e1a", "name": "compras"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "contrataciones", "id": "47fad266-8915-4b7a-a955-9f6792ddcacf",
+        "name": "contrataciones"}], "groups": [{"display_name": "Econom\u00eda y finanzas",
+        "description": "Econom\u00eda y finanzas", "image_display_url": "", "title":
+        "Econom\u00eda y finanzas", "id": "3a1b3d84-a435-4b65-9c56-009a67875457",
+        "name": "econ"}], "license_id": "notspecified", "relationships_as_subject":
+        [], "organization": {"description": "", "created": "2019-12-03T15:25:02.131925",
+        "title": "oficina-de-muestra", "name": "oficina-de-muestra", "is_organization":
+        true, "state": "active", "image_url": "", "revision_id": "334d36f2-b44c-449b-80fe-58ad8542392e",
+        "type": "organization", "id": "c480b513-1d86-4f68-a551-6b8b4b75aea8", "approval_status":
+        "approved"}, "name": "datos-argentina-sistema-contrataciones-electronicas",
+        "isopen": false, "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+        "notes": "Datos correspondientes al Sistema de Contrataciones Electr\u00f3nicas
+        (Argentina Compra)", "owner_org": "c480b513-1d86-4f68-a551-6b8b4b75aea8",
+        "extras": [{"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "issued",
+        "value": "2016-04-14T19:48:05.433640-03:00"}, {"key": "language", "value":
+        "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+        {"key": "source", "value": "Ministerio de modernizacion"}, {"key": "spatial",
+        "value": "ARG"}, {"key": "superTheme", "value": "[\"econ\"]"}, {"key": "temporal",
+        "value": "2015-01-01/2015-12-31"}], "title": "Sistema de contrataciones electr\u00f3nicas",
+        "revision_id": "be6f366d-b138-4421-bd06-49e24f2a8bcd"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '6431'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:31:57 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"id": "datos-argentina_1.1", "name": "Convocatorias abiertas durante el
+      a\u00f1o 2015", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "created": "2016-04-14T19:48:05.433640", "description": "Listado de las convocatorias
+      abiertas durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "last_modified": "2016-04-19T19:48:05.433640", "mimetype":
+      "text/csv", "size": 5120, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "attributesDescription": "[{\"title\": \"procedimiento_id\", \"type\": \"integer\",
+      \"id\": \"proc12\", \"description\": \"Identificador \\u00fanico del procedimiento
+      de contrataci\\u00f3n\"}, {\"type\": \"integer\", \"description\": \"Identificador
+      \\u00fanico del organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\"}, {\"type\": \"integer\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"title\": \"unidad_operativa_contrataciones_id\"}, {\"type\": \"string\", \"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+      {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+      \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+      \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+      \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+      {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+      \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+      de la convocatoria\", \"title\": \"objeto_convocatoria\"}]"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2625'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/resource_patch
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=resource_patch",
+        "success": true, "result": {"cache_last_updated": null, "attributesDescription":
+        "[{\"title\": \"procedimiento_id\", \"type\": \"integer\", \"id\": \"proc12\",
+        \"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico del organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_id\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico de la
+        unidad operativa de contrataciones\", \"title\": \"unidad_operativa_contrataciones_id\"},
+        {\"type\": \"string\", \"description\": \"Organismo que realiza la convocatoria.
+        Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad
+        operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+        {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+        \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+        \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+        \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+        \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+        \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+        de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+        \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+        {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+        \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+        de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
+        "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777", "datastore_active":
+        false, "id": "datos-argentina_1.1", "size": 5120, "state": "active", "mimetype":
+        "text/csv", "hash": "", "description": "Listado de las convocatorias abiertas
+        durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+        "format": "CSV", "fileName": "convocatoriasabiertasduranteelao.csv", "mimetype_inner":
+        null, "url_type": null, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "cache_url": null, "name": "Convocatorias abiertas durante el a\u00f1o 2015",
+        "created": "2016-04-14T19:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "7fb24df7-ebb9-49a9-bdbb-419476830648", "resource_type": "file"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '3017'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:31:57 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/license_list
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+        "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
+        "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "domain_content":
+        false, "domain_software": false, "id": "notspecified"}, {"status": "active",
+        "legacy_ids": ["ODC-PDDL-1.0", "odc-pddl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Open Data Commons Public Domain Dedication and Licence 1.0 (PDDL)", "url":
+        "https://opendefinition.org/licenses/odc-pddl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "PDDL-1.0"}, {"status": "active", "legacy_ids": ["odc-odbl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Open Database License 1.0 (ODbL)", "url":
+        "https://opendefinition.org/licenses/odc-odbl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "ODbL-1.0"}, {"status": "active", "legacy_ids": ["odc-by"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Attribution License 1.0", "url": "https://opendefinition.org/licenses/odc-by",
+        "domain_content": false, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Open Data Commons", "domain_software": false, "id": "ODC-BY-1.0"},
+        {"status": "active", "legacy_ids": ["cc-by"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-4.0"},
+        {"status": "active", "legacy_ids": ["cc-by-sa"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution Share-Alike 4.0", "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-SA-4.0"},
+        {"status": "active", "legacy_ids": ["gfdl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": false, "title":
+        "GNU Free Documentation License 1.3 sin textos de cubierta ni secciones invariantes",
+        "url": "https://opendefinition.org/licenses/gfdl", "domain_content": true,
+        "is_okd_compliant": true, "is_osi_compliant": false, "maintainer": "Free Software
+        Foundation", "domain_software": false, "id": "GFDL-1.3-no-cover-texts-no-invariant-sections"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Abierta)", "url": "", "is_generic": true, "is_okd_compliant": true, "is_osi_compliant":
+        false, "domain_content": true, "domain_software": false, "id": "other-open"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Dominio P\u00fablico)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-pd"}, {"status": "active", "maintainer": "", "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "Otra (Atribuci\u00f3n)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-at"}, {"status": "active", "legacy_ids": ["uk-ogl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Government Licence 2.0 (United Kingdom)", "is_generic":
+        false, "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "UK Government", "domain_software": true, "id": "OGL-UK-2.0"},
+        {"status": "active", "legacy_ids": ["cc-nc"], "od_conformance": "rejected",
+        "family": "Creative Commons", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Creative Commons Attribution-NonCommercial 4.0 (cualquiera)",
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/", "domain_content":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "maintainer":
+        "Creative Commons", "domain_software": false, "id": "CC-BY-NC-4.0"}, {"status":
+        "active", "maintainer": "", "od_conformance": "not reviewed", "family": "",
+        "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra (No
+        comercial)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-nc"},
+        {"status": "active", "maintainer": "", "od_conformance": "not reviewed", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (No abierta)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-closed"}]}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '5597'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:32:27 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
+      {"name": "bienes y compras"}, {"name": "Contrataciones"}, {"name": "Adquisici\u00f3n"},
+      {"name": "Convocatorias"}], "extras": [{"value": "2016-04-14T19:48:05.433640-03:00",
+      "key": "issued"}, {"value": "R/P1Y", "key": "accrualPeriodicity"}, {"value":
+      "[\"econ\"]", "key": "superTheme"}, {"value": "2016-04-19T19:48:05.433640-03:00",
+      "key": "modified"}, {"value": "2015-01-01/2015-12-31", "key": "temporal"}, {"value":
+      "Ministerio de modernizacion", "key": "source"}, {"value": "[\"spa\"]", "key":
+      "language"}, {"value": "ARG", "key": "spatial"}], "name": "datos-argentina-sistema-contrataciones-electronicas",
+      "title": "Sistema de contrataciones electr\u00f3nicas", "resources": [{"size":
+      5120, "format": "CSV", "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "description": "Listado de las convocatorias abiertas durante el a\u00f1o 2015
+      en el sistema de contrataciones electr\u00f3nicas", "name": "Convocatorias abiertas
+      durante el a\u00f1o 2015", "created": "2016-04-14T19:48:05.433640", "fileName":
+      "convocatoriasabiertasduranteelao.csv", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "mimetype": "text/csv", "last_modified": "2016-04-19T19:48:05.433640", "attributesDescription":
+      "[{\"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\",
+      \"id\": \"proc12\", \"type\": \"integer\", \"title\": \"procedimiento_id\"},
+      {\"description\": \"Identificador \\u00fanico del organismo que realiza la convocatoria.
+      Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad
+      operativa de contrataciones.\", \"type\": \"integer\", \"title\": \"organismo_unidad_operativa_contrataciones_id\"},
+      {\"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"type\": \"integer\", \"title\": \"unidad_operativa_contrataciones_id\"}, {\"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"type\": \"string\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_desc\"}, {\"description\":
+      \"Unidad operativa de contrataciones.\", \"type\": \"string\", \"title\": \"unidad_operativa_contrataciones_desc\"},
+      {\"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"type\": \"string\", \"title\": \"tipo_procedimiento_contratacion\"}, {\"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"type\":
+      \"date\", \"title\": \"ejercicio_procedimiento_anio\"}, {\"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"type\": \"date\", \"title\": \"fecha_publicacion_convocatoria\"}, {\"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"type\": \"string\",
+      \"title\": \"modalidad_convocatoria\"}, {\"description\": \"Clase de la convocatoria.\",
+      \"type\": \"string\", \"title\": \"clase_convocatoria\"}, {\"description\":
+      \"Objeto/objetivo de la convocatoria\", \"type\": \"string\", \"title\": \"objeto_convocatoria\"}]",
+      "id": "datos-argentina_1.1", "resource_type": "file"}], "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+      "groups": [{"name": "econ"}], "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar",
+      "license_id": "notspecified", "author_email": "onc@modernizacion.gob.ar", "notes":
+      "Datos correspondientes al Sistema de Contrataciones Electr\u00f3nicas (Argentina
+      Compra)", "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777", "owner_org":
+      "oficina-de-muestra", "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda
+      de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones", "private":
+      false}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_update
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+        "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
+        "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
+        Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
+        "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 7, "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+        "metadata_created": "2019-12-03T18:30:48.340427", "metadata_modified": "2019-12-03T18:32:27.297200",
+        "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
+        "state": "active", "version": null, "creator_user_id": "ee798972-8702-4a19-9a60-9842390f93b0",
+        "type": "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
+        "[{\"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\",
+        \"id\": \"proc12\", \"type\": \"integer\", \"title\": \"procedimiento_id\"},
+        {\"description\": \"Identificador \\u00fanico del organismo que realiza la
+        convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece
+        la unidad operativa de contrataciones.\", \"type\": \"integer\", \"title\":
+        \"organismo_unidad_operativa_contrataciones_id\"}, {\"description\": \"Identificador
+        \\u00fanico de la unidad operativa de contrataciones\", \"type\": \"integer\",
+        \"title\": \"unidad_operativa_contrataciones_id\"}, {\"description\": \"Organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\", \"type\": \"string\",
+        \"title\": \"organismo_unidad_operativa_contrataciones_desc\"}, {\"description\":
+        \"Unidad operativa de contrataciones.\", \"type\": \"string\", \"title\":
+        \"unidad_operativa_contrataciones_desc\"}, {\"description\": \"Tipo de procedimiento
+        al que se adecua la contrataci\\u00f3n.\", \"type\": \"string\", \"title\":
+        \"tipo_procedimiento_contratacion\"}, {\"description\": \"A\\u00f1o en el
+        que se inici\\u00f3 el proceso de la convocatoria.\", \"type\": \"date\",
+        \"title\": \"ejercicio_procedimiento_anio\"}, {\"description\": \"Fecha de
+        publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\", \"type\":
+        \"date\", \"title\": \"fecha_publicacion_convocatoria\"}, {\"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\", \"type\": \"string\",
+        \"title\": \"modalidad_convocatoria\"}, {\"description\": \"Clase de la convocatoria.\",
+        \"type\": \"string\", \"title\": \"clase_convocatoria\"}, {\"description\":
+        \"Objeto/objetivo de la convocatoria\", \"type\": \"string\", \"title\": \"objeto_convocatoria\"}]",
+        "package_id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777", "datastore_active":
+        false, "id": "datos-argentina_1.1", "size": 5120, "state": "active", "accessURL":
+        "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "hash": "", "description": "Listado de las convocatorias abiertas durante
+        el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
+        "CSV", "fileName": "convocatoriasabiertasduranteelao.csv", "mimetype_inner":
+        null, "url_type": null, "mimetype": "text/csv", "cache_url": null, "name":
+        "Convocatorias abiertas durante el a\u00f1o 2015", "created": "2016-04-14T19:48:05.433640",
+        "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "9a225d3d-2bfb-418e-a142-94ff045ae64a", "resource_type": "file"}], "num_resources":
+        1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "Adquisici\u00f3n",
+        "id": "ad788921-bdfd-41f1-9527-f4eed3c1a54f", "name": "Adquisici\u00f3n"},
+        {"vocabulary_id": null, "state": "active", "display_name": "Contrataciones",
+        "id": "f877b153-1be7-41ed-838a-3cde2a0daed5", "name": "Contrataciones"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "Convocatorias", "id": "0be90207-6698-4d7a-8dec-440a50422451",
+        "name": "Convocatorias"}, {"vocabulary_id": null, "state": "active", "display_name":
+        "bienes", "id": "7e968a57-c3f5-49a2-9d1f-821c171b3a91", "name": "bienes"},
+        {"vocabulary_id": null, "state": "active", "display_name": "bienes y compras",
+        "id": "37e455cd-7ef3-4718-8bfe-a8f305cd907f", "name": "bienes y compras"},
+        {"vocabulary_id": null, "state": "active", "display_name": "compras", "id":
+        "a2a73b63-e42d-4164-8186-f08fdc858e1a", "name": "compras"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "contrataciones", "id": "47fad266-8915-4b7a-a955-9f6792ddcacf",
+        "name": "contrataciones"}], "groups": [{"display_name": "Econom\u00eda y finanzas",
+        "description": "Econom\u00eda y finanzas", "image_display_url": "", "title":
+        "Econom\u00eda y finanzas", "id": "3a1b3d84-a435-4b65-9c56-009a67875457",
+        "name": "econ"}], "license_id": "notspecified", "relationships_as_subject":
+        [], "organization": {"description": "", "created": "2019-12-03T15:25:02.131925",
+        "title": "oficina-de-muestra", "name": "oficina-de-muestra", "is_organization":
+        true, "state": "active", "image_url": "", "revision_id": "334d36f2-b44c-449b-80fe-58ad8542392e",
+        "type": "organization", "id": "c480b513-1d86-4f68-a551-6b8b4b75aea8", "approval_status":
+        "approved"}, "name": "datos-argentina-sistema-contrataciones-electronicas",
+        "isopen": false, "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+        "notes": "Datos correspondientes al Sistema de Contrataciones Electr\u00f3nicas
+        (Argentina Compra)", "owner_org": "c480b513-1d86-4f68-a551-6b8b4b75aea8",
+        "extras": [{"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "issued",
+        "value": "2016-04-14T19:48:05.433640-03:00"}, {"key": "language", "value":
+        "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+        {"key": "source", "value": "Ministerio de modernizacion"}, {"key": "spatial",
+        "value": "ARG"}, {"key": "superTheme", "value": "[\"econ\"]"}, {"key": "temporal",
+        "value": "2015-01-01/2015-12-31"}], "title": "Sistema de contrataciones electr\u00f3nicas",
+        "revision_id": "9a225d3d-2bfb-418e-a142-94ff045ae64a"}}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '6431'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:32:28 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"size": 5120, "format": "CSV", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "name": "Convocatorias abiertas durante el a\u00f1o 2015", "description": "Listado
+      de las convocatorias abiertas durante el a\u00f1o 2015 en el sistema de contrataciones
+      electr\u00f3nicas", "created": "2016-04-14T19:48:05.433640", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "mimetype": "text/csv", "last_modified": "2016-04-19T19:48:05.433640", "attributesDescription":
+      "[{\"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\",
+      \"id\": \"proc12\", \"type\": \"integer\", \"title\": \"procedimiento_id\"},
+      {\"description\": \"Identificador \\u00fanico del organismo que realiza la convocatoria.
+      Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad
+      operativa de contrataciones.\", \"type\": \"integer\", \"title\": \"organismo_unidad_operativa_contrataciones_id\"},
+      {\"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"type\": \"integer\", \"title\": \"unidad_operativa_contrataciones_id\"}, {\"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"type\": \"string\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_desc\"}, {\"description\":
+      \"Unidad operativa de contrataciones.\", \"type\": \"string\", \"title\": \"unidad_operativa_contrataciones_desc\"},
+      {\"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"type\": \"string\", \"title\": \"tipo_procedimiento_contratacion\"}, {\"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"type\":
+      \"date\", \"title\": \"ejercicio_procedimiento_anio\"}, {\"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"type\": \"date\", \"title\": \"fecha_publicacion_convocatoria\"}, {\"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"type\": \"string\",
+      \"title\": \"modalidad_convocatoria\"}, {\"description\": \"Clase de la convocatoria.\",
+      \"type\": \"string\", \"title\": \"clase_convocatoria\"}, {\"description\":
+      \"Objeto/objetivo de la convocatoria\", \"type\": \"string\", \"title\": \"objeto_convocatoria\"}]",
+      "id": "datos-argentina_1.1", "resource_type": "file"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2625'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/resource_patch
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=resource_patch",
+        "success": true, "result": {"cache_last_updated": null, "attributesDescription":
+        "[{\"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\",
+        \"id\": \"proc12\", \"type\": \"integer\", \"title\": \"procedimiento_id\"},
+        {\"description\": \"Identificador \\u00fanico del organismo que realiza la
+        convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece
+        la unidad operativa de contrataciones.\", \"type\": \"integer\", \"title\":
+        \"organismo_unidad_operativa_contrataciones_id\"}, {\"description\": \"Identificador
+        \\u00fanico de la unidad operativa de contrataciones\", \"type\": \"integer\",
+        \"title\": \"unidad_operativa_contrataciones_id\"}, {\"description\": \"Organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\", \"type\": \"string\",
+        \"title\": \"organismo_unidad_operativa_contrataciones_desc\"}, {\"description\":
+        \"Unidad operativa de contrataciones.\", \"type\": \"string\", \"title\":
+        \"unidad_operativa_contrataciones_desc\"}, {\"description\": \"Tipo de procedimiento
+        al que se adecua la contrataci\\u00f3n.\", \"type\": \"string\", \"title\":
+        \"tipo_procedimiento_contratacion\"}, {\"description\": \"A\\u00f1o en el
+        que se inici\\u00f3 el proceso de la convocatoria.\", \"type\": \"date\",
+        \"title\": \"ejercicio_procedimiento_anio\"}, {\"description\": \"Fecha de
+        publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\", \"type\":
+        \"date\", \"title\": \"fecha_publicacion_convocatoria\"}, {\"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\", \"type\": \"string\",
+        \"title\": \"modalidad_convocatoria\"}, {\"description\": \"Clase de la convocatoria.\",
+        \"type\": \"string\", \"title\": \"clase_convocatoria\"}, {\"description\":
+        \"Objeto/objetivo de la convocatoria\", \"type\": \"string\", \"title\": \"objeto_convocatoria\"}]",
+        "package_id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777", "datastore_active":
+        false, "id": "datos-argentina_1.1", "size": 5120, "state": "active", "mimetype":
+        "text/csv", "hash": "", "description": "Listado de las convocatorias abiertas
+        durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+        "format": "CSV", "fileName": "convocatoriasabiertasduranteelao.csv", "mimetype_inner":
+        null, "url_type": null, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "cache_url": null, "name": "Convocatorias abiertas durante el a\u00f1o 2015",
+        "created": "2016-04-14T19:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "6de02069-2ef7-40de-bc49-e424fa835be7", "resource_type": "file"}}'
+    headers:
+      cache-control:
+      - no-cache
+      connection:
+      - keep-alive
+      content-length:
+      - '3017'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 03 Dec 2019 18:32:28 GMT
+      pragma:
+      - no-cache
+      server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/license_list
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=license_list",
+        "success": true, "result": [{"status": "active", "maintainer": "", "od_conformance":
+        "not reviewed", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "No se especific\u00f3 la licencia", "url": "", "is_generic":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "domain_content":
+        false, "domain_software": false, "id": "notspecified"}, {"status": "active",
+        "legacy_ids": ["ODC-PDDL-1.0", "odc-pddl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Open Data Commons Public Domain Dedication and Licence 1.0 (PDDL)", "url":
+        "https://opendefinition.org/licenses/odc-pddl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "PDDL-1.0"}, {"status": "active", "legacy_ids": ["odc-odbl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Open Database License 1.0 (ODbL)", "url":
+        "https://opendefinition.org/licenses/odc-odbl", "domain_content": false, "is_okd_compliant":
+        true, "is_osi_compliant": false, "maintainer": "", "domain_software": false,
+        "id": "ODbL-1.0"}, {"status": "active", "legacy_ids": ["odc-by"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Data Commons Attribution License 1.0", "url": "https://opendefinition.org/licenses/odc-by",
+        "domain_content": false, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Open Data Commons", "domain_software": false, "id": "ODC-BY-1.0"},
+        {"status": "active", "legacy_ids": ["cc-by"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution 4.0", "url": "https://creativecommons.org/licenses/by/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-4.0"},
+        {"status": "active", "legacy_ids": ["cc-by-sa"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": true, "title":
+        "Creative Commons Attribution Share-Alike 4.0", "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "Creative Commons", "domain_software": false, "id": "CC-BY-SA-4.0"},
+        {"status": "active", "legacy_ids": ["gfdl"], "od_conformance": "approved",
+        "family": "", "osd_conformance": "not reviewed", "domain_data": false, "title":
+        "GNU Free Documentation License 1.3 sin textos de cubierta ni secciones invariantes",
+        "url": "https://opendefinition.org/licenses/gfdl", "domain_content": true,
+        "is_okd_compliant": true, "is_osi_compliant": false, "maintainer": "Free Software
+        Foundation", "domain_software": false, "id": "GFDL-1.3-no-cover-texts-no-invariant-sections"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Abierta)", "url": "", "is_generic": true, "is_okd_compliant": true, "is_osi_compliant":
+        false, "domain_content": true, "domain_software": false, "id": "other-open"},
+        {"status": "active", "maintainer": "", "od_conformance": "approved", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (Dominio P\u00fablico)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-pd"}, {"status": "active", "maintainer": "", "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        false, "title": "Otra (Atribuci\u00f3n)", "url": "", "is_generic": true, "is_okd_compliant":
+        true, "is_osi_compliant": false, "domain_content": true, "domain_software":
+        false, "id": "other-at"}, {"status": "active", "legacy_ids": ["uk-ogl"], "od_conformance":
+        "approved", "family": "", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Open Government Licence 2.0 (United Kingdom)", "is_generic":
+        false, "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/",
+        "domain_content": true, "is_okd_compliant": true, "is_osi_compliant": false,
+        "maintainer": "UK Government", "domain_software": true, "id": "OGL-UK-2.0"},
+        {"status": "active", "legacy_ids": ["cc-nc"], "od_conformance": "rejected",
+        "family": "Creative Commons", "osd_conformance": "not reviewed", "domain_data":
+        true, "title": "Creative Commons Attribution-NonCommercial 4.0 (cualquiera)",
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/", "domain_content":
+        true, "is_okd_compliant": false, "is_osi_compliant": false, "maintainer":
+        "Creative Commons", "domain_software": false, "id": "CC-BY-NC-4.0"}, {"status":
+        "active", "maintainer": "", "od_conformance": "not reviewed", "family": "",
+        "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra (No
+        comercial)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-nc"},
+        {"status": "active", "maintainer": "", "od_conformance": "not reviewed", "family":
+        "", "osd_conformance": "not reviewed", "domain_data": false, "title": "Otra
+        (No abierta)", "url": "", "is_generic": true, "is_okd_compliant": false, "is_osi_compliant":
+        false, "domain_content": false, "domain_software": false, "id": "other-closed"}]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '5597'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:33:29 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"extras": [{"key": "issued", "value": "2016-04-14T19:48:05.433640-03:00"},
+      {"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "superTheme", "value":
+      "[\"econ\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+      {"key": "temporal", "value": "2015-01-01/2015-12-31"}, {"key": "source", "value":
+      "Ministerio de modernizacion"}, {"key": "language", "value": "[\"spa\"]"}, {"key":
+      "spatial", "value": "ARG"}], "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+      "name": "datos-argentina-sistema-contrataciones-electronicas", "title": "Sistema
+      de contrataciones electr\u00f3nicas", "private": false, "notes": "Datos correspondientes
+      al Sistema de Contrataciones Electr\u00f3nicas (Argentina Compra)", "author":
+      "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n Administrativa.
+      Oficina Nacional de Contrataciones", "owner_org": "oficina-de-muestra", "resources":
+      [{"id": "datos-argentina_1.1", "name": "Convocatorias abiertas durante el a\u00f1o
+      2015", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "created": "2016-04-14T19:48:05.433640", "description": "Listado de las convocatorias
+      abiertas durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "last_modified": "2016-04-19T19:48:05.433640", "mimetype":
+      "text/csv", "size": 5120, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "attributesDescription": "[{\"title\": \"procedimiento_id\", \"type\": \"integer\",
+      \"id\": \"proc12\", \"description\": \"Identificador \\u00fanico del procedimiento
+      de contrataci\\u00f3n\"}, {\"type\": \"integer\", \"description\": \"Identificador
+      \\u00fanico del organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\"}, {\"type\": \"integer\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"title\": \"unidad_operativa_contrataciones_id\"}, {\"type\": \"string\", \"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+      {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+      \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+      \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+      \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+      {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+      \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+      de la convocatoria\", \"title\": \"objeto_convocatoria\"}]"}], "groups": [{"name":
+      "econ"}], "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+      "author_email": "onc@modernizacion.gob.ar", "maintainer": "Ministerio de Modernizaci\u00f3n.
+      Secretar\u00eda de Modernizaci\u00f3n Administrativa. Oficina Nacional de Contrataciones.
+      Direcci\u00f3n de Compras Electr\u00f3nicas.", "maintainer_email": "onc-compraselectronicas@modernizacion.gob.ar",
+      "tags": [{"name": "bienes"}, {"name": "compras"}, {"name": "contrataciones"},
+      {"name": "bienes y compras"}, {"name": "Contrataciones"}, {"name": "Adquisici\u00f3n"},
+      {"name": "Convocatorias"}], "license_id": "notspecified"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/package_update
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=package_update",
+        "success": true, "result": {"license_title": "No se especific\u00f3 la licencia",
+        "maintainer": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones. Direcci\u00f3n de Compras
+        Electr\u00f3nicas.", "relationships_as_object": [], "private": false, "maintainer_email":
+        "onc-compraselectronicas@modernizacion.gob.ar", "num_tags": 7, "id": "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777",
+        "metadata_created": "2019-12-03T18:30:48.340427", "metadata_modified": "2019-12-03T18:33:29.730933",
+        "author": "Ministerio de Modernizaci\u00f3n. Secretar\u00eda de Modernizaci\u00f3n
+        Administrativa. Oficina Nacional de Contrataciones", "author_email": "onc@modernizacion.gob.ar",
+        "state": "active", "version": null, "creator_user_id": "ee798972-8702-4a19-9a60-9842390f93b0",
+        "type": "dataset", "resources": [{"cache_last_updated": null, "attributesDescription":
+        "[{\"title\": \"procedimiento_id\", \"type\": \"integer\", \"id\": \"proc12\",
+        \"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico del organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_id\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico de la
+        unidad operativa de contrataciones\", \"title\": \"unidad_operativa_contrataciones_id\"},
+        {\"type\": \"string\", \"description\": \"Organismo que realiza la convocatoria.
+        Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad
+        operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+        {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+        \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+        \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+        \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+        \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+        \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+        de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+        \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+        {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+        \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+        de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
+        "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777", "datastore_active":
+        false, "id": "datos-argentina_1.1", "size": 5120, "state": "active", "accessURL":
+        "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "hash": "", "description": "Listado de las convocatorias abiertas durante
+        el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas", "format":
+        "CSV", "fileName": "convocatoriasabiertasduranteelao.csv", "mimetype_inner":
+        null, "url_type": null, "mimetype": "text/csv", "cache_url": null, "name":
+        "Convocatorias abiertas durante el a\u00f1o 2015", "created": "2016-04-14T19:48:05.433640",
+        "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "8a40e72f-f74f-4333-a596-cb2179dab8a7", "resource_type": "file"}], "num_resources":
+        1, "tags": [{"vocabulary_id": null, "state": "active", "display_name": "Adquisici\u00f3n",
+        "id": "ad788921-bdfd-41f1-9527-f4eed3c1a54f", "name": "Adquisici\u00f3n"},
+        {"vocabulary_id": null, "state": "active", "display_name": "Contrataciones",
+        "id": "f877b153-1be7-41ed-838a-3cde2a0daed5", "name": "Contrataciones"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "Convocatorias", "id": "0be90207-6698-4d7a-8dec-440a50422451",
+        "name": "Convocatorias"}, {"vocabulary_id": null, "state": "active", "display_name":
+        "bienes", "id": "7e968a57-c3f5-49a2-9d1f-821c171b3a91", "name": "bienes"},
+        {"vocabulary_id": null, "state": "active", "display_name": "bienes y compras",
+        "id": "37e455cd-7ef3-4718-8bfe-a8f305cd907f", "name": "bienes y compras"},
+        {"vocabulary_id": null, "state": "active", "display_name": "compras", "id":
+        "a2a73b63-e42d-4164-8186-f08fdc858e1a", "name": "compras"}, {"vocabulary_id":
+        null, "state": "active", "display_name": "contrataciones", "id": "47fad266-8915-4b7a-a955-9f6792ddcacf",
+        "name": "contrataciones"}], "groups": [{"display_name": "Econom\u00eda y finanzas",
+        "description": "Econom\u00eda y finanzas", "image_display_url": "", "title":
+        "Econom\u00eda y finanzas", "id": "3a1b3d84-a435-4b65-9c56-009a67875457",
+        "name": "econ"}], "license_id": "notspecified", "relationships_as_subject":
+        [], "organization": {"description": "", "created": "2019-12-03T15:25:02.131925",
+        "title": "oficina-de-muestra", "name": "oficina-de-muestra", "is_organization":
+        true, "state": "active", "image_url": "", "revision_id": "334d36f2-b44c-449b-80fe-58ad8542392e",
+        "type": "organization", "id": "c480b513-1d86-4f68-a551-6b8b4b75aea8", "approval_status":
+        "approved"}, "name": "datos-argentina-sistema-contrataciones-electronicas",
+        "isopen": false, "url": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra",
+        "notes": "Datos correspondientes al Sistema de Contrataciones Electr\u00f3nicas
+        (Argentina Compra)", "owner_org": "c480b513-1d86-4f68-a551-6b8b4b75aea8",
+        "extras": [{"key": "accrualPeriodicity", "value": "R/P1Y"}, {"key": "issued",
+        "value": "2016-04-14T19:48:05.433640-03:00"}, {"key": "language", "value":
+        "[\"spa\"]"}, {"key": "modified", "value": "2016-04-19T19:48:05.433640-03:00"},
+        {"key": "source", "value": "Ministerio de modernizacion"}, {"key": "spatial",
+        "value": "ARG"}, {"key": "superTheme", "value": "[\"econ\"]"}, {"key": "temporal",
+        "value": "2015-01-01/2015-12-31"}], "title": "Sistema de contrataciones electr\u00f3nicas",
+        "revision_id": "8a40e72f-f74f-4333-a596-cb2179dab8a7"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '6431'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:33:30 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"id": "datos-argentina_1.1", "name": "Convocatorias abiertas durante el
+      a\u00f1o 2015", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+      "created": "2016-04-14T19:48:05.433640", "description": "Listado de las convocatorias
+      abiertas durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+      "format": "CSV", "last_modified": "2016-04-19T19:48:05.433640", "mimetype":
+      "text/csv", "size": 5120, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+      "resource_type": "file", "fileName": "convocatoriasabiertasduranteelao.csv",
+      "attributesDescription": "[{\"title\": \"procedimiento_id\", \"type\": \"integer\",
+      \"id\": \"proc12\", \"description\": \"Identificador \\u00fanico del procedimiento
+      de contrataci\\u00f3n\"}, {\"type\": \"integer\", \"description\": \"Identificador
+      \\u00fanico del organismo que realiza la convocatoria. Organismo de m\\u00e1ximo
+      nivel jer\\u00e1rquico al que pertenece la unidad operativa de contrataciones.\",
+      \"title\": \"organismo_unidad_operativa_contrataciones_id\"}, {\"type\": \"integer\",
+      \"description\": \"Identificador \\u00fanico de la unidad operativa de contrataciones\",
+      \"title\": \"unidad_operativa_contrataciones_id\"}, {\"type\": \"string\", \"description\":
+      \"Organismo que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+      al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+      {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+      \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+      \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+      \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+      \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+      \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+      de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+      \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+      \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+      {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+      \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+      de la convocatoria\", \"title\": \"objeto_convocatoria\"}]"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2625'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - ckanapi/4.0 (+https://github.com/ckan/ckanapi)
+    method: POST
+    uri: http://localhost:8080/api/action/resource_patch
+  response:
+    body:
+      string: '{"help": "http://localhost:8080/api/3/action/help_show?name=resource_patch",
+        "success": true, "result": {"cache_last_updated": null, "attributesDescription":
+        "[{\"title\": \"procedimiento_id\", \"type\": \"integer\", \"id\": \"proc12\",
+        \"description\": \"Identificador \\u00fanico del procedimiento de contrataci\\u00f3n\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico del organismo
+        que realiza la convocatoria. Organismo de m\\u00e1ximo nivel jer\\u00e1rquico
+        al que pertenece la unidad operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_id\"},
+        {\"type\": \"integer\", \"description\": \"Identificador \\u00fanico de la
+        unidad operativa de contrataciones\", \"title\": \"unidad_operativa_contrataciones_id\"},
+        {\"type\": \"string\", \"description\": \"Organismo que realiza la convocatoria.
+        Organismo de m\\u00e1ximo nivel jer\\u00e1rquico al que pertenece la unidad
+        operativa de contrataciones.\", \"title\": \"organismo_unidad_operativa_contrataciones_desc\"},
+        {\"type\": \"string\", \"description\": \"Unidad operativa de contrataciones.\",
+        \"title\": \"unidad_operativa_contrataciones_desc\"}, {\"type\": \"string\",
+        \"description\": \"Tipo de procedimiento al que se adecua la contrataci\\u00f3n.\",
+        \"title\": \"tipo_procedimiento_contratacion\"}, {\"type\": \"date\", \"description\":
+        \"A\\u00f1o en el que se inici\\u00f3 el proceso de la convocatoria.\", \"title\":
+        \"ejercicio_procedimiento_anio\"}, {\"type\": \"date\", \"description\": \"Fecha
+        de publicaci\\u00f3n de la convocatoria en formato AAAA-MM-DD, ISO 8601.\",
+        \"title\": \"fecha_publicacion_convocatoria\"}, {\"type\": \"string\", \"description\":
+        \"Modalidad bajo la cual se realiza la convocatoria.\", \"title\": \"modalidad_convocatoria\"},
+        {\"type\": \"string\", \"description\": \"Clase de la convocatoria.\", \"title\":
+        \"clase_convocatoria\"}, {\"type\": \"string\", \"description\": \"Objeto/objetivo
+        de la convocatoria\", \"title\": \"objeto_convocatoria\"}]", "package_id":
+        "datos-argentina_99db6631-d1c9-470b-a73e-c62daa32c777", "datastore_active":
+        false, "id": "datos-argentina_1.1", "size": 5120, "state": "active", "mimetype":
+        "text/csv", "hash": "", "description": "Listado de las convocatorias abiertas
+        durante el a\u00f1o 2015 en el sistema de contrataciones electr\u00f3nicas",
+        "format": "CSV", "fileName": "convocatoriasabiertasduranteelao.csv", "mimetype_inner":
+        null, "url_type": null, "accessURL": "http://datos.gob.ar/dataset/sistema-de-contrataciones-electronicas-argentina-compra/archivo/fa3603b3-0af7-43cc-9da9-90a512217d8a",
+        "cache_url": null, "name": "Convocatorias abiertas durante el a\u00f1o 2015",
+        "created": "2016-04-14T19:48:05.433640", "url": "http://186.33.211.253/dataset/99db6631-d1c9-470b-a73e-c62daa32c420/resource/4b7447cb-31ff-4352-96c3-589d212e1cc9/download/convocatorias-abiertas-anio-2015.csv",
+        "last_modified": "2016-04-19T19:48:05.433640", "position": 0, "revision_id":
+        "83f9c182-b96a-4879-a080-9a4cafd1300f", "resource_type": "file"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '3017'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 03 Dec 2019 18:33:31 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - openresty/1.13.6.2
+    status:
+      code: 200
+      message: OK
 version: 1

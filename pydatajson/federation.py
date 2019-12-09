@@ -13,7 +13,8 @@ import time
 
 from pydatajson.constants import REQUESTS_TIMEOUT, DEFAULT_TIMEZONE
 from pydatajson.custom_exceptions import NumericDistributionIdentifierError
-from .ckan_utils import map_dataset_to_package, map_theme_to_group
+from .ckan_utils import map_dataset_to_package, map_theme_to_group,\
+    map_distributions_to_resources
 from pydatajson.custom_remote_ckan import CustomRemoteCKAN as RemoteCKAN
 from .search import get_datasets
 from .helpers import resource_files_download
@@ -136,30 +137,23 @@ def resources_update(portal_url, apikey, distributions,
                              requests_timeout=requests_timeout)
     result = []
     generate_new_access_url = generate_new_access_url or []
-    for distribution in distributions:
-        updated = False
-        resource_id = catalog_id + '_' + distribution['identifier']\
-            if catalog_id else distribution['identifier']
-        fields = {'id': resource_id}
-        if distribution['identifier'] in generate_new_access_url:
-            fields.update({'accessURL': ''})
-            updated = True
-        if distribution['identifier'] in resource_files:
-            fields.update({'resource_type': 'file.upload',
-                           'upload':
-                               open(resource_files[distribution['identifier']],
-                                    'rb')
-                           })
-            updated = True
-        if updated:
-            try:
-                pushed = ckan_portal.action.resource_patch(**fields)
-                result.append(pushed['id'])
-            except CKANAPIError as e:
-                logger.exception(
-                    "Error subiendo recurso {} a la distribución {}: {}"
-                    .format(resource_files[distribution['identifier']],
-                            resource_files, str(e)))
+    ckan_resources = map_distributions_to_resources(distributions)
+    for resource in ckan_resources:
+        if resource['id'] in generate_new_access_url:
+            resource.update({'accessURL': ''})
+        if resource['id'] in resource_files:
+            resource.update({'resource_type': 'file.upload',
+                             'upload':
+                                 open(resource_files[resource['id']], 'rb')})
+        resource['id'] = catalog_id + '_' + resource['id'] \
+            if catalog_id else resource['id']
+        try:
+            pushed = ckan_portal.action.resource_patch(**resource)
+            result.append(pushed['id'])
+        except CKANAPIError as e:
+            logger.exception(
+                "Error actualizando distribución {}: {}"
+                .format(resource['id'], str(e)))
     return result
 
 
@@ -439,8 +433,8 @@ def push_new_themes(catalog, portal_url, apikey):
                              verify_ssl=catalog.verify_ssl,
                              requests_timeout=catalog.requests_timeout)
     existing_themes = ckan_portal.call_action('group_list')
-    new_themes = [theme['id'] for theme in catalog[
-        'themeTaxonomy'] if theme['id'] not in existing_themes]
+    new_themes = [theme['id'] for theme in catalog.get('themeTaxonomy', [])
+                  if theme['id'] not in existing_themes]
     pushed_names = []
     for new_theme in new_themes:
         name = push_theme_to_ckan(

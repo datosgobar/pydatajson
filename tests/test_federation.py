@@ -297,17 +297,18 @@ class PushDatasetTestCase(FederationSuite):
 
     def test_resource_upload_succesfully(self, mock_portal):
         mock_portal.return_value.action.resource_patch = MagicMock(
-            return_value={'id': 'an_id',
+            return_value={'id': 'pushed_id',
                           'resource_type': 'file.upload'})
         resources = {self.distribution_id: 'tests/samples/resource_sample.csv'}
         res = resources_update('portal', 'key', self.catalog.distributions,
                                resources)
-        mock_portal.return_value.action.resource_patch.assert_called_with(
-            id=self.distribution_id,
-            resource_type='file.upload',
-            upload=ANY
-        )
-        self.assertEqual(['an_id'], res)
+        _, _, kwargs = \
+            mock_portal.return_value.action.resource_patch.mock_calls[0]
+        self.assertEqual(self.distribution_id, kwargs['id'])
+        self.assertEqual('Convocatorias abiertas durante el año 2015',
+                         kwargs['name'])
+        self.assertEqual('file.upload', kwargs['resource_type'])
+        self.assertEqual(['pushed_id', 'pushed_id'], res)
 
     def test_resource_upload_error(self, mock_portal):
         mock_portal.return_value.action.resource_patch = MagicMock(
@@ -315,11 +316,12 @@ class PushDatasetTestCase(FederationSuite):
         resources = {self.distribution_id: 'tests/samples/resource_sample.csv'}
         res = resources_update('portal', 'key', self.catalog.distributions,
                                resources)
-        mock_portal.return_value.action.resource_patch.assert_called_with(
-            id=self.distribution_id,
-            resource_type='file.upload',
-            upload=ANY
-        )
+        _, _, kwargs = \
+            mock_portal.return_value.action.resource_patch.mock_calls[0]
+        self.assertEqual(self.distribution_id, kwargs['id'])
+        self.assertEqual('Convocatorias abiertas durante el año 2015',
+                         kwargs['name'])
+        self.assertEqual('file.upload', kwargs['resource_type'])
         self.assertEqual([], res)
 
     @patch('pydatajson.helpers.download_to_file')
@@ -337,11 +339,12 @@ class PushDatasetTestCase(FederationSuite):
             'portal',
             'key',
             download_strategy=(lambda _, x: x['identifier'] == '1.1'))
-        mock_portal.return_value.action.resource_patch.assert_called_with(
-            id='1.1',
-            resource_type='file.upload',
-            upload=ANY
-        )
+        _, _, kwargs = \
+            mock_portal.return_value.action.resource_patch.mock_calls[0]
+        self.assertEqual('1.1', kwargs['id'])
+        self.assertEqual('Convocatorias abiertas durante el año 2015',
+                         kwargs['name'])
+        self.assertEqual('file.upload', kwargs['resource_type'])
 
     def test_push_dataset_upload_empty_strategy(self, mock_portal):
         def mock_call_action(action, data_dict=None):
@@ -381,27 +384,6 @@ class PushDatasetTestCase(FederationSuite):
                                       self.dataset_id,
                                       'portal', 'key',
                                       generate_new_access_url=identifiers)
-        self.assertEqual(self.dataset_id, pushed)
-
-    def test_push_dataset_regenerate_accessurl_none(self, mock_portal):
-        def mock_call_action(action, data_dict=None):
-            if action == 'package_update':
-                return data_dict
-            else:
-                return []
-
-        mock_portal.return_value.call_action = mock_call_action
-
-        def side_effect(**kwargs):
-            self.fail('should not be called')
-
-        mock_portal.return_value.action.resource_patch.side_effect =\
-            side_effect
-
-        pushed = push_dataset_to_ckan(self.catalog, 'owner',
-                                      self.dataset_id,
-                                      'portal', 'key',
-                                      generate_new_access_url=None)
         self.assertEqual(self.dataset_id, pushed)
 
 
