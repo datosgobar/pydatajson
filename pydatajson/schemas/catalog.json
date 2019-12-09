@@ -12,10 +12,14 @@
         "identifier": {"$ref": "mixed-types.json#stringOrNull"},
         "publisher": {
             "type": "object",
-            "required": ["name", "mbox"],
+            "required": ["name"],
             "properties": {
                 "name": { "$ref": "mixed-types.json#nonEmptyString" },
-                "mbox": { "type": "string", "format": "email" }
+                "mbox": {
+                    "anyOf": [
+                        { "type": "string", "format": "email" },
+                        { "type": "string", "maxLength": 0 }
+                    ]}
             }
         },
         "dataset": {

@@ -97,13 +97,20 @@ def invalid_catalog_publisher_type():
 def invalid_publisher_mbox_format():
     return catalog_error({
         "error_code": 2,
-        "message": "%s is not a %s" %
-                   (jsonschema_str('datosATmodernizacion.gob.ar'),
-                    jsonschema_str('email')),
-        "validator": "format",
-        "validator_value": "email",
+        "message": "%s is not valid under any of the given schemas"
+                   % jsonschema_str('datosATmodernizacion.gob.ar'),
+        "validator": "anyOf",
         "path": ["publisher", "mbox"],
-        "instance": "datosATmodernizacion.gob.ar"
+        "instance": "datosATmodernizacion.gob.ar",
+        "validator_value": [
+            {
+                "type": "string",
+                "format": "email",
+            },
+            {
+                "type": "string",
+                "maxLength": 0,
+            }]
     })
 
 

@@ -26,7 +26,7 @@
          },
         "modified": { "$ref": "mixed-types.json#dateOrDatetimeStringOrNull" },
         "rights": { "$ref": "mixed-types.json#stringOrNull" },
-        "fileName": { "$ref": "mixed-types.json#nonEmptyStringOrNull" },
+        "fileName": { "$ref": "mixed-types.json#stringOrNull" },
         "field": {
             "type": "array",
             "items": { "$ref": "field.json" }

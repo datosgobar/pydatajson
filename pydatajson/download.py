@@ -12,18 +12,17 @@ import requests
 import time
 import sys
 
-DEFAULT_TRIES = 1
+DEFAULT_TRIES = 3
 RETRY_DELAY = 1
 
 
-def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY,
-             try_timeout=None, proxies=None, verify=True):
+def download(url, file_path, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY):
     """
     Descarga un archivo a través del protocolo HTTP, en uno o más intentos.
 
     Args:
         url (str): URL (schema HTTP) del archivo a descargar.
-        tries (int): Intentos a realizar (default: 1).
+        tries (int): Intentos a realizar (default: 3).
         retry_delay (int o float): Tiempo a esperar, en segundos, entre cada
             intento.
         try_timeout (int o float): Tiempo máximo a esperar por intento.
@@ -34,17 +33,22 @@ def download(url, tries=DEFAULT_TRIES, retry_delay=RETRY_DELAY,
     Returns:
         bytes: Contenido del archivo
     """
-    for i in range(tries):
+    timeout = 10
+    for i in range(1, tries + 1):
         try:
-            return requests.get(url, timeout=try_timeout, proxies=proxies,
-                                verify=verify).content
+            with requests.get(url, timeout=timeout ** i, stream=True,
+                              verify=False) as r:
+                r.raise_for_status()
+                with open(file_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        if chunk:  # filter out keep-alive new chunks
+                            f.write(chunk)
+
+        except requests.TooManyRedirects as e:
+            raise e
         except Exception as e:
             download_exception = e
-
-            if i < tries - 1:
-                time.sleep(retry_delay)
-
-    raise download_exception
+            raise download_exception
 
 
 def download_to_file(url, file_path, **kwargs):
@@ -58,9 +62,7 @@ def download_to_file(url, file_path, **kwargs):
             en el path especificado, se sobrescribirá con nuevos contenidos.
         kwargs: Parámetros para download().
     """
-    content = download(url, **kwargs)
-    with open(file_path, "wb") as f:
-        f.write(content)
+    content = download(url, file_path, **kwargs)
 
 
 if __name__ == '__main__':

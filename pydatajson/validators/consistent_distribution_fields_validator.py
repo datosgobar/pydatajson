@@ -42,7 +42,7 @@ class ConsistentDistributionFieldsValidator(SimpleValidator):
             file_name = urlparse(distribution[attribute]).path
             extension = os.path.splitext(file_name)[-1].lower()
 
-            if attribute == 'downloadURL' and not extension:
+            if not extension:
                 return True
 
             # hay extensiones exceptuadas porque enmascaran otros formatos
@@ -50,6 +50,8 @@ class ConsistentDistributionFieldsValidator(SimpleValidator):
                 return True
 
             if extension not in possible_format_extensions:
+                if possible_format_extensions:
+                    return True
                 return False
 
         return True
