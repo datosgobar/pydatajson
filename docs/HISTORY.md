@@ -1,5 +1,9 @@
 Versiones
 =========
+0.4.67 (2019-12-17)
+-------------------
+* Extensión de las capacidades de `resources>_update()`  
+
 0.4.61 (2019-11-28)
 -------------------
 * Fix de la parametrización de threads.
