@@ -79,14 +79,14 @@ def invalid_catalog_publisher_type():
     return catalog_error({
         'instance': [
             "Ministerio de Modernización",
-            "datos@modernizacion.gob.ar"
+            "datosargentina@jefatura.gob.ar"
         ],
         "validator": "type",
         "path": ["publisher"],
 
         "message": "[%s, %s] is not of type %s" % (
             jsonschema_str('Ministerio de Modernización'),
-            jsonschema_str('datos@modernizacion.gob.ar'),
+            jsonschema_str('datosargentina@jefatura.gob.ar'),
             jsonschema_str('object'),
         ),
         "error_code": 2,

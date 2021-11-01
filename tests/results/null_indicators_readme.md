@@ -4,7 +4,7 @@
 ## Información General
 
 - **Autor**: Ministerio de Modernización
-- **Correo Electrónico**: datos@modernizacion.gob.ar
+- **Correo Electrónico**: datosargentina@jefatura.gob.ar
 - **Ruta del catálogo**: tests/samples/several_datasets_for_harvest.json
 - **Nombre del catálogo**: Cosechando Datos Argentina
 - **Descripción**:

@@ -27,7 +27,7 @@ setup(
     long_description=readme + '\n\n' + history,
     long_description_content_type='text/markdown',
     author="Datos Argentina",
-    author_email='datos@modernizacion.gob.ar',
+    author_email='datosargentina@jefatura.gob.ar',
     url='https://github.com/datosgobar/pydatajson',
     packages=[
         'pydatajson',

@@ -24,7 +24,7 @@
 Todo lo que se hace para la Nación es de todos. Alentamos la participación para construir políticas públicas de calidad.  
 
 ## Contacto
-Envianos tus comentarios o consultas a datos@modernizacion.gob.ar.
+Envianos tus comentarios o consultas a datosargentina@jefatura.gob.ar.
 
 ## Créditos
 Para escribir nuestro código de conducta, nos basamos en:

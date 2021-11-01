@@ -21,9 +21,9 @@ interactions:
         \"6897d435-8084-4685-b8ce-304b190755e4\", \n      \"issued\": \"2016-11-30T22:22:48.635757\",
         \n      \"landingPage\": \"https://github.com/datosgobar/portal-andino\",
         \n      \"license\": \"Creative Commons Attribution\", \n      \"publisher\":
-        {\n        \"mbox\": \"datos@modernizacion.gob.ar\", \n        \"name\": \"Andino\"\n
+        {\n        \"mbox\": \"datosargentina@jefatura.gob.ar\", \n        \"name\": \"Andino\"\n
         \     }, \n      \"contactPoint\": {\n        \"@type\": \"vcard:Contact\",
-        \n        \"fn\": \"Andino\", \n        \"hasEmail\": \"mailto:datos@modernizacion.gob.ar\"\n
+        \n        \"fn\": \"Andino\", \n        \"hasEmail\": \"mailto:datosargentina@jefatura.gob.ar\"\n
         \     }, \n      \"distribution\": [\n        {\n          \"@type\": \"dcat:Distribution\",
         \n          \"format\": \"CSV\", \n          \"title\": \"Recurso de Ejemplo\",
         \n          \"description\": \"Este es un recurso DEMO, se incluye como material

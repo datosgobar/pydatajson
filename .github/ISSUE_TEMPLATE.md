@@ -16,6 +16,6 @@ Si querés reportar un bug, especificanos:
 
 Si tenés otra consulta, dejanos una descripción bien específica, para que podamos ayudarte. 
 
-Para  preguntas de carácter privado, podés escribirnos a datos@modernizacion.gob.ar.
+Para  preguntas de carácter privado, podés escribirnos a datosargentina@jefatura.gob.ar.
 
 ¡Muchas gracias por colaborar!
