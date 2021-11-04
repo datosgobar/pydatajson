@@ -33,7 +33,7 @@ Paquete en python con herramientas para manipular y validar metadatos de catálo
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-Este README cubre los casos de uso más comunes para la librería, junto con ejemplos de código, pero sin mayores explicaciones. Para una versión más detallada de los comportamientos, revise la [documentación oficial](http://pydatajson.readthedocs.io) o el [Manual de Uso](docs/MANUAL.md) de la librería.
+Este `README` cubre los casos de uso más comunes para la librería, junto con ejemplos de código, pero sin mayores explicaciones. Para una versión más detallada de los comportamientos, revise la [documentación oficial](http://pydatajson.readthedocs.io) o el [Manual de Uso](docs/MANUAL.md) de la librería.
 
 ## Instalación
 
@@ -58,7 +58,7 @@ La librería cuenta con funciones para cuatro objetivos principales:
 - **transformación de archivos de metadatos** al formato estándar (JSON), y
 - **generación de indicadores de monitoreo de catálogos** y sus _datasets_.
 
-A continuación se proveen ejemplos de cada uno de estas acciones. Si desea analizar un flujo de trabajo más completo, refiérase a los Jupyter Notebook de [`samples/`](samples/)
+A continuación se proveen ejemplos de cada uno de estas acciones. Si desea analizar un flujo de trabajo más completo, diríjase a los Jupyter Notebook de [`samples/`](samples/)
 
 ### Setup
 
@@ -146,7 +146,7 @@ for catalog in catalogs:
 
 ### Generación de reportes y configuraciones del Harvester
 
-Si ya se sabe que se desean cosechar todos los _datasets_ [válidos] de uno o varios catálogos, se pueden utilizar directamente el método `generate_harvester_config()`, proveyendo `harvest='all'` o `harvest='valid'` respectivamente. Si se desea revisar manualmente la lista de _datasets_ contenidos, se puede invocar primero `generate_datasets_report()`, editar el reporte generado y luego proveérselo a `generate_harvester_config()`, junto con la opción `harvest='report'`.
+Si ya se sabe que se desean capturar todos los _datasets_ [válidos] de uno o varios catálogos, se pueden utilizar directamente el método `generate_harvester_config()`, proveyendo `harvest='all'` o `harvest='valid'` respectivamente. Si se desea revisar manualmente la lista de _datasets_ contenidos, se puede invocar primero `generate_datasets_report()`, editar el reporte generado y luego proveérselo a `generate_harvester_config()`, junto con la opción `harvest='report'`.
 
 #### Crear un archivo de configuración eligiendo manualmente los datasets a federar
 
@@ -171,7 +171,7 @@ dj.generate_harvester_config(
 ```
 El archivo `config_path` puede ser provisto a Harvester para federar los _datasets_ elegidos al editar el reporte intermedio `report_path`.
 
-Por omisión, en la salida de `generate_harvester_config` la frecuencia de actualización deseada para cada _dataset_ será "R/P1D", para intentar cosecharlos diariamente. De preferir otra frecuencia (siempre y cuando sea válida según ISO 8601), se la puede especificar a través del parámetro opcional `frequency`. Si especifica expĺicitamente `frequency=None`, se conservarán las frecuencias de actualización indicadas en el campo `accrualPeriodicity` de cada _dataset_.
+Por omisión, en la salida de `generate_harvester_config` la frecuencia de actualización deseada para cada _dataset_ será "R/P1D", para intentar recolectarlos diariamente. De preferir otra frecuencia (siempre y cuando sea válida según ISO 8601), se la puede especificar a través del parámetro opcional `frequency`. Si especifica explícitamente `frequency=None`, se conservarán las frecuencias de actualización indicadas en el campo `accrualPeriodicity` de cada _dataset_.
 
 #### Crear un archivo de configuración que incluya únicamente los datasets con metadata válida
 
@@ -245,7 +245,7 @@ $ nosetests
 * [Estándar ISO 8601 - Wikipedia](https://es.wikipedia.org/wiki/ISO_8601)
 * [JSON SChema - Sitio oficial del estándar](http://json-schema.org/)
 * [Documentación completa de `pydatajson` - Read the Docs](http://pydatajson.readthedocs.io)
-* [Guía para el uso y la publicación de metafatos](https://docs.google.com/document/d/1Z7XhpzOinvITN_9wqUbOYpceDzic3KTOHLtHcGCPAwo/edit)
+* [Guía para el uso y la publicación de metadatos](https://docs.google.com/document/d/1Z7XhpzOinvITN_9wqUbOYpceDzic3KTOHLtHcGCPAwo/edit)
 
 ## Créditos
 
